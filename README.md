@@ -14,6 +14,10 @@
 
 无
 
+## 仓库地址
+> * github 仓库地址 [https://github.com/fthux/juejin](https://github.com/fthux/juejin)。
+> * gitee 仓库地址 [https://gitee.com/fthux/juejin](https://gitee.com/fthux/juejin)。
+
 ## 请喝咖啡
 
 如果我的项目对你有帮助，可以请我喝杯白开水。
