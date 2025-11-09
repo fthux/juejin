@@ -1,10 +1,12 @@
 # 稀土掘金小程序
 
-<p align='center'>
-  <img src='./materials/miniqrcode.jpg' style='width:300px;'>
-</p>
+> 稀土掘金第三方版
 
-稀土掘金第三方版--非稀土掘金官方应用
+非稀土掘金官方应用
+
+<p align='center'>
+  <img src='./materials/miniqrcode.jpg' height="200">
+</p>
 
 ## 声明
 
@@ -24,15 +26,16 @@
 
 ### 支付宝
 
-<img src='./materials/ali_pay_code.jpeg' style='width:300px;'>
-
-<img src='./materials/ali_bonus_code.jpeg' style='width:300px;'>
+<div>
+<img src='./materials/ali_pay_code.jpeg' style='width:200px;'>
+<img src='./materials/ali_bonus_code.jpeg' style='width:200px;'>
+</div>
 
 ### 微信
 
-<img src='./materials/wechat_pay_code.jpeg' style='width:300px;'>
-
-<img src='./materials/wechat_like_code.jpeg' style='width:300px;'>
+<div>
+<img src='./materials/wechat_like_code.jpeg' style='width:200px;'>
+</div>
 
 ## License
 
