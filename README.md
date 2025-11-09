@@ -39,3 +39,7 @@
 [MIT](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2018-present, fthux
+
+## Star 历史
+
+[![Star 历史表格](https://api.star-history.com/svg?repos=fthux/juejin&type=Date)](https://star-history.com/#fthux/juejin&Date)
