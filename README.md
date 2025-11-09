@@ -1,5 +1,7 @@
 # 稀土掘金小程序
 
+![Achived](https://img.shields.io/badge/achived-read_only-8A2BE2)
+
 > 稀土掘金第三方版
 
 非稀土掘金官方应用
