@@ -15,7 +15,7 @@
   <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
     <image wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture" src="{{item}}" mode="aspectFill"></image>
   </view>
-  <view wx:if="{{item.topic}}" class="topic"># {{item.topic.title || item.topic}}</view>
+  <view wx:if="{{item.topic}}" class="topic"># {{item.topic}}</view>
   <view class="pin-actions">
     <text>分享</text>
     <text>评论 {{item.comment_count}}</text>

@@ -30,9 +30,12 @@ Page({
     this.setData({ loading: true })
     api.daily().then(({ result }) => {
       const data = result.data || {}
+      const articles = Array.isArray(data)
+        ? data
+        : (data.article_info ? [data] : (data.articles || data.article_list || []))
       this.setData({
         greeting: data.greeting || this.data.greeting,
-        dailyArticles: (data.articles || data.article_list || []).map(utils.normalizeArticle),
+        dailyArticles: articles.map(utils.normalizeArticle),
         loading: false
       })
     }).finally(() => {

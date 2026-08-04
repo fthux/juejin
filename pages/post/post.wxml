@@ -10,11 +10,20 @@
       <view class="follow-button {{isFollowed ? 'followed' : ''}}" bindtap="toggleFollow">{{isFollowed ? '已关注' : '关注'}}</view>
     </view>
     <view class="article-content">
-      <rich-text nodes="{{content}}"></rich-text>
+      <rich-text wx:if="{{content}}" nodes="{{content}}" user-select></rich-text>
+      <view wx:if="{{loadError}}" class="content-error">
+        <view>正文加载失败，请检查网络后重试</view>
+        <view class="text-button" bindtap="retry">重新加载</view>
+      </view>
     </view>
     <view class="article-tags">
       <view wx:for="{{article.tags}}" wx:key="*this" class="chip">{{item}}</view>
     </view>
+  </view>
+
+  <view wx:if="{{loadError && !article}}" class="content-error page-error surface">
+    <view>未能加载这篇文章，请检查网络后重试</view>
+    <view class="text-button" bindtap="retry">重新加载</view>
   </view>
 
   <view wx:if="{{article}}" class="section">

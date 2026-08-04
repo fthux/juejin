@@ -71,6 +71,6 @@ Page({
   },
 
   openUser(event) {
-    wx.navigateTo({ url: `/pages/my/my?userId=${event.currentTarget.dataset.id}` })
+    wx.navigateTo({ url: `/pages/profile/profile?id=${event.currentTarget.dataset.id}` })
   }
 })

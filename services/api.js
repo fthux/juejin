@@ -84,8 +84,9 @@ function courses(cursor) {
 
 function articleDetail(articleId) {
   return withFallback(request('/content_api/v1/article/detail', {
-    article_id: articleId
-  }), () => ({ data: mock.articleDetails[articleId] || mock.articleDetails[mock.articles[0].article_id] }))
+    article_id: articleId,
+    client_type: 2608
+  }), () => ({ data: mock.articleDetails[articleId] || null }))
 }
 
 function pinDetail(msgId) {

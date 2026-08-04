@@ -7,7 +7,7 @@
 }
 
 .detail-title {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 46rpx;
   font-weight: 700;
   line-height: 1.35;
@@ -26,14 +26,14 @@
 }
 
 .author-name {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 27rpx;
   font-weight: 600;
 }
 
 .author-meta {
   margin-top: 6rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
@@ -52,16 +52,42 @@
 }
 
 .follow-button.followed {
-  color: #8a919f;
-  background: #f2f3f5;
+  color: var(--jj-text-3);
+  background: var(--jj-fill);
 }
 
 .article-content {
   margin-top: 44rpx;
-  color: #252933;
+  color: var(--jj-text);
   font-size: 31rpx;
   line-height: 1.85;
   word-break: break-word;
+}
+
+.article-content rich-text {
+  display: block;
+  overflow: hidden;
+}
+
+.content-error {
+  padding: 72rpx 24rpx;
+  color: var(--jj-text-3);
+  background: var(--jj-fill-2);
+  text-align: center;
+  font-size: 26rpx;
+}
+
+.page-error {
+  min-height: 420rpx;
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-error .text-button {
+  margin-top: 20rpx;
 }
 
 .article-tags {
@@ -83,8 +109,8 @@
   align-items: center;
   gap: 8rpx;
   box-sizing: border-box;
-  background: #ffffff;
-  border-top: 1rpx solid #e5e6eb;
+  background: var(--jj-surface);
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .comment-entry {
@@ -94,8 +120,8 @@
   align-items: center;
   flex: 1;
   border-radius: 6rpx;
-  color: #8a919f;
-  background: #f2f3f5;
+  color: var(--jj-text-3);
+  background: var(--jj-fill);
   font-size: 24rpx;
 }
 
@@ -107,7 +133,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #8a919f;
+  color: var(--jj-text-3);
   background: transparent;
   font-size: 20rpx;
   line-height: 1.2;
@@ -115,7 +141,7 @@
 
 .action-icon {
   margin-bottom: 4rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 30rpx;
 }
 

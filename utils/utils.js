@@ -48,7 +48,7 @@ function toast(title) {
 function normalizeArticle(raw) {
   const item = raw && raw.item_info ? raw.item_info : (raw || {})
   const info = item.article_info || item
-  const author = item.author_user_info || raw.author_user_info || {}
+  const author = item.author_user_info || raw.author_user_info || item.author || raw.author || {}
   const tags = item.tags || raw.tags || []
   return {
     article_id: info.article_id || item.article_id || item.item_id || '',
@@ -75,11 +75,13 @@ function normalizePin(raw) {
   const item = raw || {}
   const info = item.msg_Info || item.msg_info || item
   const author = item.author_user_info || info.author_user_info || {}
+  const rawTopic = info.topic || item.topic
+  const topic = typeof rawTopic === 'string' ? rawTopic : ((rawTopic && rawTopic.title) || '')
   return {
     msg_id: item.msg_id || info.msg_id || '',
     content: info.content || '',
     pic_list: info.pic_list || [],
-    topic: info.topic || item.topic || null,
+    topic,
     ctime: formatTime(info.ctime || item.ctime),
     digg_count: formatCount(item.digg_count || info.digg_count),
     comment_count: formatCount(item.comment_count || info.comment_count),

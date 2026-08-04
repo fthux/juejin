@@ -12,7 +12,8 @@ const KEYS = {
   pins: 'jj:local-pins',
   notes: 'jj:notes',
   notifications: 'jj:notifications',
-  signDays: 'jj:sign-days'
+  signDays: 'jj:sign-days',
+  articleCache: 'jj:article-cache'
 }
 
 function ensureLocalData() {
@@ -64,6 +65,25 @@ function addHistory(article) {
   const list = getList('history').filter((item) => item.article_id !== article.article_id)
   list.unshift(Object.assign({}, article, { readAt: Date.now() }))
   setList('history', list.slice(0, 100))
+}
+
+function cacheArticle(article) {
+  if (!article || !article.article_id) return
+  const cache = wx.getStorageSync(KEYS.articleCache) || {}
+  cache[article.article_id] = article
+  const ids = Object.keys(cache)
+  if (ids.length > 100) delete cache[ids[0]]
+  wx.setStorageSync(KEYS.articleCache, cache)
+}
+
+function getCachedArticle(articleId) {
+  const cache = wx.getStorageSync(KEYS.articleCache) || {}
+  return cache[articleId] || null
+}
+
+function getCachedArticles() {
+  const cache = wx.getStorageSync(KEYS.articleCache) || {}
+  return Object.keys(cache).map((id) => cache[id])
 }
 
 function saveDraft(draft) {
@@ -148,6 +168,9 @@ module.exports = {
   setList,
   toggle,
   addHistory,
+  cacheArticle,
+  getCachedArticle,
+  getCachedArticles,
   saveDraft,
   publishPin,
   publishArticle,

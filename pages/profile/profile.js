@@ -13,8 +13,10 @@ Page({
 
   onLoad(query) {
     const currentSession = session.getSession()
-    const user = query.id === 'local-user' && currentSession ? currentSession.user : (mock.authors.find((item) => item.user_id === query.id) || mock.authors[0])
-    const sourceArticles = user.user_id === 'local-user' ? session.getList('articles') : mock.articles
+    const cachedArticles = session.getCachedArticles()
+    const cachedUser = cachedArticles.map((item) => item.author).find((item) => item && item.user_id === query.id)
+    const user = query.id === 'local-user' && currentSession ? currentSession.user : (mock.authors.find((item) => item.user_id === query.id) || cachedUser || mock.authors[0])
+    const sourceArticles = user.user_id === 'local-user' ? session.getList('articles') : cachedArticles.concat(mock.articles)
     const sourcePins = user.user_id === 'local-user' ? session.getList('pins') : mock.pins
     this.setData({
       user,
