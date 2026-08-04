@@ -5,13 +5,14 @@
       <view class="section-title">全部评论 · {{comments.length}}</view>
     </view>
     <view wx:for="{{comments}}" wx:key="id" class="comment-row">
-      <image class="avatar" src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image>
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
       <view class="comment-body">
         <view class="comment-user">{{item.user}}</view>
         <view class="comment-content">{{item.content}}</view>
         <view class="comment-time">{{item.time}} · 回复</view>
       </view>
     </view>
+    <view wx:if="{{!comments.length}}" class="comment-empty">还没有评论，来说两句吧</view>
   </view>
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
   <view class="comment-bar safe-bottom">

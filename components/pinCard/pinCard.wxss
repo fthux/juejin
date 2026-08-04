@@ -39,6 +39,22 @@
   color: var(--jj-text-3);
 }
 
+.card-follow {
+  height: 50rpx;
+  padding: 0 18rpx;
+  display: flex;
+  align-items: center;
+  border: 1rpx solid var(--jj-blue);
+  border-radius: 4rpx;
+  color: var(--jj-blue);
+  font-size: 21rpx;
+}
+
+.card-follow.followed {
+  border-color: var(--jj-line);
+  color: var(--jj-text-3);
+}
+
 .pin-content {
   margin: 20rpx 0;
   color: var(--jj-text);
@@ -78,6 +94,55 @@
   text-align: center;
 }
 
+.pin-action {
+  height: 88rpx;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  color: inherit;
+  background: transparent;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.pin-action image {
+  width: 28rpx;
+  height: 28rpx;
+}
+
 .liked {
   color: #1e80ff;
+}
+
+.pin-card.compact {
+  padding: 22rpx 24rpx 0;
+  border-bottom-width: 1rpx;
+  border-bottom-color: var(--jj-line);
+}
+
+.compact .avatar {
+  width: 62rpx;
+  height: 62rpx;
+}
+
+.compact .name {
+  font-size: 26rpx;
+}
+
+.compact .caption {
+  font-size: 21rpx;
+}
+
+.compact .pin-content {
+  margin: 16rpx 0;
+  font-size: 27rpx;
+  line-height: 1.58;
+}
+
+.compact .pin-actions,
+.compact .pin-action {
+  height: 72rpx;
 }

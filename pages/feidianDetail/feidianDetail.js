@@ -21,10 +21,7 @@ Page({
     task.then(({ result }) => {
       this.setData({
         item: utils.normalizePin(result.data || {}),
-        comments: [
-          { id: 'comment-1', user: '前端森林', content: '这个观点很有启发，感谢分享。', time: '1小时前' },
-          { id: 'comment-2', user: '代码与远方', content: '同感，实践之后再回来复盘会更清楚。', time: '3小时前' }
-        ],
+        comments: session.getComments('pin', this.data.msgId),
         loading: false
       })
     }).finally(() => this.setData({ loading: false }))
@@ -32,7 +29,6 @@ Page({
 
   addComment() {
     if (!session.requireLogin()) return
-    const current = session.getSession()
     const that = this
     wx.showModal({
       title: '发表评论',
@@ -40,8 +36,8 @@ Page({
       placeholderText: '友善交流，分享你的观点',
       success(result) {
         if (!result.confirm || !result.content) return
-        const comments = [{ id: `local-${Date.now()}`, user: current.user.user_name, content: result.content, time: '刚刚' }].concat(that.data.comments)
-        that.setData({ comments })
+        session.addComment('pin', that.data.msgId, result.content)
+        that.setData({ comments: session.getComments('pin', that.data.msgId) })
       }
     })
   },

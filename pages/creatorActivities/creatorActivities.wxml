@@ -1,1 +1,21 @@
-<view class="page activities-page"><view class="tabs"><view class="tab active">文章活动</view><view class="tab">沸点活动</view></view><view class="filters"><view>活动状态　<text>进行中⌄</text></view><view>活动分类　<text>热门活动⌄</text></view></view><view class="activity-card"><image src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image><view class="activity-title">「TRAE Work 实战帮」征文启动！你的经验，值得被看见！</view><view class="activity-copy">征集开发者解决日常工作难题的复用性经验</view><view class="activity-time">2026-8-3 ~ 2026-8-23</view></view><view class="end-line">没有更多数据了</view></view>
+<view class="page activities-page">
+  <view class="tabs">
+    <view class="tab {{activeTab === 'article' ? 'active' : ''}}" data-id="article" bindtap="switchTab">文章活动</view>
+    <view class="tab {{activeTab === 'pin' ? 'active' : ''}}" data-id="pin" bindtap="switchTab">沸点活动</view>
+  </view>
+  <view class="filters">
+    <view bindtap="changeStatus">活动状态　<text>{{status === 'active' ? '进行中' : '已结束'}}⌄</text></view>
+    <view bindtap="changeCategory">活动分类　<text>{{category === 'all' ? '全部活动' : '热门活动'}}⌄</text></view>
+  </view>
+  <view wx:for="{{list}}" wx:key="id" class="activity-card">
+    <image src="{{item.image}}" mode="aspectFill"></image>
+    <view class="activity-title">{{item.title}}</view>
+    <view class="activity-copy">{{item.description}}</view>
+    <view class="activity-footer">
+      <view class="activity-time">{{item.time}}</view>
+      <button wx:if="{{item.status === 'active'}}" class="register-button {{item.registered ? 'registered' : ''}}" data-id="{{item.id}}" bindtap="toggleRegistration">{{item.registered ? '已报名' : '立即报名'}}</button>
+    </view>
+  </view>
+  <empty-state wx:if="{{!list.length}}" text="当前筛选下没有活动"></empty-state>
+  <view wx:if="{{list.length}}" class="end-line">没有更多数据了</view>
+</view>

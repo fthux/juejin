@@ -9,12 +9,21 @@ const fail = (message) => {
 }
 
 const app = JSON.parse(read('app.json'))
+const project = JSON.parse(read('project.config.json'))
 const pageSet = new Set(app.pages)
 const componentRoots = Object.values(app.usingComponents || {}).map((value) => value.replace(/^\//, ''))
 const roots = app.pages.concat(componentRoots)
 
 if (app.pages[0] !== 'pages/index/index') fail('首页必须是首个注册页面')
 if (app.pages.length !== pageSet.size) fail('app.json 中存在重复页面')
+
+const ignoredFolders = new Set((project.packOptions && project.packOptions.ignore || [])
+  .filter((item) => item.type === 'folder')
+  .map((item) => item.value.replace(/\/$/, '')))
+for (const page of app.pages) {
+  const folder = page.replace(/\/[^/]+$/, '')
+  if (ignoredFolders.has(folder)) fail(`注册页面被项目配置排除: ${page}`)
+}
 
 for (const base of roots) {
   for (const extension of ['js', 'json', 'wxml', 'wxss']) {
@@ -60,6 +69,7 @@ const privatePages = [
   'pages/creatorData/creatorData',
   'pages/creatorFans/creatorFans',
   'pages/drafts/drafts',
+  'pages/level/level',
   'pages/notes/notes',
   'pages/notifications/notifications',
   'pages/publish/publish',
@@ -73,6 +83,15 @@ for (const page of privatePages) {
   if (!pageSet.has(page)) fail(`账号页面未注册: ${page}`)
   if (!read(`${page}.js`).includes('session.requirePage(')) fail(`账号页面缺少深链登录保护: ${page}`)
 }
+
+const loginSource = read('pages/login/login.js')
+const loginCodeSource = read('pages/loginCode/loginCode.js')
+if (!loginSource.includes('/pages/loginCode/loginCode?')) fail('手机号登录第一步必须跳转到验证码页面')
+if (!loginCodeSource.includes('this.sendCode()')) fail('验证码页面必须在加载时自动发送验证码')
+if (!/code\.length\s*===\s*6/.test(loginCodeSource) || !loginCodeSource.includes('this.login()')) {
+  fail('验证码输入满六位后必须自动登录')
+}
+if (!loginSource.includes('redirect') || !loginCodeSource.includes('redirect')) fail('登录两步必须保留深链跳转参数')
 
 const md5 = require(path.join(root, 'utils/md5.js'))
 if (md5('') !== 'd41d8cd98f00b204e9800998ecf8427e') fail('MD5 空字符串向量校验失败')

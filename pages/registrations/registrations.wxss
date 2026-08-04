@@ -1,1 +1,66 @@
-.registrations-page { background: var(--jj-surface); }
+.registrations-page {
+  padding-top: 16rpx;
+}
+
+.registration-card {
+  min-height: 190rpx;
+  padding: 26rpx 28rpx;
+  display: flex;
+  align-items: center;
+  background: var(--jj-surface);
+  border-bottom: 1rpx solid var(--jj-line);
+  box-sizing: border-box;
+}
+
+.registration-card image {
+  width: 150rpx;
+  height: 112rpx;
+  flex: 0 0 auto;
+  border-radius: 5rpx;
+}
+
+.registration-body {
+  min-width: 0;
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.registration-title {
+  font-size: 27rpx;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.registration-time,
+.registration-status {
+  margin-top: 8rpx;
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.registration-status {
+  color: var(--jj-green);
+}
+
+.cancel-button {
+  width: 94rpx;
+  height: 56rpx;
+  margin: 0 0 0 16rpx;
+  padding: 0;
+  border: 1rpx solid var(--jj-line);
+  border-radius: 4rpx;
+  color: var(--jj-text-2);
+  background: var(--jj-surface);
+  font-size: 22rpx;
+  line-height: 54rpx;
+}
+
+.empty-registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-registration .primary-button {
+  margin-top: -90rpx;
+}

@@ -30,7 +30,18 @@ Page({
       const key = utils.dateKey(date)
       return { label, date: date.getDate(), signed: signedDays.indexOf(key) !== -1, today: key === today }
     })
-    this.setData({ signed: signedDays.indexOf(today) !== -1, totalDays: signedDays.length, mineral: signedDays.length * 10, week })
+    const taskDone = {
+      read: session.getList('history').length > 0,
+      digg: session.getList('likes').length > 0,
+      comment: session.getList('comments').length > 0
+    }
+    this.setData({
+      signed: signedDays.indexOf(today) !== -1,
+      totalDays: signedDays.length,
+      mineral: signedDays.length * 10,
+      week,
+      tasks: this.data.tasks.map((item) => Object.assign({}, item, { done: taskDone[item.id] }))
+    })
   },
 
   signIn() {
@@ -48,7 +59,8 @@ Page({
   doTask(event) {
     if (!session.requireLogin()) return
     const id = event.currentTarget.dataset.id
-    const tasks = this.data.tasks.map((item) => item.id === id ? Object.assign({}, item, { done: true }) : item)
-    this.setData({ tasks })
+    const task = this.data.tasks.find((item) => item.id === id)
+    if (!task || task.done) return
+    wx.switchTab({ url: id === 'comment' ? '/pages/feidian/feidian' : '/pages/index/index' })
   }
 })

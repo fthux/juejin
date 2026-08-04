@@ -1,0 +1,12 @@
+<view class="page channel-page">
+  <view class="channel-head">
+    <view class="channel-page-title">{{title}}</view>
+    <view class="channel-page-caption">发现社区里的优质内容</view>
+  </view>
+  <view class="surface">
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+  </view>
+  <empty-state wx:if="{{!loading && !articles.length}}" text="这里还没有可展示的内容"></empty-state>
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view wx:if="{{fromCache && !loading && articles.length}}" class="cache-tip">当前展示本地缓存内容</view>
+</view>

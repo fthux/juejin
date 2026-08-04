@@ -31,7 +31,7 @@ Page({
   },
 
   clearCache() {
-    session.setList('history', [])
+    session.clearCache()
     utils.toast('缓存已清理')
   },
 

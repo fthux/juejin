@@ -1,35 +1,58 @@
 <view class="page pin-page">
   <status-bar navigation="{{true}}">
-    <view class="pin-header surface">
-      <view class="pin-title">沸点</view>
-      <view class="pin-header-actions">
-        <view class="header-icon" bindtap="openSearch">⌕</view>
-        <view class="header-icon" bindtap="openPublish">＋</view>
-      </view>
+    <view class="pin-navigation">
+      <view class="top-tab {{topTab === 'discover' ? 'active' : ''}}" data-id="discover" bindtap="switchTopTab">发现</view>
+      <view class="top-tab {{topTab === 'following' ? 'active' : ''}}" data-id="following" bindtap="switchTopTab">关注</view>
     </view>
   </status-bar>
-  <view class="tabs pin-tabs">
-    <view wx:for="{{tabs}}" wx:key="id" class="tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
-  </view>
 
-  <view wx:if="{{activeTab !== 'topic'}}">
-    <pin-card wx:for="{{list}}" wx:key="msg_id" item="{{item}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike"></pin-card>
-    <empty-state wx:if="{{!loading && !list.length}}" text="暂无沸点"></empty-state>
-  </view>
-
-  <view wx:else class="topic-list surface">
-    <view class="topic-guide">圈子广场</view>
-    <view wx:for="{{topics}}" wx:key="topic_id" class="topic-row" data-id="{{item.topic_id}}" bindtap="openTopic">
-      <view class="topic-icon">{{item.icon || '#'}}</view>
-      <view class="topic-copy">
-        <view class="topic-name">{{item.title}}</view>
-        <view class="topic-description ellipsis">{{item.description}}</view>
-        <view class="topic-count">{{item.follower_count}} 人已加入</view>
+  <view class="topic-section surface">
+    <view class="block-title">推荐圈子</view>
+    <scroll-view class="topic-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-id="{{item.topic_id}}" bindtap="openTopic">
+        <view class="topic-icon">{{item.icon || '#'}}</view>
+        <view class="topic-name ellipsis">{{item.title}}</view>
+        <view wx:if="{{index < 4}}" class="topic-badge">99+</view>
       </view>
-      <view class="secondary-button">加入</view>
+    </scroll-view>
+  </view>
+
+  <view class="sort-row surface">
+    <view class="sort-label">排序</view>
+    <view class="sort-options">
+      <view class="sort-option {{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="selectSort">热门</view>
+      <view class="sort-option {{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="selectSort">最新</view>
     </view>
+  </view>
+
+  <view class="pin-list">
+    <pin-card wx:for="{{list}}" wx:key="msg_id" item="{{item}}" compact="{{true}}" show-follow="{{true}}" followed="{{item.followed}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike" bind:follow="toggleFollow"></pin-card>
+  </view>
+  <empty-state wx:if="{{!loading && !list.length}}" text="{{topTab === 'following' ? '关注感兴趣的掘友后，这里会出现他们的沸点' : '暂无沸点'}}"></empty-state>
+
+  <view id="selected-section" class="selected-section surface">
+    <view class="selected-head">
+      <view class="block-title">精选沸点</view>
+      <view class="selected-more">查看更多 <text>›</text></view>
+    </view>
+    <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" bindtap="openDetail">
+        <view class="selected-pin-head">
+          <image src="{{item.author.avatar_large}}" mode="aspectFill" data-id="{{item.author.user_id}}" catchtap="openAuthor"></image>
+          <view class="selected-author ellipsis">{{item.author.user_name}}</view>
+          <view class="selected-follow {{item.followed ? 'followed' : ''}}" data-id="{{item.author.user_id}}" catchtap="toggleFollow">{{item.followed ? '已关注' : '关注'}}</view>
+        </view>
+        <view class="selected-content three-lines">{{item.content}}</view>
+        <view class="selected-actions">
+          <view data-id="{{item.msg_id}}" catchtap="toggleLike">{{item.is_digg ? '已赞' : '点赞'}} {{item.digg_count}}</view>
+          <view>评论 {{item.comment_count}}</view>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
-  <view class="publish-fab" bindtap="openPublish">＋</view>
+  <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
+  <view wx:if="{{fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
+  <view class="publish-fab" bindtap="openPublish">✎</view>
 </view>

@@ -1,0 +1,24 @@
+.channel-head {
+  min-height: 172rpx;
+  padding: 38rpx 32rpx;
+  box-sizing: border-box;
+  background: var(--jj-surface) url('/assets/app/find/find_page_bg_top.webp') center / cover no-repeat;
+}
+
+.channel-page-title {
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.channel-page-caption {
+  margin-top: 14rpx;
+  color: var(--jj-text-3);
+  font-size: 23rpx;
+}
+
+.cache-tip {
+  padding: 22rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+  text-align: center;
+}

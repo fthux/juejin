@@ -1,4 +1,4 @@
-<view class="article-card" bindtap="open">
+<view class="article-card {{compact ? 'compact' : ''}}" bindtap="open">
   <view class="article-main">
     <view class="article-meta">
       <text wx:if="{{rank}}" class="rank rank-{{rank <= 3 ? rank : 4}}">{{rank}}</text>

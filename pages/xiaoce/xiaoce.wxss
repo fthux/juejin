@@ -1,63 +1,23 @@
 .course-header {
   width: 100%;
   height: 100%;
-  padding-left: 30rpx;
+  padding: 0 30rpx;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.course-type-tabs {
-  height: 100%;
-  display: flex;
-  align-items: stretch;
-  gap: 34rpx;
-}
-
-.course-type {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 9rpx;
-  color: var(--jj-text-3);
-  font-size: 30rpx;
-  white-space: nowrap;
-}
-
-.course-type.active {
-  color: var(--jj-text);
-  font-weight: 600;
-}
-
-.course-type.active::after {
-  content: '';
+.course-title {
   position: absolute;
   left: 50%;
-  bottom: 2rpx;
-  width: 34rpx;
-  height: 5rpx;
-  border-radius: 3rpx;
-  background: var(--jj-blue);
+  color: var(--jj-text);
+  font-size: 30rpx;
+  font-weight: 600;
   transform: translateX(-50%);
 }
 
-.vip-free {
-  padding: 3rpx 10rpx;
-  border-radius: 16rpx;
-  color: #745729;
-  background: #f9e6bd;
-  font-size: 18rpx;
-  font-weight: 500;
-}
-
-.course-actions {
-  display: flex;
-  align-items: center;
-  gap: 10rpx;
-}
-
-.course-actions image {
+.course-action {
   width: 52rpx;
   height: 52rpx;
 }
@@ -89,20 +49,20 @@
 }
 
 .course-filters {
-  height: 104rpx;
-  margin-top: 14rpx;
+  height: 82rpx;
   padding: 0 30rpx;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   border-bottom: 1rpx solid var(--jj-line);
   box-sizing: border-box;
 }
 
 .sort-row {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 36rpx;
+  justify-content: space-between;
 }
 
 .sort-item {
@@ -129,32 +89,6 @@
 .sort-arrows.asc text:first-child,
 .sort-arrows.desc text:last-child {
   color: var(--jj-blue);
-}
-
-.vip-filter {
-  display: flex;
-  align-items: center;
-  color: var(--jj-text-2);
-  font-size: 24rpx;
-  white-space: nowrap;
-}
-
-.checkbox {
-  width: 34rpx;
-  height: 34rpx;
-  margin-right: 10rpx;
-  border: 3rpx solid var(--jj-text-4);
-  border-radius: 4rpx;
-  box-sizing: border-box;
-  color: #ffffff;
-  font-size: 22rpx;
-  line-height: 28rpx;
-  text-align: center;
-}
-
-.checkbox.checked {
-  border-color: var(--jj-blue);
-  background: var(--jj-blue);
 }
 
 .course-list {

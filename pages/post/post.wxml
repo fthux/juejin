@@ -28,6 +28,17 @@
 
   <view wx:if="{{article}}" class="section">
     <view class="section-header">
+      <view class="section-title">评论 · {{comments.length}}</view>
+    </view>
+    <view wx:for="{{comments}}" wx:key="id" class="local-comment">
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+      <view class="local-comment-copy"><view>{{item.user}}</view><text>{{item.content}}</text><view class="local-comment-time">{{item.time}}</view></view>
+    </view>
+    <view wx:if="{{!comments.length}}" class="comment-empty">还没有评论，来说两句吧</view>
+  </view>
+
+  <view wx:if="{{article}}" class="section">
+    <view class="section-header">
       <view class="section-title">相关推荐</view>
     </view>
     <article-card wx:for="{{related}}" wx:key="article_id" item="{{item}}" bind:open="openRelated"></article-card>
@@ -38,7 +49,7 @@
     <view class="comment-entry" bindtap="addComment">写评论...</view>
     <view class="action {{isLiked ? 'active' : ''}}" bindtap="toggleLike">
       <text class="action-icon">△</text>
-      <text>{{article.digg_count}}</text>
+      <text>{{isLiked ? article.digg_count + 1 : article.digg_count}}</text>
     </view>
     <view class="action {{isCollected ? 'active' : ''}}" bindtap="toggleCollect">
       <text class="action-icon">☆</text>

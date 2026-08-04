@@ -4,7 +4,8 @@
     <view class="level-name">掘友等级 Lv.{{level}}</view>
     <view class="level-value">当前成长值 {{current}}</view>
     <view class="level-progress"><view style="width: {{progress}}%"></view></view>
-    <view class="level-next">距离 Lv.{{nextLevel}} 还需 {{remaining}} 成长值</view>
+    <view wx:if="{{next > current}}" class="level-next">距离 Lv.{{nextLevel}} 还需 {{remaining}} 成长值</view>
+    <view wx:else class="level-next">持续创作可积累成长值</view>
   </view>
   <view class="section privilege-section">
     <view class="section-header"><view class="section-title">等级权益</view></view>

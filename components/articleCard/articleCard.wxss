@@ -79,3 +79,35 @@
 .rank-1 { color: #f53f3f; }
 .rank-2 { color: #ff7d00; }
 .rank-3 { color: #ffb400; }
+
+.article-card.compact {
+  min-height: 194rpx;
+  padding: 22rpx 24rpx;
+  gap: 18rpx;
+}
+
+.compact .article-meta,
+.compact .article-stats {
+  font-size: 20rpx;
+}
+
+.compact .article-title {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+}
+
+.compact .article-brief {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  -webkit-line-clamp: 1;
+}
+
+.compact .article-stats {
+  margin-top: 12rpx;
+  gap: 22rpx;
+}
+
+.compact .article-cover {
+  width: 150rpx;
+  height: 100rpx;
+}

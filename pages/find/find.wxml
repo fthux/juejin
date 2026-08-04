@@ -1,38 +1,84 @@
 <view class="page find-page">
-  <status-bar></status-bar>
-  <view class="find-hero">
-    <view class="find-title">发现</view>
+  <view class="find-top">
+    <status-bar></status-bar>
     <view class="search-bar" bindtap="openSearch">
       <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
-      <text>搜索稀土掘金</text>
+      <text>探索稀土掘金</text>
     </view>
-  </view>
 
-  <view class="daily-card">
-    <view class="daily-copy">
-      <image src="/assets/app/find/find_page_ic_title_juejin_daily.svg" mode="aspectFit"></image>
-      <text>{{greeting}}</text>
-    </view>
-    <image class="calendar" src="/assets/app/find/find_page_bg_calendar.webp" mode="aspectFit"></image>
-  </view>
-
-  <view class="quick-grid section">
-    <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
-      <image src="{{item.icon}}" mode="aspectFit"></image>
-      <view class="quick-text">
-        <view class="quick-name">{{item.name}}</view>
-        <view class="quick-caption">{{item.caption}}</view>
+    <view class="channel-grid">
+      <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" bindtap="openFeature">
+        <image src="{{item.icon}}" mode="aspectFit"></image>
+        <text>{{item.title}}</text>
       </view>
     </view>
+
+    <view class="quick-grid">
+      <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
+        <image src="{{item.icon}}" mode="aspectFit"></image>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="live-ticker" bindtap="openLive">
+      <view class="live-badge">
+        <image src="/assets/app/find/find_page_ic_dynamic_live.webp" mode="aspectFit"></image>
+        <text>直播中</text>
+      </view>
+      <view class="live-title ellipsis">稀土开发者大会 · 现代 Web 技术专场</view>
+    </view>
   </view>
 
-  <view class="section daily-section">
-    <view class="section-header">
-      <view class="section-title">掘金一刻</view>
-      <view class="section-more">今日精选</view>
-    </view>
-    <article-card wx:for="{{dailyArticles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
-    <empty-state wx:if="{{!loading && !dailyArticles.length}}" text="今日内容还在准备中"></empty-state>
-    <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view class="find-banner" bindtap="openBanner">
+    <image src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image>
   </view>
+
+  <view class="daily-card" bindtap="openDaily">
+    <view class="daily-heading">
+      <image src="/assets/app/find/find_page_ic_title_juejin_daily.svg" mode="aspectFit"></image>
+      <view catchtap="openDailyHistory">往日精彩 <text>›</text></view>
+    </view>
+    <view wx:if="{{dailyArticle}}" class="daily-content">
+      <image class="calendar" src="/assets/app/find/find_page_bg_calendar.webp" mode="aspectFit"></image>
+      <view class="daily-copy">
+        <view class="daily-title two-lines">{{dailyArticle.title}}</view>
+        <view class="daily-brief two-lines">{{dailyArticle.brief_content || greeting}}</view>
+      </view>
+    </view>
+    <empty-state wx:if="{{!loading && !dailyArticle}}" text="今日内容还在准备中"></empty-state>
+  </view>
+
+  <view class="selected-section">
+    <view class="selected-heading">
+      <view>精选沸点</view>
+      <view class="selected-more" bindtap="openSelectedPins">查看更多 <text>›</text></view>
+    </view>
+    <scroll-view class="pin-scroll" scroll-x enable-flex>
+      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" bindtap="openPin">
+        <view class="selected-pin-head">
+          <image class="selected-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" data-id="{{item.author.user_id}}" catchtap="openAuthor"></image>
+          <view class="selected-identity">
+            <view class="selected-name ellipsis">{{item.author.user_name}}</view>
+            <view class="selected-caption ellipsis">{{item.author.job_title || item.ctime}}</view>
+          </view>
+          <view class="follow-button {{item.followed ? 'followed' : ''}}" data-id="{{item.author.user_id}}" catchtap="toggleFollow">{{item.followed ? '已关注' : '关注'}}</view>
+        </view>
+        <view class="selected-content four-lines">{{item.content}}</view>
+        <view class="selected-actions">
+          <view data-id="{{item.msg_id}}" catchtap="toggleLike">
+            <image src="{{item.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image>
+            <text>{{item.digg_count}}</text>
+          </view>
+          <view>
+            <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
+            <text>{{item.comment_count}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <empty-state wx:if="{{!loading && !selectedPins.length}}" text="暂时没有精选沸点"></empty-state>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-line">正在加载发现内容...</view>
+  <view wx:if="{{loadError && !loading}}" class="cache-note">部分内容来自本地缓存</view>
 </view>

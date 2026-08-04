@@ -4,69 +4,104 @@ const utils = require('../../utils/utils.js')
 
 Page({
   data: {
-    tabs: [
-      { id: 'recommend', name: '推荐' },
-      { id: 'selected', name: '精选' },
-      { id: 'topic', name: '圈子' }
-    ],
-    activeTab: 'recommend',
-    list: [],
+    topTab: 'discover',
+    sort: 'hot',
     topics: [],
+    list: [],
+    selectedPins: [],
     cursor: '0',
     loading: false,
-    hasMore: true
+    hasMore: true,
+    fromCache: false
   },
 
   onLoad() {
-    this.load(true)
+    this.loadHeaderData()
+    this.loadFeed(true)
   },
 
   onShow() {
-    if (this.data.activeTab !== 'topic') this.mergeLocalPins()
+    const globalData = getApp().globalData
+    if (globalData.openSelectedPins) {
+      globalData.openSelectedPins = false
+      setTimeout(() => wx.pageScrollTo({ selector: '#selected-section', duration: 300 }), 120)
+    }
+    this.mergeLocalPins()
+    this.syncInteractionState()
   },
 
   onPullDownRefresh() {
-    this.load(true)
+    this.loadHeaderData()
+    this.loadFeed(true)
   },
 
   onReachBottom() {
-    if (this.data.activeTab !== 'topic' && this.data.hasMore) this.load(false)
+    if (this.data.hasMore) this.loadFeed(false)
   },
 
-  switchTab(event) {
-    const activeTab = event.currentTarget.dataset.id
-    if (activeTab === this.data.activeTab) return
-    this.setData({ activeTab })
-    this.load(true)
+  switchTopTab(event) {
+    const topTab = event.currentTarget.dataset.id
+    if (topTab === this.data.topTab) return
+    if (topTab === 'following' && !session.requireLogin()) return
+    this.setData({ topTab })
+    this.loadFeed(true)
   },
 
-  load(reload) {
+  selectSort(event) {
+    const sort = event.currentTarget.dataset.id
+    if (sort === this.data.sort) return
+    this.setData({ sort })
+    this.loadFeed(true)
+  },
+
+  loadHeaderData() {
+    Promise.all([api.topics(), api.selectedPins('0')]).then(([topicResponse, pinResponse]) => {
+      const topics = (topicResponse.result.data || []).slice(0, 10)
+      const pins = (pinResponse.result.data || []).map(utils.normalizePin).slice(0, 8)
+      this.setData({ topics, selectedPins: this.withInteractionState(pins) })
+    }).finally(() => wx.stopPullDownRefresh())
+  },
+
+  loadFeed(reload) {
     if (this.data.loading) return
-    this.setData({ loading: true })
-    if (this.data.activeTab === 'topic') {
-      api.topics().then(({ result }) => {
-        this.setData({ topics: result.data || [], loading: false })
-      }).finally(() => {
-        this.setData({ loading: false })
-        wx.stopPullDownRefresh()
-      })
-      return
-    }
-
     const cursor = reload ? '0' : this.data.cursor
-    const task = this.data.activeTab === 'selected' ? api.selectedPins(cursor) : api.pins(cursor)
-    task.then(({ result }) => {
-      const list = (result.data || []).map(utils.normalizePin)
-      const remote = reload ? list : this.data.list.concat(list)
+    const sortType = this.data.sort === 'latest' ? 200 : 300
+    this.setData({ loading: true })
+
+    api.pins(cursor, { sortType }).then(({ result, fromCache }) => {
+      let rows = (result.data || []).map(utils.normalizePin)
+      if (this.data.topTab === 'following') {
+        const follows = session.getList('follows')
+        rows = rows.filter((pin) => follows.indexOf(pin.author.user_id) !== -1)
+      }
+      rows = this.withInteractionState(rows)
+      const local = reload && this.data.topTab === 'discover' ? this.getLocalPins() : []
       this.setData({
-        list: reload ? this.getLocalPins().concat(remote) : remote,
+        list: reload ? local.concat(rows) : this.data.list.concat(rows),
         cursor: result.cursor || '0',
-        hasMore: Boolean(result.has_more) && list.length > 0,
+        hasMore: Boolean(result.has_more) && rows.length > 0,
+        fromCache: Boolean(fromCache),
         loading: false
       })
     }).finally(() => {
       this.setData({ loading: false })
       wx.stopPullDownRefresh()
+    })
+  },
+
+  withInteractionState(pins) {
+    const likes = session.getList('likes')
+    const follows = session.getList('follows')
+    return pins.map((pin) => Object.assign({}, pin, {
+      is_digg: likes.indexOf(pin.msg_id) !== -1 || pin.is_digg,
+      followed: follows.indexOf(pin.author.user_id) !== -1
+    }))
+  },
+
+  syncInteractionState() {
+    this.setData({
+      list: this.withInteractionState(this.data.list),
+      selectedPins: this.withInteractionState(this.data.selectedPins)
     })
   },
 
@@ -79,29 +114,53 @@ Page({
   },
 
   mergeLocalPins() {
+    if (this.data.topTab !== 'discover') return
     const local = this.getLocalPins()
     const remote = this.data.list.filter((item) => String(item.msg_id).indexOf('local-') !== 0)
-    this.setData({ list: local.concat(remote) })
+    this.setData({ list: this.withInteractionState(local.concat(remote)) })
   },
 
   openDetail(event) {
-    wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${event.detail.item.msg_id}` })
+    const item = event.detail ? event.detail.item : null
+    const msgId = item ? item.msg_id : event.currentTarget.dataset.id
+    if (msgId) wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${msgId}` })
   },
 
   openAuthor(event) {
-    wx.navigateTo({ url: `/pages/profile/profile?id=${event.detail.author.user_id}` })
-  },
-
-  toggleLike(event) {
-    if (!session.requireLogin()) return
-    const id = event.detail.item.msg_id
-    const active = session.toggle('likes', id)
-    const list = this.data.list.map((item) => item.msg_id === id ? Object.assign({}, item, { is_digg: active }) : item)
-    this.setData({ list })
+    const author = event.detail ? event.detail.author : null
+    const userId = author ? author.user_id : event.currentTarget.dataset.id
+    if (userId) wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
   },
 
   openTopic(event) {
     wx.navigateTo({ url: `/pages/topic/topic?id=${event.currentTarget.dataset.id}` })
+  },
+
+  toggleLike(event) {
+    if (!session.requireLogin()) return
+    const item = event.detail ? event.detail.item : null
+    const msgId = item ? item.msg_id : event.currentTarget.dataset.id
+    const active = session.toggle('likes', msgId)
+    this.updatePins(msgId, { is_digg: active })
+  },
+
+  toggleFollow(event) {
+    if (!session.requireLogin()) return
+    const author = event.detail ? event.detail.author : null
+    const userId = author ? author.user_id : event.currentTarget.dataset.id
+    const followed = session.toggle('follows', userId)
+    this.setData({
+      list: this.data.list.map((pin) => pin.author.user_id === userId ? Object.assign({}, pin, { followed }) : pin),
+      selectedPins: this.data.selectedPins.map((pin) => pin.author.user_id === userId ? Object.assign({}, pin, { followed }) : pin)
+    })
+    if (this.data.topTab === 'following' && !followed) this.loadFeed(true)
+  },
+
+  updatePins(msgId, patch) {
+    this.setData({
+      list: this.data.list.map((pin) => pin.msg_id === msgId ? Object.assign({}, pin, patch) : pin),
+      selectedPins: this.data.selectedPins.map((pin) => pin.msg_id === msgId ? Object.assign({}, pin, patch) : pin)
+    })
   },
 
   openPublish() {
@@ -109,11 +168,11 @@ Page({
     wx.navigateTo({ url: '/pages/publish/publish?type=pin' })
   },
 
-  openSearch() {
-    wx.navigateTo({ url: '/pages/search/search' })
-  },
-
-  onShareAppMessage() {
+  onShareAppMessage(result) {
+    const item = result.from === 'button' ? result.target.dataset.item : null
+    if (item && item.msg_id) {
+      return { title: item.content || '稀土掘金沸点', path: `/pages/feidianDetail/feidianDetail?msgId=${item.msg_id}` }
+    }
     return { title: '稀土掘金沸点', path: '/pages/feidian/feidian' }
   }
 })

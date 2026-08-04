@@ -12,6 +12,8 @@ const KEYS = {
   pins: 'jj:local-pins',
   notes: 'jj:notes',
   notifications: 'jj:notifications',
+  registrations: 'jj:registrations',
+  comments: 'jj:comments',
   signDays: 'jj:sign-days',
   articleCache: 'jj:article-cache'
 }
@@ -192,6 +194,50 @@ function signIn() {
   return { signed: true, days: list.length, today }
 }
 
+function toggleRegistration(activity) {
+  if (!getSession()) throw new Error('请先登录')
+  const list = getList('registrations')
+  const index = list.findIndex((item) => item.id === activity.id)
+  if (index === -1) {
+    list.unshift(Object.assign({}, activity, { registeredAt: Date.now() }))
+    setList('registrations', list)
+    return true
+  }
+  list.splice(index, 1)
+  setList('registrations', list)
+  return false
+}
+
+function getComments(kind, targetId) {
+  return getList('comments').filter((item) => item.kind === kind && item.targetId === String(targetId))
+}
+
+function addComment(kind, targetId, content) {
+  const current = getSession()
+  if (!current) throw new Error('请先登录')
+  const list = getList('comments')
+  const item = {
+    id: `comment-${Date.now()}`,
+    kind,
+    targetId: String(targetId),
+    content: String(content || '').trim(),
+    user: current.user.user_name,
+    avatar: current.user.avatar_large || '/assets/app/common/default_avatar.webp',
+    time: '刚刚',
+    createdAt: Date.now()
+  }
+  if (!item.content) throw new Error('请输入评论内容')
+  list.unshift(item)
+  setList('comments', list.slice(0, 300))
+  return item
+}
+
+function clearCache() {
+  wx.removeStorageSync(KEYS.articleCache)
+  wx.removeStorageSync('jj:course-cache')
+  wx.removeStorageSync('jj:course-history')
+}
+
 module.exports = {
   KEYS,
   ensureLocalData,
@@ -212,5 +258,9 @@ module.exports = {
   publishPin,
   publishArticle,
   saveNote,
-  signIn
+  signIn,
+  toggleRegistration,
+  getComments,
+  addComment,
+  clearCache
 }

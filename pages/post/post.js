@@ -10,6 +10,7 @@ Page({
     article: null,
     content: '',
     related: [],
+    comments: [],
     loading: true,
     isLiked: false,
     isCollected: false,
@@ -50,6 +51,7 @@ Page({
         article,
         content,
         related: mock.articles.filter((item) => item.article_id !== article.article_id).slice(0, 3).map(utils.normalizeArticle),
+        comments: session.getComments('article', article.article_id),
         isLiked: session.getList('likes').indexOf(article.article_id) !== -1,
         isCollected: session.getList('collections').indexOf(article.article_id) !== -1,
         isFollowed: session.getList('follows').indexOf(article.author.user_id) !== -1,
@@ -107,12 +109,20 @@ Page({
 
   addComment() {
     if (!session.requireLogin()) return
+    const that = this
     wx.showModal({
       title: '写评论',
       editable: true,
       placeholderText: '友善交流，分享你的观点',
       success(result) {
-        if (result.confirm && result.content) utils.toast('评论已提交')
+        if (!result.confirm || !result.content) return
+        try {
+          session.addComment('article', that.data.articleId, result.content)
+          that.setData({ comments: session.getComments('article', that.data.articleId) })
+          utils.toast('评论已提交')
+        } catch (error) {
+          utils.toast(error.message || '评论提交失败')
+        }
       }
     })
   },

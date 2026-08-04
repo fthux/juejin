@@ -178,6 +178,7 @@ function sendCode(mobile) {
 
 function normalizeUser(account, profile) {
   const source = Object.assign({}, account || {}, profile || {})
+  const growth = source.user_growth_info || {}
   return {
     user_id: String(source.user_id || source.uid || ''),
     user_name: source.user_name || source.name || source.screen_name || '掘金用户',
@@ -185,14 +186,19 @@ function normalizeUser(account, profile) {
     job_title: source.job_title || '',
     company: source.company || '',
     description: source.description || source.user_description || '',
-    level: Number(source.level || (source.user_growth_info && source.user_growth_info.jpower_level)) || 0,
+    level: Number(source.level || growth.jpower_level) || 0,
     follower_count: Number(source.follower_count) || 0,
     followee_count: Number(source.followee_count) || 0,
-    power: Number(source.power || (source.user_growth_info && source.user_growth_info.jpower)) || 0,
+    power: Number(source.power || growth.jpower) || 0,
+    next_level_power: Number(growth.jpower_next || growth.jpower_upper || source.next_level_power) || 0,
     post_article_count: Number(source.post_article_count) || 0,
+    post_column_count: Number(source.post_column_count) || 0,
     post_shortmsg_count: Number(source.post_shortmsg_count) || 0,
     got_digg_count: Number(source.got_digg_count) || 0,
-    got_view_count: Number(source.got_view_count) || 0
+    got_view_count: Number(source.got_view_count) || 0,
+    got_collect_count: Number(source.got_collect_count) || 0,
+    active_follower_count: Number(source.active_follower_count) || 0,
+    new_follower_count: Number(source.new_follower_count) || 0
   }
 }
 

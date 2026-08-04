@@ -9,6 +9,10 @@ Component({
     rank: {
       type: Number,
       value: 0
+    },
+    compact: {
+      type: Boolean,
+      value: false
     }
   },
 

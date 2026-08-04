@@ -2,13 +2,16 @@ const session = require('../../services/session.js')
 
 Page({
   data: {
-    stats: [],
-    entries: [
-      { name: '数据中心', description: '查看内容表现与趋势', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/pages/creatorData/creatorData' },
-      { name: '关注数据', description: '关注者变化与画像', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/pages/creatorFans/creatorFans' },
-      { name: '创作活动', description: '参与社区创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/pages/creatorActivities/creatorActivities' },
-      { name: '草稿箱', description: '继续未完成的创作', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/pages/drafts/drafts' }
-    ]
+    user: null,
+    level: 1,
+    progress: 0,
+    progressText: '继续创作，提升创作等级',
+    contentStats: [],
+    followerStats: [],
+    activity: {
+      title: '「TRAE Work 实战帮」征文启动',
+      description: '分享开发实战经验，让好内容被更多人看见'
+    }
   },
 
   onLoad() {
@@ -20,12 +23,34 @@ Page({
     const current = session.getSession()
     if (!current) return
     const user = current.user
-    this.setData({ stats: [
-      { label: '总阅读', value: user.got_view_count || 0, change: '--' },
-      { label: '总点赞', value: user.got_digg_count || 0, change: '--' },
-      { label: '文章数', value: user.post_article_count || 0, change: '--' },
-      { label: '粉丝数', value: user.follower_count || 0, change: '--' }
-    ] })
+    const articles = session.getList('articles')
+    const pins = session.getList('pins')
+    const collections = session.getList('collections')
+    const level = Number(user.level || user.level_info && user.level_info.level) || 1
+    const currentScore = Number(user.power || user.level_info && user.level_info.current_score) || 0
+    const nextScore = Number(user.next_level_power) || 0
+    const progress = nextScore > currentScore ? Math.max(0, Math.min(100, Math.round(currentScore / nextScore * 100))) : 0
+    this.setData({
+      user,
+      level,
+      progress,
+      progressText: nextScore > currentScore
+        ? `还需 ${nextScore - currentScore} 成长值升级`
+        : (currentScore ? `当前成长值 ${currentScore}` : '继续创作，提升创作等级'),
+      contentStats: [
+        { label: '总文章数', value: Number(user.post_article_count) || articles.length },
+        { label: '总专栏数', value: Number(user.post_column_count) || 0 },
+        { label: '总沸点数', value: Number(user.post_shortmsg_count) || pins.length },
+        { label: '文章展现数', value: Number(user.got_view_count) || 0 },
+        { label: '文章阅读数', value: Number(user.got_view_count) || 0 },
+        { label: '文章收藏数', value: Number(user.got_collect_count) || collections.length }
+      ],
+      followerStats: [
+        { label: '总关注者', value: Number(user.follower_count) || 0 },
+        { label: '活跃关注者', value: Number(user.active_follower_count) || 0 },
+        { label: '净增关注', value: Number(user.new_follower_count) || 0 }
+      ]
+    })
   },
 
   openEntry(event) {
@@ -33,15 +58,33 @@ Page({
     if (url) wx.navigateTo({ url })
   },
 
-  publishArticle() {
-    wx.navigateTo({ url: '/pages/publish/publish?type=article' })
-  },
-
-  publishPin() {
-    wx.navigateTo({ url: '/pages/publish/publish?type=pin' })
-  },
-
   openLevel() {
     wx.navigateTo({ url: '/pages/level/level' })
+  },
+
+  openData() {
+    wx.navigateTo({ url: '/pages/creatorData/creatorData' })
+  },
+
+  openFans() {
+    wx.navigateTo({ url: '/pages/creatorFans/creatorFans' })
+  },
+
+  openActivities() {
+    wx.navigateTo({ url: '/pages/creatorActivities/creatorActivities' })
+  },
+
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/my/my' }) })
+  },
+
+  openCreate() {
+    wx.showActionSheet({
+      itemList: ['写文章', '发沸点'],
+      success: ({ tapIndex }) => {
+        const type = tapIndex === 1 ? 'pin' : 'article'
+        wx.navigateTo({ url: `/pages/publish/publish?type=${type}` })
+      }
+    })
   }
 })

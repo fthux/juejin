@@ -105,5 +105,9 @@ Page({
   openCollections() {
     if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/collectionSet/collectionSet' })
+  },
+
+  openVip() {
+    wx.navigateTo({ url: '/pages/vip/vip' })
   }
 })

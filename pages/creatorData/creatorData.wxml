@@ -9,10 +9,7 @@
   </view>
   <view class="trend-section">
     <view class="section-title">整体数据趋势</view>
-    <view class="periods"><text class="active">最近7天</text><text>最近14天</text><text>最近30天</text></view>
-    <view class="chart">
-      <view wx:for="{{bars}}" wx:key="index" class="chart-column"><view class="chart-bar" style="height: {{item}}%;"></view><text>0{{index + 1}}</text></view>
-    </view>
-    <view class="legend"><text>■ 展现</text><text>□ 阅读</text><text>□ 点赞</text><text>□ 收藏</text></view>
+    <view class="periods"><text wx:for="{{periods}}" wx:key="*this" class="{{activePeriod === item ? 'active' : ''}}" data-days="{{item}}" bindtap="selectPeriod">最近{{item}}天</text></view>
+    <view class="trend-empty"><view class="flat-axis"></view><text>暂无可用的每日趋势数据</text></view>
   </view>
 </view>

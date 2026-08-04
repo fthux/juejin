@@ -32,7 +32,7 @@
     </view>
   </view>
 
-  <view class="member-banner">
+  <view class="member-banner" bindtap="openVip">
     <view class="member-copy">年度会员限时五折 领小册周边福利</view>
     <view class="member-action">了解一下</view>
   </view>

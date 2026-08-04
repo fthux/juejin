@@ -62,10 +62,11 @@ function categoryFeed(cateId, cursor) {
   }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
 }
 
-function pins(cursor) {
+function pins(cursor, options) {
+  const config = options || {}
   return withFallback(request('/recommend_api/v1/short_msg/recommend', {
     id_type: 4,
-    sort_type: 300,
+    sort_type: config.sortType || 300,
     cursor: cursor || '0',
     limit: 20
   }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
@@ -143,6 +144,15 @@ function hotAuthors() {
   return withFallback(request('/content_api/v1/author/list_by_hot', { cursor: '0', limit: 30 }), () => ({ data: mock.authors }))
 }
 
+function followers(userId, cursor) {
+  if (!userId) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
+  return withFallback(request('/interact_api/v1/follow/follower_list', {
+    user_id: userId,
+    cursor: cursor || '0',
+    limit: 20
+  }), { data: [], cursor: '0', has_more: false })
+}
+
 function topics() {
   return withFallback(request('/tag_api/v1/topic/list_by_rec', { cursor: '0', limit: 30 }), () => ({ data: mock.topics }))
 }
@@ -175,6 +185,7 @@ module.exports = {
   daily,
   hotArticles,
   hotAuthors,
+  followers,
   topics,
   search
 }

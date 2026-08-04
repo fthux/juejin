@@ -1,5 +1,16 @@
 <view class="page fans-page">
-  <view class="fans-tabs"><text class="active">粉丝数据</text><text>粉丝列表</text></view>
-  <view class="fans-grid"><view wx:for="{{stats}}" wx:key="label" class="fans-card"><text>{{item.label}}</text><view class="fans-value">{{item.value}}</view><text class="fans-compare">较前日 --</text></view></view>
-  <view class="trend"><view class="section-title">整体数据趋势</view><view class="flat-line"></view><view class="legend">■ 总粉丝　■ 互动粉丝　□ 新增粉丝　□ 取消关注</view></view>
+  <view class="fans-tabs"><text class="{{activeTab === 'data' ? 'active' : ''}}" data-id="data" bindtap="switchTab">粉丝数据</text><text class="{{activeTab === 'list' ? 'active' : ''}}" data-id="list" bindtap="switchTab">粉丝列表</text></view>
+  <block wx:if="{{activeTab === 'data'}}">
+    <view class="fans-grid"><view wx:for="{{stats}}" wx:key="label" class="fans-card"><text>{{item.label}}</text><view class="fans-value">{{item.value}}</view><text class="fans-compare">较前日 --</text></view></view>
+    <view class="trend"><view class="section-title">整体数据趋势</view><view class="flat-line"></view><view class="legend">暂无可用的每日趋势数据</view></view>
+  </block>
+  <view wx:else class="follower-list">
+    <view wx:for="{{followers}}" wx:key="user_id" class="follower-row" data-id="{{item.user_id}}" bindtap="openFollower">
+      <image src="{{item.avatar_large}}" mode="aspectFill"></image>
+      <view class="follower-copy"><view>{{item.user_name}}</view><text class="ellipsis">{{item.description}}</text></view>
+      <text class="follower-arrow">›</text>
+    </view>
+    <view wx:if="{{loading}}" class="loading-line">正在加载关注者...</view>
+    <empty-state wx:elif="{{!followers.length}}" text="还没有关注者"></empty-state>
+  </view>
 </view>

@@ -13,6 +13,14 @@
   font-size: 23rpx;
 }
 
+.notice-entry.active {
+  color: var(--jj-blue);
+}
+
+.notice-entry.active .notice-icon {
+  box-shadow: 0 0 0 5rpx var(--jj-blue-soft);
+}
+
 .notice-icon {
   position: relative;
   width: 78rpx;

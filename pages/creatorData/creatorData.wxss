@@ -11,7 +11,5 @@
 .periods { height: 70rpx; margin-top: 24rpx; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--jj-fill); }
 .periods text { display: flex; align-items: center; justify-content: center; color: var(--jj-text-2); }
 .periods .active { color: var(--jj-blue); background: var(--jj-fill-2); }
-.chart { height: 360rpx; margin-top: 36rpx; padding: 0 16rpx; display: flex; align-items: flex-end; gap: 24rpx; border-bottom: 1rpx solid var(--jj-line); }
-.chart-column { height: 100%; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; color: var(--jj-text-3); font-size: 19rpx; }
-.chart-bar { width: 22rpx; min-height: 8rpx; margin-bottom: 12rpx; border-radius: 4rpx 4rpx 0 0; background: var(--jj-blue); }
-.legend { margin-top: 24rpx; display: flex; flex-wrap: wrap; gap: 24rpx; color: var(--jj-text-3); font-size: 22rpx; }
+.trend-empty { height: 360rpx; padding: 0 16rpx 46rpx; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; box-sizing: border-box; color: var(--jj-text-3); font-size: 22rpx; }
+.flat-axis { width: 100%; margin-bottom: 48rpx; border-bottom: 1rpx solid var(--jj-line); }

@@ -4,27 +4,19 @@ const utils = require('../../utils/utils.js')
 const session = require('../../services/session.js')
 
 const bookletCategories = mock.categories
-const byteCategoryIds = ['', '6809637769959178254', '6809637767543259144', '6809635626879549454', '6809635626661445640', '6809637776263217160']
-const byteCategories = mock.categories.filter((item) => byteCategoryIds.indexOf(item.id) !== -1)
 
 Page({
   data: {
-    courseTypes: [
-      { id: 'booklet', name: '掘金小册' },
-      { id: 'byte', name: '字节内部课', badge: 'VIP免费' }
-    ],
-    activeCourseType: 'booklet',
     categories: bookletCategories,
     activeCategory: '',
     sorts: [
-      { id: 'all', name: '全部' },
+      { id: 'all', name: '综合' },
       { id: 'latest', name: '最新' },
-      { id: 'hot', name: '热销' },
+      { id: 'hot', name: '最热' },
       { id: 'price', name: '价格' }
     ],
     activeSort: 'all',
     priceDirection: '',
-    vipOnly: false,
     allCourses: [],
     list: [],
     cursor: '0',
@@ -43,20 +35,6 @@ Page({
 
   onReachBottom() {
     if (this.data.hasMore) this.load(false)
-  },
-
-  switchCourseType(event) {
-    const id = event.currentTarget.dataset.id
-    if (id === this.data.activeCourseType) return
-    this.setData({
-      activeCourseType: id,
-      categories: id === 'byte' ? byteCategories : bookletCategories,
-      activeCategory: '',
-      activeSort: 'all',
-      priceDirection: '',
-      vipOnly: false
-    })
-    this.load(true)
   },
 
   selectCategory(event) {
@@ -79,17 +57,11 @@ Page({
     this.load(true)
   },
 
-  toggleVipOnly() {
-    this.setData({ vipOnly: !this.data.vipOnly })
-    this.applyFilter()
-  },
-
   load(reload) {
     if (this.data.loading && !reload) return
     const cursor = reload ? '0' : this.data.cursor
     this.setData({ loading: true, loadError: false })
     api.courses(cursor, {
-      courseType: this.data.activeCourseType,
       categoryId: this.data.activeCategory,
       sort: this.data.activeSort
     }).then(({ result, fromCache }) => {
@@ -100,7 +72,7 @@ Page({
         allCourses,
         cursor: result.cursor || '0',
         hasMore: Boolean(result.has_more) && rows.length > 0,
-        loadError: Boolean(fromCache && this.data.activeCourseType === 'byte'),
+        loadError: Boolean(fromCache && !rows.length),
         loading: false
       })
       this.applyFilter()
@@ -113,7 +85,7 @@ Page({
   },
 
   applyFilter() {
-    let list = this.data.vipOnly ? this.data.allCourses.filter((item) => item.vip) : this.data.allCourses.slice()
+    const list = this.data.allCourses.slice()
     if (this.data.activeSort === 'price') {
       const direction = this.data.priceDirection === 'desc' ? -1 : 1
       list.sort((a, b) => (a.priceValue - b.priceValue) * direction)

@@ -8,3 +8,9 @@
 .trend { min-height: 600rpx; margin-top: 16rpx; padding: 34rpx 30rpx; background: var(--jj-surface); }
 .flat-line { height: 260rpx; margin: 48rpx 20rpx 0; border-top: 4rpx solid var(--jj-blue); border-bottom: 1rpx solid var(--jj-line); }
 .legend { margin-top: 26rpx; color: var(--jj-text-3); line-height: 2; }
+.follower-list { background: var(--jj-surface); }
+.follower-row { min-height: 126rpx; padding: 20rpx 30rpx; display: flex; align-items: center; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
+.follower-row image { width: 72rpx; height: 72rpx; flex: 0 0 auto; border-radius: 50%; }
+.follower-copy { min-width: 0; margin-left: 20rpx; flex: 1; font-size: 27rpx; }
+.follower-copy text { display: block; margin-top: 7rpx; color: var(--jj-text-3); font-size: 22rpx; }
+.follower-arrow { color: var(--jj-text-4); font-size: 38rpx; }

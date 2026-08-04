@@ -1,6 +1,6 @@
 <view class="page notice-page">
   <view class="notice-grid surface">
-    <view wx:for="{{entries}}" wx:key="type" class="notice-entry">
+    <view wx:for="{{entries}}" wx:key="type" class="notice-entry {{activeType === item.type ? 'active' : ''}}" data-type="{{item.type}}" bindtap="selectType">
       <view class="notice-icon" style="background: {{item.color}}">
         {{item.mark}}
         <text wx:if="{{item.unread}}" class="badge">{{item.unread}}</text>
@@ -21,7 +21,7 @@
       </view>
       <view class="conversation-time">刚刚</view>
     </view>
-    <view wx:for="{{notices}}" wx:key="id" class="conversation">
+    <view wx:for="{{visibleNotices}}" wx:key="id" class="conversation">
       <view class="notice-dot {{item.unread ? 'unread' : ''}}"></view>
       <view class="conversation-copy">
         <view class="conversation-title">{{item.title}}</view>
@@ -29,5 +29,6 @@
       </view>
       <view class="conversation-time">{{item.displayTime}}</view>
     </view>
+    <empty-state wx:if="{{activeType && !visibleNotices.length}}" text="这个分类还没有消息"></empty-state>
   </view>
 </view>

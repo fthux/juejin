@@ -1,42 +1,41 @@
 <view class="page home-page">
   <status-bar navigation="{{true}}">
     <view class="home-head surface">
-      <view class="brand">
-        <image src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
-        <text>稀土掘金</text>
+      <view class="live-entry" bindtap="openLive">
+        <image src="/assets/app/find/find_page_ic_dynamic_live.webp" mode="aspectFit"></image>
+        <text>直播</text>
       </view>
-      <view class="head-actions">
-        <view class="icon-button search-button" bindtap="openSearch">⌕</view>
-        <view class="icon-button" bindtap="openNotifications">◔</view>
+      <view class="home-search" bindtap="openSearch">
+        <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
+        <text>探索稀土掘金</text>
       </view>
+      <view class="activity-entry" bindtap="openActivity"><text>开发者</text><text>大会</text></view>
+      <view class="calendar-entry" bindtap="openSign"><view>签</view></view>
     </view>
   </status-bar>
 
-  <scroll-view class="category-scroll surface" scroll-x enhanced show-scrollbar="{{false}}">
-    <view class="category-row">
-      <view wx:for="{{categories}}" wx:key="id" class="category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view>
+  <scroll-view class="nav-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="nav-row">
+      <view wx:for="{{navTabs}}" wx:key="id" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
+      <view wx:if="{{extraCategory}}" class="nav-item active">{{extraCategory.name}}</view>
+      <view class="nav-menu" bindtap="openCategoryMenu">☰</view>
     </view>
   </scroll-view>
 
-  <view wx:if="{{!session}}" class="login-guide">
-    <view>
-      <view class="guide-title">登录体验完整功能</view>
-      <view class="guide-copy">登录后使用收藏、关注与创作功能</view>
+  <view wx:if="{{activeNav === 'recommend' && hotList.length}}" class="hot-section surface">
+    <view class="hot-title">热榜</view>
+    <view wx:for="{{hotList}}" wx:key="article_id" class="hot-row" data-id="{{item.article_id}}" bindtap="openArticle">
+      <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
+      <view class="hot-name ellipsis">{{item.title}}</view>
+      <view class="hot-value">{{item.view_count}} 热度</view>
     </view>
-    <navigator class="secondary-button" url="/pages/login/login">登录</navigator>
-  </view>
-
-  <view class="feed-head surface">
-    <view class="sorts">
-      <view wx:for="{{sortTypes}}" wx:key="id" class="sort {{activeSort === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectSort">{{item.name}}</view>
-    </view>
-    <text wx:if="{{fromCache}}" class="offline-mark">离线内容</text>
   </view>
 
   <view class="article-list">
-    <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" bind:open="openArticle" bind:author="openAuthor"></article-card>
+    <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" compact="{{true}}" bind:open="openArticle" bind:author="openAuthor"></article-card>
   </view>
-  <empty-state wx:if="{{!loading && !list.length}}" text="暂时没有找到文章"></empty-state>
+  <empty-state wx:if="{{!loading && !list.length}}" text="{{activeNav === 'following' ? '关注作者后，这里会展示他们的文章' : '暂时没有找到文章'}}"></empty-state>
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
   <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
+  <view wx:if="{{fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
 </view>

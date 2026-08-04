@@ -1,38 +1,56 @@
 <view class="page creator-page">
-  <view class="creator-head">
-    <view class="creator-label">创作者中心</view>
-    <view class="creator-level" bindtap="openLevel">创作等级 Lv.1 ›</view>
-    <view class="creator-actions">
-      <view class="creator-action" bindtap="publishArticle">
-        <image src="/assets/app/creator/ic_publish_article.webp" mode="aspectFit"></image>
-        <text>写文章</text>
-      </view>
-      <view class="creator-action" bindtap="publishPin">
-        <image src="/assets/app/creator/ic_publish_pin.webp" mode="aspectFit"></image>
-        <text>发沸点</text>
-      </view>
+  <status-bar navigation="{{true}}">
+    <view class="creator-header surface">
+      <view class="header-icon" bindtap="goBack">‹</view>
+      <view class="header-title">创作者中心</view>
+      <view class="header-icon create-icon" bindtap="openCreate">+</view>
     </view>
+  </status-bar>
+  <view class="level-card" bindtap="openLevel">
+    <view class="identity-row">
+      <image class="creator-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
+      <view class="identity-copy">
+        <view class="creator-name ellipsis">{{user ? user.user_name : '掘金创作者'}}</view>
+        <view class="creator-badges">掘金创作者 · LV.{{level}}</view>
+      </view>
+      <view class="level-link">等级权益 ›</view>
+    </view>
+    <view class="level-value">LV.{{level}}</view>
+    <view class="level-copy">{{progressText}}</view>
+    <view class="level-progress"><view style="width: {{progress}}%;"></view></view>
   </view>
 
-  <view class="section data-section">
-    <view class="section-header"><view class="section-title">近 7 天数据</view><view class="section-more">内容分析</view></view>
-    <view class="stats-grid">
-      <view wx:for="{{stats}}" wx:key="label" class="stat-item">
-        <view class="stat-value">{{item.value}}</view>
+  <view class="creator-section">
+    <view class="creator-section-head" bindtap="openData">
+      <view>内容数据 <text class="help">?</text></view><text>更多内容 ›</text>
+    </view>
+    <view class="stats-grid content-grid">
+      <view wx:for="{{contentStats}}" wx:key="label" class="stat-item">
         <view class="stat-label">{{item.label}}</view>
-        <view class="stat-change">{{item.change}}</view>
+        <view class="stat-value">{{item.value}}</view>
+        <view class="stat-change">较前日 <text>--</text></view>
       </view>
     </view>
   </view>
 
-  <view class="section creator-entry-list">
-    <view wx:for="{{entries}}" wx:key="name" class="creator-entry" data-url="{{item.url}}" bindtap="openEntry">
-      <image src="{{item.icon}}" mode="aspectFit"></image>
-      <view class="entry-copy">
-        <view class="entry-name">{{item.name}}</view>
-        <view class="entry-description">{{item.description}}</view>
+  <view class="creator-section">
+    <view class="creator-section-head" bindtap="openFans">
+      <view>关注者数据 <text class="help">?</text></view><text>更多内容 ›</text>
+    </view>
+    <view class="stats-grid follower-grid">
+      <view wx:for="{{followerStats}}" wx:key="label" class="stat-item">
+        <view class="stat-label">{{item.label}}</view>
+        <view class="stat-value">{{item.value}}</view>
+        <view class="stat-change">较前日 <text>--</text></view>
       </view>
-      <view class="entry-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="creator-section activity-section">
+    <view class="creator-section-head" bindtap="openActivities"><view>创作活动</view><text>更多内容 ›</text></view>
+    <view class="activity-card" bindtap="openActivities">
+      <image src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image>
+      <view class="activity-copy"><view>{{activity.title}}</view><text>{{activity.description}}</text></view>
     </view>
   </view>
 </view>

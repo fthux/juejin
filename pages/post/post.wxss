@@ -97,6 +97,47 @@
   gap: 14rpx;
 }
 
+.local-comment {
+  padding: 26rpx 32rpx;
+  display: flex;
+  border-top: 1rpx solid var(--jj-line);
+}
+
+.local-comment .avatar {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.local-comment-copy {
+  min-width: 0;
+  margin-left: 18rpx;
+  flex: 1;
+  color: var(--jj-text-2);
+  font-size: 24rpx;
+}
+
+.local-comment-copy > text {
+  display: block;
+  margin-top: 10rpx;
+  color: var(--jj-text);
+  font-size: 28rpx;
+  line-height: 1.55;
+}
+
+.local-comment-time {
+  margin-top: 10rpx;
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.comment-empty {
+  padding: 34rpx 32rpx;
+  color: var(--jj-text-3);
+  border-top: 1rpx solid var(--jj-line);
+  text-align: center;
+  font-size: 24rpx;
+}
+
 .action-bar {
   position: fixed;
   z-index: 10;

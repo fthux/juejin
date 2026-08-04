@@ -1,1 +1,15 @@
-<view class="page registrations-page"><empty-state text="你还没有任何报名哦~"></empty-state></view>
+<view class="page registrations-page">
+  <view wx:for="{{list}}" wx:key="id" class="registration-card">
+    <image src="{{item.image}}" mode="aspectFill"></image>
+    <view class="registration-body">
+      <view class="registration-title two-lines">{{item.title}}</view>
+      <view class="registration-time">{{item.time}}</view>
+      <view class="registration-status">报名成功</view>
+    </view>
+    <button class="cancel-button" data-id="{{item.id}}" bindtap="cancel">取消</button>
+  </view>
+  <view wx:if="{{!list.length}}" class="empty-registration">
+    <empty-state text="你还没有任何报名哦~"></empty-state>
+    <button class="primary-button" bindtap="openActivities">去看看活动</button>
+  </view>
+</view>

@@ -1,15 +1,9 @@
 <view class="page course-page">
   <status-bar navigation="{{true}}">
     <view class="course-header surface">
-      <view class="course-type-tabs">
-        <view wx:for="{{courseTypes}}" wx:key="id" class="course-type {{activeCourseType === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchCourseType">
-          <text>{{item.name}}</text><text wx:if="{{item.badge}}" class="vip-free">{{item.badge}}</text>
-        </view>
-      </view>
-      <view class="course-actions">
-        <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
-        <image src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
-      </view>
+      <image class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
+      <view class="course-title">课程</view>
+      <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
     </view>
   </status-bar>
 
@@ -26,16 +20,12 @@
         <view wx:if="{{item.id === 'price'}}" class="sort-arrows {{priceDirection}}"><text>▲</text><text>▼</text></view>
       </view>
     </view>
-    <view class="vip-filter" bindtap="toggleVipOnly">
-      <view class="checkbox {{vipOnly ? 'checked' : ''}}">{{vipOnly ? '✓' : ''}}</view>
-      <text>只看VIP课程</text>
-    </view>
   </view>
 
   <view class="course-list surface">
     <course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
   </view>
-  <empty-state wx:if="{{!loading && !list.length}}" text="{{loadError ? '字节内部课暂时无法加载' : '这里还没有课程'}}"></empty-state>
+  <empty-state wx:if="{{!loading && !list.length}}" text="{{loadError ? '课程暂时无法加载' : '这里还没有课程'}}"></empty-state>
   <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
   <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
 </view>

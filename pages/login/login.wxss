@@ -58,25 +58,10 @@
   color: var(--jj-text-2);
 }
 
-.code-button {
-  min-width: 180rpx;
-  margin: 0;
-  padding: 0 10rpx;
-  color: var(--jj-blue);
-  background: transparent;
-  font-size: 25rpx;
-  line-height: 72rpx;
-}
-
-.code-button[disabled] {
-  color: var(--jj-text-4);
-  background: transparent;
-}
-
 .login-button {
   width: 100%;
   height: 88rpx;
-  margin-top: 6rpx;
+  margin-top: 14rpx;
 }
 
 .agreement {
