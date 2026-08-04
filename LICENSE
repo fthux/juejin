@@ -1,21 +1,113 @@
-The MIT License (MIT)
+个人学习用途代码许可协议 1.0
+Personal Learning Source License 1.0
 
-Copyright (c) 2018-present, myvin
+Copyright (c) 2018-present fthux
+历史版本曾使用 myvin 作为作者名称。
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+生效日期：2026 年 8 月 4 日
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+重要说明：本协议不是开源软件许可证。本协议仅对许可人有权授权的原创代码授予
+有限使用权，不授予任何商业使用权，也不授予任何第三方材料的使用权。
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+一、定义
+
+1. “许可代码”是指本仓库中由许可人独立创作，并且许可人有权依据本协议授权的
+   源代码及相关技术文档。
+2. “第三方材料”包括但不限于稀土掘金及其他权利人的名称、商标、Logo、图标、
+   图片、字体、界面设计、文章、评论、头像、课程、用户内容、数据、接口返回内容、
+   第三方组件和开源依赖。
+3. “个人学习用途”是指自然人不代表任何企业、组织或客户，为学习、研究和技术
+   实验而进行的非商业活动，且该活动不直接或间接产生收入、商业利益或业务价值。
+
+二、有限许可
+
+在遵守本协议全部条款的前提下，许可人授予个人使用者一项有限的、非独占的、
+不可转让的、不可再许可的许可，仅允许使用者为了个人学习用途：
+
+1. 阅读、下载和复制许可代码；
+2. 在个人设备上运行和调试许可代码；
+3. 修改许可代码并保存个人学习副本；
+4. 通过 GitHub 的 Fork 功能建立仅供个人学习的公开或私有副本，但必须完整保留
+   本协议、第三方权利声明、项目来源和非官方声明。
+
+三、禁止用途
+
+未经许可人以及相关第三方权利人事先书面许可，不得：
+
+1. 将本项目、许可代码或其修改版本用于任何直接或间接的商业目的；
+2. 代表企业、工作室、培训机构、学校项目、客户或其他组织使用本项目；
+3. 将本项目用于企业内部业务、项目交付、代开发、收费教学、收费课程或咨询服务；
+4. 通过销售、订阅、会员、广告、赞助、捐赠、流量导入或其他方式从本项目获利；
+5. 将本项目或其修改版本发布为可供公众使用的微信小程序、应用、网站、服务或
+   其他产品，或者提交至任何应用商店、开放平台或分发平台；
+6. 将本项目改名、换皮、仿冒或包装为自有产品；
+7. 删除、隐藏或修改本协议、第三方权利声明、项目来源或非官方声明；
+8. 单独提取、复制、修改、打包、销售、再发布或再许可第三方材料；
+9. 使用稀土掘金的名称、商标、Logo 或视觉元素宣传其他项目或产品；
+10. 明示或暗示本项目已获得稀土掘金或其他权利人的授权、合作、赞助或认可；
+11. 利用本项目批量抓取、镜像或重新分发平台内容，绕过登录、付费、访问控制、
+    技术保护或反自动化措施；
+12. 收集、存储、上传或处理不属于使用者本人的账号凭据、Cookie、令牌或个人信息。
+
+四、学习副本与 Fork
+
+依据本协议建立的学习副本或 GitHub Fork：
+
+1. 只能继续用于个人学习用途；
+2. 必须保留本协议和 THIRD_PARTY_NOTICES.md；
+3. 必须显著说明其为非官方、未授权的学习项目；
+4. 不得发布编译产物或提供可供公众访问、注册或使用的服务；
+5. 不得对许可代码或第三方材料授予超出本协议范围的权利。
+
+除本条明确允许的 GitHub Fork 外，本协议不授予重新发布完整项目、镜像仓库或
+分发编译产物的权利。
+
+五、第三方权利
+
+第三方材料不属于许可代码，也不包含在本协议的授权范围内。相关材料的著作权、
+商标权、肖像权、数据权益及其他权利归各自合法权利人所有。
+
+本项目保留部分第三方材料，仅用于还原稀土掘金 App 的界面和交互，以便个人学习
+微信小程序开发。该事实不表示许可人拥有、取得或可以转授这些材料的任何权利。
+
+使用者如需使用第三方材料，必须自行识别权利人、遵守适用条款并取得必要授权。
+修改许可代码、建立 Fork 或获得本仓库副本，不会使使用者取得任何第三方权利。
+
+第三方代码和开源依赖继续适用其各自的许可证和权利声明；本协议不限制权利人
+已经依据其他许可证明确授予的权利。
+
+六、非官方声明
+
+本项目是对稀土掘金 App 界面与部分功能的非官方微信小程序复刻，仅用于个人学习
+和技术研究。本项目与稀土掘金及其运营主体不存在隶属、授权、合作、赞助或认可
+关系，也不是稀土掘金官方 App 或官方微信小程序。
+
+七、终止与权利人通知
+
+1. 使用者违反本协议时，本协议授予该使用者的许可自动终止。
+2. 许可终止后，使用者应停止使用、发布和运行本项目，并删除违规取得或制作的副本。
+3. 相关权利人认为仓库中的材料侵害其合法权利时，可以通过仓库 Issue 联系维护者。
+   维护者核实后可删除、调整相关材料或停止公开项目。
+4. 本条不限制任何权利人依法采取其他措施。
+
+八、免责声明
+
+本项目按“现状”提供，不附带任何明示或默示保证，包括但不限于适销性、特定用途
+适用性、不侵权、准确性、安全性、持续可用性或接口稳定性的保证。
+
+在适用法律允许的最大范围内，许可人不对因使用或无法使用本项目而产生的账号限制、
+数据丢失、平台处罚、安全问题、第三方索赔、直接损失、间接损失或其他责任负责。
+使用者应自行判断并遵守适用法律、微信平台规则、稀土掘金服务条款及第三方权利要求。
+
+九、历史版本
+
+本协议自上述生效日期起，适用于包含本协议的版本及其后续版本。此前已经依据 MIT
+许可证公开的历史版本，仍受其公开时已经授予的许可约束；本协议不撤销已经合法取得
+的既有授权。
+
+十、其他
+
+1. 除本协议明确授予的有限权利外，其他权利均由许可人或相关权利人保留。
+2. 本协议任何条款被认定为无效或不可执行时，不影响其他条款的效力。
+3. 本协议的标题仅为阅读方便，不影响条款解释。
+4. 对超出本协议范围的使用，应分别取得许可人和相关第三方权利人的书面许可。
