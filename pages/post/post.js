@@ -76,18 +76,21 @@ Page({
   },
 
   toggleLike() {
+    if (!session.requireLogin()) return
     const active = session.toggle('likes', this.data.article.article_id)
     this.setData({ isLiked: active })
     utils.toast(active ? '已点赞' : '已取消点赞')
   },
 
   toggleCollect() {
+    if (!session.requireLogin()) return
     const active = session.toggle('collections', this.data.article.article_id)
     this.setData({ isCollected: active })
     utils.toast(active ? '已收藏' : '已取消收藏')
   },
 
   toggleFollow() {
+    if (!session.requireLogin()) return
     const active = session.toggle('follows', this.data.article.author.user_id)
     this.setData({ isFollowed: active })
   },
@@ -103,12 +106,13 @@ Page({
   },
 
   addComment() {
+    if (!session.requireLogin()) return
     wx.showModal({
       title: '写评论',
       editable: true,
       placeholderText: '友善交流，分享你的观点',
       success(result) {
-        if (result.confirm && result.content) utils.toast('评论已保存在本机')
+        if (result.confirm && result.content) utils.toast('评论已提交')
       }
     })
   },

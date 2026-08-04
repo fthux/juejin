@@ -1,59 +1,111 @@
 const api = require('../../services/api.js')
+const mock = require('../../data/mockData.js')
+const utils = require('../../utils/utils.js')
+const session = require('../../services/session.js')
+
+const bookletCategories = mock.categories
+const byteCategoryIds = ['', '6809637769959178254', '6809637767543259144', '6809635626879549454', '6809635626661445640', '6809637776263217160']
+const byteCategories = mock.categories.filter((item) => byteCategoryIds.indexOf(item.id) !== -1)
 
 Page({
   data: {
-    tabs: [
-      { id: 'recommend', name: '推荐' },
-      { id: 'free', name: '免费' },
-      { id: 'owned', name: '已购' }
+    courseTypes: [
+      { id: 'booklet', name: '掘金小册' },
+      { id: 'byte', name: '字节内部课', badge: 'VIP免费' }
     ],
-    activeTab: 'recommend',
+    activeCourseType: 'booklet',
+    categories: bookletCategories,
+    activeCategory: '',
+    sorts: [
+      { id: 'all', name: '全部' },
+      { id: 'latest', name: '最新' },
+      { id: 'hot', name: '热销' },
+      { id: 'price', name: '价格' }
+    ],
+    activeSort: 'all',
+    priceDirection: '',
+    vipOnly: false,
     allCourses: [],
     list: [],
+    cursor: '0',
+    hasMore: true,
     loading: true,
-    ownedIds: []
+    loadError: false
   },
 
   onLoad() {
-    let ownedIds = wx.getStorageSync('jj:owned-courses')
-    if (!ownedIds) {
-      ownedIds = ['course-1']
-      wx.setStorageSync('jj:owned-courses', ownedIds)
-    }
-    this.setData({ ownedIds })
-    this.load()
+    this.load(true)
   },
 
   onPullDownRefresh() {
-    this.load()
+    this.load(true)
   },
 
-  switchTab(event) {
-    this.setData({ activeTab: event.currentTarget.dataset.id })
+  onReachBottom() {
+    if (this.data.hasMore) this.load(false)
+  },
+
+  switchCourseType(event) {
+    const id = event.currentTarget.dataset.id
+    if (id === this.data.activeCourseType) return
+    this.setData({
+      activeCourseType: id,
+      categories: id === 'byte' ? byteCategories : bookletCategories,
+      activeCategory: '',
+      activeSort: 'all',
+      priceDirection: '',
+      vipOnly: false
+    })
+    this.load(true)
+  },
+
+  selectCategory(event) {
+    const id = event.currentTarget.dataset.id
+    if (id === this.data.activeCategory) return
+    this.setData({ activeCategory: id })
+    this.load(true)
+  },
+
+  selectSort(event) {
+    const id = event.currentTarget.dataset.id
+    if (id === 'price') {
+      const direction = this.data.activeSort !== 'price' || this.data.priceDirection === 'desc' ? 'asc' : 'desc'
+      this.setData({ activeSort: id, priceDirection: direction })
+      this.applyFilter()
+      return
+    }
+    if (id === this.data.activeSort) return
+    this.setData({ activeSort: id, priceDirection: '' })
+    this.load(true)
+  },
+
+  toggleVipOnly() {
+    this.setData({ vipOnly: !this.data.vipOnly })
     this.applyFilter()
   },
 
-  load() {
-    this.setData({ loading: true })
-    api.courses('0').then(({ result }) => {
-      const allCourses = (result.data || []).map((item) => {
-        const info = item.base_info || item.booklet_info || item
-        const id = item.booklet_id || info.booklet_id || ''
-        return {
-          id,
-          title: info.title || '掘金课程',
-          summary: info.summary || info.introduction || '',
-          cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.webp',
-          price: info.price ? (Number(info.price) / 100).toFixed(2) : '',
-          section_count: info.section_count || 0,
-          is_finished: info.is_finished !== false,
-          author: (item.user_info && item.user_info.user_name) || '稀土掘金',
-          owned: this.data.ownedIds.indexOf(id) !== -1
-        }
-      })
+  load(reload) {
+    if (this.data.loading && !reload) return
+    const cursor = reload ? '0' : this.data.cursor
+    this.setData({ loading: true, loadError: false })
+    api.courses(cursor, {
+      courseType: this.data.activeCourseType,
+      categoryId: this.data.activeCategory,
+      sort: this.data.activeSort
+    }).then(({ result, fromCache }) => {
+      const rows = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
+      const allCourses = reload ? rows : this.data.allCourses.concat(rows)
       wx.setStorageSync('jj:course-cache', allCourses)
-      this.setData({ allCourses, loading: false })
+      this.setData({
+        allCourses,
+        cursor: result.cursor || '0',
+        hasMore: Boolean(result.has_more) && rows.length > 0,
+        loadError: Boolean(fromCache && this.data.activeCourseType === 'byte'),
+        loading: false
+      })
       this.applyFilter()
+    }).catch(() => {
+      this.setData({ loadError: true, loading: false, hasMore: false })
     }).finally(() => {
       this.setData({ loading: false })
       wx.stopPullDownRefresh()
@@ -61,10 +113,11 @@ Page({
   },
 
   applyFilter() {
-    const type = this.data.activeTab
-    let list = this.data.allCourses
-    if (type === 'free') list = list.filter((item) => !item.price)
-    if (type === 'owned') list = list.filter((item) => item.owned)
+    let list = this.data.vipOnly ? this.data.allCourses.filter((item) => item.vip) : this.data.allCourses.slice()
+    if (this.data.activeSort === 'price') {
+      const direction = this.data.priceDirection === 'desc' ? -1 : 1
+      list.sort((a, b) => (a.priceValue - b.priceValue) * direction)
+    }
     this.setData({ list })
   },
 
@@ -78,5 +131,10 @@ Page({
 
   openVip() {
     wx.navigateTo({ url: '/pages/vip/vip' })
+  },
+
+  openCourseCenter() {
+    if (!session.requireLogin()) return
+    wx.navigateTo({ url: '/pages/courseCenter/courseCenter' })
   }
 })

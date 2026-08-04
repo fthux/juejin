@@ -1,15 +1,22 @@
 <view class="page login-page">
   <view class="login-main">
     <image class="login-logo" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
-    <view class="login-title">登录体验完整功能</view>
-    <view class="login-caption">内容与互动状态仅保存在当前设备</view>
-    <view class="nickname-field">
-      <input value="{{nickname}}" maxlength="20" placeholder="输入昵称" bindinput="onNicknameInput"></input>
+    <view class="login-title">登录稀土掘金</view>
+    <view class="login-caption">未注册手机号验证后将自动创建账号</view>
+    <view class="login-form">
+      <view class="login-field">
+        <text class="country-code">+86</text>
+        <input type="number" value="{{mobile}}" maxlength="11" placeholder="请输入手机号" bindinput="onMobileInput"></input>
+      </view>
+      <view class="login-field">
+        <input type="number" value="{{code}}" maxlength="8" placeholder="请输入验证码" bindinput="onCodeInput"></input>
+        <button class="code-button" disabled="{{sending || countdown}}" bindtap="sendCode">{{countdown ? countdown + 's' : (sending ? '发送中' : '获取验证码')}}</button>
+      </view>
     </view>
-    <button class="primary-button login-button" bindtap="login">进入账号</button>
+    <button class="primary-button login-button" disabled="{{loggingIn}}" bindtap="login">{{loggingIn ? '登录中...' : '登录'}}</button>
     <view class="agreement" bindtap="toggleAgree">
       <view class="check {{agreed ? 'checked' : ''}}">{{agreed ? '✓' : ''}}</view>
-      <text>同意《用户协议》和《隐私政策》</text>
+      <text>已阅读并同意《用户协议》和《隐私政策》</text>
     </view>
   </view>
 </view>

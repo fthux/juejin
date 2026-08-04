@@ -36,9 +36,10 @@ Page({
   },
 
   logout() {
-    session.logout()
-    getApp().refreshSession()
-    this.setData({ loggedIn: false })
-    utils.toast('已退出登录')
+    session.logout().finally(() => {
+      getApp().refreshSession()
+      this.setData({ loggedIn: false })
+      utils.toast('已退出登录')
+    })
   }
 })

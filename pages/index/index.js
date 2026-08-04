@@ -26,9 +26,12 @@ Page({
   },
 
   onShow() {
-    const localArticles = session.getList('articles').map(utils.normalizeArticle)
+    const current = session.getSession()
+    const localArticles = current ? session.getList('articles')
+      .filter((item) => item.author_user_info && item.author_user_info.user_id === current.user.user_id)
+      .map(utils.normalizeArticle) : []
     const remoteArticles = this.data.list.filter((item) => String(item.article_id).indexOf('local-article-') !== 0)
-    this.setData({ session: session.getSession(), list: localArticles.concat(remoteArticles) })
+    this.setData({ session: current, list: localArticles.concat(remoteArticles) })
   },
 
   onPullDownRefresh() {
@@ -65,7 +68,10 @@ Page({
 
     task.then(({ result, fromCache }) => {
       const rows = (result.data || []).map(utils.normalizeArticle)
-      const localArticles = reload ? session.getList('articles').map(utils.normalizeArticle) : []
+      const current = session.getSession()
+      const localArticles = reload && current ? session.getList('articles')
+        .filter((item) => item.author_user_info && item.author_user_info.user_id === current.user.user_id)
+        .map(utils.normalizeArticle) : []
       this.setData({
         list: reload ? localArticles.concat(rows) : this.data.list.concat(rows),
         cursor: result.cursor || '0',
@@ -84,6 +90,7 @@ Page({
   },
 
   openNotifications() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/notifications/notifications' })
   },
 

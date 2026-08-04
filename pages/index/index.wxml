@@ -21,7 +21,7 @@
   <view wx:if="{{!session}}" class="login-guide">
     <view>
       <view class="guide-title">登录体验完整功能</view>
-      <view class="guide-copy">收藏、历史与创作内容保存在本机</view>
+      <view class="guide-copy">登录后使用收藏、关注与创作功能</view>
     </view>
     <navigator class="secondary-button" url="/pages/login/login">登录</navigator>
   </view>

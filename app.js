@@ -9,6 +9,11 @@ App({
     this.globalData.systemInfo = systemInfo
     this.globalData.theme = theme
     this.globalData.session = session.getSession()
+    if (this.globalData.session) {
+      session.refresh().then((current) => {
+        this.globalData.session = current
+      })
+    }
   },
 
   setTheme(theme) {

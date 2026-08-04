@@ -17,7 +17,13 @@ Page({
 
   onLoad(query) {
     const keyword = query.keyword || ''
-    this.setData({ keyword, histories: wx.getStorageSync('jj:search-history') || [] })
+    const courseMode = query.type === 'course'
+    this.setData({
+      keyword,
+      type: courseMode ? 'course' : 'article',
+      types: courseMode ? [{ id: 'course', name: '课程' }] : this.data.types,
+      histories: wx.getStorageSync(courseMode ? 'jj:course-search-history' : 'jj:search-history') || []
+    })
     if (keyword) this.submit()
   },
 
@@ -41,7 +47,7 @@ Page({
   },
 
   clearHistory() {
-    wx.removeStorageSync('jj:search-history')
+    wx.removeStorageSync(this.data.type === 'course' ? 'jj:course-search-history' : 'jj:search-history')
     this.setData({ histories: [] })
   },
 
@@ -49,8 +55,23 @@ Page({
     const keyword = this.data.keyword.trim()
     if (!keyword) return
     const histories = [keyword].concat(this.data.histories.filter((item) => item !== keyword)).slice(0, 10)
-    wx.setStorageSync('jj:search-history', histories)
+    wx.setStorageSync(this.data.type === 'course' ? 'jj:course-search-history' : 'jj:search-history', histories)
     this.setData({ histories, loading: true, searched: true })
+
+    if (this.data.type === 'course') {
+      const rows = (wx.getStorageSync('jj:course-cache') || []).concat(wx.getStorageSync('jj:course-history') || [])
+      const byId = {}
+      rows.forEach((item) => {
+        const course = item.id ? item : utils.normalizeCourse(item)
+        if (course.id) byId[String(course.id)] = course
+      })
+      const lowerKeyword = keyword.toLowerCase()
+      const results = Object.keys(byId).map((id) => byId[id]).filter((item) => {
+        return `${item.title}${item.summary}${item.author}`.toLowerCase().indexOf(lowerKeyword) !== -1
+      })
+      this.setData({ results, loading: false })
+      return
+    }
 
     api.search(keyword, this.data.type).then(({ result }) => {
       const raw = result.data || []
@@ -72,5 +93,9 @@ Page({
 
   openUser(event) {
     wx.navigateTo({ url: `/pages/profile/profile?id=${event.currentTarget.dataset.id}` })
+  },
+
+  openCourse(event) {
+    wx.navigateTo({ url: `/pages/courseDetail/courseDetail?id=${event.detail.item.id}` })
   }
 })

@@ -1,0 +1,21 @@
+<view class="page course-center-page">
+  <view class="center-switch surface">
+    <view class="{{topTab === 'mine' ? 'active' : ''}}" data-id="mine" bindtap="switchTop">我的小册</view>
+    <view class="{{topTab === 'history' ? 'active' : ''}}" data-id="history" bindtap="switchTop">浏览记录</view>
+  </view>
+  <view wx:if="{{topTab === 'mine'}}" class="center-filters surface">
+    <view wx:for="{{filters}}" wx:key="id" class="{{filter === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectFilter">{{item.name}}</view>
+  </view>
+  <view class="center-grid surface">
+    <view wx:for="{{list}}" wx:key="id" class="center-course" data-id="{{item.id}}" bindtap="openCourse">
+      <view class="center-cover-wrap">
+        <image class="center-cover" src="{{item.cover}}" mode="aspectFill"></image>
+        <text wx:if="{{!item.priceValue}}" class="free-mark">免费</text>
+      </view>
+      <view class="center-title ellipsis">{{item.title}}</view>
+      <view class="center-progress">{{item.progress ? '已学 ' + item.progress + '%' : item.statusText}}</view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
+  <empty-state wx:elif="{{!list.length}}" text="{{loadError ? '课程数据暂时无法加载' : '这里还没有课程'}}"></empty-state>
+</view>

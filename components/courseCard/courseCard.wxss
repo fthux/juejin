@@ -1,6 +1,6 @@
 .course-card {
-  min-height: 250rpx;
-  padding: 28rpx 32rpx;
+  min-height: 240rpx;
+  padding: 28rpx 30rpx;
   display: flex;
   gap: 24rpx;
   box-sizing: border-box;
@@ -9,8 +9,8 @@
 }
 
 .course-cover {
-  width: 170rpx;
-  height: 226rpx;
+  width: 124rpx;
+  height: 174rpx;
   flex: 0 0 auto;
   border-radius: 6rpx;
   background: var(--jj-fill);
@@ -23,29 +23,55 @@
 
 .course-title {
   color: var(--jj-text);
-  font-size: 31rpx;
+  font-size: 29rpx;
   font-weight: 600;
   line-height: 1.45;
 }
 
-.course-summary {
-  margin-top: 10rpx;
-  color: var(--jj-text-3);
-  font-size: 25rpx;
-  line-height: 1.5;
+.new-label {
+  margin-right: 9rpx;
+  padding: 2rpx 7rpx;
+  border-radius: 3rpx;
+  color: #ffffff;
+  background: #f53f3f;
+  font-size: 19rpx;
+  font-weight: 500;
+  vertical-align: 3rpx;
 }
 
 .course-author {
-  margin-top: 14rpx;
+  margin-top: 12rpx;
   color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
+.author-level {
+  margin-left: 7rpx;
+  padding: 1rpx 7rpx;
+  border-radius: 3rpx;
+  color: #eaf4ff;
+  background: #2366b1;
+  font-size: 18rpx;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.course-meta {
+  margin-top: 12rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}
+
 .course-footer {
-  margin-top: 18rpx;
+  margin-top: 16rpx;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10rpx;
 }
 
 .price {
@@ -54,13 +80,26 @@
   font-weight: 600;
 }
 
-.owned,
-.free {
-  color: #1e80ff;
-  font-size: 26rpx;
+.price text {
+  margin-right: 4rpx;
+  font-size: 22rpx;
 }
 
-.study {
+.original-price {
   color: var(--jj-text-3);
-  font-size: 23rpx;
+  font-size: 20rpx;
+  text-decoration: line-through;
+}
+
+.discount-label {
+  padding: 3rpx 10rpx;
+  border: 1rpx solid rgba(245, 63, 63, 0.35);
+  border-radius: 14rpx;
+  color: #f53f3f;
+  font-size: 18rpx;
+}
+
+.owned {
+  color: #1e80ff;
+  font-size: 26rpx;
 }

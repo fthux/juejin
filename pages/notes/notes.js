@@ -9,7 +9,12 @@ Page({
     content: ''
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/notes/notes')
+  },
+
   onShow() {
+    if (!this.authorized) return
     this.load()
   },
 

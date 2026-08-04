@@ -13,25 +13,25 @@ Page({
       history: 0
     },
     featureEntries: [
-      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/pages/sign/sign' },
+      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/pages/sign/sign', auth: true },
       { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.webp', message: '幸运转盘仅在 App 内提供' },
       { name: 'Bug 挑战赛', icon: '/assets/app/user/ic_user_bug.webp', message: '当前暂无进行中的挑战赛' },
       { name: '福利兑换', icon: '/assets/app/user/ic_user_change.webp', message: '兑换与内购能力不在小程序复刻范围内' }
     ],
     creatorEntries: [
-      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/pages/creatorData/creatorData' },
-      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/pages/creatorFans/creatorFans' },
-      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/pages/creatorActivities/creatorActivities' },
-      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/pages/drafts/drafts' }
+      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/pages/creatorData/creatorData', auth: true },
+      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/pages/creatorFans/creatorFans', auth: true },
+      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/pages/creatorActivities/creatorActivities', auth: true },
+      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/pages/drafts/drafts', auth: true }
     ],
     moreEntries: [
-      { name: '课程中心', icon: '/assets/app/user/ic_user_course.svg', url: '/pages/xiaoce/xiaoce', tab: true },
+      { name: '课程中心', icon: '/assets/app/user/ic_user_course.svg', url: '/pages/courseCenter/courseCenter', auth: true },
       { name: '推广中心', icon: '/assets/app/user/ic_user_popularize.svg', message: '推广中心仅在 App 内提供' },
       { name: '我的优惠券', icon: '/assets/app/user/ic_user_coupon.svg', message: '优惠券与内购能力不在小程序复刻范围内' },
-      { name: '我的圈子', icon: '/assets/app/user/ic_user_pins.svg', url: '/pages/topic/topic' },
-      { name: '阅读记录', icon: '/assets/app/user/ic_user_history.svg', url: '/pages/readHistory/readHistory' },
-      { name: '标签管理', icon: '/assets/app/user/ic_user_tag.svg', url: '/pages/tags/tags' },
-      { name: '我的报名', icon: '/assets/app/user/ic_user_apply.svg', url: '/pages/registrations/registrations' },
+      { name: '我的圈子', icon: '/assets/app/user/ic_user_pins.svg', url: '/pages/topic/topic', auth: true },
+      { name: '阅读记录', icon: '/assets/app/user/ic_user_history.svg', url: '/pages/readHistory/readHistory', auth: true },
+      { name: '标签管理', icon: '/assets/app/user/ic_user_tag.svg', url: '/pages/tags/tags', auth: true },
+      { name: '我的报名', icon: '/assets/app/user/ic_user_apply.svg', url: '/pages/registrations/registrations', auth: true },
       { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.svg', url: '/pages/feedback/feedback' }
     ]
   },
@@ -61,11 +61,12 @@ Page({
       this.openLogin()
       return
     }
-    wx.navigateTo({ url: '/pages/profile/profile?id=local-user' })
+    wx.navigateTo({ url: `/pages/profile/profile?id=${this.data.user.user_id}` })
   },
 
   openEntry(event) {
     const data = event.currentTarget.dataset
+    if (data.auth && !session.requireLogin()) return
     if (!data.url) {
       utils.toast(data.message || '该功能暂不可用')
       return
@@ -75,6 +76,7 @@ Page({
   },
 
   openNotifications() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/notifications/notifications' })
   },
 
@@ -91,14 +93,17 @@ Page({
   },
 
   openCreator() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/creator/creator' })
   },
 
   openActivity() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/creatorActivities/creatorActivities' })
   },
 
   openCollections() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/collectionSet/collectionSet' })
   }
 })

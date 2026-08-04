@@ -1,3 +1,5 @@
+const session = require('../../services/session.js')
+
 Page({
   data: {
     conversationId: '',
@@ -8,6 +10,8 @@ Page({
   onLoad(query) {
     const id = query.id || 'assistant'
     const name = query.name ? decodeURIComponent(query.name) : '掘金小助手'
+    const target = `/pages/chat/chat?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`
+    if (!session.requirePage(target)) return
     wx.setNavigationBarTitle({ title: name })
     this.setData({ conversationId: id })
     const messages = wx.getStorageSync(`jj:chat:${id}`) || [

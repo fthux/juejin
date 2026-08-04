@@ -14,7 +14,12 @@ Page({
     books: []
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/collectionSet/collectionSet')
+  },
+
   onShow() {
+    if (!this.authorized) return
     this.load()
   },
 
@@ -26,17 +31,13 @@ Page({
   load() {
     if (this.data.activeTab === 'bookshelf') {
       const ids = wx.getStorageSync('jj:bookshelf') || []
-      const books = mock.courses.filter((item) => ids.indexOf(item.booklet_id) !== -1).map((item) => ({
-        id: item.booklet_id,
-        title: item.base_info.title,
-        summary: item.base_info.summary,
-        cover: item.base_info.cover_img,
-        author: item.user_info.user_name,
-        section_count: item.base_info.section_count,
-        price: item.base_info.price ? (item.base_info.price / 100).toFixed(2) : '',
-        is_finished: item.base_info.is_finished,
-        owned: (wx.getStorageSync('jj:owned-courses') || []).indexOf(item.booklet_id) !== -1
-      }))
+      const cached = (wx.getStorageSync('jj:course-cache') || []).concat(wx.getStorageSync('jj:course-history') || [])
+      const byId = {}
+      cached.concat(mock.courses.map(utils.normalizeCourse)).forEach((item) => {
+        const course = item.id ? item : utils.normalizeCourse(item)
+        if (course.id) byId[String(course.id)] = course
+      })
+      const books = ids.map((id) => byId[String(id)]).filter(Boolean)
       this.setData({ books, articles: [] })
       return
     }

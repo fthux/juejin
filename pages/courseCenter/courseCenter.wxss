@@ -1,0 +1,93 @@
+.course-center-page {
+  background: var(--jj-bg);
+}
+
+.center-switch {
+  margin: 16rpx 28rpx;
+  padding: 8rpx;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 6rpx;
+  background: var(--jj-fill);
+}
+
+.center-switch view {
+  height: 66rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5rpx;
+  color: var(--jj-text-3);
+}
+
+.center-switch view.active {
+  color: var(--jj-text);
+  background: var(--jj-surface);
+}
+
+.center-filters {
+  height: 86rpx;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+  gap: 44rpx;
+  border-bottom: 1rpx solid var(--jj-line);
+}
+
+.center-filters view {
+  color: var(--jj-text-3);
+}
+
+.center-filters view.active {
+  color: var(--jj-blue);
+  font-weight: 600;
+}
+
+.center-grid {
+  min-height: 420rpx;
+  padding: 34rpx 30rpx;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40rpx 28rpx;
+}
+
+.center-course {
+  min-width: 0;
+}
+
+.center-cover-wrap {
+  position: relative;
+  width: 100%;
+  height: 196rpx;
+  overflow: hidden;
+  border-radius: 6rpx;
+  background: var(--jj-fill);
+}
+
+.center-cover {
+  width: 100%;
+  height: 100%;
+}
+
+.free-mark {
+  position: absolute;
+  right: 10rpx;
+  bottom: 10rpx;
+  padding: 5rpx 12rpx;
+  border-radius: 4rpx;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.68);
+  font-size: 19rpx;
+}
+
+.center-title {
+  margin-top: 15rpx;
+  color: var(--jj-text);
+  font-size: 27rpx;
+}
+
+.center-progress {
+  margin-top: 9rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}

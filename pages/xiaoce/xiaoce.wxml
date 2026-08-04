@@ -1,23 +1,41 @@
 <view class="page course-page">
   <status-bar navigation="{{true}}">
     <view class="course-header surface">
-      <view class="course-title">课程</view>
-      <view class="course-search" bindtap="openSearch">⌕</view>
+      <view class="course-type-tabs">
+        <view wx:for="{{courseTypes}}" wx:key="id" class="course-type {{activeCourseType === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchCourseType">
+          <text>{{item.name}}</text><text wx:if="{{item.badge}}" class="vip-free">{{item.badge}}</text>
+        </view>
+      </view>
+      <view class="course-actions">
+        <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
+        <image src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
+      </view>
     </view>
   </status-bar>
-  <view class="vip-banner" bindtap="openVip">
-    <view>
-      <view class="vip-title">掘金 VIP</view>
-      <view class="vip-copy">课程试读 · 专属内容 · 社区权益</view>
+
+  <scroll-view class="category-scroll surface" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-row">
+      <view wx:for="{{categories}}" wx:key="id" class="category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view>
     </view>
-    <view class="vip-arrow">查看权益 ›</view>
+  </scroll-view>
+
+  <view class="course-filters surface">
+    <view class="sort-row">
+      <view wx:for="{{sorts}}" wx:key="id" class="sort-item {{activeSort === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectSort">
+        <text>{{item.name}}</text>
+        <view wx:if="{{item.id === 'price'}}" class="sort-arrows {{priceDirection}}"><text>▲</text><text>▼</text></view>
+      </view>
+    </view>
+    <view class="vip-filter" bindtap="toggleVipOnly">
+      <view class="checkbox {{vipOnly ? 'checked' : ''}}">{{vipOnly ? '✓' : ''}}</view>
+      <text>只看VIP课程</text>
+    </view>
   </view>
-  <view class="tabs">
-    <view wx:for="{{tabs}}" wx:key="id" class="tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
-  </view>
+
   <view class="course-list surface">
     <course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
   </view>
-  <empty-state wx:if="{{!loading && !list.length}}" text="这里还没有课程"></empty-state>
+  <empty-state wx:if="{{!loading && !list.length}}" text="{{loadError ? '字节内部课暂时无法加载' : '这里还没有课程'}}"></empty-state>
   <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
+  <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
 </view>

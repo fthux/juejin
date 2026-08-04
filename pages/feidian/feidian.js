@@ -71,7 +71,11 @@ Page({
   },
 
   getLocalPins() {
-    return session.getList('pins').map(utils.normalizePin)
+    const current = session.getSession()
+    if (!current) return []
+    return session.getList('pins')
+      .filter((item) => item.author_user_info && item.author_user_info.user_id === current.user.user_id)
+      .map(utils.normalizePin)
   },
 
   mergeLocalPins() {
@@ -89,6 +93,7 @@ Page({
   },
 
   toggleLike(event) {
+    if (!session.requireLogin()) return
     const id = event.detail.item.msg_id
     const active = session.toggle('likes', id)
     const list = this.data.list.map((item) => item.msg_id === id ? Object.assign({}, item, { is_digg: active }) : item)
@@ -100,6 +105,7 @@ Page({
   },
 
   openPublish() {
+    if (!session.requireLogin()) return
     wx.navigateTo({ url: '/pages/publish/publish?type=pin' })
   },
 

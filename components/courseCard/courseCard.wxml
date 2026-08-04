@@ -1,14 +1,16 @@
 <view class="course-card" bindtap="open">
   <image class="course-cover" src="{{item.cover}}" mode="aspectFill"></image>
   <view class="course-body">
-    <view class="course-title two-lines">{{item.title}}</view>
-    <view class="course-summary two-lines">{{item.summary}}</view>
-    <view class="course-author">{{item.author}} · {{item.section_count}} 小节</view>
+    <view class="course-title two-lines"><text wx:if="{{item.isNew}}" class="new-label">新品</text>{{item.title}}</view>
+    <view class="course-author ellipsis">{{item.author}} <text wx:if="{{item.authorLevel}}" class="author-level">LV.{{item.authorLevel}}</text></view>
+    <view class="course-meta ellipsis">{{item.statusText}} · {{item.section_count}} 小节 · {{item.buy_count}} 人已购买</view>
     <view class="course-footer">
       <text wx:if="{{item.owned}}" class="owned">已购</text>
-      <text wx:elif="{{item.price}}" class="price">¥ {{item.price}}</text>
-      <text wx:else class="free">免费</text>
-      <text class="study">{{item.is_finished ? '已完结' : '连载中'}}</text>
+      <view wx:else class="price-row">
+        <text class="price"><text>¥</text>{{item.price}}</text>
+        <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
+        <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
+      </view>
     </view>
   </view>
 </view>

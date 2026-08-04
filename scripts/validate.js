@@ -32,7 +32,7 @@ for (const base of roots) {
   }
 }
 
-const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'utils/utils.js', 'data/mockData.js']
+const runtimeFiles = ['app.js', 'services/api.js', 'services/passport.js', 'services/session.js', 'utils/md5.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
   .concat(app.pages.map((page) => `${page}.js`))
   .concat(componentRoots.map((component) => `${component}.js`))
 
@@ -49,6 +49,39 @@ for (const file of runtimeFiles) {
     const target = match[1]
     if (!pageSet.has(target)) fail(`${file} 跳转到未注册页面: ${target}`)
   }
+}
+
+const privatePages = [
+  'pages/chat/chat',
+  'pages/collectionSet/collectionSet',
+  'pages/courseCenter/courseCenter',
+  'pages/creator/creator',
+  'pages/creatorActivities/creatorActivities',
+  'pages/creatorData/creatorData',
+  'pages/creatorFans/creatorFans',
+  'pages/drafts/drafts',
+  'pages/notes/notes',
+  'pages/notifications/notifications',
+  'pages/publish/publish',
+  'pages/readHistory/readHistory',
+  'pages/registrations/registrations',
+  'pages/sign/sign',
+  'pages/tags/tags'
+]
+
+for (const page of privatePages) {
+  if (!pageSet.has(page)) fail(`账号页面未注册: ${page}`)
+  if (!read(`${page}.js`).includes('session.requirePage(')) fail(`账号页面缺少深链登录保护: ${page}`)
+}
+
+const md5 = require(path.join(root, 'utils/md5.js'))
+if (md5('') !== 'd41d8cd98f00b204e9800998ecf8427e') fail('MD5 空字符串向量校验失败')
+if (md5('abc') !== '900150983cd24fb0d6963f7d28e17f72') fail('MD5 abc 向量校验失败')
+
+const passport = require(path.join(root, 'services/passport.js'))
+const mixed = passport.mixFields({ mobile: '13800138000', type: 24 }, ['mobile', 'type'])
+if (mixed.mobile === '13800138000' || mixed.type === 24 || mixed.mix_mode !== 1 || mixed.fixed_mix_mode !== 1) {
+  fail('掘金 Passport 字段混淆校验失败')
 }
 
 for (const base of roots) {

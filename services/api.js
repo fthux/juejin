@@ -1,5 +1,6 @@
 const utils = require('../utils/utils.js')
 const mock = require('../data/mockData.js')
+const passport = require('./passport.js')
 
 const BASE_URL = 'https://api.juejin.cn'
 const DEFAULT_QUERY = 'aid=2608&spider=0'
@@ -14,8 +15,10 @@ function request(path, data, options) {
       url,
       method: config.method || 'POST',
       data: data || {},
+      header: Object.assign({ 'content-type': 'application/json' }, passport.getAuthHeaders()),
       timeout: config.timeout || 12000,
       success(response) {
+        passport.captureCookies(response)
         const body = response.data || {}
         if (response.statusCode >= 200 && response.statusCode < 300 && body.err_no === 0) {
           resolve(body)
@@ -75,18 +78,51 @@ function selectedPins(cursor) {
   }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
 }
 
-function courses(cursor) {
-  return withFallback(request('/booklet_api/v1/booklet/recommend', {
+function courses(cursor, options) {
+  const config = options || {}
+  if (config.courseType === 'byte') {
+    return withFallback(request('/booklet_api/v1/bytecourse/list_by_category', {
+      category_id: config.categoryId || '0',
+      cursor: cursor || '0',
+      limit: 20
+    }), { data: [], cursor: '0', has_more: false })
+  }
+
+  const isRecommended = !config.categoryId && (!config.sort || config.sort === 'all')
+  const path = isRecommended
+    ? '/booklet_api/v1/booklet/recommend'
+    : '/booklet_api/v1/booklet/listbycategory'
+  const data = {
     cursor: cursor || '0',
     limit: 20
-  }), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+  }
+  if (!isRecommended) {
+    data.category_id = config.categoryId || '0'
+    data.sort = config.sort === 'latest' ? 1 : (config.sort === 'hot' ? 2 : 0)
+  }
+  return withFallback(request(path, data), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+}
+
+function courseDetail(bookletId) {
+  return request('/booklet_api/v1/booklet/get', { booklet_id: bookletId })
+}
+
+function courseSection(sectionId) {
+  return request('/booklet_api/v1/section/get', { section_id: sectionId })
+}
+
+function courseShelf(cursor) {
+  return withFallback(request('/booklet_api/v1/booklet/bookletshelflist', {
+    cursor: cursor || '0',
+    limit: 20
+  }), { data: [], cursor: '0', has_more: false })
 }
 
 function articleDetail(articleId) {
   return withFallback(request('/content_api/v1/article/detail', {
     article_id: articleId,
     client_type: 2608
-  }), () => ({ data: mock.articleDetails[articleId] || null }))
+  }), { data: null })
 }
 
 function pinDetail(msgId) {
@@ -131,6 +167,9 @@ module.exports = {
   pins,
   selectedPins,
   courses,
+  courseDetail,
+  courseSection,
+  courseShelf,
   articleDetail,
   pinDetail,
   daily,

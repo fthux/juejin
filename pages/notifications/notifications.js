@@ -12,7 +12,12 @@ Page({
     notices: []
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/notifications/notifications')
+  },
+
   onShow() {
+    if (!this.authorized) return
     this.load()
   },
 

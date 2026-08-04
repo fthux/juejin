@@ -1,42 +1,61 @@
-const mock = require('../../data/mockData.js')
+const api = require('../../services/api.js')
+const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
 Page({
   data: {
     course: null,
     chapters: [],
-    inBookshelf: false
+    introduction: '',
+    readingTitle: '',
+    readingContent: '',
+    inBookshelf: false,
+    loading: true,
+    loadError: false
   },
 
   onLoad(query) {
-    const cached = (wx.getStorageSync('jj:course-cache') || []).find((item) => item.id === query.id)
-    const raw = mock.courses.find((item) => item.booklet_id === query.id) || mock.courses[0]
-    const info = raw.base_info
-    const ownedIds = wx.getStorageSync('jj:owned-courses') || []
-    const bookshelf = wx.getStorageSync('jj:bookshelf') || []
-    const course = cached || {
-      id: raw.booklet_id,
-      title: info.title,
-      summary: info.summary,
-      cover: info.cover_img,
-      author: raw.user_info.user_name,
-      section_count: info.section_count,
-      owned: ownedIds.indexOf(raw.booklet_id) !== -1,
-      price: info.price ? (info.price / 100).toFixed(2) : ''
+    this.bookletId = query.id || ''
+    if (!this.bookletId) {
+      this.setData({ loading: false, loadError: true })
+      return
     }
-    const chapters = Array.from({ length: Math.min(course.section_count, 12) }, (_, index) => ({
-      id: index + 1,
-      title: `${index + 1}. ${['课程导读与学习路径', '核心概念与问题边界', '从真实案例理解原理', '常见错误与定位方法'][index % 4]}`,
-      duration: `${8 + index} 分钟`,
-      unlocked: course.owned || index < 2
-    }))
-    this.setData({ course, chapters, inBookshelf: bookshelf.indexOf(course.id) !== -1 })
-    wx.setNavigationBarTitle({ title: course.title })
+    this.loadDetail()
+  },
+
+  loadDetail() {
+    this.setData({ loading: true, loadError: false })
+    const bookshelf = wx.getStorageSync('jj:bookshelf') || []
+    api.courseDetail(this.bookletId).then((result) => {
+      const detail = result.data || {}
+      const raw = detail.booklet || {}
+      const course = utils.normalizeCourse(raw)
+      const chapters = (detail.sections || []).map((section, index) => ({
+        id: String(section.section_id || ''),
+        title: `${index + 1}. ${section.title}`,
+        duration: section.read_time ? `${Math.max(1, Math.round(Number(section.read_time) / 60))} 分钟` : '',
+        unlocked: Boolean(course.owned || section.is_free),
+        isFree: Boolean(section.is_free)
+      }))
+      if (!course.id) throw new Error('课程详情不存在')
+      const history = (wx.getStorageSync('jj:course-history') || []).filter((item) => String(item.id) !== String(course.id))
+      history.unshift(Object.assign({}, course, { viewedAt: Date.now() }))
+      wx.setStorageSync('jj:course-history', history.slice(0, 50))
+      this.setData({
+        course,
+        chapters,
+        introduction: (detail.introduction && detail.introduction.content) || course.summary,
+        inBookshelf: bookshelf.map(String).indexOf(String(course.id)) !== -1,
+        loading: false
+      })
+      wx.setNavigationBarTitle({ title: course.title })
+    }).catch(() => this.setData({ loading: false, loadError: true }))
   },
 
   toggleBookshelf() {
+    if (!session.requireLogin()) return
     const list = wx.getStorageSync('jj:bookshelf') || []
-    const index = list.indexOf(this.data.course.id)
+    const index = list.map(String).indexOf(String(this.data.course.id))
     if (index === -1) list.unshift(this.data.course.id)
     else list.splice(index, 1)
     wx.setStorageSync('jj:bookshelf', list)
@@ -44,17 +63,33 @@ Page({
   },
 
   openChapter(event) {
-    const chapter = this.data.chapters.find((item) => item.id === event.currentTarget.dataset.id)
+    const chapterId = String(event.currentTarget.dataset.id || '')
+    const chapter = this.data.chapters.find((item) => String(item.id) === chapterId)
+    if (!chapter) return
+    this.loadChapter(chapter)
+  },
+
+  loadChapter(chapter) {
     if (!chapter.unlocked) {
-      utils.toast('该章节仅对已购用户开放')
+      utils.toast('请在掘金 App 或官网购买后阅读')
       return
     }
-    wx.showModal({ title: chapter.title, content: '本节从核心概念、典型场景和实践案例三个部分展开。', showCancel: false })
+    wx.showLoading({ title: '加载中' })
+    api.courseSection(chapter.id).then((result) => {
+      const section = result.data && result.data.section
+      const content = section && (section.content || section.app_html_content)
+      if (!section || !content) throw new Error('章节内容为空')
+      this.setData({ readingTitle: section.title, readingContent: content })
+      wx.pageScrollTo({ selector: '#course-reading', duration: 250 })
+    }).catch((error) => utils.toast(error.message || '章节加载失败')).finally(() => wx.hideLoading())
   },
 
   startCourse() {
     const chapter = this.data.chapters.find((item) => item.unlocked)
-    if (!chapter) return
-    wx.showModal({ title: chapter.title, content: '本节从核心概念、典型场景和实践案例三个部分展开。', showCancel: false })
+    if (!chapter) {
+      utils.toast('当前课程没有可试读章节')
+      return
+    }
+    this.loadChapter(chapter)
   }
 })

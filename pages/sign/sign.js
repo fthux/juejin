@@ -14,7 +14,12 @@ Page({
     ]
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/sign/sign')
+  },
+
   onShow() {
+    if (!this.authorized) return
     const signedDays = session.getList('signDays')
     const today = utils.dateKey()
     const labels = ['一', '二', '三', '四', '五', '六', '日']
@@ -29,6 +34,7 @@ Page({
   },
 
   signIn() {
+    if (!session.requireLogin()) return
     if (this.data.signed) {
       utils.toast('今天已经签到过了')
       return
@@ -40,6 +46,7 @@ Page({
   },
 
   doTask(event) {
+    if (!session.requireLogin()) return
     const id = event.currentTarget.dataset.id
     const tasks = this.data.tasks.map((item) => item.id === id ? Object.assign({}, item, { done: true }) : item)
     this.setData({ tasks })

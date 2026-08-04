@@ -31,6 +31,8 @@ Page({
   },
 
   addComment() {
+    if (!session.requireLogin()) return
+    const current = session.getSession()
     const that = this
     wx.showModal({
       title: '发表评论',
@@ -38,13 +40,14 @@ Page({
       placeholderText: '友善交流，分享你的观点',
       success(result) {
         if (!result.confirm || !result.content) return
-        const comments = [{ id: `local-${Date.now()}`, user: '本地体验用户', content: result.content, time: '刚刚' }].concat(that.data.comments)
+        const comments = [{ id: `local-${Date.now()}`, user: current.user.user_name, content: result.content, time: '刚刚' }].concat(that.data.comments)
         that.setData({ comments })
       }
     })
   },
 
   toggleLike() {
+    if (!session.requireLogin()) return
     const active = session.toggle('likes', this.data.msgId)
     this.setData({ 'item.is_digg': active })
   },

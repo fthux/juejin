@@ -12,8 +12,10 @@ Page({
   },
 
   onLoad(query) {
-    this.setData({ type: query.type === 'article' ? 'article' : 'pin' })
-    wx.setNavigationBarTitle({ title: query.type === 'article' ? '写文章' : '发布沸点' })
+    const type = query.type === 'article' ? 'article' : 'pin'
+    if (!session.requirePage(`/pages/publish/publish?type=${type}`)) return
+    this.setData({ type })
+    wx.setNavigationBarTitle({ title: type === 'article' ? '写文章' : '发布沸点' })
   },
 
   switchType(event) {
@@ -36,6 +38,7 @@ Page({
   },
 
   saveDraft() {
+    if (!session.requireLogin()) return
     if (!this.data.title && !this.data.content) {
       utils.toast('还没有可保存的内容')
       return
@@ -49,6 +52,7 @@ Page({
   },
 
   publish() {
+    if (!session.requireLogin()) return
     if (!this.data.content.trim()) {
       utils.toast('请输入内容')
       return
@@ -68,7 +72,7 @@ Page({
     } else {
       session.publishPin({ content: this.data.content.trim(), pic_list: [] })
     }
-    utils.toast('已发布到本机')
+    utils.toast('发布成功')
     setTimeout(() => wx.navigateBack(), 500)
   }
 })

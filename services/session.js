@@ -1,5 +1,5 @@
 const utils = require('../utils/utils.js')
-const mock = require('../data/mockData.js')
+const passport = require('./passport.js')
 
 const KEYS = {
   session: 'jj:session',
@@ -17,30 +17,58 @@ const KEYS = {
 }
 
 function ensureLocalData() {
-  if (!wx.getStorageSync(KEYS.notifications)) {
-    wx.setStorageSync(KEYS.notifications, mock.notifications)
-  }
-  if (!wx.getStorageSync(KEYS.drafts)) {
-    wx.setStorageSync(KEYS.drafts, mock.drafts)
-  }
+  getSession()
 }
 
 function getSession() {
-  return wx.getStorageSync(KEYS.session) || null
+  const value = wx.getStorageSync(KEYS.session) || null
+  if (value && value.mode === 'juejin' && value.user && value.user.user_id) return value
+  if (value) wx.removeStorageSync(KEYS.session)
+  return null
 }
 
-function login(profile) {
-  const session = {
-    mode: 'local',
-    user: Object.assign({}, mock.localUser, profile || {}),
-    createdAt: Date.now()
-  }
-  wx.setStorageSync(KEYS.session, session)
-  return session
+function loginWithSms(mobile, code) {
+  return passport.login(mobile, code).then((user) => {
+    const session = {
+      mode: 'juejin',
+      user,
+      createdAt: Date.now()
+    }
+    wx.setStorageSync(KEYS.session, session)
+    return session
+  })
 }
 
 function logout() {
   wx.removeStorageSync(KEYS.session)
+  return passport.logout()
+}
+
+function refresh() {
+  const current = getSession()
+  if (!current) return Promise.resolve(null)
+  return passport.validateSession().then((user) => {
+    const next = Object.assign({}, current, { user, refreshedAt: Date.now() })
+    wx.setStorageSync(KEYS.session, next)
+    return next
+  }).catch(() => {
+    wx.removeStorageSync(KEYS.session)
+    passport.clearCookies()
+    return null
+  })
+}
+
+function requireLogin() {
+  if (getSession()) return true
+  wx.navigateTo({ url: '/pages/login/login' })
+  return false
+}
+
+function requirePage(target) {
+  if (getSession()) return true
+  const redirect = /^\/pages\/[A-Za-z0-9_/-]+(?:\?.*)?$/.test(target || '') ? target : '/pages/my/my'
+  wx.redirectTo({ url: `/pages/login/login?redirect=${encodeURIComponent(redirect)}` })
+  return false
 }
 
 function getList(name) {
@@ -53,6 +81,7 @@ function setList(name, list) {
 }
 
 function toggle(name, id) {
+  if (!getSession()) return null
   const list = getList(name)
   const index = list.indexOf(id)
   if (index === -1) list.unshift(id)
@@ -87,6 +116,7 @@ function getCachedArticles() {
 }
 
 function saveDraft(draft) {
+  if (!getSession()) throw new Error('请先登录')
   const list = getList('drafts')
   const item = Object.assign({ id: `draft-${Date.now()}`, updatedAt: Date.now() }, draft)
   const index = list.findIndex((current) => current.id === item.id)
@@ -98,7 +128,8 @@ function saveDraft(draft) {
 
 function publishPin(pin) {
   const list = getList('pins')
-  const session = getSession() || login()
+  const session = getSession()
+  if (!session) throw new Error('请先登录')
   const item = {
     msg_id: `local-${Date.now()}`,
     msg_Info: {
@@ -118,7 +149,8 @@ function publishPin(pin) {
 
 function publishArticle(article) {
   const list = getList('articles')
-  const currentSession = getSession() || login()
+  const currentSession = getSession()
+  if (!currentSession) throw new Error('请先登录')
   const item = {
     article_id: `local-article-${Date.now()}`,
     title: article.title,
@@ -139,6 +171,7 @@ function publishArticle(article) {
 }
 
 function saveNote(note) {
+  if (!getSession()) throw new Error('请先登录')
   const list = getList('notes')
   const item = Object.assign({ id: `note-${Date.now()}`, updatedAt: Date.now(), favorite: false }, note)
   const index = list.findIndex((current) => current.id === item.id)
@@ -149,6 +182,7 @@ function saveNote(note) {
 }
 
 function signIn() {
+  if (!getSession()) throw new Error('请先登录')
   const today = utils.dateKey()
   const list = getList('signDays')
   if (list.indexOf(today) === -1) {
@@ -162,8 +196,11 @@ module.exports = {
   KEYS,
   ensureLocalData,
   getSession,
-  login,
+  loginWithSms,
   logout,
+  refresh,
+  requireLogin,
+  requirePage,
   getList,
   setList,
   toggle,

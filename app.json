@@ -15,6 +15,7 @@
     "pages/chat/chat",
     "pages/profile/profile",
     "pages/courseDetail/courseDetail",
+    "pages/courseCenter/courseCenter",
     "pages/sign/sign",
     "pages/creator/creator",
     "pages/creatorData/creatorData",

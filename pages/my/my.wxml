@@ -17,10 +17,10 @@
     <view class="user-panel" bindtap="openProfile">
       <image class="user-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
       <view class="user-copy">
-        <view class="user-name">{{user ? user.user_name : '登录体验完整功能'}}</view>
+        <view class="user-name">{{user ? user.user_name : '登录稀土掘金'}}</view>
         <view class="user-badges">
           <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>
-          <text>{{user ? '个人主页' : '收藏与创作数据保存在本机'}} ›</text>
+          <text>{{user ? '个人主页' : '登录后同步账号数据'}} ›</text>
         </view>
       </view>
     </view>
@@ -38,7 +38,7 @@
   </view>
 
   <view class="feature-grid mine-section">
-    <view wx:for="{{featureEntries}}" wx:key="name" class="feature-item" data-url="{{item.url}}" data-message="{{item.message}}" bindtap="openEntry">
+    <view wx:for="{{featureEntries}}" wx:key="name" class="feature-item" data-url="{{item.url}}" data-auth="{{item.auth}}" data-message="{{item.message}}" bindtap="openEntry">
       <image src="{{item.icon}}" mode="aspectFit"></image>
       <text>{{item.name}}</text>
     </view>
@@ -50,7 +50,7 @@
       <text>进入首页 ›</text>
     </view>
     <view class="creator-grid">
-      <view wx:for="{{creatorEntries}}" wx:key="name" class="creator-item" data-url="{{item.url}}" bindtap="openEntry">
+      <view wx:for="{{creatorEntries}}" wx:key="name" class="creator-item" data-url="{{item.url}}" data-auth="{{item.auth}}" bindtap="openEntry">
         <image src="{{item.icon}}" mode="aspectFit"></image>
         <text>{{item.name}}</text>
       </view>
@@ -65,7 +65,7 @@
   <view class="more-section mine-section">
     <view class="mine-section-head"><view>更多功能</view></view>
     <view class="more-grid">
-      <view wx:for="{{moreEntries}}" wx:key="name" class="more-item" data-url="{{item.url}}" data-tab="{{item.tab}}" data-message="{{item.message}}" bindtap="openEntry">
+      <view wx:for="{{moreEntries}}" wx:key="name" class="more-item" data-url="{{item.url}}" data-tab="{{item.tab}}" data-auth="{{item.auth}}" data-message="{{item.message}}" bindtap="openEntry">
         <image src="{{item.icon}}" mode="aspectFit"></image>
         <text>{{item.name}}</text>
       </view>

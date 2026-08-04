@@ -47,9 +47,18 @@
 }
 
 .intro-copy {
+  display: block;
   padding: 0 32rpx 32rpx;
   color: var(--jj-text-2);
   line-height: 1.7;
+}
+
+.reading-content {
+  display: block;
+  padding: 0 32rpx 38rpx;
+  color: var(--jj-text-2);
+  font-size: 28rpx;
+  line-height: 1.8;
 }
 
 .chapter-row {

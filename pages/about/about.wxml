@@ -4,7 +4,7 @@
     <view class="about-name">稀土掘金</view>
     <view class="about-version">版本 {{version}}</view>
   </view>
-  <view class="about-copy surface">帮助开发者成长的社区。当前小程序以 Android 6.7.6 的信息架构与视觉资源为基准，公共内容来自公开接口，个人创作和互动状态保存在本机。</view>
+  <view class="about-copy surface">帮助开发者成长的社区。当前小程序以 Android 6.7.6 的信息架构与视觉资源为基准，公共内容和账号资料来自掘金接口；登录会话、创作草稿及本地互动状态保存在微信本机。</view>
   <view class="about-list section">
     <view wx:for="{{items}}" wx:key="name" class="about-row">
       <text>{{item.name}}</text>

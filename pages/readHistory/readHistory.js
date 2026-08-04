@@ -6,7 +6,12 @@ Page({
     list: []
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/readHistory/readHistory')
+  },
+
   onShow() {
+    if (!this.authorized) return
     this.setData({ list: session.getList('history').map((item) => Object.assign({}, item, { readTime: utils.formatTime(item.readAt) })) })
   },
 

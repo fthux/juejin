@@ -1,16 +1,22 @@
 <view class="page course-detail-page">
+  <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
+  <empty-state wx:elif="{{loadError}}" text="课程详情加载失败"></empty-state>
   <view wx:if="{{course}}" class="course-hero surface">
     <image class="course-cover" src="{{course.cover}}" mode="aspectFill"></image>
     <view class="course-copy">
       <view class="course-title">{{course.title}}</view>
       <view class="course-summary two-lines">{{course.summary}}</view>
-      <view class="course-author">{{course.author}} · {{course.section_count}} 小节</view>
-      <view class="course-state">{{course.owned ? '已购课程' : '可试读前 2 节'}}</view>
+      <view class="course-author">{{course.author}} · {{course.section_count}} 小节 · {{course.buy_count}} 人已购买</view>
+      <view class="course-state">{{course.owned ? '已购课程' : '含免费试读章节'}}</view>
     </view>
   </view>
   <view class="section course-intro">
     <view class="section-header"><view class="section-title">课程介绍</view></view>
-    <view class="intro-copy">围绕真实开发场景组织内容，从核心原理出发，逐步建立可以落地的工程方法。</view>
+    <rich-text class="intro-copy" nodes="{{introduction}}"></rich-text>
+  </view>
+  <view wx:if="{{readingContent}}" id="course-reading" class="section course-reading">
+    <view class="section-header"><view class="section-title">{{readingTitle}}</view></view>
+    <rich-text class="reading-content" nodes="{{readingContent}}"></rich-text>
   </view>
   <view class="section chapters">
     <view class="section-header">
@@ -22,7 +28,7 @@
         <view class="chapter-title">{{item.title}}</view>
         <view class="chapter-duration">{{item.duration}}</view>
       </view>
-      <view class="chapter-state">{{item.unlocked ? '试听' : '锁定'}}</view>
+      <view class="chapter-state">{{item.isFree ? '免费试读' : (item.unlocked ? '阅读' : '锁定')}}</view>
     </view>
   </view>
   <view class="course-bottom safe-bottom">

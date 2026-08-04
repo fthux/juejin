@@ -25,6 +25,9 @@
     <view wx:if="{{type === 'article'}}">
       <article-card wx:for="{{results}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
     </view>
+    <view wx:elif="{{type === 'course'}}" class="surface">
+      <course-card wx:for="{{results}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
+    </view>
     <view wx:else class="user-list surface">
       <view wx:for="{{results}}" wx:key="user_id" class="user-row" data-id="{{item.user_id}}" bindtap="openUser">
         <image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>

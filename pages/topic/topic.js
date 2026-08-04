@@ -36,6 +36,7 @@ Page({
   },
 
   toggleFollow() {
+    if (!session.requireLogin()) return
     const followed = session.toggle('follows', this.data.current.topic_id)
     this.setData({ followed })
   },

@@ -6,7 +6,12 @@ Page({
     drafts: []
   },
 
+  onLoad() {
+    this.authorized = session.requirePage('/pages/drafts/drafts')
+  },
+
   onShow() {
+    if (!this.authorized) return
     const drafts = session.getList('drafts').map((item) => Object.assign({}, item, { displayTime: utils.formatTime(item.updatedAt) }))
     this.setData({ drafts })
   },

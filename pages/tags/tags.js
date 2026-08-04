@@ -1,8 +1,10 @@
 const mock = require('../../data/mockData.js')
+const session = require('../../services/session.js')
 
 Page({
   data: { activeTab: 'all', allTags: [], tags: [], followed: [] },
-  onShow() { this.load() },
+  onLoad() { this.authorized = session.requirePage('/pages/tags/tags') },
+  onShow() { if (this.authorized) this.load() },
   load() {
     const followed = wx.getStorageSync('jj:followed-tags') || []
     const allTags = mock.categories.filter((item) => item.id).concat(mock.topics.map((item) => ({ id: item.topic_id, name: item.title })))
@@ -19,6 +21,7 @@ Page({
     this.refresh()
   },
   toggle(event) {
+    if (!session.requireLogin()) return
     const id = event.currentTarget.dataset.id
     const followed = this.data.followed.slice()
     const index = followed.indexOf(id)

@@ -96,6 +96,50 @@ function normalizePin(raw) {
   }
 }
 
+function formatPrice(value) {
+  const price = Number(value) || 0
+  const text = (price / 100).toFixed(2)
+  return text.replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
+}
+
+function normalizeCourse(raw) {
+  const item = raw || {}
+  const info = item.base_info || item.booklet_info || item
+  const user = item.user_info || info.user_info || {}
+  const event = item.event_discount || {}
+  const originalPrice = Number(info.price) || 0
+  const discountRate = Number(event.discount_rate) || 0
+  const salePrice = discountRate > 0 && discountRate < 10
+    ? Math.round(originalPrice * discountRate / 10)
+    : originalPrice
+  const updatedCount = Number(item.section_updated_count) || Number(info.section_count) || 0
+  const progressSource = item.reading_progress || info.reading_progress || 0
+  const progress = typeof progressSource === 'object'
+    ? Number(progressSource.progress || progressSource.percent || progressSource.read_percent) || 0
+    : Number(progressSource) || 0
+
+  return {
+    id: item.booklet_id || info.booklet_id || '',
+    title: info.title || '掘金小册',
+    summary: info.summary || info.introduction || '',
+    cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.webp',
+    category_id: info.category_id || '',
+    priceValue: salePrice,
+    price: formatPrice(salePrice),
+    originalPrice: salePrice < originalPrice ? formatPrice(originalPrice) : '',
+    section_count: Number(info.section_count) || 0,
+    buy_count: formatCount(info.buy_count),
+    statusText: Number(info.is_finished) === 1 ? '已完结' : `已更新${updatedCount}小节`,
+    author: user.user_name || info.author_name || '稀土掘金',
+    authorLevel: Number(user.level || (user.user_growth_info && user.user_growth_info.jpower_level)) || 0,
+    vip: Boolean(info.can_vip_borrow),
+    isNew: Boolean(item.is_new),
+    discountLabel: event.show_label || event.desc || '',
+    owned: Boolean(item.is_buy),
+    progress: progress > 0 && progress <= 1 ? Math.round(progress * 100) : Math.min(100, Math.round(progress))
+  }
+}
+
 module.exports = {
   formatCount,
   formatTime,
@@ -104,5 +148,7 @@ module.exports = {
   navigate,
   toast,
   normalizeArticle,
-  normalizePin
+  normalizePin,
+  normalizeCourse,
+  formatPrice
 }

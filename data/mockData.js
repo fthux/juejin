@@ -1,11 +1,13 @@
 const categories = [
-  { id: '', name: '推荐' },
+  { id: '', name: '全部' },
   { id: '6809637769959178254', name: '后端' },
   { id: '6809637767543259144', name: '前端' },
   { id: '6809635626879549454', name: 'Android' },
   { id: '6809635626661445640', name: 'iOS' },
-  { id: '6809637771511070734', name: '人工智能' },
-  { id: '6809637776263217160', name: '开发工具' }
+  { id: '6809637773935378440', name: '人工智能' },
+  { id: '6809637771511070734', name: '开发工具' },
+  { id: '6809637776263217160', name: '代码人生' },
+  { id: '6809637772874219534', name: '阅读' }
 ]
 
 const authors = [
@@ -40,16 +42,6 @@ const articles = articleSeeds.map((seed) => ({
   cover_image: ''
 }))
 
-const articleDetails = {}
-articles.forEach((article) => {
-  articleDetails[article.article_id] = {
-    article_info: article,
-    author_user_info: article.author_user_info,
-    tags: article.tags,
-    content: `<h1>${article.title}</h1><p>${article.brief_content}</p><h2>背景</h2><p>这是一份根据稀土掘金 6.7.6 客户端信息结构生成的离线示例内容。网络可用时，小程序会优先展示公开接口返回的真实文章。</p><h2>核心思路</h2><p>先明确问题和边界，再把复杂目标拆成可验证的步骤。实现过程中持续记录数据、状态和最终效果。</p><blockquote>好的技术内容应该让读者能够理解、验证并继续实践。</blockquote><h2>总结</h2><p>工程质量来自清晰的约束、可维护的结构，以及与风险相匹配的验证。</p>`
-  }
-})
-
 const pins = [
   { msg_id: 'pin-1', msg_Info: { content: '你最近学到的最有价值的一个技术细节是什么？欢迎在评论区分享。', pic_list: [], ctime: Math.floor(Date.now() / 1000) - 900 }, author_user_info: authors[0], digg_count: 86, comment_count: 32 },
   { msg_id: 'pin-2', msg_Info: { content: '终于把项目的冷启动时间压到了 1 秒以内，性能优化最快乐的瞬间就是指标真的降下来了。', pic_list: [], ctime: Math.floor(Date.now() / 1000) - 7200 }, author_user_info: authors[1], digg_count: 124, comment_count: 18 },
@@ -78,31 +70,6 @@ const daily = {
   articles: articles.slice(0, 5)
 }
 
-const notifications = [
-  { id: 'notice-1', type: 'digg', title: '赞和收藏', content: '前端森林赞了你的沸点', time: Date.now() - 3600000, unread: true },
-  { id: 'notice-2', type: 'follow', title: '新增关注', content: '代码与远方关注了你', time: Date.now() - 86400000, unread: true },
-  { id: 'notice-3', type: 'comment', title: '评论和回复', content: '有人回复了你的评论', time: Date.now() - 172800000, unread: false },
-  { id: 'notice-4', type: 'system', title: '系统消息', content: '欢迎体验稀土掘金小程序 6.7.6 复刻版', time: Date.now() - 259200000, unread: false }
-]
-
-const drafts = [
-  { id: 'draft-1', type: 'article', title: '未完成的技术文章', content: '这里是一份保存在本机的文章草稿。', updatedAt: Date.now() - 7200000 },
-  { id: 'draft-2', type: 'pin', title: '沸点草稿', content: '准备稍后发布的想法。', updatedAt: Date.now() - 86400000 }
-]
-
-const localUser = {
-  user_id: 'local-user',
-  user_name: '本地体验用户',
-  avatar_large: '/assets/app/common/default_avatar.webp',
-  job_title: '开发者',
-  company: '稀土掘金小程序',
-  description: '保持好奇，持续输出。',
-  level: 1,
-  follower_count: 12,
-  followee_count: 36,
-  power: 128
-}
-
 function search(keyword, type) {
   const query = keyword.toLowerCase()
   if (type === 'user') {
@@ -115,13 +82,9 @@ module.exports = {
   categories,
   authors,
   articles,
-  articleDetails,
   pins,
   courses,
   topics,
   daily,
-  notifications,
-  drafts,
-  localUser,
   search
 }
