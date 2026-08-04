@@ -32,8 +32,8 @@
   padding: 16rpx 20rpx;
   border-radius: 6rpx;
   box-sizing: border-box;
-  color: #252933;
-  background: #ffffff;
+  color: var(--jj-text);
+  background: var(--jj-surface);
   line-height: 1.55;
 }
 
@@ -53,8 +53,8 @@
   align-items: center;
   gap: 16rpx;
   box-sizing: border-box;
-  background: #ffffff;
-  border-top: 1rpx solid #e5e6eb;
+  background: var(--jj-surface);
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .chat-input input {
@@ -62,7 +62,7 @@
   padding: 0 20rpx;
   flex: 1;
   border-radius: 6rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .chat-input .primary-button {

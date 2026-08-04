@@ -1,8 +1,10 @@
 <view class="page course-page">
-  <view class="course-header surface">
-    <view class="course-title">课程</view>
-    <view class="course-search" bindtap="openSearch">⌕</view>
-  </view>
+  <status-bar navigation="{{true}}">
+    <view class="course-header surface">
+      <view class="course-title">课程</view>
+      <view class="course-search" bindtap="openSearch">⌕</view>
+    </view>
+  </status-bar>
   <view class="vip-banner" bindtap="openVip">
     <view>
       <view class="vip-title">掘金 VIP</view>

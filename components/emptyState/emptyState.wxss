@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  color: #8a919f;
+  color: var(--jj-text-3);
   text-align: center;
 }
 

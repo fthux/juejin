@@ -1,0 +1,5 @@
+<view class="page fans-page">
+  <view class="fans-tabs"><text class="active">粉丝数据</text><text>粉丝列表</text></view>
+  <view class="fans-grid"><view wx:for="{{stats}}" wx:key="label" class="fans-card"><text>{{item.label}}</text><view class="fans-value">{{item.value}}</view><text class="fans-compare">较前日 --</text></view></view>
+  <view class="trend"><view class="section-title">整体数据趋势</view><view class="flat-line"></view><view class="legend">■ 总粉丝　■ 互动粉丝　□ 新增粉丝　□ 取消关注</view></view>
+</view>

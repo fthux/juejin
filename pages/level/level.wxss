@@ -26,7 +26,7 @@
 .level-value,
 .level-next {
   margin-top: 12rpx;
-  color: #c9cdd4;
+  color: var(--jj-text-4);
   font-size: 23rpx;
 }
 
@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-top: 1rpx solid #e5e6eb;
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .privilege-level {
@@ -76,6 +76,6 @@
 .privilege-description,
 .privilege-state {
   margin-top: 7rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }

@@ -5,8 +5,8 @@
   align-items: center;
   gap: 24rpx;
   box-sizing: border-box;
-  background: #ffffff;
-  border-bottom: 1rpx solid #e5e6eb;
+  background: var(--jj-surface);
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .article-main {
@@ -19,14 +19,14 @@
   display: flex;
   align-items: center;
   gap: 12rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
 .author {
   max-width: 200rpx;
   overflow: hidden;
-  color: #515767;
+  color: var(--jj-text-2);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -35,14 +35,14 @@
   max-width: 120rpx;
   padding-left: 12rpx;
   overflow: hidden;
-  border-left: 1rpx solid #e5e6eb;
+  border-left: 1rpx solid var(--jj-line);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .article-title {
   margin-top: 16rpx;
-  color: #252933;
+  color: var(--jj-text);
   font-size: 32rpx;
   font-weight: 600;
   line-height: 1.42;
@@ -50,7 +50,7 @@
 
 .article-brief {
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 25rpx;
   line-height: 1.55;
 }
@@ -65,12 +65,12 @@
   height: 120rpx;
   flex: 0 0 auto;
   border-radius: 4rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .rank {
   width: 36rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 28rpx;
   font-weight: 700;
   font-style: italic;

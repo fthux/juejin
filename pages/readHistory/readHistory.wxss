@@ -4,10 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 25rpx;
 }
 
 .clear {
-  color: #8a919f;
+  color: var(--jj-text-3);
 }

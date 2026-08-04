@@ -61,18 +61,18 @@
   padding: 22rpx;
   border-radius: 6rpx;
   box-sizing: border-box;
-  background: #f7f8fa;
+  background: var(--jj-fill-2);
 }
 
 .stat-value {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 34rpx;
   font-weight: 700;
 }
 
 .stat-label {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-bottom: 1rpx solid #e5e6eb;
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .creator-entry image {
@@ -108,11 +108,11 @@
 
 .entry-description {
   margin-top: 7rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
 .entry-arrow {
-  color: #c9cdd4;
+  color: var(--jj-text-4);
   font-size: 42rpx;
 }

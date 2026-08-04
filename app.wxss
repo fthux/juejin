@@ -10,6 +10,9 @@ page {
   --jj-line: #e5e6eb;
   --jj-surface: #ffffff;
   --jj-bg: #f4f5f5;
+  --jj-fill: #f2f3f5;
+  --jj-fill-2: #f7f8fa;
+  --jj-text-4: #c9cdd4;
   min-height: 100%;
   background: var(--jj-bg);
   color: var(--jj-text);
@@ -17,6 +20,21 @@ page {
   font-size: 28rpx;
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  page {
+    --jj-blue-soft: rgba(30, 128, 255, 0.18);
+    --jj-text: #f2f3f5;
+    --jj-text-2: #c9cdd4;
+    --jj-text-3: #8f959e;
+    --jj-text-4: #6b7280;
+    --jj-line: #333438;
+    --jj-surface: #17181a;
+    --jj-bg: #111214;
+    --jj-fill: #25262a;
+    --jj-fill-2: #202125;
+  }
 }
 
 button,
@@ -151,7 +169,7 @@ image {
   display: inline-flex;
   align-items: center;
   color: var(--jj-text-2);
-  background: #f2f3f5;
+  background: var(--jj-fill);
   font-size: 24rpx;
 }
 
@@ -165,7 +183,7 @@ image {
   height: 72rpx;
   flex: 0 0 auto;
   border-radius: 50%;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .muted {

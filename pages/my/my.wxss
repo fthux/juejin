@@ -1,193 +1,270 @@
 .mine-page {
-  padding-bottom: 24rpx;
+  padding-bottom: 28rpx;
+  background: var(--jj-bg);
 }
 
 .mine-header {
-  height: 96rpx;
-  padding: 0 30rpx;
+  width: 100%;
+  height: 100%;
+  padding-left: 30rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.mine-title {
-  font-size: 38rpx;
-  font-weight: 700;
+  box-sizing: border-box;
 }
 
 .mine-head-actions {
   display: flex;
-  gap: 12rpx;
+  align-items: center;
+  gap: 8rpx;
 }
 
 .head-icon {
   position: relative;
-  width: 68rpx;
-  height: 68rpx;
+  width: 56rpx;
+  height: 56rpx;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+.notice-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #515767;
-  font-size: 32rpx;
 }
 
-.head-badge,
-.menu-badge {
-  min-width: 28rpx;
-  height: 28rpx;
-  padding: 0 7rpx;
-  border-radius: 15rpx;
+.bell-icon {
+  position: relative;
+  width: 28rpx;
+  height: 30rpx;
+  border: 4rpx solid var(--jj-text-3);
+  border-bottom: 0;
+  border-radius: 18rpx 18rpx 6rpx 6rpx;
   box-sizing: border-box;
-  color: #ffffff;
-  background: #f53f3f;
-  font-size: 17rpx;
-  line-height: 28rpx;
-  text-align: center;
+}
+
+.bell-icon::after {
+  content: '';
+  position: absolute;
+  left: 5rpx;
+  bottom: -10rpx;
+  width: 12rpx;
+  height: 4rpx;
+  border-radius: 4rpx;
+  background: var(--jj-text-3);
 }
 
 .head-badge {
   position: absolute;
-  top: 4rpx;
-  right: 0;
+  top: 0;
+  right: -3rpx;
+  min-width: 27rpx;
+  height: 27rpx;
+  padding: 0 6rpx;
+  border-radius: 14rpx;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #f53f3f;
+  font-size: 17rpx;
+  line-height: 27rpx;
+  text-align: center;
+}
+
+.user-zone {
+  padding: 26rpx 0 22rpx;
 }
 
 .user-panel {
-  min-height: 166rpx;
-  padding: 26rpx 32rpx;
+  min-height: 142rpx;
+  padding: 10rpx 34rpx 20rpx;
   display: flex;
   align-items: center;
   box-sizing: border-box;
 }
 
 .user-avatar {
-  width: 104rpx;
-  height: 104rpx;
+  width: 100rpx;
+  height: 100rpx;
+  flex: 0 0 auto;
   border-radius: 50%;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .user-copy {
   min-width: 0;
-  margin-left: 22rpx;
+  margin-left: 24rpx;
   flex: 1;
 }
 
 .user-name {
-  font-size: 34rpx;
+  color: var(--jj-text);
+  font-size: 36rpx;
   font-weight: 700;
 }
 
-.user-caption {
-  margin-top: 10rpx;
-  color: #8a919f;
-  font-size: 23rpx;
+.user-badges {
+  margin-top: 15rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
 }
 
-.user-arrow,
-.menu-arrow {
-  color: #c9cdd4;
-  font-size: 44rpx;
+.user-badges image {
+  width: 54rpx;
+  height: 30rpx;
 }
 
 .user-stats {
-  padding: 8rpx 32rpx 28rpx;
+  padding: 10rpx 48rpx 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .user-stats view {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7rpx;
-  color: #8a919f;
-  font-size: 21rpx;
-}
-
-.user-stats text:first-child {
-  color: #252933;
-  font-size: 28rpx;
-  font-weight: 600;
-}
-
-.feature-grid {
-  padding: 28rpx 16rpx;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.feature-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14rpx;
-  color: #515767;
+  gap: 8rpx;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
-.feature-item image {
-  width: 64rpx;
-  height: 64rpx;
+.user-stats text:first-child {
+  color: var(--jj-text);
+  font-size: 32rpx;
 }
 
-.creator-banner {
-  min-height: 128rpx;
-  margin: 16rpx 24rpx;
-  padding: 24rpx 28rpx;
+.member-banner {
+  min-height: 88rpx;
+  margin: 18rpx 28rpx;
+  padding: 16rpx 24rpx;
   border-radius: 8rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background: #e8f3ff;
+  color: #f4d7a0;
+  background: #34385f;
 }
 
-.creator-title {
-  color: #1e80ff;
-  font-size: 30rpx;
-  font-weight: 700;
+.member-copy {
+  min-width: 0;
+  flex: 1;
+  font-size: 25rpx;
 }
 
-.creator-copy {
-  margin-top: 8rpx;
-  color: #515767;
+.member-action {
+  margin-left: 18rpx;
+  padding: 10rpx 18rpx;
+  border-radius: 24rpx;
+  color: #5d4b29;
+  background: #f7dfa8;
   font-size: 22rpx;
 }
 
-.creator-arrow {
-  color: #1e80ff;
-  font-size: 24rpx;
+.mine-section {
+  margin: 18rpx 28rpx 0;
+  border-radius: 8rpx;
+  background: var(--jj-surface);
 }
 
-.menu-row {
-  min-height: 96rpx;
-  padding: 0 32rpx;
+.feature-grid,
+.creator-grid,
+.more-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.feature-grid {
+  padding: 28rpx 12rpx;
+}
+
+.feature-item,
+.creator-item,
+.more-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--jj-text-2);
+  font-size: 23rpx;
+  text-align: center;
+}
+
+.feature-item {
+  gap: 12rpx;
+}
+
+.feature-item image {
+  width: 72rpx;
+  height: 72rpx;
+}
+
+.mine-section-head {
+  height: 86rpx;
+  padding: 0 26rpx;
   display: flex;
   align-items: center;
-  border-bottom: 1rpx solid #e5e6eb;
+  justify-content: space-between;
+  color: var(--jj-text);
+  font-size: 30rpx;
+  font-weight: 600;
 }
 
-.menu-mark {
-  width: 52rpx;
-  height: 52rpx;
+.mine-section-head text {
+  color: var(--jj-text-3);
+  font-size: 23rpx;
+  font-weight: 400;
+}
+
+.creator-grid {
+  padding: 10rpx 10rpx 24rpx;
+}
+
+.creator-item {
+  gap: 12rpx;
+}
+
+.creator-item image {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.activity-ticker {
+  height: 64rpx;
+  margin: 0 22rpx 22rpx;
+  padding: 0 18rpx;
   border-radius: 6rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #1e80ff;
-  background: #e8f3ff;
+  gap: 14rpx;
+  box-sizing: border-box;
+  color: var(--jj-text-2);
+  background: var(--jj-fill);
   font-size: 22rpx;
 }
 
-.menu-name {
-  margin-left: 20rpx;
-  flex: 1;
-  color: #252933;
-  font-size: 28rpx;
+.activity-ticker text:first-child {
+  color: #ff7d00;
 }
 
-.menu-count {
-  margin-right: 12rpx;
-  color: #8a919f;
-  font-size: 23rpx;
+.activity-ticker view {
+  min-width: 0;
+  flex: 1;
+}
+
+.more-grid {
+  padding: 6rpx 10rpx 30rpx;
+  row-gap: 34rpx;
+}
+
+.more-item {
+  gap: 10rpx;
+}
+
+.more-item image {
+  width: 58rpx;
+  height: 58rpx;
 }

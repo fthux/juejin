@@ -1,6 +1,6 @@
 .login-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .login-main {
@@ -17,14 +17,14 @@
 
 .login-title {
   margin-top: 34rpx;
-  color: #252933;
+  color: var(--jj-text);
   font-size: 40rpx;
   font-weight: 700;
 }
 
 .login-caption {
   margin-top: 14rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 24rpx;
 }
 
@@ -37,12 +37,12 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .nickname-field input {
   width: 100%;
-  color: #252933;
+  color: var(--jj-text);
 }
 
 .login-button {
@@ -55,7 +55,7 @@
   margin-top: 26rpx;
   display: flex;
   align-items: center;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
@@ -65,7 +65,7 @@
   margin-right: 12rpx;
   border-radius: 50%;
   box-sizing: border-box;
-  border: 1rpx solid #c9cdd4;
+  border: 1rpx solid var(--jj-text-4);
   color: #ffffff;
   font-size: 20rpx;
   line-height: 30rpx;

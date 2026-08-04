@@ -1,4 +1,5 @@
 const session = require('../../services/session.js')
+const utils = require('../../utils/utils.js')
 
 Page({
   data: {
@@ -6,25 +7,32 @@ Page({
     user: null,
     unread: 0,
     counts: {
+      likes: 0,
       collections: 0,
-      history: 0,
-      drafts: 0,
-      notes: 0
+      follows: 0,
+      history: 0
     },
     featureEntries: [
       { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/pages/sign/sign' },
-      { name: '成长等级', icon: '/assets/app/user/ic_user_lv1.webp', url: '/pages/level/level' },
-      { name: '创作者中心', icon: '/assets/app/user/ic_user_builder.webp', url: '/pages/creator/creator' },
-      { name: 'VIP 权益', icon: '/assets/app/user/ic_user_luck.webp', url: '/pages/vip/vip' }
+      { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.webp', message: '幸运转盘仅在 App 内提供' },
+      { name: 'Bug 挑战赛', icon: '/assets/app/user/ic_user_bug.webp', message: '当前暂无进行中的挑战赛' },
+      { name: '福利兑换', icon: '/assets/app/user/ic_user_change.webp', message: '兑换与内购能力不在小程序复刻范围内' }
     ],
-    menuEntries: [
-      { name: '我的收藏', mark: '收', url: '/pages/collectionSet/collectionSet', countKey: 'collections' },
-      { name: '浏览历史', mark: '历', url: '/pages/readHistory/readHistory', countKey: 'history' },
-      { name: '我的课程', mark: '课', url: '/pages/xiaoce/xiaoce', tab: true },
-      { name: '创作草稿', mark: '稿', url: '/pages/drafts/drafts', countKey: 'drafts' },
-      { name: '我的笔记', mark: '记', url: '/pages/notes/notes', countKey: 'notes' },
-      { name: '消息中心', mark: '消', url: '/pages/notifications/notifications' },
-      { name: '设置', mark: '设', url: '/pages/setting/setting' }
+    creatorEntries: [
+      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/pages/creatorData/creatorData' },
+      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/pages/creatorFans/creatorFans' },
+      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/pages/creatorActivities/creatorActivities' },
+      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/pages/drafts/drafts' }
+    ],
+    moreEntries: [
+      { name: '课程中心', icon: '/assets/app/user/ic_user_course.svg', url: '/pages/xiaoce/xiaoce', tab: true },
+      { name: '推广中心', icon: '/assets/app/user/ic_user_popularize.svg', message: '推广中心仅在 App 内提供' },
+      { name: '我的优惠券', icon: '/assets/app/user/ic_user_coupon.svg', message: '优惠券与内购能力不在小程序复刻范围内' },
+      { name: '我的圈子', icon: '/assets/app/user/ic_user_pins.svg', url: '/pages/topic/topic' },
+      { name: '阅读记录', icon: '/assets/app/user/ic_user_history.svg', url: '/pages/readHistory/readHistory' },
+      { name: '标签管理', icon: '/assets/app/user/ic_user_tag.svg', url: '/pages/tags/tags' },
+      { name: '我的报名', icon: '/assets/app/user/ic_user_apply.svg', url: '/pages/registrations/registrations' },
+      { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.svg', url: '/pages/feedback/feedback' }
     ]
   },
 
@@ -36,10 +44,10 @@ Page({
       user: currentSession ? currentSession.user : null,
       unread: notices.filter((item) => item.unread).length,
       counts: {
+        likes: session.getList('likes').length,
         collections: session.getList('collections').length,
-        history: session.getList('history').length,
-        drafts: session.getList('drafts').length,
-        notes: session.getList('notes').length
+        follows: session.getList('follows').length,
+        history: session.getList('history').length
       }
     })
   },
@@ -57,17 +65,40 @@ Page({
   },
 
   openEntry(event) {
-    const url = event.currentTarget.dataset.url
-    const isTab = event.currentTarget.dataset.tab
-    if (isTab) wx.switchTab({ url })
-    else wx.navigateTo({ url })
-  },
-
-  openPublish() {
-    wx.navigateTo({ url: '/pages/publish/publish?type=article' })
+    const data = event.currentTarget.dataset
+    if (!data.url) {
+      utils.toast(data.message || '该功能暂不可用')
+      return
+    }
+    if (data.tab) wx.switchTab({ url: data.url })
+    else wx.navigateTo({ url: data.url })
   },
 
   openNotifications() {
     wx.navigateTo({ url: '/pages/notifications/notifications' })
+  },
+
+  openSettings() {
+    wx.navigateTo({ url: '/pages/setting/setting' })
+  },
+
+  openScan() {
+    utils.toast('扫码需要设备权限，小程序版本不提供')
+  },
+
+  openTheme() {
+    utils.toast('外观跟随微信系统设置')
+  },
+
+  openCreator() {
+    wx.navigateTo({ url: '/pages/creator/creator' })
+  },
+
+  openActivity() {
+    wx.navigateTo({ url: '/pages/creatorActivities/creatorActivities' })
+  },
+
+  openCollections() {
+    wx.navigateTo({ url: '/pages/collectionSet/collectionSet' })
   }
 })

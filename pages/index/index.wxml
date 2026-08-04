@@ -1,14 +1,16 @@
 <view class="page home-page">
-  <view class="home-head surface">
-    <view class="brand">
-      <image src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
-      <text>稀土掘金</text>
+  <status-bar navigation="{{true}}">
+    <view class="home-head surface">
+      <view class="brand">
+        <image src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+        <text>稀土掘金</text>
+      </view>
+      <view class="head-actions">
+        <view class="icon-button search-button" bindtap="openSearch">⌕</view>
+        <view class="icon-button" bindtap="openNotifications">◔</view>
+      </view>
     </view>
-    <view class="head-actions">
-      <view class="icon-button search-button" bindtap="openSearch">⌕</view>
-      <view class="icon-button" bindtap="openNotifications">◔</view>
-    </view>
-  </view>
+  </status-bar>
 
   <scroll-view class="category-scroll surface" scroll-x enhanced show-scrollbar="{{false}}">
     <view class="category-row">

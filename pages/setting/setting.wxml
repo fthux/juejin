@@ -2,7 +2,7 @@
   <view class="setting-group surface">
     <view class="setting-row">
       <text>深色模式</text>
-      <switch checked="{{darkMode}}" color="#1e80ff" bindchange="toggleDark"></switch>
+      <view class="setting-value">{{darkMode ? '已开启' : '已关闭'}} · 跟随系统</view>
     </view>
     <view class="setting-row" bindtap="changeFont">
       <text>字体大小</text>

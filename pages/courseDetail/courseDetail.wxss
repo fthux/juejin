@@ -13,7 +13,7 @@
   height: 252rpx;
   flex: 0 0 auto;
   border-radius: 6rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .course-copy {
@@ -29,14 +29,14 @@
 
 .course-summary {
   margin-top: 14rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 25rpx;
   line-height: 1.5;
 }
 
 .course-author {
   margin-top: 20rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 23rpx;
 }
 
@@ -48,7 +48,7 @@
 
 .intro-copy {
   padding: 0 32rpx 32rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   line-height: 1.7;
 }
 
@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-top: 1rpx solid #e5e6eb;
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .chapter-copy {
@@ -73,7 +73,7 @@
 .chapter-duration,
 .chapter-state {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
@@ -88,6 +88,6 @@
   grid-template-columns: 1fr 2fr;
   gap: 16rpx;
   box-sizing: border-box;
-  background: #ffffff;
-  border-top: 1rpx solid #e5e6eb;
+  background: var(--jj-surface);
+  border-top: 1rpx solid var(--jj-line);
 }

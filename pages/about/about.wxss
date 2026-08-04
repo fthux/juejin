@@ -18,14 +18,14 @@
 
 .about-version {
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
 .about-copy {
   margin-top: 16rpx;
   padding: 32rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 26rpx;
   line-height: 1.75;
 }
@@ -36,5 +36,5 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1rpx solid #e5e6eb;
+  border-bottom: 1rpx solid var(--jj-line);
 }

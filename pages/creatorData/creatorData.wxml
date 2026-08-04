@@ -1,0 +1,18 @@
+<view class="page creator-data-page">
+  <view class="data-tabs">
+    <view class="data-tab {{activeTab === 'article' ? 'active' : ''}}" data-id="article" bindtap="switchTab">文章数据</view>
+    <view class="data-tab {{activeTab === 'column' ? 'active' : ''}}" data-id="column" bindtap="switchTab">专栏数据</view>
+    <view class="data-tab {{activeTab === 'pin' ? 'active' : ''}}" data-id="pin" bindtap="switchTab">沸点数据</view>
+  </view>
+  <view class="stats-grid">
+    <view wx:for="{{stats}}" wx:key="label" class="stat-card"><text>{{item.label}}</text><view class="stat-value">{{item.value}}</view><text class="stat-compare">较前日 --</text></view>
+  </view>
+  <view class="trend-section">
+    <view class="section-title">整体数据趋势</view>
+    <view class="periods"><text class="active">最近7天</text><text>最近14天</text><text>最近30天</text></view>
+    <view class="chart">
+      <view wx:for="{{bars}}" wx:key="index" class="chart-column"><view class="chart-bar" style="height: {{item}}%;"></view><text>0{{index + 1}}</text></view>
+    </view>
+    <view class="legend"><text>■ 展现</text><text>□ 阅读</text><text>□ 点赞</text><text>□ 收藏</text></view>
+  </view>
+</view>

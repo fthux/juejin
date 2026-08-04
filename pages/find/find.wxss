@@ -6,11 +6,11 @@
   height: 260rpx;
   padding: 34rpx 32rpx;
   box-sizing: border-box;
-  background: #ffffff url('/assets/app/find/find_page_bg_top.webp') center bottom / 100% auto no-repeat;
+  background: var(--jj-surface) url('/assets/app/find/find_page_bg_top.webp') center bottom / 100% auto no-repeat;
 }
 
 .find-title {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 42rpx;
   font-weight: 700;
 }
@@ -23,8 +23,8 @@
   align-items: center;
   border-radius: 6rpx;
   background: rgba(255, 255, 255, 0.94);
-  border: 1rpx solid #e5e6eb;
-  color: #8a919f;
+  border: 1rpx solid var(--jj-line);
+  color: var(--jj-text-3);
 }
 
 .search-bar image {
@@ -42,7 +42,7 @@
   justify-content: space-between;
   border-radius: 8rpx;
   box-sizing: border-box;
-  background: #ffffff;
+  background: var(--jj-surface);
   box-shadow: 0 8rpx 32rpx rgba(31, 35, 41, 0.08);
 }
 
@@ -59,7 +59,7 @@
 .daily-copy text {
   display: block;
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
@@ -94,14 +94,14 @@
 }
 
 .quick-name {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 28rpx;
   font-weight: 600;
 }
 
 .quick-caption {
   margin-top: 7rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 

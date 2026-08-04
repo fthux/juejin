@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   color: #1e80ff;
-  background: #e8f3ff;
+  background: var(--jj-blue-soft);
   font-weight: 700;
 }
 
@@ -43,7 +43,7 @@
 
 .topic-count {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
@@ -57,7 +57,7 @@
 .topic-description {
   width: 100%;
   margin-top: 22rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 26rpx;
   line-height: 1.55;
 }

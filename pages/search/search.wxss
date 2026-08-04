@@ -14,23 +14,23 @@
   align-items: center;
   flex: 1;
   border-radius: 6rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .search-icon {
   margin-right: 14rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 40rpx;
 }
 
 .search-input input {
   min-width: 0;
   flex: 1;
-  color: #252933;
+  color: var(--jj-text);
 }
 
 .clear {
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 38rpx;
 }
 
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-bottom: 1rpx solid #e5e6eb;
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .user-copy {
@@ -79,7 +79,7 @@
 
 .user-caption {
   margin-top: 9rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 

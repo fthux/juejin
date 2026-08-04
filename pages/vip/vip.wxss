@@ -1,6 +1,6 @@
 .vip-page {
   padding: 24rpx;
-  background: #f4f5f5;
+  background: var(--jj-bg);
 }
 
 .vip-hero {
@@ -68,7 +68,7 @@
 
 .benefit-description {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 21rpx;
   line-height: 1.45;
 }

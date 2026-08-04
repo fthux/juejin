@@ -13,12 +13,12 @@
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  color: #252933;
-  border-bottom: 1rpx solid #e5e6eb;
+  color: var(--jj-text);
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .setting-value {
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 25rpx;
 }
 
@@ -27,7 +27,7 @@
   margin: 32rpx 24rpx;
   border-radius: 6rpx;
   color: #f53f3f;
-  background: #ffffff;
+  background: var(--jj-surface);
   font-size: 28rpx;
   line-height: 92rpx;
 }

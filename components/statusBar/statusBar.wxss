@@ -1,0 +1,10 @@
+.status-bar {
+  width: 100%;
+  background: var(--jj-surface);
+}
+
+.navigation-row {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--jj-surface);
+}

@@ -1,7 +1,7 @@
 .pin-card {
   padding: 28rpx 32rpx 0;
-  background: #ffffff;
-  border-bottom: 16rpx solid #f4f5f5;
+  background: var(--jj-surface);
+  border-bottom: 16rpx solid var(--jj-bg);
 }
 
 .pin-head {
@@ -13,7 +13,7 @@
   width: 72rpx;
   height: 72rpx;
   border-radius: 50%;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .identity {
@@ -23,25 +23,25 @@
 }
 
 .name {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 28rpx;
   font-weight: 600;
 }
 
 .caption {
   margin-top: 6rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
 .more {
   padding: 12rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
 }
 
 .pin-content {
   margin: 20rpx 0;
-  color: #252933;
+  color: var(--jj-text);
   font-size: 30rpx;
   line-height: 1.65;
   word-break: break-all;
@@ -57,7 +57,7 @@
   width: 100%;
   height: 210rpx;
   border-radius: 4rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .topic {
@@ -72,8 +72,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  color: #8a919f;
-  border-top: 1rpx solid #e5e6eb;
+  color: var(--jj-text-3);
+  border-top: 1rpx solid var(--jj-line);
   font-size: 25rpx;
   text-align: center;
 }

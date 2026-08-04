@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 24rpx;
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-top: 1rpx solid #e5e6eb;
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .draft-row image {
@@ -42,7 +42,7 @@
 .draft-content,
 .draft-time {
   margin-top: 7rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 22rpx;
 }
 

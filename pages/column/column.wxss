@@ -9,13 +9,13 @@
 
 .column-subtitle {
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 24rpx;
 }
 
 .column-list {
   margin-top: 16rpx;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .column-card {
@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-bottom: 1rpx solid #e5e6eb;
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .column-mark {
@@ -54,12 +54,12 @@
 .column-description,
 .column-stats {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
 .arrow {
   margin-left: 16rpx;
-  color: #c9cdd4;
+  color: var(--jj-text-4);
   font-size: 46rpx;
 }

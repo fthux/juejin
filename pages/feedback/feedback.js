@@ -1,22 +1,41 @@
+const utils = require('../../utils/utils.js')
+
 Page({
   data: {
-    projectAddress: 'https://github.com/myvin/juejin',
-    github: 'https://github.com/myvin',
-    email: '851399101@qq.com',
-    qq: '851399101',
+    types: ['功能问题', '内容问题', '体验建议', '其他'],
+    activeType: '功能问题',
+    content: '',
+    contact: ''
   },
-  copy(e) {
-    let dataset = (e.currentTarget || {}).dataset || {}
-    let title = dataset.title || ''
-    let content = dataset.content || ''
-    wx.setClipboardData({
-      data: content,
-      success() {
-        wx.showToast({
-          title: `已复制${title}`,
-          duration: 2000,
-        })
-      },
+
+  selectType(event) {
+    this.setData({ activeType: event.currentTarget.dataset.type })
+  },
+
+  onContentInput(event) {
+    this.setData({ content: event.detail.value })
+  },
+
+  onContactInput(event) {
+    this.setData({ contact: event.detail.value })
+  },
+
+  submit() {
+    const content = this.data.content.trim()
+    if (!content) {
+      utils.toast('请填写反馈内容')
+      return
+    }
+    const list = wx.getStorageSync('jj:feedback') || []
+    list.unshift({
+      id: `feedback-${Date.now()}`,
+      type: this.data.activeType,
+      content,
+      contact: this.data.contact.trim(),
+      createdAt: Date.now()
     })
-  },
+    wx.setStorageSync('jj:feedback', list.slice(0, 30))
+    this.setData({ content: '', contact: '' })
+    utils.toast('反馈已保存在本机')
+  }
 })

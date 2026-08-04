@@ -10,18 +10,12 @@ Page({
   },
 
   onShow() {
+    const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
     this.setData({
-      darkMode: getApp().globalData.theme === 'dark',
+      darkMode: windowInfo.theme === 'dark',
       loggedIn: Boolean(session.getSession()),
       fontSize: wx.getStorageSync('jj:font-size') || '标准'
     })
-  },
-
-  toggleDark(event) {
-    const darkMode = event.detail.value
-    getApp().setTheme(darkMode ? 'dark' : 'light')
-    this.setData({ darkMode })
-    wx.setNavigationBarColor({ frontColor: darkMode ? '#ffffff' : '#000000', backgroundColor: darkMode ? '#1f2329' : '#ffffff' })
   },
 
   changeFont() {

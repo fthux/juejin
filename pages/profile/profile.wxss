@@ -6,7 +6,7 @@
 .profile-bg {
   width: 100%;
   height: 150rpx;
-  background: #e8f3ff;
+  background: var(--jj-blue-soft);
 }
 
 .profile-main {
@@ -20,8 +20,8 @@
   width: 132rpx;
   height: 132rpx;
   border-radius: 50%;
-  background: #f2f3f5;
-  border: 6rpx solid #ffffff;
+  background: var(--jj-fill);
+  border: 6rpx solid var(--jj-surface);
 }
 
 .profile-copy {
@@ -37,13 +37,13 @@
 
 .profile-job {
   margin-top: 8rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 24rpx;
 }
 
 .profile-description {
   padding: 24rpx 32rpx 0;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 26rpx;
 }
 
@@ -58,12 +58,12 @@
   display: flex;
   flex-direction: column;
   gap: 6rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 21rpx;
 }
 
 .profile-stats > view:not(.profile-actions) text:first-child {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 28rpx;
   font-weight: 600;
 }

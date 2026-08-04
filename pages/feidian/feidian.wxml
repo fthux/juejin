@@ -1,11 +1,13 @@
 <view class="page pin-page">
-  <view class="pin-header surface">
-    <view class="pin-title">沸点</view>
-    <view class="pin-header-actions">
-      <view class="header-icon" bindtap="openSearch">⌕</view>
-      <view class="header-icon" bindtap="openPublish">＋</view>
+  <status-bar navigation="{{true}}">
+    <view class="pin-header surface">
+      <view class="pin-title">沸点</view>
+      <view class="pin-header-actions">
+        <view class="header-icon" bindtap="openSearch">⌕</view>
+        <view class="header-icon" bindtap="openPublish">＋</view>
+      </view>
     </view>
-  </view>
+  </status-bar>
   <view class="tabs pin-tabs">
     <view wx:for="{{tabs}}" wx:key="id" class="tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
   </view>

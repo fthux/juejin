@@ -1,4 +1,5 @@
 <view class="page find-page">
+  <status-bar></status-bar>
   <view class="find-hero">
     <view class="find-title">发现</view>
     <view class="search-bar" bindtap="openSearch">

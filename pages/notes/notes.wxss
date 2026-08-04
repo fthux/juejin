@@ -17,7 +17,7 @@
   min-height: 158rpx;
   padding: 24rpx 32rpx;
   box-sizing: border-box;
-  border-top: 1rpx solid #e5e6eb;
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .note-title {
@@ -27,14 +27,14 @@
 
 .note-content {
   margin-top: 9rpx;
-  color: #515767;
+  color: var(--jj-text-2);
   font-size: 25rpx;
   line-height: 1.5;
 }
 
 .note-time {
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 21rpx;
 }
 
@@ -53,7 +53,7 @@
   padding: 30rpx;
   border-radius: 8rpx;
   box-sizing: border-box;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .editor-title {
@@ -66,7 +66,7 @@
   margin-top: 24rpx;
   padding: 0 20rpx;
   border-radius: 6rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .note-editor textarea {
@@ -76,7 +76,7 @@
   padding: 20rpx;
   border-radius: 6rpx;
   box-sizing: border-box;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .editor-actions {

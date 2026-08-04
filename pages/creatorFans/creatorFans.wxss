@@ -1,0 +1,10 @@
+.fans-page { background: var(--jj-bg); }
+.fans-tabs { height: 100rpx; display: grid; grid-template-columns: repeat(2, 1fr); background: var(--jj-surface); }
+.fans-tabs text { position: relative; display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); }
+.fans-tabs .active { color: var(--jj-blue); border-bottom: 5rpx solid var(--jj-blue); }
+.fans-grid { padding: 28rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12rpx; background: var(--jj-surface); }
+.fans-card { min-height: 142rpx; padding: 18rpx; border: 1rpx solid var(--jj-line); display: flex; flex-direction: column; color: var(--jj-text-3); }
+.fans-value { margin-top: 10rpx; color: var(--jj-text); font-size: 38rpx; font-weight: 700; }.fans-compare { margin-top: 8rpx; font-size: 20rpx; }
+.trend { min-height: 600rpx; margin-top: 16rpx; padding: 34rpx 30rpx; background: var(--jj-surface); }
+.flat-line { height: 260rpx; margin: 48rpx 20rpx 0; border-top: 4rpx solid var(--jj-blue); border-bottom: 1rpx solid var(--jj-line); }
+.legend { margin-top: 26rpx; color: var(--jj-text-3); line-height: 2; }

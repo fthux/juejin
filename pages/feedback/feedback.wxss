@@ -1,62 +1,78 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
+.feedback-page {
+  padding: 18rpx 0 48rpx;
+  background: var(--jj-bg);
 }
-.item {
-  line-height: 2.2em;
-  background: #fff;
-  padding: 10rpx 30rpx 20rpx;
-  box-sizing: border-box;
-  margin-bottom: 20rpx;
-}
-.item .title {
-  font-size: 32rpx;
-  color: #3281ff;
-  margin: 26rpx 0;
-}
-.item .i {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+
+.feedback-section {
   position: relative;
-  padding-bottom: 16rpx;
+  margin-bottom: 16rpx;
+  padding: 28rpx 32rpx;
+  background: var(--jj-surface);
 }
-.i .icon {
+
+.field-title {
+  margin-bottom: 22rpx;
+  color: var(--jj-text);
+  font-size: 29rpx;
+  font-weight: 600;
+}
+
+.type-list {
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.type-chip {
+  height: 58rpx;
+  padding: 0 22rpx;
+  border-radius: 6rpx;
+  display: flex;
   align-items: center;
-  height: 2.2em;
-}
-.i image {
-  width: 32rpx;
-  height: 32rpx;
-  margin-right: 20rpx;
-}
-.item .text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 1;
-}
-.item .btn {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 1;
-  opacity: 0;
-}
-.footer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 80rpx;
+  color: var(--jj-text-2);
+  background: var(--jj-fill);
   font-size: 24rpx;
-  color: #333;
-  margin-top: 30rpx;
+}
+
+.type-chip.active {
+  color: var(--jj-blue);
+  background: var(--jj-blue-soft);
+}
+
+textarea {
+  width: 100%;
+  min-height: 300rpx;
+  padding: 20rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  color: var(--jj-text);
+  background: var(--jj-fill-2);
+}
+
+input {
+  height: 80rpx;
+  padding: 0 20rpx;
+  border-radius: 6rpx;
+  color: var(--jj-text);
+  background: var(--jj-fill-2);
+}
+
+.length {
+  position: absolute;
+  right: 48rpx;
+  bottom: 40rpx;
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.submit-button {
+  height: 80rpx;
+  margin: 34rpx 32rpx 0;
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: var(--jj-blue);
+  font-size: 28rpx;
 }

@@ -1,52 +1,21 @@
-<view class='container'>
-  <view class='content'>
-    <view class='item'>
-      <view class='title'>给 稀土掘金 官方反馈</view>
-      <view>请使用 稀土掘金 官方渠道（APP、网站等）进行反馈。</view>
-      <view>该小程序完全为第三方开发者开发，仅用于学习交流，禁止用于其他用途。</view>
-    </view>
-    <view class='item'>
-      <view class='title'>代码已开源</view>
-      <view class='i' catchtap='copy' data-title='项目地址' data-content='{{projectAddress}}'>
-        <view class='icon'>
-          <image src='/img/github.png'></image>
-        </view>
-        <view class='text'>
-          <view>可随意 star</view>
-          <view>{{projectAddress}}</view>
-        </view>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='title'>联系开发者</view>
-      <view class='i' catchtap='copy' data-title='GitHub' data-content='{{github}}'>
-        <view class='icon'>
-          <image src='/img/github.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 GitHub 反馈</view>
-          <view>{{github}}</view>
-        </view>
-      </view>
-      <view class='i' catchtap='copy' data-title='邮箱' data-content='{{email}}'>
-        <view class='icon'>
-          <image src='/img/email.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 Email 反馈</view>
-          <view>{{email}}</view>
-        </view>
-      </view>
-      <view class='i' catchtap='copy' data-title='QQ' data-content='{{qq}}'>
-        <view class='icon'>
-          <image src='/img/qq.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 QQ 反馈</view>
-          <view>{{qq}}</view>
-        </view>
-      </view>
+<view class="page feedback-page">
+  <view class="feedback-section">
+    <view class="field-title">反馈类型</view>
+    <view class="type-list">
+      <view wx:for="{{types}}" wx:key="*this" class="type-chip {{activeType === item ? 'active' : ''}}" data-type="{{item}}" bindtap="selectType">{{item}}</view>
     </view>
   </view>
-  <view class='footer'>开发者 · myvin</view>
+
+  <view class="feedback-section">
+    <view class="field-title">问题与建议</view>
+    <textarea value="{{content}}" maxlength="1000" placeholder="请描述你遇到的问题" bindinput="onContentInput"></textarea>
+    <view class="length">{{content.length}}/1000</view>
+  </view>
+
+  <view class="feedback-section">
+    <view class="field-title">联系方式（选填）</view>
+    <input value="{{contact}}" maxlength="80" placeholder="邮箱或其他联系方式" bindinput="onContactInput"></input>
+  </view>
+
+  <view class="submit-button" bindtap="submit">提交反馈</view>
 </view>

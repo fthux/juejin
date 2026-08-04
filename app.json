@@ -17,6 +17,9 @@
     "pages/courseDetail/courseDetail",
     "pages/sign/sign",
     "pages/creator/creator",
+    "pages/creatorData/creatorData",
+    "pages/creatorFans/creatorFans",
+    "pages/creatorActivities/creatorActivities",
     "pages/drafts/drafts",
     "pages/notes/notes",
     "pages/level/level",
@@ -26,20 +29,23 @@
     "pages/about/about",
     "pages/feidianDetail/feidianDetail",
     "pages/readHistory/readHistory",
-    "pages/collectionSet/collectionSet"
+    "pages/collectionSet/collectionSet",
+    "pages/tags/tags",
+    "pages/registrations/registrations",
+    "pages/feedback/feedback"
   ],
   "window": {
-    "backgroundColor": "#f4f5f5",
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "@backgroundColor",
+    "backgroundTextStyle": "@backgroundTextStyle",
+    "navigationBarBackgroundColor": "@navigationBarBackgroundColor",
     "navigationBarTitleText": "稀土掘金",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "@navigationBarTextStyle"
   },
   "tabBar": {
-    "color": "#8a919f",
+    "color": "@tabBarColor",
     "selectedColor": "#1e80ff",
-    "borderStyle": "white",
-    "backgroundColor": "#ffffff",
+    "borderStyle": "@tabBarBorderStyle",
+    "backgroundColor": "@tabBarBackgroundColor",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -74,11 +80,14 @@
     ]
   },
   "usingComponents": {
+    "status-bar": "/components/statusBar/statusBar",
     "article-card": "/components/articleCard/articleCard",
     "pin-card": "/components/pinCard/pinCard",
     "course-card": "/components/courseCard/courseCard",
     "empty-state": "/components/emptyState/emptyState"
   },
   "style": "v2",
+  "darkmode": true,
+  "themeLocation": "theme.json",
   "sitemapLocation": "sitemap.json"
 }

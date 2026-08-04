@@ -4,8 +4,8 @@
   display: flex;
   gap: 24rpx;
   box-sizing: border-box;
-  background: #ffffff;
-  border-bottom: 1rpx solid #e5e6eb;
+  background: var(--jj-surface);
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .course-cover {
@@ -13,7 +13,7 @@
   height: 226rpx;
   flex: 0 0 auto;
   border-radius: 6rpx;
-  background: #f2f3f5;
+  background: var(--jj-fill);
 }
 
 .course-body {
@@ -22,7 +22,7 @@
 }
 
 .course-title {
-  color: #252933;
+  color: var(--jj-text);
   font-size: 31rpx;
   font-weight: 600;
   line-height: 1.45;
@@ -30,14 +30,14 @@
 
 .course-summary {
   margin-top: 10rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 25rpx;
   line-height: 1.5;
 }
 
 .course-author {
   margin-top: 14rpx;
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
@@ -61,6 +61,6 @@
 }
 
 .study {
-  color: #8a919f;
+  color: var(--jj-text-3);
   font-size: 23rpx;
 }
