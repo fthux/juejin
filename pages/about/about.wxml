@@ -1,51 +1,14 @@
-<view class='container'>
-  <view class='content'>
-    <view class='item'>
-      <view class='title'>声明</view>
-      <view>该小程序完全为第三方开发者开发，仅用于学习交流，禁止用于其他用途。</view>
-    </view>
-    <view class='item'>
-      <view class='title'>代码已开源</view>
-      <view class='i' catchtap='copy' data-title='项目地址' data-content='{{projectAddress}}'>
-        <view class='icon'>
-          <image src='/img/github.png'></image>
-        </view>
-        <view class='text'>
-          <view>可随意 star</view>
-          <view>{{projectAddress}}</view>
-        </view>
-      </view>
-    </view>
-    <view class='item'>
-      <view class='title'>联系开发者</view>
-      <view class='i' catchtap='copy' data-title='GitHub' data-content='{{github}}'>
-        <view class='icon'>
-          <image src='/img/github.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 GitHub 反馈</view>
-          <view>{{github}}</view>
-        </view>
-      </view>
-      <view class='i' catchtap='copy' data-title='邮箱' data-content='{{email}}'>
-        <view class='icon'>
-          <image src='/img/email.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 Email 反馈</view>
-          <view>{{email}}</view>
-        </view>
-      </view>
-      <view class='i' catchtap='copy' data-title='QQ' data-content='{{qq}}'>
-        <view class='icon'>
-          <image src='/img/qq.png'></image>
-        </view>
-        <view class='text'>
-          <view>通过 QQ 反馈</view>
-          <view>{{qq}}</view>
-        </view>
-      </view>
+<view class="page about-page">
+  <view class="about-head surface">
+    <image src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+    <view class="about-name">稀土掘金</view>
+    <view class="about-version">版本 {{version}}</view>
+  </view>
+  <view class="about-copy surface">帮助开发者成长的社区。当前小程序以 Android 6.7.6 的信息架构与视觉资源为基准，公共内容来自公开接口，个人创作和互动状态保存在本机。</view>
+  <view class="about-list section">
+    <view wx:for="{{items}}" wx:key="name" class="about-row">
+      <text>{{item.name}}</text>
+      <text class="muted">{{item.value}}</text>
     </view>
   </view>
-  <view class='footer'>开发者 · myvin</view>
 </view>

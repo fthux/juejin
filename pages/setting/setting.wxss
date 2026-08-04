@@ -1,21 +1,33 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-  padding-top: 20rpx;
-  box-sizing: border-box;
+.setting-page {
+  padding-top: 1rpx;
 }
-.item.signout .title {
-  color: rgb(201, 40, 15);
-  justify-content: space-around;
+
+.setting-group {
+  margin-top: 16rpx;
 }
-.footer {
+
+.setting-row {
+  min-height: 98rpx;
+  padding: 0 32rpx;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  height: 80rpx;
-  font-size: 24rpx;
-  color: #333;
-  margin-top: 30rpx;
+  justify-content: space-between;
+  box-sizing: border-box;
+  color: #252933;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.setting-value {
+  color: #8a919f;
+  font-size: 25rpx;
+}
+
+.logout-button {
+  height: 92rpx;
+  margin: 32rpx 24rpx;
+  border-radius: 6rpx;
+  color: #f53f3f;
+  background: #ffffff;
+  font-size: 28rpx;
+  line-height: 92rpx;
 }

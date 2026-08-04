@@ -1,4 +1,8 @@
-<empty wx:if='{{!list.length}}' tip='还没有阅读过文章'></empty>
-<view class='container' wx:if='{{list.length}}'>
-  <readItem item='{{item}}' wx:for='{{list}}' wx:key='index'></readItem>
+<view class="page history-page">
+  <view wx:if="{{list.length}}" class="history-head surface">
+    <text>最近浏览</text>
+    <text class="clear" bindtap="clear">清空</text>
+  </view>
+  <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+  <empty-state wx:if="{{!list.length}}" text="还没有浏览记录"></empty-state>
 </view>

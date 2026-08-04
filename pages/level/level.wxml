@@ -1,0 +1,20 @@
+<view class="page level-page">
+  <view class="level-card">
+    <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>
+    <view class="level-name">掘友等级 Lv.{{level}}</view>
+    <view class="level-value">当前成长值 {{current}}</view>
+    <view class="level-progress"><view style="width: {{progress}}%"></view></view>
+    <view class="level-next">距离 Lv.{{nextLevel}} 还需 {{remaining}} 成长值</view>
+  </view>
+  <view class="section privilege-section">
+    <view class="section-header"><view class="section-title">等级权益</view></view>
+    <view wx:for="{{privileges}}" wx:key="level" class="privilege-row">
+      <view class="privilege-level">Lv.{{item.level}}</view>
+      <view class="privilege-copy">
+        <view class="privilege-title">{{item.title}}</view>
+        <view class="privilege-description">{{item.description}}</view>
+      </view>
+      <view class="privilege-state">{{item.level <= level ? '已解锁' : '待解锁'}}</view>
+    </view>
+  </view>
+</view>

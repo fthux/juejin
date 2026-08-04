@@ -1,22 +1,10 @@
 Page({
   data: {
-    projectAddress: 'https://github.com/myvin/juejin',
-    github: 'https://github.com/myvin',
-    email: '851399101@qq.com',
-    qq: '851399101',
-  },
-  copy(e) {
-    let dataset = (e.currentTarget || {}).dataset || {}
-    let title = dataset.title || ''
-    let content = dataset.content || ''
-    wx.setClipboardData({
-      data: content,
-      success() {
-        wx.showToast({
-          title: `已复制${title}`,
-          duration: 2000,
-        })
-      },
-    })
-  },
+    version: '6.7.6',
+    items: [
+      { name: '用户协议', value: '本地体验版本' },
+      { name: '隐私政策', value: '不上传本地创作数据' },
+      { name: '开源许可', value: 'MIT' }
+    ]
+  }
 })

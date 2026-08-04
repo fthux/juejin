@@ -1,0 +1,87 @@
+.note-head {
+  height: 96rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.note-head .primary-button {
+  min-height: 60rpx;
+  padding: 0 22rpx;
+  font-size: 24rpx;
+}
+
+.note-row {
+  min-height: 158rpx;
+  padding: 24rpx 32rpx;
+  box-sizing: border-box;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.note-title {
+  font-size: 29rpx;
+  font-weight: 600;
+}
+
+.note-content {
+  margin-top: 9rpx;
+  color: #515767;
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+
+.note-time {
+  margin-top: 10rpx;
+  color: #8a919f;
+  font-size: 21rpx;
+}
+
+.note-modal {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  padding: 0 36rpx;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.46);
+}
+
+.note-editor {
+  width: 100%;
+  padding: 30rpx;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.editor-title {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.note-editor input {
+  height: 82rpx;
+  margin-top: 24rpx;
+  padding: 0 20rpx;
+  border-radius: 6rpx;
+  background: #f2f3f5;
+}
+
+.note-editor textarea {
+  width: 100%;
+  height: 300rpx;
+  margin-top: 16rpx;
+  padding: 20rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  background: #f2f3f5;
+}
+
+.editor-actions {
+  margin-top: 24rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}

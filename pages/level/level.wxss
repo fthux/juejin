@@ -1,0 +1,81 @@
+.level-page {
+  padding: 24rpx;
+}
+
+.level-card {
+  min-height: 300rpx;
+  padding: 36rpx;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #1f2329;
+}
+
+.level-card image {
+  width: 70rpx;
+  height: 70rpx;
+}
+
+.level-name {
+  margin-top: 18rpx;
+  color: #fff3d6;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.level-value,
+.level-next {
+  margin-top: 12rpx;
+  color: #c9cdd4;
+  font-size: 23rpx;
+}
+
+.level-progress {
+  height: 12rpx;
+  margin-top: 26rpx;
+  border-radius: 6rpx;
+  overflow: hidden;
+  background: #4e5969;
+}
+
+.level-progress view {
+  height: 100%;
+  border-radius: 6rpx;
+  background: #ffd591;
+}
+
+.privilege-section {
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.privilege-row {
+  min-height: 120rpx;
+  padding: 20rpx 28rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.privilege-level {
+  width: 72rpx;
+  color: #8a5a16;
+  font-weight: 700;
+}
+
+.privilege-copy {
+  flex: 1;
+}
+
+.privilege-title {
+  font-size: 27rpx;
+  font-weight: 600;
+}
+
+.privilege-description,
+.privilege-state {
+  margin-top: 7rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}

@@ -1,0 +1,118 @@
+.creator-page {
+  padding-bottom: 24rpx;
+}
+
+.creator-head {
+  min-height: 330rpx;
+  padding: 42rpx 32rpx 34rpx;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #1e80ff;
+}
+
+.creator-label {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.creator-level {
+  margin-top: 14rpx;
+  color: #d9eaff;
+  font-size: 24rpx;
+}
+
+.creator-actions {
+  margin-top: 38rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.creator-action {
+  height: 104rpx;
+  padding: 0 26rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.creator-action image {
+  width: 58rpx;
+  height: 58rpx;
+}
+
+.data-section {
+  margin-top: 16rpx;
+}
+
+.stats-grid {
+  padding: 8rpx 16rpx 30rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14rpx;
+}
+
+.stat-item {
+  min-height: 142rpx;
+  padding: 22rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  background: #f7f8fa;
+}
+
+.stat-value {
+  color: #252933;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.stat-label {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.stat-change {
+  margin-top: 7rpx;
+  color: #00b578;
+  font-size: 21rpx;
+}
+
+.creator-entry {
+  min-height: 126rpx;
+  padding: 20rpx 32rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.creator-entry image {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.entry-copy {
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.entry-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.entry-description {
+  margin-top: 7rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.entry-arrow {
+  color: #c9cdd4;
+  font-size: 42rpx;
+}

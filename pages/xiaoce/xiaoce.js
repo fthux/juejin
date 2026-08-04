@@ -1,80 +1,82 @@
-const config = getApp().globalData.config
-const utils = require('../../utils/utils.js')
+const api = require('../../services/api.js')
+
 Page({
   data: {
-    xiaoceList: [],
-    noResult: false,
-    cursor: 0,
+    tabs: [
+      { id: 'recommend', name: '推荐' },
+      { id: 'free', name: '免费' },
+      { id: 'owned', name: '已购' }
+    ],
+    activeTab: 'recommend',
+    allCourses: [],
+    list: [],
+    loading: true,
+    ownedIds: []
   },
+
   onLoad() {
-    this.init()
-  },
-  onPullDownRefresh () {
-    this.reload()
-  },
-  // 下拉刷新触发
-  reload(reload) {
-    this.setData({
-      noResult: false,
-      cursor: 1,
-    })
-    this.init(reload)
-  },
-  init(reload) {
-    this.getXiaoce(reload)
-  },
-  // 获取小册列表
-  getXiaoce(reload) {
-    if (reload) {
-      this.setData({
-        pageNum: 1,
-      })
+    let ownedIds = wx.getStorageSync('jj:owned-courses')
+    if (!ownedIds) {
+      ownedIds = ['course-1']
+      wx.setStorageSync('jj:owned-courses', ownedIds)
     }
-    wx.request({
-      url: `https://api.juejin.cn/booklet_api/v1/booklet/listbycategory?aid=2608&uuid=${utils.getUuid()}&spider=0`,
-      method: 'POST',
-      data: {
-        category_id: "0",
-        cursor: this.data.cursor.toString(),
-        sort: 10,
-        limit: 20,
-        coupon_id: "",
-        is_vip: 0
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.err_no === 0) {
-          let list = data.data
-          if (!utils.isEmptyObject(list)) {
-            this.setData({
-              cursor: this.data.cursor + 20,
-              xiaoceList: reload ? list : this.data.xiaoceList.concat(list),
-            })
-          }
-        } else {
-          wx.showToast({
-            title: data.err_msg,
-            icon: 'none',
-          })
+    this.setData({ ownedIds })
+    this.load()
+  },
+
+  onPullDownRefresh() {
+    this.load()
+  },
+
+  switchTab(event) {
+    this.setData({ activeTab: event.currentTarget.dataset.id })
+    this.applyFilter()
+  },
+
+  load() {
+    this.setData({ loading: true })
+    api.courses('0').then(({ result }) => {
+      const allCourses = (result.data || []).map((item) => {
+        const info = item.base_info || item.booklet_info || item
+        const id = item.booklet_id || info.booklet_id || ''
+        return {
+          id,
+          title: info.title || '掘金课程',
+          summary: info.summary || info.introduction || '',
+          cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.webp',
+          price: info.price ? (Number(info.price) / 100).toFixed(2) : '',
+          section_count: info.section_count || 0,
+          is_finished: info.is_finished !== false,
+          author: (item.user_info && item.user_info.user_name) || '稀土掘金',
+          owned: this.data.ownedIds.indexOf(id) !== -1
         }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-      complete: () => {
-        wx.stopPullDownRefresh()
-      },
+      })
+      wx.setStorageSync('jj:course-cache', allCourses)
+      this.setData({ allCourses, loading: false })
+      this.applyFilter()
+    }).finally(() => {
+      this.setData({ loading: false })
+      wx.stopPullDownRefresh()
     })
   },
-  onReachBottom() {
-    if (!this.data.xiaoceList.length || !this.data.noResult) {
-      this.getXiaoce()
-    }
+
+  applyFilter() {
+    const type = this.data.activeTab
+    let list = this.data.allCourses
+    if (type === 'free') list = list.filter((item) => !item.price)
+    if (type === 'owned') list = list.filter((item) => item.owned)
+    this.setData({ list })
   },
-  onShareAppMessage(res) {
-    return {}
+
+  openCourse(event) {
+    wx.navigateTo({ url: `/pages/courseDetail/courseDetail?id=${event.detail.item.id}` })
   },
+
+  openSearch() {
+    wx.navigateTo({ url: '/pages/search/search?type=course' })
+  },
+
+  openVip() {
+    wx.navigateTo({ url: '/pages/vip/vip' })
+  }
 })

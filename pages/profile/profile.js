@@ -12,11 +12,14 @@ Page({
   },
 
   onLoad(query) {
-    const user = mock.authors.find((item) => item.user_id === query.id) || mock.authors[0]
+    const currentSession = session.getSession()
+    const user = query.id === 'local-user' && currentSession ? currentSession.user : (mock.authors.find((item) => item.user_id === query.id) || mock.authors[0])
+    const sourceArticles = user.user_id === 'local-user' ? session.getList('articles') : mock.articles
+    const sourcePins = user.user_id === 'local-user' ? session.getList('pins') : mock.pins
     this.setData({
       user,
-      articles: mock.articles.filter((item) => item.author_user_info.user_id === user.user_id).map(utils.normalizeArticle),
-      pins: mock.pins.filter((item) => item.author_user_info.user_id === user.user_id).map(utils.normalizePin),
+      articles: sourceArticles.filter((item) => item.author_user_info.user_id === user.user_id).map(utils.normalizeArticle),
+      pins: sourcePins.filter((item) => item.author_user_info.user_id === user.user_id).map(utils.normalizePin),
       followed: session.getList('follows').indexOf(user.user_id) !== -1
     })
     wx.setNavigationBarTitle({ title: user.user_name })

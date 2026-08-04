@@ -1,49 +1,193 @@
-.wrapper {
-  padding-top: 20rpx;
+.mine-page {
+  padding-bottom: 24rpx;
 }
-.profile {
-  height: 180rpx;
+
+.mine-header {
+  height: 96rpx;
+  padding: 0 30rpx;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 40rpx;
+  justify-content: space-between;
 }
-.profile .avatar {
-  width: 90rpx;
-  height: 90rpx;
-  margin-right: 40rpx;
+
+.mine-title {
+  font-size: 38rpx;
+  font-weight: 700;
 }
-.profile .info {
+
+.mine-head-actions {
   display: flex;
+  gap: 12rpx;
+}
+
+.head-icon {
+  position: relative;
+  width: 68rpx;
+  height: 68rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #515767;
+  font-size: 32rpx;
+}
+
+.head-badge,
+.menu-badge {
+  min-width: 28rpx;
+  height: 28rpx;
+  padding: 0 7rpx;
+  border-radius: 15rpx;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #f53f3f;
+  font-size: 17rpx;
+  line-height: 28rpx;
+  text-align: center;
+}
+
+.head-badge {
+  position: absolute;
+  top: 4rpx;
+  right: 0;
+}
+
+.user-panel {
+  min-height: 166rpx;
+  padding: 26rpx 32rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.user-avatar {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  background: #f2f3f5;
+}
+
+.user-copy {
+  min-width: 0;
+  margin-left: 22rpx;
   flex: 1;
-  font-size: 24rpx;
-  color: #abb4bf;
 }
-.profile .name {
-  font-size: 40rpx;
-  color: #333;
+
+.user-name {
+  font-size: 34rpx;
+  font-weight: 700;
 }
-.profile .info .text {
+
+.user-caption {
+  margin-top: 10rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.user-arrow,
+.menu-arrow {
+  color: #c9cdd4;
+  font-size: 44rpx;
+}
+
+.user-stats {
+  padding: 8rpx 32rpx 28rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.user-stats view {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
+  align-items: center;
+  gap: 7rpx;
+  color: #8a919f;
+  font-size: 21rpx;
 }
-.profile .more {
+
+.user-stats text:first-child {
+  color: #252933;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.feature-grid {
+  padding: 28rpx 16rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  color: #515767;
+  font-size: 23rpx;
+}
+
+.feature-item image {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.creator-banner {
+  min-height: 128rpx;
+  margin: 16rpx 24rpx;
+  padding: 24rpx 28rpx;
+  border-radius: 8rpx;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: #e8f3ff;
 }
-.profile .more image {
-  width: 20rpx;
-  height: 40rpx;
+
+.creator-title {
+  color: #1e80ff;
+  font-size: 30rpx;
+  font-weight: 700;
 }
-.profile .more .reddot {
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 50%;
-  background: #ff5959;
-  margin-right: 10rpx;
+
+.creator-copy {
+  margin-top: 8rpx;
+  color: #515767;
+  font-size: 22rpx;
+}
+
+.creator-arrow {
+  color: #1e80ff;
+  font-size: 24rpx;
+}
+
+.menu-row {
+  min-height: 96rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.menu-mark {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e80ff;
+  background: #e8f3ff;
+  font-size: 22rpx;
+}
+
+.menu-name {
+  margin-left: 20rpx;
+  flex: 1;
+  color: #252933;
+  font-size: 28rpx;
+}
+
+.menu-count {
+  margin-right: 12rpx;
+  color: #8a919f;
+  font-size: 23rpx;
 }

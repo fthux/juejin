@@ -1,3 +1,21 @@
-<view class='lists'>
-  <xiaoceItem list='{{xiaoceList}}'></xiaoceItem>
+<view class="page course-page">
+  <view class="course-header surface">
+    <view class="course-title">课程</view>
+    <view class="course-search" bindtap="openSearch">⌕</view>
+  </view>
+  <view class="vip-banner" bindtap="openVip">
+    <view>
+      <view class="vip-title">掘金 VIP</view>
+      <view class="vip-copy">课程试读 · 专属内容 · 社区权益</view>
+    </view>
+    <view class="vip-arrow">查看权益 ›</view>
+  </view>
+  <view class="tabs">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
+  </view>
+  <view class="course-list surface">
+    <course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
+  </view>
+  <empty-state wx:if="{{!loading && !list.length}}" text="这里还没有课程"></empty-state>
+  <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
 </view>

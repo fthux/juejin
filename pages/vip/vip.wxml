@@ -1,0 +1,17 @@
+<view class="page vip-page">
+  <view class="vip-hero">
+    <view class="vip-brand">稀土掘金 VIP</view>
+    <view class="vip-caption">开发者学习与成长权益</view>
+    <view class="vip-state">当前未开通</view>
+  </view>
+  <view class="benefit-section surface">
+    <view class="section-header"><view class="section-title">会员权益</view></view>
+    <view class="benefit-grid">
+      <view wx:for="{{benefits}}" wx:key="title" class="benefit-item">
+        <view class="benefit-icon">{{item.mark}}</view>
+        <view class="benefit-title">{{item.title}}</view>
+        <view class="benefit-description">{{item.description}}</view>
+      </view>
+    </view>
+  </view>
+</view>

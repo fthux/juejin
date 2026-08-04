@@ -1,0 +1,38 @@
+<view class="page creator-page">
+  <view class="creator-head">
+    <view class="creator-label">创作者中心</view>
+    <view class="creator-level" bindtap="openLevel">创作等级 Lv.1 ›</view>
+    <view class="creator-actions">
+      <view class="creator-action" bindtap="publishArticle">
+        <image src="/assets/app/creator/ic_publish_article.webp" mode="aspectFit"></image>
+        <text>写文章</text>
+      </view>
+      <view class="creator-action" bindtap="publishPin">
+        <image src="/assets/app/creator/ic_publish_pin.webp" mode="aspectFit"></image>
+        <text>发沸点</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section data-section">
+    <view class="section-header"><view class="section-title">近 7 天数据</view><view class="section-more">内容分析</view></view>
+    <view class="stats-grid">
+      <view wx:for="{{stats}}" wx:key="label" class="stat-item">
+        <view class="stat-value">{{item.value}}</view>
+        <view class="stat-label">{{item.label}}</view>
+        <view class="stat-change">{{item.change}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section creator-entry-list">
+    <view wx:for="{{entries}}" wx:key="name" class="creator-entry" data-url="{{item.url}}" bindtap="openEntry">
+      <image src="{{item.icon}}" mode="aspectFit"></image>
+      <view class="entry-copy">
+        <view class="entry-name">{{item.name}}</view>
+        <view class="entry-description">{{item.description}}</view>
+      </view>
+      <view class="entry-arrow">›</view>
+    </view>
+  </view>
+</view>

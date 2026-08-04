@@ -1,91 +1,73 @@
-const utils = require('../../utils/utils.js')
-const config = getApp().globalData.config
+const session = require('../../services/session.js')
+
 Page({
   data: {
-    userInfo: {},
-    userNotificationNum: 0,
-    auth: {},
+    session: null,
+    user: null,
+    unread: 0,
+    counts: {
+      collections: 0,
+      history: 0,
+      drafts: 0,
+      notes: 0
+    },
+    featureEntries: [
+      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/pages/sign/sign' },
+      { name: '成长等级', icon: '/assets/app/user/ic_user_lv1.webp', url: '/pages/level/level' },
+      { name: '创作者中心', icon: '/assets/app/user/ic_user_builder.webp', url: '/pages/creator/creator' },
+      { name: 'VIP 权益', icon: '/assets/app/user/ic_user_luck.webp', url: '/pages/vip/vip' }
+    ],
+    menuEntries: [
+      { name: '我的收藏', mark: '收', url: '/pages/collectionSet/collectionSet', countKey: 'collections' },
+      { name: '浏览历史', mark: '历', url: '/pages/readHistory/readHistory', countKey: 'history' },
+      { name: '我的课程', mark: '课', url: '/pages/xiaoce/xiaoce', tab: true },
+      { name: '创作草稿', mark: '稿', url: '/pages/drafts/drafts', countKey: 'drafts' },
+      { name: '我的笔记', mark: '记', url: '/pages/notes/notes', countKey: 'notes' },
+      { name: '消息中心', mark: '消', url: '/pages/notifications/notifications' },
+      { name: '设置', mark: '设', url: '/pages/setting/setting' }
+    ]
   },
-  onShow () {
-    let auth = utils.ifLogined()
+
+  onShow() {
+    const currentSession = session.getSession()
+    const notices = session.getList('notifications')
     this.setData({
-      auth,
+      session: currentSession,
+      user: currentSession ? currentSession.user : null,
+      unread: notices.filter((item) => item.unread).length,
+      counts: {
+        collections: session.getList('collections').length,
+        history: session.getList('history').length,
+        drafts: session.getList('drafts').length,
+        notes: session.getList('notes').length
+      }
     })
-    if (auth) {
-      this.getUserInfo()
-      this.userNotificationNum()
-    } else {
-      this.setData({
-        userInfo: {},
-        userNotificationNum: 0,
-      })
+  },
+
+  openLogin() {
+    wx.navigateTo({ url: '/pages/login/login' })
+  },
+
+  openProfile() {
+    if (!this.data.session) {
+      this.openLogin()
+      return
     }
+    wx.navigateTo({ url: '/pages/profile/profile?id=local-user' })
   },
-  navigatItem (e) {
-    return utils.navigatItem(e)
+
+  openEntry(event) {
+    const url = event.currentTarget.dataset.url
+    const isTab = event.currentTarget.dataset.tab
+    if (isTab) wx.switchTab({ url })
+    else wx.navigateTo({ url })
   },
-  // 获取用户信息
-  getUserInfo() {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.apiRequestUrl}/getUserInfo`,
-      data: {
-        src: 'web',
-        device_id: auth.clientId,
-        uid: auth.uid,
-        token: auth.token,
-        current_uid: auth.uid,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          this.setData({
-            userInfo: data.d,
-          })
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-    })
+
+  openPublish() {
+    wx.navigateTo({ url: '/pages/publish/publish?type=article' })
   },
-  // 消息中心消息条数
-  userNotificationNum() {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.notifyRequestUrl}/getUserNotificationNum`,
-      data: {
-        src: 'web',
-        uid: auth.uid,
-        token: auth.token,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          this.setData({
-            userNotificationNum: data.d && data.d.notification_num,
-          })
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-    })
-  },
+
+  openNotifications() {
+    wx.navigateTo({ url: '/pages/notifications/notifications' })
+  }
 })

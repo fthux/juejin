@@ -1,0 +1,32 @@
+<view class="page sign-page">
+  <view class="sign-hero">
+    <image src="/assets/app/sign/sign_banner1.webp" mode="aspectFill"></image>
+    <view class="sign-overlay">
+      <view class="sign-days">已连续签到 {{totalDays}} 天</view>
+      <view class="sign-mineral">我的矿石 {{mineral}}</view>
+      <view class="sign-button {{signed ? 'signed' : ''}}" bindtap="signIn">{{signed ? '今日已签到' : '立即签到'}}</view>
+    </view>
+  </view>
+
+  <view class="week-card surface">
+    <view wx:for="{{week}}" wx:key="label" class="day {{item.today ? 'today' : ''}}">
+      <text>周{{item.label}}</text>
+      <view class="day-reward {{item.signed ? 'signed' : ''}}">
+        <image src="{{item.signed ? '/assets/app/sign/ic_sign_in_golden.webp' : '/assets/app/sign/ic_sign_in_blue.webp'}}" mode="aspectFit"></image>
+      </view>
+      <text>{{item.date}}</text>
+    </view>
+  </view>
+
+  <view class="section task-section">
+    <view class="section-header"><view class="section-title">成长任务</view></view>
+    <view wx:for="{{tasks}}" wx:key="id" class="task-row">
+      <view class="task-icon">{{index + 1}}</view>
+      <view class="task-copy">
+        <view class="task-name">{{item.name}}</view>
+        <view class="task-reward">{{item.reward}}</view>
+      </view>
+      <view class="{{item.done ? 'secondary-button' : 'primary-button'}}" data-id="{{item.id}}" bindtap="doTask">{{item.done ? '已完成' : '去完成'}}</view>
+    </view>
+  </view>
+</view>

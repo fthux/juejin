@@ -1,0 +1,93 @@
+.course-detail-page {
+  padding-bottom: 116rpx;
+}
+
+.course-hero {
+  padding: 34rpx 32rpx;
+  display: flex;
+  gap: 26rpx;
+}
+
+.course-cover {
+  width: 190rpx;
+  height: 252rpx;
+  flex: 0 0 auto;
+  border-radius: 6rpx;
+  background: #f2f3f5;
+}
+
+.course-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.course-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.course-summary {
+  margin-top: 14rpx;
+  color: #8a919f;
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+
+.course-author {
+  margin-top: 20rpx;
+  color: #515767;
+  font-size: 23rpx;
+}
+
+.course-state {
+  margin-top: 20rpx;
+  color: #1e80ff;
+  font-size: 25rpx;
+}
+
+.intro-copy {
+  padding: 0 32rpx 32rpx;
+  color: #515767;
+  line-height: 1.7;
+}
+
+.chapter-row {
+  min-height: 116rpx;
+  padding: 20rpx 32rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.chapter-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.chapter-title {
+  font-size: 27rpx;
+}
+
+.chapter-duration,
+.chapter-state {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.course-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 106rpx;
+  padding: 14rpx 24rpx;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-top: 1rpx solid #e5e6eb;
+}

@@ -1,0 +1,26 @@
+<view class="page notes-page">
+  <view class="note-head surface">
+    <text>全部笔记</text>
+    <view class="primary-button" bindtap="create">新建笔记</view>
+  </view>
+  <view wx:if="{{notes.length}}" class="note-list surface">
+    <view wx:for="{{notes}}" wx:key="id" class="note-row">
+      <view class="note-title">{{item.title}}</view>
+      <view class="note-content two-lines">{{item.content}}</view>
+      <view class="note-time">{{item.displayTime}}</view>
+    </view>
+  </view>
+  <empty-state wx:if="{{!notes.length}}" text="记录阅读时的灵感与思考"></empty-state>
+
+  <view wx:if="{{editing}}" class="note-modal">
+    <view class="note-editor">
+      <view class="editor-title">新建笔记</view>
+      <input value="{{title}}" maxlength="60" placeholder="标题" bindinput="onTitleInput"></input>
+      <textarea value="{{content}}" maxlength="3000" placeholder="写下你的想法..." bindinput="onContentInput"></textarea>
+      <view class="editor-actions">
+        <view class="secondary-button" bindtap="cancel">取消</view>
+        <view class="primary-button" bindtap="save">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

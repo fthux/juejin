@@ -1,0 +1,74 @@
+.vip-page {
+  padding: 24rpx;
+  background: #f4f5f5;
+}
+
+.vip-hero {
+  height: 250rpx;
+  padding: 38rpx 34rpx;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  color: #f6d7a6;
+  background: #252933;
+}
+
+.vip-brand {
+  color: #fff3d6;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.vip-caption {
+  margin-top: 12rpx;
+  font-size: 25rpx;
+}
+
+.vip-state {
+  margin-top: 38rpx;
+  font-size: 23rpx;
+}
+
+.benefit-section {
+  margin-top: 20rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.benefit-grid {
+  padding: 10rpx 18rpx 32rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30rpx 12rpx;
+}
+
+.benefit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.benefit-icon {
+  width: 74rpx;
+  height: 74rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8a5a16;
+  background: #fff3d6;
+  font-weight: 700;
+}
+
+.benefit-title {
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.benefit-description {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 21rpx;
+  line-height: 1.45;
+}

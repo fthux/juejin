@@ -1,0 +1,53 @@
+.draft-head {
+  height: 96rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #8a919f;
+  font-size: 24rpx;
+}
+
+.draft-head .primary-button {
+  min-height: 60rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}
+
+.draft-row {
+  min-height: 156rpx;
+  padding: 24rpx 32rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.draft-row image {
+  width: 70rpx;
+  height: 70rpx;
+}
+
+.draft-copy {
+  min-width: 0;
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.draft-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.draft-content,
+.draft-time {
+  margin-top: 7rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.draft-delete {
+  padding: 16rpx;
+  color: #f53f3f;
+  font-size: 23rpx;
+}

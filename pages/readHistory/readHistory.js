@@ -1,67 +1,29 @@
-const config = getApp().globalData.config
+const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
+
 Page({
   data: {
-    COUNT: 20,
-    list: [],
-    auth: {},
+    list: []
   },
-  onLoad() {
-    let auth = utils.ifLogined()
-    this.setData({
-      auth,
-    })
-    this.getEntryBySelf()
+
+  onShow() {
+    this.setData({ list: session.getList('history').map((item) => Object.assign({}, item, { readTime: utils.formatTime(item.readAt) })) })
   },
-  toPostDetail(e) {
-    wx.navigateTo({
-      url: `/pages/post/post?id=${e.currentTarget.dataset.id}`,
-    })
-  },
-  getEntryBySelf() {
-    const auth = this.data.auth
-    let list = this.data.list
-    if (utils.isEmptyObject(list)) {
-      list = [{ verifyCreatedAt: '' }]
-    }
-    let before = (list.slice(-1)[0].createdAt) || ''
-    wx.request({
-      url: `${config.timelineRequestUrl}/get_entry_by_self`,
-      data: {
-        targetUid: auth.uid,
-        type: 'view',
-        before,
-        limit: this.data.COUNT,
-        order: 'createdAt',
-        uid: auth.uid,
-        token: auth.token,
-        device_id: auth.clientId,
-        client_id: auth.clientId,
-        src: 'android',
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          let list = (data.d && data.d.entrylist) || []
-          this.setData({
-            list: this.data.list.concat(list),
-          })
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
+
+  clear() {
+    const that = this
+    wx.showModal({
+      title: '清空浏览历史',
+      content: '清空后无法恢复',
+      success(result) {
+        if (!result.confirm) return
+        session.setList('history', [])
+        that.setData({ list: [] })
+      }
     })
   },
-  onReachBottom() {
-    this.getEntryBySelf()
-  },
+
+  openArticle(event) {
+    wx.navigateTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+  }
 })

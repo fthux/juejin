@@ -1,15 +1,15 @@
-<view class='wrapper'>
-  <view class='top'>
-    <view class='logo'>
-      <image src='/img/ic_login_logo.png'></image>
+<view class="page login-page">
+  <view class="login-main">
+    <image class="login-logo" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+    <view class="login-title">登录体验完整功能</view>
+    <view class="login-caption">内容与互动状态仅保存在当前设备</view>
+    <view class="nickname-field">
+      <input value="{{nickname}}" maxlength="20" placeholder="输入昵称" bindinput="onNicknameInput"></input>
     </view>
-    <form class='form' bindsubmit='commit'>
-      <view>
-        <input name='phoneNumber' placeholder='手机号/邮箱' focus></input>
-        <input name='password' placeholder='密码' password='true' value='{{password}}'></input>
-      </view>
-      <button class='login' formType='submit'>登录</button>
-    </form>
+    <button class="primary-button login-button" bindtap="login">进入账号</button>
+    <view class="agreement" bindtap="toggleAgree">
+      <view class="check {{agreed ? 'checked' : ''}}">{{agreed ? '✓' : ''}}</view>
+      <text>同意《用户协议》和《隐私政策》</text>
+    </view>
   </view>
-  <view class='footer'>稀土掘金·juejin.cn</view>
 </view>

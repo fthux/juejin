@@ -1,1 +1,13 @@
-/* pages/readHistory/readHistory.wxss */
+.history-head {
+  height: 84rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #515767;
+  font-size: 25rpx;
+}
+
+.clear {
+  color: #8a919f;
+}

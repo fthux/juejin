@@ -1,79 +1,50 @@
+const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
-const config = getApp().globalData.config
+
 Page({
   data: {
-    userInfo: {},
-    auth: {},
+    darkMode: false,
+    fontSize: '标准',
+    loggedIn: false,
+    version: '6.7.6'
   },
-  onLoad() {
-    let auth = utils.ifLogined()
+
+  onShow() {
     this.setData({
-      auth,
-    })
-    if (auth) {
-      this.getUserInfo()
-    }
-  },
-  // 获取个人信息
-  getUserInfo() {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.apiRequestUrl}/getUserInfo`,
-      data: {
-        src: 'web',
-        device_id: auth.clientId,
-        uid: auth.uid,
-        token: auth.token,
-        current_uid: auth.uid,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          this.setData({
-            userInfo: data.d,
-          })
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
+      darkMode: getApp().globalData.theme === 'dark',
+      loggedIn: Boolean(session.getSession()),
+      fontSize: wx.getStorageSync('jj:font-size') || '标准'
     })
   },
-  clearStorage () {
-    wx.clearStorage({
-      success () {
-        wx.switchTab({
-          url: '/pages/feidian/feidian',
-        })
+
+  toggleDark(event) {
+    const darkMode = event.detail.value
+    getApp().setTheme(darkMode ? 'dark' : 'light')
+    this.setData({ darkMode })
+    wx.setNavigationBarColor({ frontColor: darkMode ? '#ffffff' : '#000000', backgroundColor: darkMode ? '#1f2329' : '#ffffff' })
+  },
+
+  changeFont() {
+    const that = this
+    wx.showActionSheet({
+      itemList: ['较小', '标准', '较大'],
+      success(result) {
+        const fontSize = ['较小', '标准', '较大'][result.tapIndex]
+        wx.setStorageSync('jj:font-size', fontSize)
+        that.setData({ fontSize })
       }
     })
   },
-  signout () {
-    wx.showModal({
-      title: '提示',
-      content: '确定退出?',
-      cancelColor: '#3281ff',
-      confirmColor: '#3281ff',
-      success: (res) => {
-        if (res.confirm) {
-          wx.removeStorage({
-            key: 'auth',
-            success: function(res) {
-              wx.switchTab({
-                url: '/pages/feidian/feidian',
-              })
-            },
-          })
-        }
-      }
-    })
+
+  clearCache() {
+    session.setList('history', [])
+    utils.toast('缓存已清理')
   },
+
+  logout() {
+    session.logout()
+    getApp().refreshSession()
+    this.setData({ loggedIn: false })
+    utils.toast('已退出登录')
+  }
 })

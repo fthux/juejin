@@ -1,32 +1,3 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-.item {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 30rpx;
-  border-bottom: 1px solid #efefef;
-  background: #fff;
-}
-.item:last-child {
-  border-bottom: none;
-}
-.item .cover {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 10rpx;
-}
-.item .content {
-  padding-left: 20rpx;
-  box-sizing: border-box;
-  height: 100rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.item .content .others {
-  font-size: 24rpx;
-  color: #999;
+.collection-page {
+  min-height: 100vh;
 }

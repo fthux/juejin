@@ -1,0 +1,18 @@
+<view class="page drafts-page">
+  <view class="draft-head surface">
+    <text>共 {{drafts.length}} 篇草稿</text>
+    <view class="primary-button" bindtap="create">新建</view>
+  </view>
+  <view class="draft-list surface">
+    <view wx:for="{{drafts}}" wx:key="id" class="draft-row">
+      <image src="{{item.type === 'pin' ? '/assets/app/creator/ic_publish_pin.webp' : '/assets/app/creator/ic_publish_article.webp'}}" mode="aspectFit"></image>
+      <view class="draft-copy">
+        <view class="draft-title ellipsis">{{item.title}}</view>
+        <view class="draft-content ellipsis">{{item.content}}</view>
+        <view class="draft-time">{{item.displayTime}}</view>
+      </view>
+      <view class="draft-delete" data-id="{{item.id}}" bindtap="remove">删除</view>
+    </view>
+  </view>
+  <empty-state wx:if="{{!drafts.length}}" text="还没有草稿"></empty-state>
+</view>

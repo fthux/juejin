@@ -1,0 +1,32 @@
+<view class="page course-detail-page">
+  <view wx:if="{{course}}" class="course-hero surface">
+    <image class="course-cover" src="{{course.cover}}" mode="aspectFill"></image>
+    <view class="course-copy">
+      <view class="course-title">{{course.title}}</view>
+      <view class="course-summary two-lines">{{course.summary}}</view>
+      <view class="course-author">{{course.author}} · {{course.section_count}} 小节</view>
+      <view class="course-state">{{course.owned ? '已购课程' : '可试读前 2 节'}}</view>
+    </view>
+  </view>
+  <view class="section course-intro">
+    <view class="section-header"><view class="section-title">课程介绍</view></view>
+    <view class="intro-copy">围绕真实开发场景组织内容，从核心原理出发，逐步建立可以落地的工程方法。</view>
+  </view>
+  <view class="section chapters">
+    <view class="section-header">
+      <view class="section-title">课程目录</view>
+      <view class="section-more">{{chapters.length}} 节</view>
+    </view>
+    <view wx:for="{{chapters}}" wx:key="id" class="chapter-row" data-id="{{item.id}}" bindtap="openChapter">
+      <view class="chapter-copy">
+        <view class="chapter-title">{{item.title}}</view>
+        <view class="chapter-duration">{{item.duration}}</view>
+      </view>
+      <view class="chapter-state">{{item.unlocked ? '试听' : '锁定'}}</view>
+    </view>
+  </view>
+  <view class="course-bottom safe-bottom">
+    <view class="secondary-button" bindtap="toggleBookshelf">{{inBookshelf ? '移出书架' : '加入书架'}}</view>
+    <view class="primary-button" bindtap="startCourse">{{course.owned ? '继续学习' : '开始试读'}}</view>
+  </view>
+</view>

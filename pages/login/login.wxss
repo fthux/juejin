@@ -1,49 +1,78 @@
-.wrapper {
+.login-page {
   min-height: 100vh;
-  background: #3281ff;
-  padding: 0 30rpx;
+  background: #ffffff;
+}
+
+.login-main {
+  padding: 160rpx 64rpx 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-}
-.logo {
-  text-align: center;
-  padding: 40rpx 0;
-}
-.logo image {
-  width: 94rpx;
-  height: 94rpx;
-}
-.form view {
-  border-radius: 4rpx;
-  background: #fff;
-}
-.form input {
-  width: 100%;
-  padding-left: 30rpx;
-  box-sizing: border-box;
-  height: 100rpx;
-  border-radius: 4rpx;
-  border-bottom: 1rpx solid #efefef;
-}
-.form input:last-child {
-  border-bottom: none;
-}
-.login {
-  width: 100%;
-  margin-top: 20rpx;
-  color: #fff;
-  height: 90rpx;
-  line-height: 90rpx;
-  text-align: center;
-  border-radius: 4rpx;
-  background: rgba(0, 0, 0, .1);
-}
-.footer {
-  height: 120rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  color: #fff;
+}
+
+.login-logo {
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.login-title {
+  margin-top: 34rpx;
+  color: #252933;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.login-caption {
+  margin-top: 14rpx;
+  color: #8a919f;
+  font-size: 24rpx;
+}
+
+.nickname-field {
+  width: 100%;
+  height: 88rpx;
+  margin-top: 70rpx;
+  padding: 0 24rpx;
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background: #f2f3f5;
+}
+
+.nickname-field input {
+  width: 100%;
+  color: #252933;
+}
+
+.login-button {
+  width: 100%;
+  height: 88rpx;
+  margin-top: 24rpx;
+}
+
+.agreement {
+  margin-top: 26rpx;
+  display: flex;
+  align-items: center;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.check {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 12rpx;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 1rpx solid #c9cdd4;
+  color: #ffffff;
+  font-size: 20rpx;
+  line-height: 30rpx;
+  text-align: center;
+}
+
+.check.checked {
+  background: #1e80ff;
+  border-color: #1e80ff;
 }

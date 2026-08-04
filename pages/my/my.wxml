@@ -1,91 +1,50 @@
-<view class='wrapper'>
-  <view class='card profile'  catchtap='navigatItem' data-url='/pages/personal/personal'>
-    <view class='info'>
-      <jImage class='avatar' src='{{userInfo.avatarLarge}}' wx:if='{{userInfo.avatarLarge}}'></jImage>
-      <image class='avatar' src='/img/empty_avatar_user.png' wx:else></image>
-      <view class='text'>
-        <view class='name'>{{userInfo.username || '登录/注册'}}</view>
-        <view>{{userInfo.jobTitle || '添加职位'}} @ {{userInfo.company || '添加公司'}}</view>
-      </view>
-    </view>
-    <view class='more'>
-      <view class='reddot' wx:if='{{auth && !userInfo.company}}'></view>
-      <image src='/img/profile_arrow.png'></image>
+<view class="page mine-page">
+  <view class="mine-header surface">
+    <view class="mine-title">我</view>
+    <view class="mine-head-actions">
+      <view class="head-icon" bindtap="openNotifications">◔<text wx:if="{{unread}}" class="head-badge">{{unread}}</text></view>
+      <navigator class="head-icon" url="/pages/setting/setting">⚙</navigator>
     </view>
   </view>
 
-  <view class='card items'>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/infoCenter/infoCenter'>
-      <view class='title'>
-        <image src='/img/ic_notification.png'></image>
-        <view>消息中心</view>
-      </view>
-      <view class='count reddot' wx:if='{{userNotificationNum}}'>{{userNotificationNum}}</view>
+  <view class="user-panel surface" bindtap="openProfile">
+    <image class="user-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
+    <view class="user-copy">
+      <view class="user-name">{{user ? user.user_name : '登录体验完整功能'}}</view>
+      <view class="user-caption ellipsis">{{user ? ((user.job_title || '') + (user.company ? ' @ ' + user.company : '')) : '收藏、历史和创作内容保存在本机'}}</view>
     </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/favorate/favorate'>
-      <view class='title'>
-        <image src='/img/ic_heart_entry_bottom_full.png'></image>
-        <view>我喜欢的</view>
-      </view>
-      <view class='count'>{{userInfo.collectedEntriesCount || 0}}篇</view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/collectionSet/collectionSet'>
-      <view class='title'>
-        <image src='/img/ic_collection_set.png'></image>
-        <view>收藏集</view>
-      </view>
-      <view class='count'>{{userInfo.collectionSetCount || 0}}个</view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/purchasedXiaoce/purchasedXiaoce'>
-      <view class='title'>
-        <image src='/img/user_buy.png'></image>
-        <view>已购小册</view>
-      </view>
-      <view class='count'>{{userInfo.purchasedBookletCount
- || 0}}本</view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/myPins/myPins?liked=1'>
-      <view class='title'>
-        <image src='/img/user_liked_pin.png'></image>
-        <view>赞过的沸点</view>
-      </view>
-      <view class='count'>{{userInfo.likedPinCount || 0}}个</view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/readHistory/readHistory'>
-      <view class='title'>
-        <image src='/img/view.png'></image>
-        <view>阅读过的文章</view>
-      </view>
-      <view class='count'>{{userInfo.viewedEntriesCount || 0}}篇</view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/manageTag/manageTag'>
-      <view class='title'>
-        <image src='/img/tag.png'></image>
-        <view>标签管理</view>
-      </view>
-      <view class='count'>{{userInfo.subscribedTagsCount || 0}}个</view>
+    <view class="user-arrow">›</view>
+  </view>
+
+  <view wx:if="{{user}}" class="user-stats surface">
+    <view><text>{{user.followee_count || 0}}</text><text>关注</text></view>
+    <view><text>{{user.follower_count || 0}}</text><text>关注者</text></view>
+    <view><text>{{user.power || 0}}</text><text>矿石</text></view>
+    <view><text>Lv.{{user.level || 1}}</text><text>等级</text></view>
+  </view>
+
+  <view class="feature-grid section">
+    <view wx:for="{{featureEntries}}" wx:key="name" class="feature-item" data-url="{{item.url}}" bindtap="openEntry">
+      <image src="{{item.icon}}" mode="aspectFit"></image>
+      <text>{{item.name}}</text>
     </view>
   </view>
 
-  <view class='card items'>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/feedback/feedback' data-open='true'>
-      <view class='title'>
-        <image src='/img/icon_feed_back.png'></image>
-        <view>意见反馈</view>
-      </view>
+  <view class="creator-banner" bindtap="openPublish">
+    <view>
+      <view class="creator-title">开始创作</view>
+      <view class="creator-copy">分享技术与思考，记录你的成长</view>
     </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/setting/setting' data-open='true'>
-      <view class='title'>
-        <image src='/img/settings.png'></image>
-        <view>设置</view>
-      </view>
-    </view>
-    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/miniqrcode/miniqrcode' data-open='true'>
-      <view class='title'>
-        <image src='/img/qrcode.png' style='width:28rpx;height:28rpx;padding:10rpx'></image>
-        <view>小程序码</view>
-      </view>
-    </view>
+    <view class="creator-arrow">写文章 ›</view>
   </view>
 
+  <view class="menu-list section">
+    <view wx:for="{{menuEntries}}" wx:key="name" class="menu-row" data-url="{{item.url}}" data-tab="{{item.tab}}" bindtap="openEntry">
+      <view class="menu-mark">{{item.mark}}</view>
+      <view class="menu-name">{{item.name}}</view>
+      <view wx:if="{{item.countKey}}" class="menu-count">{{counts[item.countKey]}}</view>
+      <view wx:elif="{{item.name === '消息中心' && unread}}" class="menu-badge">{{unread}}</view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
 </view>

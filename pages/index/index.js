@@ -94,7 +94,7 @@ Page({
 
   openAuthor(event) {
     const author = event.detail.author
-    wx.navigateTo({ url: `/pages/my/my?userId=${author.user_id}` })
+    wx.navigateTo({ url: `/pages/profile/profile?id=${author.user_id}` })
   },
 
   onShareAppMessage() {
