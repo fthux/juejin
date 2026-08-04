@@ -1,29 +1,27 @@
-<view class="page setting-page">
+<view class="page setting-page {{darkMode ? 'dark-preview' : ''}}">
   <view class="setting-group surface">
-    <view class="setting-row">
-      <text>深色模式</text>
-      <view class="setting-value">{{darkMode ? '已开启' : '已关闭'}} · 跟随系统</view>
-    </view>
-    <view class="setting-row" bindtap="changeFont">
-      <text>字体大小</text>
-      <view class="setting-value">{{fontSize}} ›</view>
-    </view>
+    <view class="setting-row" data-id="edit" bindtap="action"><text>编辑资料</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="account" bindtap="action"><text>账号设置</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="messages" bindtap="action"><text>消息设置</text><text class="arrow">›</text></view>
   </view>
+
   <view class="setting-group surface">
-    <navigator class="setting-row" url="/pages/notifications/notifications">
-      <text>消息设置</text><view class="setting-value">›</view>
-    </navigator>
-    <view class="setting-row" bindtap="clearCache">
-      <text>清理缓存</text><view class="setting-value">›</view>
-    </view>
+    <view class="setting-row" data-id="blocking" bindtap="action"><text>屏蔽管理</text><text class="arrow">›</text></view>
+    <view class="setting-row"><text>个性化推荐设置</text><switch checked="{{personalized}}" color="#1e80ff" bindchange="togglePersonalized"></switch></view>
+    <view class="setting-row"><text>推送通知和设置</text><switch checked="{{pushEnabled}}" color="#1e80ff" bindchange="togglePush"></switch></view>
+    <view class="setting-row" bindtap="toggleDark"><text>深色模式</text><view class="setting-value">{{darkMode ? '已开启' : '已关闭'}} <text class="arrow">›</text></view></view>
   </view>
+
   <view class="setting-group surface">
-    <navigator class="setting-row" url="/pages/about/about">
-      <text>关于稀土掘金</text><view class="setting-value">›</view>
-    </navigator>
-    <view class="setting-row">
-      <text>版本</text><view class="setting-value">{{version}}</view>
-    </view>
+    <view class="setting-row" data-id="privacy" bindtap="action"><text>个人信息查阅与管理</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="basic" bindtap="action"><text>基础版掘金</text><text class="arrow">›</text></view>
   </view>
+
+  <view class="setting-group surface">
+    <view class="setting-row" data-id="update" bindtap="action"><text>检查更新</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="about" bindtap="action"><text>关于</text><text class="arrow">›</text></view>
+  </view>
+
   <button wx:if="{{loggedIn}}" class="logout-button" bindtap="logout">退出登录</button>
+  <view class="version">当前版本: {{version}}</view>
 </view>

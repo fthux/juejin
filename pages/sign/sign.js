@@ -4,14 +4,15 @@ const utils = require('../../utils/utils.js')
 Page({
   data: {
     signed: false,
-    totalDays: 0,
+    continuousDays: 0,
     mineral: 0,
-    week: [],
-    tasks: [
-      { id: 'read', name: '阅读一篇文章', reward: '+10 矿石', done: false },
-      { id: 'digg', name: '点赞优质内容', reward: '+5 矿石', done: false },
-      { id: 'comment', name: '参与一次讨论', reward: '+10 矿石', done: false }
-    ]
+    year: 0,
+    month: 0,
+    calendar: [],
+    reminder: false,
+    showShare: false,
+    fortune: '宜自行测试',
+    fortuneNote: '少玩多学习，代码没问题'
   },
 
   onLoad() {
@@ -21,26 +22,52 @@ Page({
   onShow() {
     if (!this.authorized) return
     const signedDays = session.getList('signDays')
-    const today = utils.dateKey()
-    const labels = ['一', '二', '三', '四', '五', '六', '日']
-    const offset = (new Date().getDay() + 6) % 7
-    const week = labels.map((label, index) => {
-      const date = new Date()
-      date.setDate(date.getDate() - offset + index)
-      const key = utils.dateKey(date)
-      return { label, date: date.getDate(), signed: signedDays.indexOf(key) !== -1, today: key === today }
-    })
-    const taskDone = {
-      read: session.getList('history').length > 0,
-      digg: session.getList('likes').length > 0,
-      comment: session.getList('comments').length > 0
-    }
+    const today = new Date()
+    const todayKey = utils.dateKey(today)
+    const continuousDays = this.getContinuousDays(signedDays, today)
+    const currentSession = session.getSession()
+    const power = currentSession && currentSession.user ? Number(currentSession.user.power) || 0 : 0
     this.setData({
-      signed: signedDays.indexOf(today) !== -1,
-      totalDays: signedDays.length,
-      mineral: signedDays.length * 10,
-      week,
-      tasks: this.data.tasks.map((item) => Object.assign({}, item, { done: taskDone[item.id] }))
+      signed: signedDays.indexOf(todayKey) !== -1,
+      continuousDays,
+      mineral: power || signedDays.length * 10,
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+      calendar: this.buildCalendar(today, signedDays),
+      reminder: Boolean(wx.getStorageSync('jj:sign-reminder'))
+    })
+  },
+
+  getContinuousDays(signedDays, today) {
+    let total = 0
+    const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    if (signedDays.indexOf(utils.dateKey(cursor)) === -1) cursor.setDate(cursor.getDate() - 1)
+    while (signedDays.indexOf(utils.dateKey(cursor)) !== -1) {
+      total += 1
+      cursor.setDate(cursor.getDate() - 1)
+    }
+    return total
+  },
+
+  buildCalendar(today, signedDays) {
+    const year = today.getFullYear()
+    const month = today.getMonth()
+    const first = new Date(year, month, 1)
+    const start = new Date(year, month, 1 - first.getDay())
+    const todayKey = utils.dateKey(today)
+    return Array.from({ length: 42 }, (_, index) => {
+      const date = new Date(start)
+      date.setDate(start.getDate() + index)
+      const key = utils.dateKey(date)
+      const currentMonth = date.getMonth() === month
+      return {
+        key,
+        day: date.getDate(),
+        currentMonth,
+        today: key === todayKey,
+        signed: signedDays.indexOf(key) !== -1,
+        canReissue: currentMonth && key < todayKey && signedDays.indexOf(key) === -1
+      }
     })
   },
 
@@ -50,17 +77,46 @@ Page({
       utils.toast('今天已经签到过了')
       return
     }
-    const result = session.signIn()
-    this.setData({ signed: result.signed, totalDays: result.days, mineral: result.days * 10 })
+    session.signIn()
     this.onShow()
     utils.toast('签到成功，矿石 +10')
   },
 
-  doTask(event) {
-    if (!session.requireLogin()) return
-    const id = event.currentTarget.dataset.id
-    const task = this.data.tasks.find((item) => item.id === id)
-    if (!task || task.done) return
-    wx.switchTab({ url: id === 'comment' ? '/pages/feidian/feidian' : '/pages/index/index' })
+  toggleReminder(event) {
+    const reminder = event.detail.value
+    wx.setStorageSync('jj:sign-reminder', reminder)
+    this.setData({ reminder })
+    utils.toast(reminder ? '已开启 10 点签到提醒' : '已关闭签到提醒')
+  },
+
+  showFortune() {
+    wx.showModal({ title: this.data.fortune, content: this.data.fortuneNote, showCancel: false })
+  },
+
+  showRules() {
+    wx.showModal({ title: '签到规则', content: '每日签到可获得矿石。连续签到天数越多，获得惊喜奖励的机会越多。', showCancel: false })
+  },
+
+  openReward(event) {
+    utils.toast(event.currentTarget.dataset.type === 'draw' ? '幸运抽奖即将开放' : '福利兑换即将开放')
+  },
+
+  showDonation() {
+    wx.showModal({ title: '公益计划', content: '使用矿石参与公益计划，为技术社区贡献一份力量。', showCancel: false })
+  },
+
+  openShare() {
+    this.setData({ showShare: true })
+  },
+
+  closeShare() {
+    this.setData({ showShare: false })
+  },
+
+  noop() {},
+
+  onShareAppMessage() {
+    this.setData({ showShare: false })
+    return { title: `我已连续签到 ${this.data.continuousDays} 天`, path: '/pages/sign/sign' }
   }
 })

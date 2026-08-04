@@ -1,8 +1,29 @@
 <view class="page history-page">
-  <view wx:if="{{list.length}}" class="history-head surface">
-    <text>最近浏览</text>
-    <text class="clear" bindtap="clear">清空</text>
+  <status-bar navigation="{{true}}">
+    <view class="history-nav">
+      <view class="nav-back" bindtap="back">‹</view>
+      <view class="nav-title">阅读记录</view>
+      <view class="nav-actions">
+        <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="toggleSearch"></image>
+        <view class="trash-icon" bindtap="clear"><view></view></view>
+      </view>
+    </view>
+  </status-bar>
+  <view wx:if="{{searching}}" class="search-row">
+    <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
+    <input value="{{keyword}}" focus placeholder="搜索阅读记录" confirm-type="search" bindinput="onSearchInput"></input>
+    <text bindtap="toggleSearch">取消</text>
   </view>
-  <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
-  <empty-state wx:if="{{!list.length}}" text="还没有浏览记录"></empty-state>
+  <block wx:for="{{groups}}" wx:key="date" wx:for-item="group">
+    <view class="history-date"><view class="clock-icon"></view>{{group.date}}</view>
+    <view wx:for="{{group.items}}" wx:key="article_id" class="history-item" data-id="{{item.article_id}}" bindtap="openArticle">
+      <view class="history-main">
+        <view class="history-title"><text>文章</text>{{item.title}}</view>
+        <view wx:if="{{item.brief_content}}" class="history-brief two-lines">{{item.brief_content}}</view>
+        <view class="history-meta">{{item.author.user_name}}<text>｜</text>{{item.view_count}} 阅读<text>·</text>{{item.digg_count}} 赞<text>·</text>{{item.comment_count}} 评论</view>
+      </view>
+      <image wx:if="{{item.cover_image}}" src="{{item.cover_image}}" mode="aspectFill"></image>
+    </view>
+  </block>
+  <empty-state wx:if="{{!groups.length}}" text="{{keyword ? '没有找到相关记录' : '还没有浏览记录'}}"></empty-state>
 </view>

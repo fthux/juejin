@@ -1,21 +1,29 @@
 <view class="page topic-page">
-  <scroll-view class="topic-tabs surface" scroll-x enhanced show-scrollbar="{{false}}">
-    <view class="topic-tabs-row">
-      <view wx:for="{{topics}}" wx:key="topic_id" class="chip {{current.topic_id === item.topic_id ? 'active' : ''}}" data-id="{{item.topic_id}}" bindtap="selectTopic">{{item.title}}</view>
+  <view class="topic-hero">
+    <image class="topic-bg" src="/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <view class="topic-shade"></view>
+    <status-bar></status-bar>
+    <view class="topic-nav"><text bindtap="back">‹</text><text>•••</text></view>
+    <view class="topic-summary">
+      <view class="topic-icon">{{current.icon || '#'}}</view>
+      <view class="topic-copy">
+        <view class="topic-name">{{current.title}}</view>
+        <view class="topic-count">沸点{{current.follower_count}} · 掘友{{current.msg_count}}</view>
+      </view>
+      <view class="join-button {{followed ? 'joined' : ''}}" bindtap="toggleFollow">{{followed ? '已加入' : '加入'}}</view>
     </view>
-  </scroll-view>
-  <view wx:if="{{current}}" class="topic-head surface">
-    <view class="topic-icon">{{current.icon || '#'}}</view>
-    <view class="topic-copy">
-      <view class="topic-name">{{current.title}}</view>
-      <view class="topic-count">{{current.follower_count}} 人已加入</view>
-    </view>
-    <view class="{{followed ? 'secondary-button' : 'primary-button'}}" bindtap="toggleFollow">{{followed ? '已加入' : '加入'}}</view>
     <view class="topic-description">{{current.description}}</view>
+    <view class="topic-detail" bindtap="showDetails">更多详细信息 ›</view>
   </view>
-  <view class="section-header surface">
-    <view class="section-title">热门沸点</view>
+
+  <view class="sort-row surface">
+    <text>排序</text>
+    <view class="sort-switch">
+      <view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="changeSort">热门</view>
+      <view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="changeSort">最新</view>
+    </view>
   </view>
   <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin"></pin-card>
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view class="publish-fab" bindtap="publish">✎</view>
 </view>

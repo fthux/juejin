@@ -3,7 +3,7 @@
 }
 
 .center-switch {
-  margin: 16rpx 28rpx;
+  margin: 16rpx 28rpx 0;
   padding: 8rpx;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -26,7 +26,7 @@
 }
 
 .center-filters {
-  height: 86rpx;
+  height: 92rpx;
   padding: 0 30rpx;
   display: flex;
   align-items: center;
@@ -45,10 +45,14 @@
 
 .center-grid {
   min-height: 420rpx;
-  padding: 34rpx 30rpx;
+  padding: 120rpx 32rpx 34rpx;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40rpx 28rpx;
+  gap: 48rpx 52rpx;
+}
+
+.center-grid.empty-grid {
+  padding-top: 0;
 }
 
 .center-course {
@@ -58,10 +62,10 @@
 .center-cover-wrap {
   position: relative;
   width: 100%;
-  height: 196rpx;
+  height: 220rpx;
   overflow: hidden;
-  border-radius: 6rpx;
-  background: var(--jj-fill);
+  border-radius: 0;
+  background: transparent;
 }
 
 .center-cover {
@@ -81,13 +85,13 @@
 }
 
 .center-title {
-  margin-top: 15rpx;
+  margin-top: 20rpx;
   color: var(--jj-text);
-  font-size: 27rpx;
+  font-size: 28rpx;
 }
 
 .center-progress {
   margin-top: 9rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: 24rpx;
 }

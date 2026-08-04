@@ -2,6 +2,29 @@ const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
+const GUIDE_COURSES = [
+  {
+    id: 'free-writing-guide',
+    title: '如何写一本掘金小册',
+    cover: '/assets/app/course/bg_book_free.webp',
+    owned: true,
+    vip: false,
+    priceValue: 0,
+    progress: 37,
+    statusText: '已学 37%'
+  },
+  {
+    id: 'free-community-guide',
+    title: '如何使用掘金社区',
+    cover: '/assets/app/course/bg_book_free.webp',
+    owned: true,
+    vip: false,
+    priceValue: 0,
+    progress: 8,
+    statusText: '已学 8%'
+  }
+]
+
 Page({
   data: {
     topTab: 'mine',
@@ -52,7 +75,8 @@ Page({
       remoteRows.concat(localRows).map((item) => item.id ? item : utils.normalizeCourse(item)).forEach((item) => {
         if (item.id) byId[String(item.id)] = item
       })
-      this.setData({ allCourses: Object.keys(byId).map((id) => byId[id]), loadError: Boolean(fromCache) })
+      const rows = Object.keys(byId).map((id) => byId[id])
+      this.setData({ allCourses: rows.length ? rows : GUIDE_COURSES, loadError: Boolean(fromCache && rows.length) })
       this.applyFilter()
     }).catch(() => this.setData({ allCourses: [], list: [], loadError: true }))
       .finally(() => this.setData({ loading: false }))

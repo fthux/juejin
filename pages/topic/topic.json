@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "话题广场"
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "话题详情"
 }

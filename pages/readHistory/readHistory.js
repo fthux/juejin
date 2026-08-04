@@ -3,7 +3,10 @@ const utils = require('../../utils/utils.js')
 
 Page({
   data: {
-    list: []
+    list: [],
+    groups: [],
+    keyword: '',
+    searching: false
   },
 
   onLoad() {
@@ -12,7 +15,49 @@ Page({
 
   onShow() {
     if (!this.authorized) return
-    this.setData({ list: session.getList('history').map((item) => Object.assign({}, item, { readTime: utils.formatTime(item.readAt) })) })
+    const list = session.getList('history').map((item) => Object.assign({}, item, {
+      readTime: utils.formatTime(item.readAt),
+      dateLabel: this.formatDate(item.readAt)
+    }))
+    this.setData({ list })
+    this.applySearch()
+  },
+
+  formatDate(value) {
+    const date = new Date(value || Date.now())
+    const pad = (part) => String(part).padStart(2, '0')
+    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`
+  },
+
+  applySearch() {
+    const keyword = this.data.keyword.trim().toLowerCase()
+    const rows = keyword
+      ? this.data.list.filter((item) => `${item.title}${item.brief_content}${item.author && item.author.user_name}`.toLowerCase().indexOf(keyword) !== -1)
+      : this.data.list
+    const groups = []
+    rows.forEach((item) => {
+      let group = groups.find((entry) => entry.date === item.dateLabel)
+      if (!group) {
+        group = { date: item.dateLabel, items: [] }
+        groups.push(group)
+      }
+      group.items.push(item)
+    })
+    this.setData({ groups })
+  },
+
+  toggleSearch() {
+    this.setData({ searching: !this.data.searching, keyword: '' })
+    this.applySearch()
+  },
+
+  onSearchInput(event) {
+    this.setData({ keyword: event.detail.value })
+    this.applySearch()
+  },
+
+  back() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/my/my' }) })
   },
 
   clear() {
@@ -23,12 +68,12 @@ Page({
       success(result) {
         if (!result.confirm) return
         session.setList('history', [])
-        that.setData({ list: [] })
+        that.setData({ list: [], groups: [] })
       }
     })
   },
 
   openArticle(event) {
-    wx.navigateTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+    wx.navigateTo({ url: `/pages/post/post?id=${event.currentTarget.dataset.id}` })
   }
 })

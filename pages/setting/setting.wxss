@@ -1,5 +1,15 @@
 .setting-page {
-  padding-top: 1rpx;
+  padding: 1rpx 0 80rpx;
+  background: var(--jj-bg);
+}
+
+.setting-page.dark-preview {
+  --jj-text: #f2f3f5;
+  --jj-text-3: #9b9fa8;
+  --jj-line: #303136;
+  --jj-surface: #191a1c;
+  --jj-bg: #0d0e10;
+  min-height: 100vh;
 }
 
 .setting-group {
@@ -15,19 +25,38 @@
   box-sizing: border-box;
   color: var(--jj-text);
   border-bottom: 1rpx solid var(--jj-line);
+  font-size: 28rpx;
 }
 
-.setting-value {
+.setting-row switch {
+  transform: scale(0.78);
+  transform-origin: right center;
+}
+
+.setting-value,
+.arrow {
   color: var(--jj-text-3);
-  font-size: 25rpx;
+}
+
+.arrow {
+  margin-left: 8rpx;
+  font-size: 42rpx;
+  font-weight: 200;
 }
 
 .logout-button {
   height: 92rpx;
-  margin: 32rpx 24rpx;
-  border-radius: 6rpx;
+  margin: 18rpx 0 0;
+  border-radius: 0;
   color: #f53f3f;
   background: var(--jj-surface);
   font-size: 28rpx;
   line-height: 92rpx;
+}
+
+.version {
+  margin-top: 28rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+  text-align: center;
 }

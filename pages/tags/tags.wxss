@@ -1,1 +1,101 @@
-.tags-page { background: var(--jj-surface); }.tags-tabs { height: 100rpx; display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1rpx solid var(--jj-line); }.tags-tabs view { display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); }.tags-tabs .active { color: var(--jj-blue); border-bottom: 5rpx solid var(--jj-blue); }.tag-row { min-height: 150rpx; padding: 22rpx 36rpx; display: flex; align-items: center; box-sizing: border-box; border-bottom: 1rpx solid var(--jj-line); }.tag-logo { width: 82rpx; height: 82rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; background: var(--jj-blue); font-weight: 700; }.tag-name { margin-left: 22rpx; flex: 1; color: var(--jj-text); font-size: 30rpx; }.tag-name text { display: block; margin-top: 8rpx; color: var(--jj-text-3); font-size: 22rpx; }.tag-follow { min-width: 116rpx; height: 60rpx; border-radius: 30rpx; display: flex; align-items: center; justify-content: center; color: var(--jj-blue); background: var(--jj-fill); }
+.tags-page {
+  background: var(--jj-surface);
+}
+
+.tags-tabs {
+  height: 104rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-bottom: 1rpx solid var(--jj-line);
+}
+
+.tags-tabs view {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--jj-text-3);
+  font-size: 30rpx;
+}
+
+.tags-tabs .active {
+  color: var(--jj-blue);
+}
+
+.tags-tabs .active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 180rpx;
+  height: 5rpx;
+  background: var(--jj-blue);
+  transform: translateX(-50%);
+}
+
+.tag-row {
+  min-height: 156rpx;
+  padding: 24rpx 36rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid var(--jj-line);
+}
+
+.tag-logo {
+  width: 84rpx;
+  height: 84rpx;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #1e80ff;
+  font-size: 23rpx;
+  font-weight: 700;
+}
+
+.tag-logo.black { border-radius: 8rpx; background: #050505; font-size: 18rpx; }
+.tag-logo.yellow { border-radius: 0; color: #111111; background: #f7df1e; font-size: 34rpx; }
+.tag-logo.cyan { color: #ffffff; background: #35b8d9; font-size: 36rpx; }
+.tag-logo.charcoal { color: #8a919f; background: #111111; }
+.tag-logo.green { border-radius: 4rpx; color: #ffffff; background: #42b883; font-size: 44rpx; }
+.tag-logo.orange { color: #f36c21; background: #eef5fa; font-size: 42rpx; font-style: italic; }
+.tag-logo.navy { color: #1389d2; background: #10385a; font-size: 38rpx; }
+.tag-logo.portrait { color: #dfd1ad; background: #6f684d; font-family: serif; font-size: 44rpx; }
+
+.tag-copy {
+  min-width: 0;
+  margin-left: 22rpx;
+  flex: 1;
+}
+
+.tag-name {
+  color: var(--jj-text);
+  font-size: 30rpx;
+}
+
+.tag-meta {
+  margin-top: 8rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}
+
+.tag-follow {
+  min-width: 118rpx;
+  height: 58rpx;
+  padding: 0 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 30rpx;
+  color: var(--jj-blue);
+  background: var(--jj-fill);
+  font-size: 24rpx;
+}
+
+.tag-follow.followed {
+  color: var(--jj-text-3);
+}

@@ -9,9 +9,6 @@ Page({
     if (!this.authorized) return
     this.setData({ list: session.getList('registrations') })
   },
-  openActivities() {
-    wx.navigateTo({ url: '/pages/creatorActivities/creatorActivities' })
-  },
   cancel(event) {
     const activity = this.data.list.find((item) => item.id === event.currentTarget.dataset.id)
     if (!activity) return

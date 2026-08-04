@@ -56,11 +56,17 @@
 }
 
 .empty-registration {
+  min-height: 760rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  color: var(--jj-text-3);
+  background: var(--jj-surface);
 }
 
-.empty-registration .primary-button {
-  margin-top: -90rpx;
+.empty-registration image {
+  width: 310rpx;
+  height: 250rpx;
+  margin-bottom: 26rpx;
 }
