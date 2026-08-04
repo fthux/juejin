@@ -26,7 +26,9 @@ Page({
   },
 
   onShow() {
-    this.setData({ session: session.getSession() })
+    const localArticles = session.getList('articles').map(utils.normalizeArticle)
+    const remoteArticles = this.data.list.filter((item) => String(item.article_id).indexOf('local-article-') !== 0)
+    this.setData({ session: session.getSession(), list: localArticles.concat(remoteArticles) })
   },
 
   onPullDownRefresh() {
@@ -63,8 +65,9 @@ Page({
 
     task.then(({ result, fromCache }) => {
       const rows = (result.data || []).map(utils.normalizeArticle)
+      const localArticles = reload ? session.getList('articles').map(utils.normalizeArticle) : []
       this.setData({
-        list: reload ? rows : this.data.list.concat(rows),
+        list: reload ? localArticles.concat(rows) : this.data.list.concat(rows),
         cursor: result.cursor || '0',
         hasMore: Boolean(result.has_more) && rows.length > 0,
         fromCache,
@@ -81,7 +84,7 @@ Page({
   },
 
   openNotifications() {
-    wx.navigateTo({ url: '/pages/infoCenter/infoCenter' })
+    wx.navigateTo({ url: '/pages/notifications/notifications' })
   },
 
   openArticle(event) {

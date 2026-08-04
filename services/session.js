@@ -8,6 +8,7 @@ const KEYS = {
   follows: 'jj:follows',
   history: 'jj:history',
   drafts: 'jj:drafts',
+  articles: 'jj:local-articles',
   pins: 'jj:local-pins',
   notes: 'jj:notes',
   notifications: 'jj:notifications',
@@ -95,6 +96,28 @@ function publishPin(pin) {
   return item
 }
 
+function publishArticle(article) {
+  const list = getList('articles')
+  const currentSession = getSession() || login()
+  const item = {
+    article_id: `local-article-${Date.now()}`,
+    title: article.title,
+    brief_content: article.content.slice(0, 88),
+    content: article.content,
+    author_user_info: currentSession.user,
+    tags: (article.tags || []).map((name) => ({ tag_name: name })),
+    ctime: Math.floor(Date.now() / 1000),
+    digg_count: 0,
+    comment_count: 0,
+    view_count: 1,
+    collect_count: 0,
+    local: true
+  }
+  list.unshift(item)
+  setList('articles', list)
+  return item
+}
+
 function saveNote(note) {
   const list = getList('notes')
   const item = Object.assign({ id: `note-${Date.now()}`, updatedAt: Date.now(), favorite: false }, note)
@@ -127,6 +150,7 @@ module.exports = {
   addHistory,
   saveDraft,
   publishPin,
+  publishArticle,
   saveNote,
   signIn
 }

@@ -1,0 +1,35 @@
+<view class="page profile-page">
+  <view wx:if="{{user}}" class="profile-head surface">
+    <image class="profile-bg" src="/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <view class="profile-main">
+      <image class="profile-avatar" src="{{user.avatar_large}}" mode="aspectFill"></image>
+      <view class="profile-copy">
+        <view class="profile-name">{{user.user_name}}</view>
+        <view class="profile-job">{{user.job_title}}<text wx:if="{{user.company}}"> @ {{user.company}}</text></view>
+      </view>
+    </view>
+    <view class="profile-description">{{user.description || '持续学习，分享技术与思考。'}}</view>
+    <view class="profile-stats">
+      <view><text>{{user.followee_count || 128}}</text><text>关注</text></view>
+      <view><text>{{user.follower_count || 0}}</text><text>关注者</text></view>
+      <view><text>{{user.got_digg_count || 1268}}</text><text>获赞</text></view>
+      <view class="profile-actions">
+        <view class="secondary-button" bindtap="openChat">私信</view>
+        <view class="primary-button" bindtap="toggleFollow">{{followed ? '已关注' : '关注'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{activeTab === 'article' ? 'active' : ''}}" data-id="article" bindtap="switchTab">文章</view>
+    <view class="tab {{activeTab === 'pin' ? 'active' : ''}}" data-id="pin" bindtap="switchTab">沸点</view>
+  </view>
+  <view wx:if="{{activeTab === 'article'}}">
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    <empty-state wx:if="{{!articles.length}}" text="还没有发布文章"></empty-state>
+  </view>
+  <view wx:else>
+    <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin"></pin-card>
+    <empty-state wx:if="{{!pins.length}}" text="还没有发布沸点"></empty-state>
+  </view>
+</view>

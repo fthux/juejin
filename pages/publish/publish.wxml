@@ -1,0 +1,29 @@
+<view class="page publish-page">
+  <view class="publish-types surface">
+    <view class="publish-type {{type === 'pin' ? 'active' : ''}}" data-type="pin" bindtap="switchType">
+      <image src="/assets/app/creator/ic_publish_pin.webp" mode="aspectFit"></image>
+      <text>发沸点</text>
+    </view>
+    <view class="publish-type {{type === 'article' ? 'active' : ''}}" data-type="article" bindtap="switchType">
+      <image src="/assets/app/creator/ic_publish_article.webp" mode="aspectFit"></image>
+      <text>写文章</text>
+    </view>
+  </view>
+
+  <view class="editor surface">
+    <input wx:if="{{type === 'article'}}" class="title-input" value="{{title}}" maxlength="80" placeholder="请输入文章标题" bindinput="onTitleInput"></input>
+    <textarea class="content-input {{type === 'article' ? 'article-input' : ''}}" value="{{content}}" maxlength="{{type === 'article' ? 10000 : 1000}}" placeholder="{{type === 'article' ? '开始写作...' : '快和掘友一起分享新鲜事～'}}" bindinput="onContentInput"></textarea>
+    <view wx:if="{{type === 'article'}}" class="tag-input-row">
+      <text>#</text>
+      <input value="{{tagText}}" maxlength="30" placeholder="添加标签，用逗号分隔" bindinput="onTagsInput"></input>
+    </view>
+    <view class="editor-foot">
+      <text>{{count}} / {{type === 'article' ? 10000 : 1000}}</text>
+    </view>
+  </view>
+
+  <view class="publish-actions safe-bottom">
+    <view class="secondary-button" bindtap="saveDraft">存草稿</view>
+    <view class="primary-button" bindtap="publish">{{publishing ? '发布中...' : '发布'}}</view>
+  </view>
+</view>

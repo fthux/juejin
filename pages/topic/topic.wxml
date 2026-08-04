@@ -1,0 +1,21 @@
+<view class="page topic-page">
+  <scroll-view class="topic-tabs surface" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="topic-tabs-row">
+      <view wx:for="{{topics}}" wx:key="topic_id" class="chip {{current.topic_id === item.topic_id ? 'active' : ''}}" data-id="{{item.topic_id}}" bindtap="selectTopic">{{item.title}}</view>
+    </view>
+  </scroll-view>
+  <view wx:if="{{current}}" class="topic-head surface">
+    <view class="topic-icon">{{current.icon || '#'}}</view>
+    <view class="topic-copy">
+      <view class="topic-name">{{current.title}}</view>
+      <view class="topic-count">{{current.follower_count}} 人已加入</view>
+    </view>
+    <view class="{{followed ? 'secondary-button' : 'primary-button'}}" bindtap="toggleFollow">{{followed ? '已加入' : '加入'}}</view>
+    <view class="topic-description">{{current.description}}</view>
+  </view>
+  <view class="section-header surface">
+    <view class="section-title">热门沸点</view>
+  </view>
+  <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin"></pin-card>
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+</view>

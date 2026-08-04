@@ -1,3 +1,78 @@
-.container {
-  background: #fff;
+.pin-detail-page {
+  padding-bottom: 108rpx;
+}
+
+.comments {
+  margin-top: 0;
+}
+
+.comment-row {
+  padding: 26rpx 32rpx;
+  display: flex;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.comment-row .avatar {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.comment-body {
+  min-width: 0;
+  margin-left: 18rpx;
+  flex: 1;
+}
+
+.comment-user {
+  color: #515767;
+  font-size: 25rpx;
+}
+
+.comment-content {
+  margin-top: 10rpx;
+  color: #252933;
+  font-size: 28rpx;
+  line-height: 1.55;
+}
+
+.comment-time {
+  margin-top: 12rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.comment-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 100rpx;
+  padding: 14rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.comment-input {
+  height: 64rpx;
+  padding: 0 22rpx;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: 6rpx;
+  color: #8a919f;
+  background: #f2f3f5;
+}
+
+.share-button {
+  width: 100rpx;
+  height: 64rpx;
+  padding: 0;
+  color: #1e80ff;
+  background: transparent;
+  font-size: 25rpx;
+  line-height: 64rpx;
 }

@@ -1,0 +1,82 @@
+.profile-head {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-bg {
+  width: 100%;
+  height: 150rpx;
+  background: #e8f3ff;
+}
+
+.profile-main {
+  margin-top: -54rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: flex-end;
+}
+
+.profile-avatar {
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 50%;
+  background: #f2f3f5;
+  border: 6rpx solid #ffffff;
+}
+
+.profile-copy {
+  min-width: 0;
+  margin: 0 0 10rpx 22rpx;
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.profile-job {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 24rpx;
+}
+
+.profile-description {
+  padding: 24rpx 32rpx 0;
+  color: #515767;
+  font-size: 26rpx;
+}
+
+.profile-stats {
+  padding: 30rpx 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+}
+
+.profile-stats > view:not(.profile-actions) {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  color: #8a919f;
+  font-size: 21rpx;
+}
+
+.profile-stats > view:not(.profile-actions) text:first-child {
+  color: #252933;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.profile-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 12rpx;
+}
+
+.profile-actions .primary-button,
+.profile-actions .secondary-button {
+  min-height: 60rpx;
+  padding: 0 22rpx;
+  font-size: 24rpx;
+}

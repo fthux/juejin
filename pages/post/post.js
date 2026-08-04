@@ -22,7 +22,9 @@ Page({
   },
 
   loadDetail() {
-    api.articleDetail(this.data.articleId).then(({ result }) => {
+    const local = session.getList('articles').find((item) => item.article_id === this.data.articleId)
+    const task = local ? Promise.resolve({ result: { data: Object.assign({}, local, { article_info: local }) } }) : api.articleDetail(this.data.articleId)
+    task.then(({ result }) => {
       const detail = result.data || {}
       const raw = Object.assign({}, detail.article_info || detail, {
         author_user_info: detail.author_user_info || (detail.article_info && detail.article_info.author_user_info),

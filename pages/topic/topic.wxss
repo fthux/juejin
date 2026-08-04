@@ -1,0 +1,63 @@
+.topic-tabs {
+  width: 100%;
+  padding: 18rpx 20rpx;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.topic-tabs-row {
+  display: flex;
+  gap: 14rpx;
+}
+
+.topic-head {
+  margin-top: 1rpx;
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topic-icon {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e80ff;
+  background: #e8f3ff;
+  font-weight: 700;
+}
+
+.topic-copy {
+  min-width: 0;
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.topic-name {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.topic-count {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.topic-head .primary-button,
+.topic-head .secondary-button {
+  min-height: 60rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}
+
+.topic-description {
+  width: 100%;
+  margin-top: 22rpx;
+  color: #515767;
+  font-size: 26rpx;
+  line-height: 1.55;
+}

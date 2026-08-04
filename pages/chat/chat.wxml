@@ -1,0 +1,13 @@
+<view class="page chat-page">
+  <scroll-view class="message-list" scroll-y scroll-into-view="last-message">
+    <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.side}}" id="{{index === messages.length - 1 ? 'last-message' : ''}}">
+      <image wx:if="{{item.side === 'left'}}" class="avatar" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+      <view class="message-bubble">{{item.content}}</view>
+      <image wx:if="{{item.side === 'right'}}" class="avatar" src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image>
+    </view>
+  </scroll-view>
+  <view class="chat-input safe-bottom">
+    <input value="{{input}}" maxlength="500" placeholder="发消息..." confirm-type="send" bindinput="onInput" bindconfirm="send"></input>
+    <view class="primary-button" bindtap="send">发送</view>
+  </view>
+</view>

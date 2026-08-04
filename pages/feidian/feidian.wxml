@@ -1,5 +1,33 @@
-<view class='container'>
-  <view class='pinList'>
-    <feidianItem item='{{item}}' wx:for='{{list}}' wx:key='index'></feidianItem>
+<view class="page pin-page">
+  <view class="pin-header surface">
+    <view class="pin-title">沸点</view>
+    <view class="pin-header-actions">
+      <view class="header-icon" bindtap="openSearch">⌕</view>
+      <view class="header-icon" bindtap="openPublish">＋</view>
+    </view>
   </view>
+  <view class="tabs pin-tabs">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
+  </view>
+
+  <view wx:if="{{activeTab !== 'topic'}}">
+    <pin-card wx:for="{{list}}" wx:key="msg_id" item="{{item}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike"></pin-card>
+    <empty-state wx:if="{{!loading && !list.length}}" text="暂无沸点"></empty-state>
+  </view>
+
+  <view wx:else class="topic-list surface">
+    <view class="topic-guide">圈子广场</view>
+    <view wx:for="{{topics}}" wx:key="topic_id" class="topic-row" data-id="{{item.topic_id}}" bindtap="openTopic">
+      <view class="topic-icon">{{item.icon || '#'}}</view>
+      <view class="topic-copy">
+        <view class="topic-name">{{item.title}}</view>
+        <view class="topic-description ellipsis">{{item.description}}</view>
+        <view class="topic-count">{{item.follower_count}} 人已加入</view>
+      </view>
+      <view class="secondary-button">加入</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view class="publish-fab" bindtap="openPublish">＋</view>
 </view>

@@ -1,0 +1,33 @@
+<view class="page notice-page">
+  <view class="notice-grid surface">
+    <view wx:for="{{entries}}" wx:key="type" class="notice-entry">
+      <view class="notice-icon" style="background: {{item.color}}">
+        {{item.mark}}
+        <text wx:if="{{item.unread}}" class="badge">{{item.unread}}</text>
+      </view>
+      <text>{{item.title}}</text>
+    </view>
+  </view>
+  <view class="section conversation-section">
+    <view class="section-header">
+      <view class="section-title">消息</view>
+      <view class="section-more" bindtap="markAllRead">全部已读</view>
+    </view>
+    <view class="conversation" bindtap="openChat">
+      <image class="avatar" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+      <view class="conversation-copy">
+        <view class="conversation-title">掘金小助手</view>
+        <view class="conversation-preview ellipsis">欢迎体验稀土掘金小程序</view>
+      </view>
+      <view class="conversation-time">刚刚</view>
+    </view>
+    <view wx:for="{{notices}}" wx:key="id" class="conversation">
+      <view class="notice-dot {{item.unread ? 'unread' : ''}}"></view>
+      <view class="conversation-copy">
+        <view class="conversation-title">{{item.title}}</view>
+        <view class="conversation-preview ellipsis">{{item.content}}</view>
+      </view>
+      <view class="conversation-time">{{item.displayTime}}</view>
+    </view>
+  </view>
+</view>

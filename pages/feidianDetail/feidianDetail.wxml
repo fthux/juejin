@@ -1,3 +1,21 @@
-<view class='container'>
-  <feidianItemTop item='{{item}}' intro='{{false}}'></feidianItemTop>
+<view class="page pin-detail-page">
+  <pin-card wx:if="{{item}}" item="{{item}}" bind:like="toggleLike"></pin-card>
+  <view class="comments section">
+    <view class="section-header">
+      <view class="section-title">全部评论 · {{comments.length}}</view>
+    </view>
+    <view wx:for="{{comments}}" wx:key="id" class="comment-row">
+      <image class="avatar" src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image>
+      <view class="comment-body">
+        <view class="comment-user">{{item.user}}</view>
+        <view class="comment-content">{{item.content}}</view>
+        <view class="comment-time">{{item.time}} · 回复</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view class="comment-bar safe-bottom">
+    <view class="comment-input" bindtap="addComment">说点什么...</view>
+    <button open-type="share" class="share-button">分享</button>
+  </view>
 </view>
