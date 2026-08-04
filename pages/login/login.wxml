@@ -11,7 +11,7 @@
       </view>
     </view>
 
-    <button class="primary-button login-button" disabled="{{continuing}}" bindtap="continue">{{continuing ? '请稍候...' : '获取验证码'}}</button>
+    <button class="primary-button login-button" disabled="{{continuing}}" bindtap="continue">{{continuing ? '正在发送...' : '获取验证码'}}</button>
     <view class="agreement" bindtap="toggleAgree">
       <view class="check {{agreed ? 'checked' : ''}}">{{agreed ? '✓' : ''}}</view>
       <text>已阅读并同意《用户协议》和《隐私政策》</text>

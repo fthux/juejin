@@ -170,8 +170,9 @@ function requestJuejin(path, data) {
 }
 
 function sendCode(mobile) {
-  return request('/passport/web/send_code/', {
+  return request('/passport/mobile/send_code/v1/', {
     method: 'POST',
+    query: { account_sdk_source: 'app' },
     data: mixFields({ mobile, type: 24 }, ['mobile', 'type'])
   })
 }
@@ -203,8 +204,9 @@ function normalizeUser(account, profile) {
 }
 
 function login(mobile, code) {
-  return request('/passport/web/sms_login/', {
+  return request('/passport/mobile/sms_login/', {
     method: 'POST',
+    query: { account_sdk_source: 'app' },
     data: mixFields({ mobile, code }, ['mobile', 'code'])
   }).then((loginData) => request('/passport/account/info/v2/').catch(() => loginData))
     .then((account) => {

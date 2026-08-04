@@ -1,4 +1,5 @@
 const utils = require('../../utils/utils.js')
+const passport = require('../../services/passport.js')
 
 Page({
   data: {
@@ -37,13 +38,15 @@ Page({
     }
 
     this.setData({ continuing: true })
-    const query = [
-      `mobile=${encodeURIComponent(this.data.mobile)}`,
-      this.redirect ? `redirect=${encodeURIComponent(this.redirect)}` : ''
-    ].filter(Boolean).join('&')
-    wx.navigateTo({
-      url: `/pages/loginCode/loginCode?${query}`,
-      complete: () => this.setData({ continuing: false })
-    })
+    passport.sendCode(this.data.mobile).then(() => {
+      const query = [
+        `mobile=${encodeURIComponent(this.data.mobile)}`,
+        'sent=1',
+        this.redirect ? `redirect=${encodeURIComponent(this.redirect)}` : ''
+      ].filter(Boolean).join('&')
+      wx.navigateTo({ url: `/pages/loginCode/loginCode?${query}` })
+    }).catch((error) => {
+      utils.toast((error && error.message) || '验证码发送失败，请稍后重试')
+    }).finally(() => this.setData({ continuing: false }))
   }
 })

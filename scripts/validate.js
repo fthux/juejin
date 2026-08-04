@@ -87,11 +87,14 @@ for (const page of privatePages) {
 const loginSource = read('pages/login/login.js')
 const loginCodeSource = read('pages/loginCode/loginCode.js')
 if (!loginSource.includes('/pages/loginCode/loginCode?')) fail('手机号登录第一步必须跳转到验证码页面')
+if (!loginSource.includes('passport.sendCode(') || !loginSource.includes("'sent=1'")) fail('手机号页按钮必须先发送验证码再跳转')
 if (!loginCodeSource.includes('this.sendCode()')) fail('验证码页面必须在加载时自动发送验证码')
+if (!loginCodeSource.includes("query.sent === '1'")) fail('验证码页面必须避免重复发送验证码')
 if (!/code\.length\s*===\s*6/.test(loginCodeSource) || !loginCodeSource.includes('this.login()')) {
   fail('验证码输入满六位后必须自动登录')
 }
 if (!loginSource.includes('redirect') || !loginCodeSource.includes('redirect')) fail('登录两步必须保留深链跳转参数')
+if (/需要安全验证|滑块验证/.test(loginCodeSource)) fail('短信登录不得出现滑块安全验证分支')
 
 const md5 = require(path.join(root, 'utils/md5.js'))
 if (md5('') !== 'd41d8cd98f00b204e9800998ecf8427e') fail('MD5 空字符串向量校验失败')

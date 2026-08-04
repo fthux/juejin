@@ -32,7 +32,8 @@ Page({
       mobile,
       maskedMobile: `${mobile.slice(0, 3)} ${mobile.slice(3, 7)} ${mobile.slice(7)}`
     })
-    this.sendCode()
+    if (query.sent === '1') this.startCountdown()
+    else this.sendCode()
   },
 
   onUnload() {
@@ -57,7 +58,7 @@ Page({
       this.startCountdown()
     }).catch((error) => {
       this.setData({ sendError: (error && error.message) || '验证码发送失败' })
-      this.showPassportError(error, '验证码发送失败')
+      utils.toast((error && error.message) || '验证码发送失败')
     }).finally(() => this.setData({ sending: false }))
   },
 
@@ -83,7 +84,7 @@ Page({
     }).catch((error) => {
       this.lastSubmittedCode = ''
       this.setData({ code: '' })
-      this.showPassportError(error, '登录失败，请重新输入验证码')
+      utils.toast((error && error.message) || '登录失败，请重新输入验证码')
     }).finally(() => this.setData({ loggingIn: false }))
   },
 
@@ -98,17 +99,5 @@ Page({
       return
     }
     wx.switchTab({ url: '/pages/my/my' })
-  },
-
-  showPassportError(error, fallback) {
-    if (error && error.captcha) {
-      wx.showModal({
-        title: '需要安全验证',
-        content: '掘金账号系统触发了安全验证。请稍后重试，或先在掘金官网完成验证。',
-        showCancel: false
-      })
-      return
-    }
-    utils.toast((error && error.message) || fallback)
   }
 })
