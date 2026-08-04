@@ -1,9 +1,15 @@
 <view class="page course-page">
   <status-bar navigation="{{true}}">
     <view class="course-header surface">
-      <image class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
-      <view class="course-title">课程</view>
-      <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
+      <view class="course-type-tabs">
+        <view wx:for="{{courseTypes}}" wx:key="id" class="course-type {{activeCourseType === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCourseType">
+          <text>{{item.name}}</text><text wx:if="{{item.badge}}" class="vip-free">{{item.badge}}</text>
+        </view>
+      </view>
+      <view class="course-actions">
+        <image class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
+        <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
+      </view>
     </view>
   </status-bar>
 
@@ -20,6 +26,7 @@
         <view wx:if="{{item.id === 'price'}}" class="sort-arrows {{priceDirection}}"><text>▲</text><text>▼</text></view>
       </view>
     </view>
+    <view wx:if="{{activeCourseType === 'booklet'}}" class="vip-filter {{onlyVip ? 'active' : ''}}" bindtap="toggleVip"><text class="vip-check">{{onlyVip ? '✓' : ''}}</text><text>只看 VIP 课程</text></view>
   </view>
 
   <view class="course-list surface">

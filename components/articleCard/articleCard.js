@@ -13,6 +13,10 @@ Component({
     compact: {
       type: Boolean,
       value: false
+    },
+    home: {
+      type: Boolean,
+      value: false
     }
   },
 

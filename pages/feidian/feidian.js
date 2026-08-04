@@ -1,5 +1,6 @@
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
+const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
 
 Page({
@@ -56,8 +57,19 @@ Page({
 
   loadHeaderData() {
     Promise.all([api.topics(), api.selectedPins('0')]).then(([topicResponse, pinResponse]) => {
-      const topics = (topicResponse.result.data || []).slice(0, 10)
-      const pins = (pinResponse.result.data || []).map(utils.normalizePin).slice(0, 8)
+      const topics = (topicResponse.result.data || []).slice(0, 10).map((item) => {
+        const topic = item.topic || item
+        const icon = topic.icon || topic.icon_url || topic.topic_pic || ''
+        return Object.assign({}, topic, {
+          topic_id: item.topic_id || topic.topic_id,
+          iconUrl: /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : '',
+          iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : (topic.title || '#').slice(0, 2),
+          newCount: Number(item.new_short_msg_count) || 0,
+          followed: Boolean(item.user_interact && item.user_interact.is_follow)
+        })
+      })
+      const pinRows = pinResponse.result.data || []
+      const pins = (pinRows.length ? pinRows : mock.pins).map(utils.normalizePin).slice(0, 8)
       this.setData({ topics, selectedPins: this.withInteractionState(pins) })
     }).finally(() => wx.stopPullDownRefresh())
   },
@@ -134,6 +146,10 @@ Page({
 
   openTopic(event) {
     wx.navigateTo({ url: `/pages/topic/topic?id=${event.currentTarget.dataset.id}` })
+  },
+
+  openTopicSquare() {
+    wx.navigateTo({ url: '/pages/topic/topic' })
   },
 
   toggleLike(event) {

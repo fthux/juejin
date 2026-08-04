@@ -1,5 +1,6 @@
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
+const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
 
 Page({
@@ -43,7 +44,8 @@ Page({
       const dailyRows = Array.isArray(dailyData)
         ? dailyData
         : (dailyData.article_info ? [dailyData] : (dailyData.articles || dailyData.article_list || []))
-      const selectedPins = (pinResponse.result.data || []).map(utils.normalizePin).slice(0, 8)
+      const pinRows = pinResponse.result.data || []
+      const selectedPins = (pinRows.length ? pinRows : mock.pins).map(utils.normalizePin).slice(0, 8)
       this.setData({
         greeting: dailyData.greeting || this.data.greeting,
         dailyArticle: dailyRows.length ? utils.normalizeArticle(dailyRows[0]) : null,
@@ -76,10 +78,6 @@ Page({
   openFeature(event) {
     const url = event.currentTarget.dataset.url
     if (url) wx.navigateTo({ url })
-  },
-
-  openLive() {
-    wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=live&title=正在直播' })
   },
 
   openBanner() {

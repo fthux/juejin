@@ -5,32 +5,16 @@
 .home-head {
   width: 100%;
   height: 100%;
-  padding-left: 18rpx;
+  padding: 0 20rpx 0 28rpx;
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  gap: 18rpx;
   box-sizing: border-box;
-}
-
-.live-entry {
-  width: 66rpx;
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #f53f3f;
-  font-size: 17rpx;
-  line-height: 1;
-}
-
-.live-entry image {
-  width: 38rpx;
-  height: 38rpx;
 }
 
 .home-search {
   min-width: 0;
-  height: 64rpx;
+  height: 66rpx;
   padding: 0 18rpx;
   flex: 1;
   display: flex;
@@ -48,40 +32,49 @@
   margin-right: 12rpx;
 }
 
-.activity-entry {
-  width: 70rpx;
-  height: 58rpx;
+.calendar-entry {
+  width: 68rpx;
+  height: 70rpx;
   flex: 0 0 auto;
-  border-radius: 10rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  background: var(--jj-blue);
-  font-size: 16rpx;
-  line-height: 1.15;
-  font-weight: 600;
+  color: var(--jj-blue);
+  font-size: 17rpx;
+  line-height: 1;
 }
 
-.calendar-entry {
-  width: 54rpx;
-  height: 64rpx;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.calendar-entry view {
-  width: 38rpx;
-  height: 40rpx;
+.calendar-icon {
+  position: relative;
+  width: 40rpx;
+  height: 34rpx;
+  margin-bottom: 4rpx;
   border: 3rpx solid var(--jj-text-3);
   border-radius: 5rpx;
-  color: var(--jj-text-2);
-  font-size: 17rpx;
-  line-height: 38rpx;
+  color: var(--jj-blue);
+  font-size: 18rpx;
+  line-height: 30rpx;
   text-align: center;
+  box-sizing: border-box;
+}
+
+.calendar-icon::before,
+.calendar-icon::after {
+  content: "";
+  position: absolute;
+  top: -8rpx;
+  width: 4rpx;
+  height: 10rpx;
+  border-radius: 2rpx;
+  background: var(--jj-text-3);
+}
+
+.calendar-icon::before { left: 8rpx; }
+.calendar-icon::after { right: 8rpx; }
+
+.calendar-icon text {
+  display: block;
 }
 
 .nav-scroll {
@@ -138,10 +131,24 @@
   border-bottom: 12rpx solid var(--jj-bg);
 }
 
-.hot-title {
+.hot-heading {
   margin-bottom: 10rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.hot-title {
   font-size: 28rpx;
   font-weight: 700;
+}
+
+.hot-type {
+  padding: 6rpx 12rpx;
+  border-radius: 6rpx;
+  color: var(--jj-blue);
+  background: var(--jj-blue-soft);
+  font-size: 20rpx;
 }
 
 .hot-row {
@@ -170,6 +177,25 @@
   margin-left: 16rpx;
   color: var(--jj-text-3);
   font-size: 19rpx;
+}
+
+.hot-dots {
+  height: 22rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14rpx;
+}
+
+.hot-dots text {
+  width: 22rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background: var(--jj-line);
+}
+
+.hot-dots text.active {
+  background: var(--jj-blue);
 }
 
 .cache-note {

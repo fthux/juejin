@@ -7,16 +7,22 @@ const bookletCategories = mock.categories
 
 Page({
   data: {
+    courseTypes: [
+      { id: 'booklet', name: '掘金小册' },
+      { id: 'byte', name: '字节内部课', badge: 'VIP 免费' }
+    ],
+    activeCourseType: 'booklet',
     categories: bookletCategories,
     activeCategory: '',
     sorts: [
-      { id: 'all', name: '综合' },
+      { id: 'all', name: '全部' },
       { id: 'latest', name: '最新' },
-      { id: 'hot', name: '最热' },
+      { id: 'hot', name: '热销' },
       { id: 'price', name: '价格' }
     ],
     activeSort: 'all',
     priceDirection: '',
+    onlyVip: false,
     allCourses: [],
     list: [],
     cursor: '0',
@@ -44,6 +50,24 @@ Page({
     this.load(true)
   },
 
+  selectCourseType(event) {
+    const id = event.currentTarget.dataset.id
+    if (id === this.data.activeCourseType) return
+    this.setData({
+      activeCourseType: id,
+      activeCategory: '',
+      activeSort: 'all',
+      priceDirection: '',
+      onlyVip: false
+    })
+    this.load(true)
+  },
+
+  toggleVip() {
+    this.setData({ onlyVip: !this.data.onlyVip })
+    this.applyFilter()
+  },
+
   selectSort(event) {
     const id = event.currentTarget.dataset.id
     if (id === 'price') {
@@ -63,7 +87,8 @@ Page({
     this.setData({ loading: true, loadError: false })
     api.courses(cursor, {
       categoryId: this.data.activeCategory,
-      sort: this.data.activeSort
+      sort: this.data.activeSort,
+      courseType: this.data.activeCourseType
     }).then(({ result, fromCache }) => {
       const rows = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
       const allCourses = reload ? rows : this.data.allCourses.concat(rows)
@@ -85,7 +110,7 @@ Page({
   },
 
   applyFilter() {
-    const list = this.data.allCourses.slice()
+    const list = this.data.allCourses.filter((item) => !this.data.onlyVip || item.vip)
     if (this.data.activeSort === 'price') {
       const direction = this.data.priceDirection === 'desc' ? -1 : 1
       list.sort((a, b) => (a.priceValue - b.priceValue) * direction)

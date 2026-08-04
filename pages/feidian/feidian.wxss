@@ -49,6 +49,18 @@
   font-weight: 600;
 }
 
+.topic-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.joined-topics {
+  padding-right: 24rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}
+
 .topic-scroll,
 .selected-scroll {
   width: 100%;
@@ -81,6 +93,18 @@
   background: var(--jj-blue-soft);
   font-size: 24rpx;
   font-weight: 700;
+}
+
+.topic-icon image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.discover-more {
+  color: #ffffff;
+  background: var(--jj-blue);
+  font-size: 38rpx;
 }
 
 .topic-name {
@@ -139,8 +163,8 @@
 }
 
 .selected-section {
-  margin-top: 14rpx;
-  padding: 24rpx 0;
+  padding: 24rpx 0 20rpx;
+  border-bottom: 14rpx solid var(--jj-bg);
 }
 
 .selected-head {
@@ -156,16 +180,16 @@
 }
 
 .selected-pin {
-  width: 520rpx;
-  min-height: 230rpx;
+  width: 310rpx;
+  height: 104rpx;
   margin-left: 18rpx;
-  padding: 20rpx;
+  padding: 16rpx;
   display: inline-flex;
   flex-direction: column;
   vertical-align: top;
   box-sizing: border-box;
-  border: 1rpx solid var(--jj-line);
-  border-radius: 8rpx;
+  border-radius: 4rpx;
+  background: var(--jj-fill);
   white-space: normal;
 }
 
@@ -173,56 +197,24 @@
   margin-right: 18rpx;
 }
 
-.selected-pin-head {
-  display: flex;
-  align-items: center;
-}
-
-.selected-pin-head image {
-  width: 52rpx;
-  height: 52rpx;
-  border-radius: 50%;
-}
-
-.selected-author {
-  min-width: 0;
-  margin-left: 12rpx;
-  flex: 1;
-  font-size: 24rpx;
-  font-weight: 600;
-}
-
-.selected-follow {
+.selected-pin-title {
   color: var(--jj-blue);
-  font-size: 21rpx;
+  font-size: 22rpx;
 }
 
-.selected-follow.followed {
-  color: var(--jj-text-3);
-}
-
-.selected-content {
-  margin-top: 16rpx;
-  flex: 1;
-  color: var(--jj-text-2);
-  font-size: 24rpx;
-  line-height: 1.55;
-}
-
-.three-lines {
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+.selected-pin-title text {
+  margin-right: 8rpx;
+  padding: 3rpx 6rpx;
+  border-radius: 3rpx;
+  color: #ffffff;
+  background: var(--jj-blue);
+  font-size: 17rpx;
 }
 
 .selected-actions {
-  margin-top: 16rpx;
-  display: flex;
-  gap: 30rpx;
+  margin-top: 12rpx;
   color: var(--jj-text-3);
-  font-size: 20rpx;
+  font-size: 18rpx;
 }
 
 .cache-note {

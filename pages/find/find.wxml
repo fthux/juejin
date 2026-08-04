@@ -20,13 +20,6 @@
       </view>
     </view>
 
-    <view class="live-ticker" bindtap="openLive">
-      <view class="live-badge">
-        <image src="/assets/app/find/find_page_ic_dynamic_live.webp" mode="aspectFit"></image>
-        <text>直播中</text>
-      </view>
-      <view class="live-title ellipsis">稀土开发者大会 · 现代 Web 技术专场</view>
-    </view>
   </view>
 
   <view class="find-banner" bindtap="openBanner">

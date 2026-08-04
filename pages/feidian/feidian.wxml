@@ -6,13 +6,23 @@
     </view>
   </status-bar>
 
-  <view class="topic-section surface">
-    <view class="block-title">推荐圈子</view>
+  <view wx:if="{{topTab === 'discover'}}" class="topic-section surface">
+    <view class="topic-heading">
+      <view class="block-title">推荐圈子</view>
+      <view class="joined-topics" bindtap="openTopicSquare">我加入的圈子</view>
+    </view>
     <scroll-view class="topic-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view class="topic-item" bindtap="openTopicSquare">
+        <view class="topic-icon discover-more">◉</view>
+        <view class="topic-name ellipsis">发现更多</view>
+      </view>
       <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-id="{{item.topic_id}}" bindtap="openTopic">
-        <view class="topic-icon">{{item.icon || '#'}}</view>
+        <view class="topic-icon">
+          <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill"></image>
+          <text wx:else>{{item.iconText}}</text>
+        </view>
         <view class="topic-name ellipsis">{{item.title}}</view>
-        <view wx:if="{{index < 4}}" class="topic-badge">99+</view>
+        <view wx:if="{{item.newCount || index < 4}}" class="topic-badge">{{item.newCount > 99 || (!item.newCount && index < 4) ? '99+' : item.newCount}}</view>
       </view>
     </scroll-view>
   </view>
@@ -26,27 +36,32 @@
   </view>
 
   <view class="pin-list">
-    <pin-card wx:for="{{list}}" wx:key="msg_id" item="{{item}}" compact="{{true}}" show-follow="{{true}}" followed="{{item.followed}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike" bind:follow="toggleFollow"></pin-card>
+    <block wx:for="{{list}}" wx:key="msg_id">
+      <pin-card item="{{item}}" compact="{{true}}" followed="{{item.followed}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike" bind:follow="toggleFollow"></pin-card>
+      <view wx:if="{{topTab === 'discover' && index === 1 && selectedPins.length}}" id="selected-section" class="selected-section surface">
+        <view class="selected-head">
+          <view class="block-title">精选沸点</view>
+        </view>
+        <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+          <view wx:for="{{selectedPins}}" wx:for-item="selected" wx:key="msg_id" class="selected-pin" data-id="{{selected.msg_id}}" bindtap="openDetail">
+            <view class="selected-pin-title ellipsis"><text>荐</text> #{{selected.topic || selected.content}}</view>
+            <view class="selected-actions ellipsis">{{selected.author.user_name}} · {{selected.digg_count}}人点赞 · {{selected.comment_count}}人评论</view>
+          </view>
+        </scroll-view>
+      </view>
+    </block>
   </view>
   <empty-state wx:if="{{!loading && !list.length}}" text="{{topTab === 'following' ? '关注感兴趣的掘友后，这里会出现他们的沸点' : '暂无沸点'}}"></empty-state>
 
-  <view id="selected-section" class="selected-section surface">
+  <view wx:if="{{topTab === 'discover' && list.length < 2 && selectedPins.length}}" id="selected-section" class="selected-section surface">
     <view class="selected-head">
       <view class="block-title">精选沸点</view>
       <view class="selected-more">查看更多 <text>›</text></view>
     </view>
     <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
       <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" bindtap="openDetail">
-        <view class="selected-pin-head">
-          <image src="{{item.author.avatar_large}}" mode="aspectFill" data-id="{{item.author.user_id}}" catchtap="openAuthor"></image>
-          <view class="selected-author ellipsis">{{item.author.user_name}}</view>
-          <view class="selected-follow {{item.followed ? 'followed' : ''}}" data-id="{{item.author.user_id}}" catchtap="toggleFollow">{{item.followed ? '已关注' : '关注'}}</view>
-        </view>
-        <view class="selected-content three-lines">{{item.content}}</view>
-        <view class="selected-actions">
-          <view data-id="{{item.msg_id}}" catchtap="toggleLike">{{item.is_digg ? '已赞' : '点赞'}} {{item.digg_count}}</view>
-          <view>评论 {{item.comment_count}}</view>
-        </view>
+        <view class="selected-pin-title ellipsis"><text>荐</text> #{{item.topic || item.content}}</view>
+        <view class="selected-actions ellipsis">{{item.author.user_name}} · {{item.digg_count}}人点赞 · {{item.comment_count}}人评论</view>
       </view>
     </scroll-view>
   </view>

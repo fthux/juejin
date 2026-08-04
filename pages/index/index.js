@@ -10,7 +10,8 @@ Page({
       { id: 'recommend', name: '推荐' },
       { id: 'hot', name: '热榜' },
       { id: 'headline', name: '头条精选' },
-      { id: 'backend', name: '后端' }
+      { id: 'backend', name: '后端' },
+      { id: 'frontend', name: '前端' }
     ],
     activeNav: 'recommend',
     extraCategory: null,
@@ -75,6 +76,7 @@ Page({
     const options = { sortType: this.data.activeNav === 'hot' ? 3 : (this.data.activeNav === 'headline' ? 300 : 200) }
     let task = api.homeFeed(cursor, options)
     if (this.data.activeNav === 'backend') task = api.categoryFeed('6809637769959178254', cursor)
+    if (this.data.activeNav === 'frontend') task = api.categoryFeed('6809637767543259144', cursor)
     if (this.data.activeNav === 'category' && this.data.extraCategory) task = api.categoryFeed(this.data.extraCategory.id, cursor)
 
     task.then(({ result, fromCache }) => {
@@ -113,14 +115,6 @@ Page({
 
   openSearch() {
     wx.navigateTo({ url: '/pages/search/search' })
-  },
-
-  openLive() {
-    wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=live&title=直播' })
-  },
-
-  openActivity() {
-    wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=activity&title=开发者大会' })
   },
 
   openSign() {

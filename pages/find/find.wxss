@@ -74,42 +74,6 @@
   margin-bottom: 8rpx;
 }
 
-.live-ticker {
-  height: 66rpx;
-  margin-top: 26rpx;
-  padding: 0 18rpx;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  border-radius: 34rpx;
-  background: rgba(247, 248, 250, 0.94);
-}
-
-.live-badge {
-  height: 44rpx;
-  padding: 0 14rpx 0 8rpx;
-  display: flex;
-  align-items: center;
-  border-radius: 22rpx;
-  color: #ffffff;
-  background: #f53f3f;
-  font-size: 21rpx;
-}
-
-.live-badge image {
-  width: 30rpx;
-  height: 30rpx;
-  margin-right: 4rpx;
-}
-
-.live-title {
-  min-width: 0;
-  margin-left: 16rpx;
-  flex: 1;
-  color: var(--jj-text-2);
-  font-size: 23rpx;
-}
-
 .find-banner {
   height: 198rpx;
   margin: 16rpx 24rpx 0;

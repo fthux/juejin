@@ -1,5 +1,20 @@
-<view class="article-card {{compact ? 'compact' : ''}}" bindtap="open">
+<view class="article-card {{compact ? 'compact' : ''}} {{home ? 'home-card' : ''}}" bindtap="open">
   <view class="article-main">
+    <block wx:if="{{home}}">
+      <view class="article-title two-lines">{{item.title}}</view>
+      <view class="home-author-row">
+        <image src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
+        <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
+      </view>
+      <view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view>
+      <view class="article-stats home-stats">
+        <text class="stat">♡ {{item.digg_count}}</text>
+        <text class="stat">▢ {{item.comment_count}}</text>
+        <text wx:if="{{item.tags.length}}" class="home-tag">{{item.tags[0]}}</text>
+        <text class="home-more">•••</text>
+      </view>
+    </block>
+    <block wx:else>
     <view class="article-meta">
       <text wx:if="{{rank}}" class="rank rank-{{rank <= 3 ? rank : 4}}">{{rank}}</text>
       <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
@@ -14,6 +29,7 @@
       <text class="stat">◯ {{item.comment_count}}</text>
       <text class="stat">阅读 {{item.view_count}}</text>
     </view>
+    </block>
   </view>
   <image wx:if="{{item.cover_image}}" class="article-cover" src="{{item.cover_image}}" mode="aspectFill"></image>
 </view>
