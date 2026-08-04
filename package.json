@@ -1,0 +1,8 @@
+{
+  "name": "juejin-mini-program",
+  "version": "6.7.6",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/validate.js"
+  }
+}

@@ -64,7 +64,9 @@ Page({
   },
 
   openAuthor() {
-    wx.switchTab({ url: '/pages/my/my' })
+    const author = this.data.article && this.data.article.author
+    if (!author || !author.user_id) return
+    wx.navigateTo({ url: `/pages/profile/profile?id=${author.user_id}` })
   },
 
   openRelated(event) {
