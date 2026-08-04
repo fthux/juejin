@@ -31,7 +31,11 @@
     "disableUseStrict": false,
     "useStaticServer": true,
     "useCompilerPlugins": false,
-    "minifyWXML": true
+    "minifyWXML": true,
+    "compileWorklet": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.9.3",
@@ -40,39 +44,124 @@
   "condition": {},
   "packOptions": {
     "ignore": [
-      { "type": "folder", "value": ".codegraph" },
-      { "type": "folder", "value": "materials" },
-      { "type": "folder", "value": "img" },
-      { "type": "folder", "value": "wxParse" },
-      { "type": "folder", "value": "filter" },
-      { "type": "folder", "value": "components/empty" },
-      { "type": "folder", "value": "components/feidianItem" },
-      { "type": "folder", "value": "components/jImage" },
-      { "type": "folder", "value": "components/postItemTwo" },
-      { "type": "folder", "value": "components/tagItem" },
-      { "type": "folder", "value": "components/xiaoceItem" },
-      { "type": "folder", "value": "pages/dynamic" },
-      { "type": "folder", "value": "pages/entry" },
-      { "type": "folder", "value": "pages/favorate" },
-      { "type": "folder", "value": "pages/feedback" },
-      { "type": "folder", "value": "pages/infoCenter" },
-      { "type": "folder", "value": "pages/launch" },
-      { "type": "folder", "value": "pages/manageTag" },
-      { "type": "folder", "value": "pages/miniqrcode" },
-      { "type": "folder", "value": "pages/myPins" },
-      { "type": "folder", "value": "pages/originalPost" },
-      { "type": "folder", "value": "pages/probation" },
-      { "type": "folder", "value": "pages/purchasedXiaoce" },
-      { "type": "folder", "value": "pages/sharePost" },
-      { "type": "folder", "value": "pages/subscribedTag" },
-      { "type": "folder", "value": "pages/xiaocedetail" },
-      { "type": "folder", "value": "scripts" },
-      { "type": "file", "value": "package.json" }
+      {
+        "value": ".codegraph",
+        "type": "folder"
+      },
+      {
+        "value": "materials",
+        "type": "folder"
+      },
+      {
+        "value": "img",
+        "type": "folder"
+      },
+      {
+        "value": "wxParse",
+        "type": "folder"
+      },
+      {
+        "value": "filter",
+        "type": "folder"
+      },
+      {
+        "value": "components/empty",
+        "type": "folder"
+      },
+      {
+        "value": "components/feidianItem",
+        "type": "folder"
+      },
+      {
+        "value": "components/jImage",
+        "type": "folder"
+      },
+      {
+        "value": "components/postItemTwo",
+        "type": "folder"
+      },
+      {
+        "value": "components/tagItem",
+        "type": "folder"
+      },
+      {
+        "value": "components/xiaoceItem",
+        "type": "folder"
+      },
+      {
+        "value": "pages/dynamic",
+        "type": "folder"
+      },
+      {
+        "value": "pages/entry",
+        "type": "folder"
+      },
+      {
+        "value": "pages/favorate",
+        "type": "folder"
+      },
+      {
+        "value": "pages/feedback",
+        "type": "folder"
+      },
+      {
+        "value": "pages/infoCenter",
+        "type": "folder"
+      },
+      {
+        "value": "pages/launch",
+        "type": "folder"
+      },
+      {
+        "value": "pages/manageTag",
+        "type": "folder"
+      },
+      {
+        "value": "pages/miniqrcode",
+        "type": "folder"
+      },
+      {
+        "value": "pages/myPins",
+        "type": "folder"
+      },
+      {
+        "value": "pages/originalPost",
+        "type": "folder"
+      },
+      {
+        "value": "pages/probation",
+        "type": "folder"
+      },
+      {
+        "value": "pages/purchasedXiaoce",
+        "type": "folder"
+      },
+      {
+        "value": "pages/sharePost",
+        "type": "folder"
+      },
+      {
+        "value": "pages/subscribedTag",
+        "type": "folder"
+      },
+      {
+        "value": "pages/xiaocedetail",
+        "type": "folder"
+      },
+      {
+        "value": "scripts",
+        "type": "folder"
+      },
+      {
+        "value": "package.json",
+        "type": "file"
+      }
     ],
     "include": []
   },
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }
