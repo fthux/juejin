@@ -4,12 +4,23 @@
 .data-tab.active { color: var(--jj-blue); }
 .data-tab.active::after { content: ''; position: absolute; right: 28rpx; bottom: 0; left: 28rpx; height: 5rpx; background: var(--jj-blue); }
 .stats-grid { padding: 28rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12rpx; background: var(--jj-surface); }
-.stat-card { min-height: 142rpx; padding: 18rpx; border: 1rpx solid var(--jj-line); border-radius: 6rpx; display: flex; flex-direction: column; box-sizing: border-box; color: var(--jj-text-3); }
+.stat-card { min-height: 150rpx; padding: 18rpx; border: 1rpx solid var(--jj-line); border-radius: 6rpx; display: flex; flex-direction: column; box-sizing: border-box; color: var(--jj-text-3); }
 .stat-value { margin-top: 12rpx; color: var(--jj-text); font-size: 36rpx; font-weight: 700; }
 .stat-compare { margin-top: 8rpx; color: var(--jj-text-3); font-size: 20rpx; }
-.trend-section { margin-top: 16rpx; padding: 30rpx; background: var(--jj-surface); }
+.stat-compare text { color: var(--jj-blue); }
+.trend-section, .analysis-section { margin-top: 16rpx; padding: 30rpx; background: var(--jj-surface); }
 .periods { height: 70rpx; margin-top: 24rpx; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--jj-fill); }
 .periods text { display: flex; align-items: center; justify-content: center; color: var(--jj-text-2); }
 .periods .active { color: var(--jj-blue); background: var(--jj-fill-2); }
-.trend-empty { height: 360rpx; padding: 0 16rpx 46rpx; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; box-sizing: border-box; color: var(--jj-text-3); font-size: 22rpx; }
-.flat-axis { width: 100%; margin-bottom: 48rpx; border-bottom: 1rpx solid var(--jj-line); }
+.chart-wrap { height: 350rpx; margin-top: 30rpx; display: flex; }
+.chart-grid { width: 62rpx; padding-bottom: 2rpx; display: flex; flex-direction: column; justify-content: space-between; color: var(--jj-text-3); font-size: 19rpx; }
+.chart-plot { position: relative; min-width: 0; height: 100%; flex: 1; }
+.grid-line { position: absolute; right: 0; left: 0; border-top: 1rpx solid var(--jj-line); }
+.g1 { top: 0; }.g2 { top: 20%; }.g3 { top: 40%; }.g4 { top: 60%; }.g5 { top: 80%; }.g6 { top: 100%; }
+.chart-segment { position: absolute; height: 4rpx; border-radius: 2rpx; transform-origin: left center; }
+.chart-dates { margin: 18rpx 0 0 62rpx; display: flex; justify-content: space-between; color: var(--jj-text-3); font-size: 18rpx; }
+.metric-list { margin-top: 28rpx; display: flex; flex-wrap: wrap; gap: 22rpx 28rpx; }
+.metric { display: flex; align-items: center; gap: 10rpx; color: var(--jj-text-2); font-size: 23rpx; }
+.metric-box { width: 28rpx; height: 28rpx; border: 2rpx solid var(--jj-line); border-radius: 4rpx; display: flex; align-items: center; justify-content: center; box-sizing: border-box; color: #fff; font-size: 20rpx; }
+.analysis-section { min-height: 240rpx; }
+.analysis-empty { padding: 70rpx 0; color: var(--jj-text-3); text-align: center; font-size: 23rpx; }

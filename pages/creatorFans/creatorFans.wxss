@@ -3,14 +3,15 @@
 .fans-tabs text { position: relative; display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); }
 .fans-tabs .active { color: var(--jj-blue); border-bottom: 5rpx solid var(--jj-blue); }
 .fans-grid { padding: 28rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12rpx; background: var(--jj-surface); }
-.fans-card { min-height: 142rpx; padding: 18rpx; border: 1rpx solid var(--jj-line); display: flex; flex-direction: column; color: var(--jj-text-3); }
-.fans-value { margin-top: 10rpx; color: var(--jj-text); font-size: 38rpx; font-weight: 700; }.fans-compare { margin-top: 8rpx; font-size: 20rpx; }
-.trend { min-height: 600rpx; margin-top: 16rpx; padding: 34rpx 30rpx; background: var(--jj-surface); }
-.flat-line { height: 260rpx; margin: 48rpx 20rpx 0; border-top: 4rpx solid var(--jj-blue); border-bottom: 1rpx solid var(--jj-line); }
-.legend { margin-top: 26rpx; color: var(--jj-text-3); line-height: 2; }
-.follower-list { background: var(--jj-surface); }
-.follower-row { min-height: 126rpx; padding: 20rpx 30rpx; display: flex; align-items: center; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
-.follower-row image { width: 72rpx; height: 72rpx; flex: 0 0 auto; border-radius: 50%; }
-.follower-copy { min-width: 0; margin-left: 20rpx; flex: 1; font-size: 27rpx; }
-.follower-copy text { display: block; margin-top: 7rpx; color: var(--jj-text-3); font-size: 22rpx; }
-.follower-arrow { color: var(--jj-text-4); font-size: 38rpx; }
+.fans-card { min-height: 150rpx; padding: 18rpx; border: 1rpx solid var(--jj-line); border-radius: 6rpx; display: flex; flex-direction: column; color: var(--jj-text-3); }
+.fans-value { margin-top: 10rpx; color: var(--jj-text); font-size: 38rpx; font-weight: 700; }
+.fans-compare { margin-top: 8rpx; font-size: 20rpx; }.fans-compare text { color: var(--jj-blue); }
+.help { width: 24rpx; height: 24rpx; margin-left: 5rpx; border: 1rpx solid var(--jj-text-3); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 17rpx; }
+.trend { min-height: 720rpx; margin-top: 16rpx; padding: 34rpx 30rpx; background: var(--jj-surface); }
+.periods { height: 70rpx; margin-top: 24rpx; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--jj-fill); }
+.periods text { display: flex; align-items: center; justify-content: center; color: var(--jj-text-2); }.periods .active { color: var(--jj-blue); background: var(--jj-fill-2); }
+.chart-wrap { height: 350rpx; margin-top: 30rpx; display: flex; }.chart-grid { width: 62rpx; display: flex; flex-direction: column; justify-content: space-between; color: var(--jj-text-3); font-size: 19rpx; }.chart-plot { position: relative; min-width: 0; height: 100%; flex: 1; }
+.grid-line { position: absolute; right: 0; left: 0; border-top: 1rpx solid var(--jj-line); }.g1 { top: 0; }.g2 { top: 20%; }.g3 { top: 40%; }.g4 { top: 60%; }.g5 { top: 80%; }.g6 { top: 100%; }
+.chart-segment { position: absolute; height: 4rpx; border-radius: 2rpx; transform-origin: left center; }.chart-dates { margin: 18rpx 0 0 62rpx; display: flex; justify-content: space-between; color: var(--jj-text-3); font-size: 18rpx; }
+.metric-list { margin-top: 28rpx; display: flex; flex-wrap: wrap; gap: 22rpx 28rpx; }.metric { display: flex; align-items: center; gap: 10rpx; color: var(--jj-text-2); font-size: 23rpx; }.metric-box { width: 28rpx; height: 28rpx; border: 2rpx solid var(--jj-line); border-radius: 4rpx; display: flex; align-items: center; justify-content: center; box-sizing: border-box; color: #fff; font-size: 20rpx; }
+.follower-list { background: var(--jj-surface); }.follower-row { min-height: 126rpx; padding: 20rpx 30rpx; display: flex; align-items: center; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }.follower-row image { width: 72rpx; height: 72rpx; flex: 0 0 auto; border-radius: 50%; }.follower-copy { min-width: 0; margin-left: 20rpx; flex: 1; font-size: 27rpx; }.follower-copy text { display: block; margin-top: 7rpx; color: var(--jj-text-3); font-size: 22rpx; }.follower-arrow { color: var(--jj-text-4); font-size: 38rpx; }

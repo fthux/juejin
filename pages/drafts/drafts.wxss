@@ -14,6 +14,9 @@
   font-size: 24rpx;
 }
 
+.draft-actions { display: flex; align-items: center; gap: 18rpx; }
+.draft-search { width: 54rpx; height: 54rpx; display: flex; align-items: center; justify-content: center; color: var(--jj-text-2); font-size: 40rpx; }
+
 .draft-row {
   min-height: 156rpx;
   padding: 24rpx 32rpx;
@@ -51,3 +54,6 @@
   color: #f53f3f;
   font-size: 23rpx;
 }
+
+.draft-empty { min-height: calc(100vh - 96rpx); padding-bottom: 220rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; color: var(--jj-text-3); font-size: 25rpx; }
+.draft-empty image { width: 290rpx; height: 290rpx; margin-bottom: 22rpx; }

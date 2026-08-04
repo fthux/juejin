@@ -1,15 +1,17 @@
 <view class="page fans-page">
   <view class="fans-tabs"><text class="{{activeTab === 'data' ? 'active' : ''}}" data-id="data" bindtap="switchTab">粉丝数据</text><text class="{{activeTab === 'list' ? 'active' : ''}}" data-id="list" bindtap="switchTab">粉丝列表</text></view>
   <block wx:if="{{activeTab === 'data'}}">
-    <view class="fans-grid"><view wx:for="{{stats}}" wx:key="label" class="fans-card"><text>{{item.label}}</text><view class="fans-value">{{item.value}}</view><text class="fans-compare">较前日 --</text></view></view>
-    <view class="trend"><view class="section-title">整体数据趋势</view><view class="flat-line"></view><view class="legend">暂无可用的每日趋势数据</view></view>
+    <view class="fans-grid"><view wx:for="{{stats}}" wx:key="label" class="fans-card"><text>{{item.label}}<text wx:if="{{item.help}}" class="help">?</text></text><view class="fans-value">{{item.value}}</view><text class="fans-compare">较前日 <text>--</text></text></view></view>
+    <view class="trend">
+      <view class="section-title">整体数据趋势</view>
+      <view class="periods"><text wx:for="{{periods}}" wx:key="*this" class="{{activePeriod === item ? 'active' : ''}}" data-days="{{item}}" bindtap="selectPeriod">最近{{item}}天</text></view>
+      <view class="chart-wrap"><view class="chart-grid"><text>195</text><text>156</text><text>117</text><text>78</text><text>39</text><text>0</text></view><view class="chart-plot"><view class="grid-line g1"></view><view class="grid-line g2"></view><view class="grid-line g3"></view><view class="grid-line g4"></view><view class="grid-line g5"></view><view class="grid-line g6"></view><block wx:for="{{trendSeries}}" wx:key="id"><view wx:for="{{item.segments}}" wx:for-item="segment" wx:key="index" class="chart-segment" style="{{segment.style}}"></view></block></view></view>
+      <view class="chart-dates"><text wx:for="{{dates}}" wx:key="*this">{{item}}</text></view>
+      <view class="metric-list"><view wx:for="{{metrics}}" wx:key="id" class="metric" data-id="{{item.id}}" bindtap="toggleMetric"><text class="metric-box {{item.selected ? 'selected' : ''}}" style="{{item.selected ? 'background:' + item.color + ';border-color:' + item.color : ''}}">{{item.selected ? '✓' : ''}}</text><text>{{item.label}}</text></view></view>
+    </view>
   </block>
   <view wx:else class="follower-list">
-    <view wx:for="{{followers}}" wx:key="user_id" class="follower-row" data-id="{{item.user_id}}" bindtap="openFollower">
-      <image src="{{item.avatar_large}}" mode="aspectFill"></image>
-      <view class="follower-copy"><view>{{item.user_name}}</view><text class="ellipsis">{{item.description}}</text></view>
-      <text class="follower-arrow">›</text>
-    </view>
+    <view wx:for="{{followers}}" wx:key="user_id" class="follower-row" data-id="{{item.user_id}}" bindtap="openFollower"><image src="{{item.avatar_large}}" mode="aspectFill"></image><view class="follower-copy"><view>{{item.user_name}}</view><text class="ellipsis">{{item.description}}</text></view><text class="follower-arrow">›</text></view>
     <view wx:if="{{loading}}" class="loading-line">正在加载关注者...</view>
     <empty-state wx:elif="{{!followers.length}}" text="还没有关注者"></empty-state>
   </view>

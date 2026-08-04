@@ -20,6 +20,10 @@ Page({
     wx.navigateTo({ url: '/pages/publish/publish?type=article' })
   },
 
+  search() {
+    wx.showToast({ title: this.data.drafts.length ? '可在草稿标题中查找' : '暂无可搜索的草稿', icon: 'none' })
+  },
+
   remove(event) {
     const id = event.currentTarget.dataset.id
     const drafts = session.getList('drafts').filter((item) => item.id !== id)

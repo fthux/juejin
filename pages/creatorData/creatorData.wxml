@@ -5,11 +5,20 @@
     <view class="data-tab {{activeTab === 'pin' ? 'active' : ''}}" data-id="pin" bindtap="switchTab">沸点数据</view>
   </view>
   <view class="stats-grid">
-    <view wx:for="{{stats}}" wx:key="label" class="stat-card"><text>{{item.label}}</text><view class="stat-value">{{item.value}}</view><text class="stat-compare">较前日 --</text></view>
+    <view wx:for="{{stats}}" wx:key="label" class="stat-card"><text>{{item.label}}</text><view class="stat-value">{{item.value}}</view><text class="stat-compare">较前日 <text>--</text></text></view>
   </view>
   <view class="trend-section">
     <view class="section-title">整体数据趋势</view>
     <view class="periods"><text wx:for="{{periods}}" wx:key="*this" class="{{activePeriod === item ? 'active' : ''}}" data-days="{{item}}" bindtap="selectPeriod">最近{{item}}天</text></view>
-    <view class="trend-empty"><view class="flat-axis"></view><text>暂无可用的每日趋势数据</text></view>
+    <view class="chart-wrap">
+      <view class="chart-grid"><text>180</text><text>144</text><text>108</text><text>72</text><text>36</text><text>0</text></view>
+      <view class="chart-plot">
+        <view class="grid-line g1"></view><view class="grid-line g2"></view><view class="grid-line g3"></view><view class="grid-line g4"></view><view class="grid-line g5"></view><view class="grid-line g6"></view>
+        <block wx:for="{{trendSeries}}" wx:key="id"><view wx:for="{{item.segments}}" wx:for-item="segment" wx:key="index" class="chart-segment" style="{{segment.style}}"></view></block>
+      </view>
+    </view>
+    <view class="chart-dates"><text wx:for="{{dates}}" wx:key="*this">{{item}}</text></view>
+    <view class="metric-list"><view wx:for="{{metrics}}" wx:key="id" class="metric" data-id="{{item.id}}" bindtap="toggleMetric"><text class="metric-box {{item.selected ? 'selected' : ''}}" style="{{item.selected ? 'background:' + item.color + ';border-color:' + item.color : ''}}">{{item.selected ? '✓' : ''}}</text><text>{{item.label}}</text></view></view>
   </view>
+  <view class="analysis-section"><view class="section-title">单篇分析</view><view class="analysis-empty">发布内容后可查看单篇数据</view></view>
 </view>

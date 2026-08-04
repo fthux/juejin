@@ -1,7 +1,7 @@
 <view class="page drafts-page">
   <view class="draft-head surface">
-    <text>共 {{drafts.length}} 篇草稿</text>
-    <view class="primary-button" bindtap="create">新建</view>
+    <text>{{drafts.length ? '共 ' + drafts.length + ' 篇草稿' : '文章草稿'}}</text>
+    <view class="draft-actions"><text class="draft-search" bindtap="search">⌕</text><view class="primary-button" bindtap="create">新建</view></view>
   </view>
   <view class="draft-list surface">
     <view wx:for="{{drafts}}" wx:key="id" class="draft-row">
@@ -14,5 +14,8 @@
       <view class="draft-delete" data-id="{{item.id}}" bindtap="remove">删除</view>
     </view>
   </view>
-  <empty-state wx:if="{{!drafts.length}}" text="还没有草稿"></empty-state>
+  <view wx:if="{{!drafts.length}}" class="draft-empty surface">
+    <image src="/assets/app/common/draft_empty.webp" mode="aspectFit"></image>
+    <text>还没有任何草稿哦～</text>
+  </view>
 </view>

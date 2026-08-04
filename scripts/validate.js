@@ -41,7 +41,7 @@ for (const base of roots) {
   }
 }
 
-const runtimeFiles = ['app.js', 'services/api.js', 'services/passport.js', 'services/session.js', 'utils/md5.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
+const runtimeFiles = ['app.js', 'services/api.js', 'services/passport.js', 'services/session.js', 'utils/chart.js', 'utils/md5.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
   .concat(app.pages.map((page) => `${page}.js`))
   .concat(componentRoots.map((component) => `${component}.js`))
 

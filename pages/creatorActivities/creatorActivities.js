@@ -4,7 +4,7 @@ Page({
   data: {
     activeTab: 'article',
     status: 'active',
-    category: 'all',
+    category: 'hot',
     activities: [
       {
         id: 'trae-work-2026',
@@ -13,8 +13,8 @@ Page({
         status: 'active',
         title: '「TRAE Work 实战帮」征文启动！你的经验，值得被看见！',
         description: '征集开发者解决日常工作难题的可复用经验',
-        time: '2026-08-03 至 2026-08-23',
-        image: '/assets/app/find/find_page_ic_default_banner.webp'
+        time: '2026-08-03 ~ 2026-08-23',
+        image: '/assets/app/creator/activity_trae_work.webp'
       },
       {
         id: 'juejin-daily-share',

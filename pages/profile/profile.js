@@ -5,10 +5,21 @@ const utils = require('../../utils/utils.js')
 Page({
   data: {
     user: null,
-    activeTab: 'article',
+    activeTab: 'dynamic',
+    tabs: [
+      { id: 'dynamic', name: '动态' },
+      { id: 'article', name: '文章' },
+      { id: 'column', name: '专栏' },
+      { id: 'pin', name: '沸点' },
+      { id: 'other', name: '其他' }
+    ],
     articles: [],
     pins: [],
-    followed: false
+    dynamics: [],
+    followed: false,
+    isCurrentUser: false,
+    badgeCount: 0,
+    power: 0
   },
 
   onLoad(query) {
@@ -19,17 +30,26 @@ Page({
     const user = isCurrentUser ? currentSession.user : (mock.authors.find((item) => item.user_id === query.id) || cachedUser || mock.authors[0])
     const sourceArticles = isCurrentUser ? session.getList('articles') : cachedArticles.concat(mock.articles)
     const sourcePins = isCurrentUser ? session.getList('pins') : mock.pins
+    const articles = sourceArticles.filter((item) => {
+      const author = item.author_user_info || item.author || {}
+      return String(author.user_id) === String(user.user_id)
+    }).map(utils.normalizeArticle)
+    const pins = sourcePins.filter((item) => {
+      const author = item.author_user_info || (item.msg_Info && item.msg_Info.author_user_info) || {}
+      return String(author.user_id) === String(user.user_id)
+    }).map(utils.normalizePin)
+    const dynamics = articles.map((item) => Object.assign({ kind: 'article' }, item))
+      .concat(pins.map((item) => Object.assign({ kind: 'pin' }, item)))
+
     this.setData({
       user,
-      articles: sourceArticles.filter((item) => {
-        const author = item.author_user_info || item.author || {}
-        return String(author.user_id) === String(user.user_id)
-      }).map(utils.normalizeArticle),
-      pins: sourcePins.filter((item) => {
-        const author = item.author_user_info || (item.msg_Info && item.msg_Info.author_user_info) || {}
-        return String(author.user_id) === String(user.user_id)
-      }).map(utils.normalizePin),
-      followed: session.getList('follows').indexOf(user.user_id) !== -1
+      articles,
+      pins,
+      dynamics,
+      followed: session.getList('follows').indexOf(user.user_id) !== -1,
+      isCurrentUser,
+      badgeCount: Number(user.badge_count) || 5,
+      power: Number(user.power || user.jpower || user.got_digg_count) || 0
     })
     wx.setNavigationBarTitle({ title: user.user_name })
   },
@@ -47,6 +67,14 @@ Page({
   openChat() {
     if (!session.requireLogin()) return
     wx.navigateTo({ url: `/pages/chat/chat?id=${this.data.user.user_id}&name=${encodeURIComponent(this.data.user.user_name)}` })
+  },
+
+  editProfile() {
+    wx.showToast({ title: '资料编辑请前往掘金 APP', icon: 'none' })
+  },
+
+  openBadges() {
+    wx.showToast({ title: `已获得 ${this.data.badgeCount} 枚徽章`, icon: 'none' })
   },
 
   openArticle(event) {

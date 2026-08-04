@@ -27,11 +27,15 @@
   background: var(--jj-surface);
 }
 
-.activity-card image {
+.activity-banner {
   width: 100%;
-  height: 230rpx;
+  aspect-ratio: 3.32 / 1;
+  overflow: hidden;
   border-radius: 6rpx;
+  background: #ffffff;
 }
+
+.activity-banner image { width: 100%; height: 100%; }
 
 .activity-title {
   margin-top: 24rpx;
@@ -48,32 +52,8 @@
   color: var(--jj-text-3);
 }
 
-.activity-footer {
-  min-height: 72rpx;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
 .activity-time {
   font-size: 22rpx;
-}
-
-.register-button {
-  width: 152rpx;
-  height: 64rpx;
-  margin: 16rpx 0 0;
-  padding: 0;
-  border-radius: 4rpx;
-  color: #ffffff;
-  background: var(--jj-blue);
-  font-size: 24rpx;
-  line-height: 64rpx;
-}
-
-.register-button.registered {
-  color: var(--jj-blue);
-  background: var(--jj-blue-soft);
 }
 
 .end-line {

@@ -8,13 +8,10 @@
     <view bindtap="changeCategory">活动分类　<text>{{category === 'all' ? '全部活动' : '热门活动'}}⌄</text></view>
   </view>
   <view wx:for="{{list}}" wx:key="id" class="activity-card">
-    <image src="{{item.image}}" mode="aspectFill"></image>
+    <view class="activity-banner"><image src="{{item.image}}" mode="aspectFit"></image></view>
     <view class="activity-title">{{item.title}}</view>
     <view class="activity-copy">{{item.description}}</view>
-    <view class="activity-footer">
-      <view class="activity-time">{{item.time}}</view>
-      <button wx:if="{{item.status === 'active'}}" class="register-button {{item.registered ? 'registered' : ''}}" data-id="{{item.id}}" bindtap="toggleRegistration">{{item.registered ? '已报名' : '立即报名'}}</button>
-    </view>
+    <view class="activity-time">{{item.time}}</view>
   </view>
   <empty-state wx:if="{{!list.length}}" text="当前筛选下没有活动"></empty-state>
   <view wx:if="{{list.length}}" class="end-line">没有更多数据了</view>
