@@ -1,0 +1,17 @@
+<view class="page column-page">
+  <view class="column-head surface">
+    <view class="column-title">专栏</view>
+    <view class="column-subtitle">系统阅读，建立完整的知识脉络</view>
+  </view>
+  <view class="column-list">
+    <view wx:for="{{columns}}" wx:key="id" class="column-card" data-id="{{item.id}}" bindtap="openColumn">
+      <view class="column-mark" style="background: {{item.color}}">{{item.mark}}</view>
+      <view class="column-copy">
+        <view class="column-name">{{item.title}}</view>
+        <view class="column-description two-lines">{{item.description}}</view>
+        <view class="column-stats">{{item.count}} 篇文章 · {{item.followers}} 人关注</view>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+</view>

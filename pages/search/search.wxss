@@ -1,0 +1,90 @@
+.search-head {
+  height: 104rpx;
+  padding: 16rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  box-sizing: border-box;
+}
+
+.search-input {
+  height: 72rpx;
+  padding: 0 20rpx;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: 6rpx;
+  background: #f2f3f5;
+}
+
+.search-icon {
+  margin-right: 14rpx;
+  color: #8a919f;
+  font-size: 40rpx;
+}
+
+.search-input input {
+  min-width: 0;
+  flex: 1;
+  color: #252933;
+}
+
+.clear {
+  color: #8a919f;
+  font-size: 38rpx;
+}
+
+.search-submit {
+  color: #1e80ff;
+}
+
+.history {
+  margin-top: 16rpx;
+  padding: 28rpx 32rpx 40rpx;
+}
+
+.history-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.history-list {
+  margin-top: 26rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.user-row {
+  min-height: 132rpx;
+  padding: 22rpx 32rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.user-copy {
+  min-width: 0;
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.user-name {
+  font-size: 29rpx;
+  font-weight: 600;
+}
+
+.user-caption {
+  margin-top: 9rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.user-row .secondary-button {
+  min-height: 58rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}

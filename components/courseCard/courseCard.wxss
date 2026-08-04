@@ -1,0 +1,66 @@
+.course-card {
+  min-height: 250rpx;
+  padding: 28rpx 32rpx;
+  display: flex;
+  gap: 24rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.course-cover {
+  width: 170rpx;
+  height: 226rpx;
+  flex: 0 0 auto;
+  border-radius: 6rpx;
+  background: #f2f3f5;
+}
+
+.course-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.course-title {
+  color: #252933;
+  font-size: 31rpx;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.course-summary {
+  margin-top: 10rpx;
+  color: #8a919f;
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+
+.course-author {
+  margin-top: 14rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.course-footer {
+  margin-top: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  color: #f53f3f;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.owned,
+.free {
+  color: #1e80ff;
+  font-size: 26rpx;
+}
+
+.study {
+  color: #8a919f;
+  font-size: 23rpx;
+}

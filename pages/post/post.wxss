@@ -1,59 +1,130 @@
-@import '/wxParse/wxParse.wxss';
-.container {
-  background: #fff;
-  padding-bottom: 30rpx;
-  font-size: 30rpx;
+.post-page {
+  padding-bottom: 116rpx;
 }
-.container .content {
-  padding: 30rpx 30rpx 0;
+
+.article-detail {
+  padding: 42rpx 32rpx 48rpx;
 }
-.title {
-  font-size: 48rpx;
-  margin: 32rpx 0;
+
+.detail-title {
+  color: #252933;
+  font-size: 46rpx;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.35;
 }
-.ori,
-.href {
-  font-size: 22rpx;
-  color: #999;
-}
-.ori text {
-  line-height: 1em;
-  display: inline-block;
-  padding: 6rpx 12rpx;
-  border-radius: 4rpx;
-  border: 1rpx solid #999;
-}
-.href text {
-  color: #819dba;
-}
-.user {
+
+.author-row {
+  margin-top: 30rpx;
   display: flex;
   align-items: center;
 }
-.user .name {
-  font-weight: 700;
+
+.author-copy {
+  min-width: 0;
+  margin-left: 18rpx;
+  flex: 1;
 }
-.user .avatar,
-.user .avatar image {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
+
+.author-name {
+  color: #252933;
+  font-size: 27rpx;
+  font-weight: 600;
 }
-.user .info {
+
+.author-meta {
+  margin-top: 6rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.follow-button {
+  min-width: 116rpx;
+  height: 60rpx;
+  padding: 0 18rpx;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #1e80ff;
+  font-size: 24rpx;
+}
+
+.follow-button.followed {
+  color: #8a919f;
+  background: #f2f3f5;
+}
+
+.article-content {
+  margin-top: 44rpx;
+  color: #252933;
+  font-size: 31rpx;
+  line-height: 1.85;
+  word-break: break-word;
+}
+
+.article-tags {
+  margin-top: 40rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.action-bar {
+  position: fixed;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 100rpx;
+  padding: 12rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-top: 1rpx solid #e5e6eb;
+}
+
+.comment-entry {
+  height: 64rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: 6rpx;
+  color: #8a919f;
+  background: #f2f3f5;
+  font-size: 24rpx;
+}
+
+.action {
+  width: 94rpx;
+  height: 76rpx;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100rpx;
-  margin-left: 20rpx;
-}
-.others {
-  display: flex;
   align-items: center;
-  font-size: 24rpx;
-  color: #666;
+  justify-content: center;
+  color: #8a919f;
+  background: transparent;
+  font-size: 20rpx;
+  line-height: 1.2;
 }
-.others .time {
-  margin-right: 12rpx;
+
+.action-icon {
+  margin-bottom: 4rpx;
+  color: #515767;
+  font-size: 30rpx;
+}
+
+.action.active,
+.action.active .action-icon {
+  color: #1e80ff;
+}
+
+.share-action {
+  margin: 0;
+  border-radius: 0;
 }

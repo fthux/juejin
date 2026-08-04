@@ -1,21 +1,40 @@
-<wxs module='filters' src='../../filter/filter.wxs'></wxs>
-<view class='container'>
-  <navigator url='/pages/login/login' wx:if='{{!logined}}'>
-    <view class='card guide'>
-      <view class='l'>
-        <view class='t'>登录账号</view>
-        <view class='c'>收藏文章，同步阅读记录，数据永不丢失</view>
-      </view>
-      <view class='r'>登录</view>
+<view class="page home-page">
+  <view class="home-head surface">
+    <view class="brand">
+      <image src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+      <text>稀土掘金</text>
     </view>
-  </navigator>
-  <view class='hot card' wx:if='{{list.length}}'>
-    <view class='btitle'>
-      <view class='l'>
-        <image class='icon' src='/img/ic_hot_home.png'></image>
-        <view>热门推荐</view>
-      </view>
+    <view class="head-actions">
+      <view class="icon-button search-button" bindtap="openSearch">⌕</view>
+      <view class="icon-button" bindtap="openNotifications">◔</view>
     </view>
-    <postItemTwo wx:for='{{list}}' avatar='{{item.item_info.avatar || item.item_info.author_user_info.avatar_large}}' userName='{{item.item_info.author_name || item.item_info.author_user_info.user_name}}' tags='{{item.item_info.tags}}' title='{{item.item_info.title || item.item_info.article_info.title}}' briefContent='{{item.item_info.brief || item.item_info.article_info.brief_content}}' likeCount='{{item.item_info.digg_count}}' commentCount='{{item.item_info.comment_count}}' wx:for='{{list}}' adUrl='{{item.item_info.url}}' wx:key='index'></postItemTwo>
   </view>
+
+  <scroll-view class="category-scroll surface" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-row">
+      <view wx:for="{{categories}}" wx:key="id" class="category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{!session}}" class="login-guide">
+    <view>
+      <view class="guide-title">登录体验完整功能</view>
+      <view class="guide-copy">收藏、历史与创作内容保存在本机</view>
+    </view>
+    <navigator class="secondary-button" url="/pages/login/login">登录</navigator>
+  </view>
+
+  <view class="feed-head surface">
+    <view class="sorts">
+      <view wx:for="{{sortTypes}}" wx:key="id" class="sort {{activeSort === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectSort">{{item.name}}</view>
+    </view>
+    <text wx:if="{{fromCache}}" class="offline-mark">离线内容</text>
+  </view>
+
+  <view class="article-list">
+    <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" bind:open="openArticle" bind:author="openAuthor"></article-card>
+  </view>
+  <empty-state wx:if="{{!loading && !list.length}}" text="暂时没有找到文章"></empty-state>
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
 </view>

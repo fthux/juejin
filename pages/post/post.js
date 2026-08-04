@@ -1,135 +1,87 @@
-const WxParse = require('../../wxParse/wxParse.js')
-const config = getApp().globalData.config
+const api = require('../../services/api.js')
+const session = require('../../services/session.js')
+const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
+
 Page({
   data: {
-    item: {},
+    articleId: '',
+    article: null,
+    content: '',
+    related: [],
+    loading: true,
+    isLiked: false,
+    isCollected: false,
+    isFollowed: false
   },
+
   onLoad(query) {
-    if (t === 'post') {
-      this.getDetailData(query.article_id, 1)
-      this.getDetailData(query.article_id, 2)
-    } else {
-      this.getEntryView(id)
-      this.getEntryByIds(id)
-    }
+    const articleId = query.id || query.article_id || mock.articles[0].article_id
+    this.setData({ articleId })
+    this.loadDetail()
   },
-  toPersonal () {
-    wx.navigateTo({
-      url: `/pages/personal/personal?thirduid=${this.data.postInfo.user.objectId}`,
+
+  loadDetail() {
+    api.articleDetail(this.data.articleId).then(({ result }) => {
+      const detail = result.data || {}
+      const raw = Object.assign({}, detail.article_info || detail, {
+        author_user_info: detail.author_user_info || (detail.article_info && detail.article_info.author_user_info),
+        tags: detail.tags || (detail.article_info && detail.article_info.tags)
+      })
+      const article = utils.normalizeArticle(raw)
+      const content = detail.content || detail.article_content || '<p>文章内容暂不可用。</p>'
+      session.addHistory(article)
+      this.setData({
+        article,
+        content,
+        related: mock.articles.filter((item) => item.article_id !== article.article_id).slice(0, 3).map(utils.normalizeArticle),
+        isLiked: session.getList('likes').indexOf(article.article_id) !== -1,
+        isCollected: session.getList('collections').indexOf(article.article_id) !== -1,
+        isFollowed: session.getList('follows').indexOf(article.author.user_id) !== -1,
+        loading: false
+      })
+      wx.setNavigationBarTitle({ title: article.title || '文章详情' })
+    }).finally(() => this.setData({ loading: false }))
+  },
+
+  toggleLike() {
+    const active = session.toggle('likes', this.data.article.article_id)
+    this.setData({ isLiked: active })
+    utils.toast(active ? '已点赞' : '已取消点赞')
+  },
+
+  toggleCollect() {
+    const active = session.toggle('collections', this.data.article.article_id)
+    this.setData({ isCollected: active })
+    utils.toast(active ? '已收藏' : '已取消收藏')
+  },
+
+  toggleFollow() {
+    const active = session.toggle('follows', this.data.article.author.user_id)
+    this.setData({ isFollowed: active })
+  },
+
+  openAuthor() {
+    wx.switchTab({ url: '/pages/my/my' })
+  },
+
+  openRelated(event) {
+    wx.redirectTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+  },
+
+  addComment() {
+    wx.showModal({
+      title: '写评论',
+      editable: true,
+      placeholderText: '友善交流，分享你的观点',
+      success(result) {
+        if (result.confirm && result.content) utils.toast('评论已保存在本机')
+      }
     })
   },
-  // 获取 post 概要、详情
-  getDetailData(postId, t) {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.postStorageApiMsRequestUrl}/getDetailData`,
-      data: {
-        uid: auth.uid,
-        device_id: auth.clientId,
-        token: auth.token,
-        src: 'web',
-        type: t === 1 ? 'entryView' : 'entry',
-        postId,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          if (t === 1) {
-            let article = (data.d && data.d.content) || ''
-            WxParse.wxParse('article', 'html', article, this)
-          } else {
-            this.setData({
-              postInfo: data.d || {},
-            })
-            wx.setNavigationBarTitle({
-              title: (data.d && data.d.user && data.d.user.username) || '稀土掘金'
-            })
-          }
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-    })
-  },
-  // 获取 entry 详情
-  getEntryView(entryId) {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.entryViewStorageApiMsRequestUrl}/getEntryView`,
-      data: {
-        device_id: auth.clientId,
-        token: auth.token,
-        src: 'web',
-        entryId,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          let article = (data.d && data.d.content) || ''
-          WxParse.wxParse('article', 'html', article, this)
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-    })
-  },
-  // 获取 entry 概要
-  getEntryByIds(entryId) {
-    const auth = this.data.auth
-    wx.request({
-      url: `${config.timelineRequestUrl}/get_entry_by_ids`,
-      data: {
-        uid: auth.uid,
-        device_id: auth.clientId,
-        token: auth.token,
-        src: 'web',
-        entryIds: entryId,
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.s === 1) {
-          let entrylist = (data.d && data.d.entrylist) || []
-          this.setData({
-            postInfo: entrylist[0] || {},
-          })
-          wx.setNavigationBarTitle({
-            title: (entrylist[0].user && entrylist[0].user.username) || '稀土掘金'
-          })
-        } else {
-          wx.showToast({
-            title: data.m.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
-    })
-  },
-  onShareAppMessage(res) {
-    return {}
-  },
+
+  onShareAppMessage() {
+    const article = this.data.article || {}
+    return { title: article.title || '稀土掘金文章', path: `/pages/post/post?id=${this.data.articleId}` }
+  }
 })

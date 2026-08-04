@@ -1,0 +1,19 @@
+<view class="article-card" bindtap="open">
+  <view class="article-main">
+    <view class="article-meta">
+      <text wx:if="{{rank}}" class="rank rank-{{rank <= 3 ? rank : 4}}">{{rank}}</text>
+      <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
+      <text wx:if="{{item.ctime}}" class="dot">·</text>
+      <text wx:if="{{item.ctime}}">{{item.ctime}}</text>
+      <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>
+    </view>
+    <view class="article-title two-lines">{{item.title}}</view>
+    <view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view>
+    <view class="article-stats">
+      <text class="stat">△ {{item.digg_count}}</text>
+      <text class="stat">◯ {{item.comment_count}}</text>
+      <text class="stat">阅读 {{item.view_count}}</text>
+    </view>
+  </view>
+  <image wx:if="{{item.cover_image}}" class="article-cover" src="{{item.cover_image}}" mode="aspectFill"></image>
+</view>

@@ -1,68 +1,61 @@
+const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
+
 Page({
   data: {
-    swiperHeight: 'auto',
-    list: [],
-    cursor: "0",
+    greeting: '每天读一点，保持技术好奇心',
+    dailyArticles: [],
+    loading: true,
+    quickEntries: [
+      { name: '圈子广场', caption: '遇见更多掘友', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/pages/feidian/feidian' },
+      { name: '文章榜', caption: '热门技术文章', icon: '/assets/app/find/find_page_ic_rank_article.svg', url: '/pages/rank/rank?type=article' },
+      { name: '作者榜', caption: '优质创作者', icon: '/assets/app/find/find_page_ic_rank_author.svg', url: '/pages/rank/rank?type=author' },
+      { name: '专栏', caption: '系统化阅读', icon: '/assets/app/find/find_page_ic_column.svg', url: '/pages/column/column' },
+      { name: '话题广场', caption: '关注技术话题', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/pages/feidian/feidian' },
+      { name: '收藏集', caption: '整理知识线索', icon: '/assets/app/find/find_page_ic_collection.svg', url: '/pages/collectionSet/collectionSet' },
+      { name: '活动', caption: '社区技术活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '' },
+      { name: '直播', caption: '开发者直播间', icon: '/assets/app/find/find_page_ic_live.svg', url: '' }
+    ]
   },
-  onLoad () {
-    this.init()
+
+  onLoad() {
+    this.loadDaily()
   },
-  init() {
-    wx.showLoading({
-      title: '数据加载中',
-    })
-    this.getList(true)
+
+  onPullDownRefresh() {
+    this.loadDaily()
   },
-  toPostDetail (e) {
-    wx.navigateTo({
-      url: `/pages/post/post?id=${e.currentTarget.dataset.id}`,
-    })
-  },
-  getList(reload) {
-    if (reload) {
+
+  loadDaily() {
+    this.setData({ loading: true })
+    api.daily().then(({ result }) => {
+      const data = result.data || {}
       this.setData({
-        cursor: "0",
-        list: [],
+        greeting: data.greeting || this.data.greeting,
+        dailyArticles: (data.articles || data.article_list || []).map(utils.normalizeArticle),
+        loading: false
       })
-    }
-    wx.request({
-      url: `https://api.juejin.cn/recommend_api/v1/article/recommend_cate_feed?aid=2608&uuid=${utils.getUuid()}&spider=0`,
-      method: 'POST',
-      data: {
-        "id_type": 2,
-        "sort_type": 0,
-        "cate_id": "6809637772874219534",
-        "cursor": this.data.cursor,
-        "limit": 20
-      },
-      success: (res) => {
-        let data = res.data
-        if (data.err_no === 0) {
-          wx.hideLoading()
-          this.setData({
-            cursor: data.cursor,
-            list: this.data.list.concat(data.data || []),
-          })
-        } else {
-          wx.showToast({
-            title: data.err_msg.toString(),
-            icon: 'none',
-          })
-        }
-      },
-      fail: () => {
-        wx.showToast({
-          title: '网路开小差，请稍后再试',
-          icon: 'none',
-        })
-      },
+    }).finally(() => {
+      this.setData({ loading: false })
+      wx.stopPullDownRefresh()
     })
   },
-  onReachBottom() {
-    this.getList()
+
+  openSearch() {
+    wx.navigateTo({ url: '/pages/search/search' })
   },
-  onShareAppMessage(res) {
-    return {}
+
+  openFeature(event) {
+    const url = event.currentTarget.dataset.url
+    if (!url) {
+      utils.toast('该内容当前没有公开数据源')
+      return
+    }
+    if (url.indexOf('/pages/feidian/feidian') === 0) wx.switchTab({ url })
+    else wx.navigateTo({ url })
   },
+
+  openArticle(event) {
+    wx.navigateTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+  }
 })

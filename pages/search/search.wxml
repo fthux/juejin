@@ -1,0 +1,41 @@
+<view class="page search-page">
+  <view class="search-head surface">
+    <view class="search-input">
+      <text class="search-icon">⌕</text>
+      <input value="{{keyword}}" placeholder="搜索稀土掘金" confirm-type="search" focus bindinput="onInput" bindconfirm="submit"></input>
+      <text wx:if="{{keyword}}" class="clear" bindtap="clearKeyword">×</text>
+    </view>
+    <view class="search-submit" bindtap="submit">搜索</view>
+  </view>
+
+  <view wx:if="{{!searched}}" class="history surface">
+    <view class="history-head">
+      <text>搜索历史</text>
+      <text class="muted" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="history-list">
+      <view wx:for="{{histories}}" wx:key="*this" class="chip" data-keyword="{{item}}" bindtap="useHistory">{{item}}</view>
+    </view>
+  </view>
+
+  <view wx:else>
+    <view class="tabs">
+      <view wx:for="{{types}}" wx:key="id" class="tab {{type === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchType">{{item.name}}</view>
+    </view>
+    <view wx:if="{{type === 'article'}}">
+      <article-card wx:for="{{results}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    </view>
+    <view wx:else class="user-list surface">
+      <view wx:for="{{results}}" wx:key="user_id" class="user-row" data-id="{{item.user_id}}" bindtap="openUser">
+        <image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+        <view class="user-copy">
+          <view class="user-name">{{item.user_name}}</view>
+          <view class="user-caption ellipsis">{{item.job_title}}<text wx:if="{{item.company}}"> @ {{item.company}}</text> · {{item.follower_count}} 关注者</view>
+        </view>
+        <view class="secondary-button">关注</view>
+      </view>
+    </view>
+    <empty-state wx:if="{{!loading && !results.length}}" text="没有找到相关内容"></empty-state>
+    <view wx:if="{{loading}}" class="loading-line">正在搜索...</view>
+  </view>
+</view>

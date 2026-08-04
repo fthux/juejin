@@ -1,15 +1,18 @@
 {
   "pages": [
-    "pages/launch/launch",
     "pages/index/index",
-    "pages/my/my",
-    "pages/setting/setting",
-    "pages/about/about",
     "pages/feidian/feidian",
-    "pages/login/login",
     "pages/find/find",
     "pages/xiaoce/xiaoce",
+    "pages/my/my",
+    "pages/search/search",
     "pages/post/post",
+    "pages/rank/rank",
+    "pages/column/column",
+    "pages/login/login",
+    "pages/setting/setting",
+    "pages/about/about",
+    "pages/feidianDetail/feidianDetail",
     "pages/favorate/favorate",
     "pages/readHistory/readHistory",
     "pages/collectionSet/collectionSet",
@@ -23,54 +26,61 @@
     "pages/subscribedTag/subscribedTag",
     "pages/manageTag/manageTag",
     "pages/dynamic/dynamic",
-    "pages/feidianDetail/feidianDetail",
     "pages/miniqrcode/miniqrcode",
     "pages/xiaocedetail/xiaocedetail",
     "pages/probation/probation"
   ],
   "window": {
+    "backgroundColor": "#f4f5f5",
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#3281ff",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "稀土掘金",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#abb4bf",
-    "selectedColor": "#3281ff",
+    "color": "#8a919f",
+    "selectedColor": "#1e80ff",
     "borderStyle": "white",
-    "backgroundColor": "#fff",
+    "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "img/tab_home_normal.png",
-        "selectedIconPath": "img/tab_home.png"
+        "iconPath": "assets/app/tabs/tab_home_normal.webp",
+        "selectedIconPath": "assets/app/tabs/tab_home.webp"
       },
       {
         "pagePath": "pages/feidian/feidian",
         "text": "沸点",
-        "iconPath": "img/tab_activity_normal.png",
-        "selectedIconPath": "img/tab_activity.png"
+        "iconPath": "assets/app/tabs/tab_activity.webp",
+        "selectedIconPath": "assets/app/tabs/tab_activity_press.webp"
       },
       {
         "pagePath": "pages/find/find",
         "text": "发现",
-        "iconPath": "img/tab_explore_normal.png",
-        "selectedIconPath": "img/tab_explore.png"
+        "iconPath": "assets/app/tabs/tab_find_normal.webp",
+        "selectedIconPath": "assets/app/tabs/tab_find.webp"
       },
       {
         "pagePath": "pages/xiaoce/xiaoce",
         "text": "课程",
-        "iconPath": "img/tab_xiaoce_normal.png",
-        "selectedIconPath": "img/tab_xiaoce.png"
+        "iconPath": "assets/app/tabs/tab_xiaoce_normal.webp",
+        "selectedIconPath": "assets/app/tabs/tab_xiaoce.webp"
       },
       {
         "pagePath": "pages/my/my",
         "text": "我",
-        "iconPath": "img/tab_profile_normal.png",
-        "selectedIconPath": "img/tab_profile.png"
+        "iconPath": "assets/app/tabs/tab_profile_normal.webp",
+        "selectedIconPath": "assets/app/tabs/tab_profile.webp"
       }
     ]
   },
+  "usingComponents": {
+    "article-card": "/components/articleCard/articleCard",
+    "pin-card": "/components/pinCard/pinCard",
+    "course-card": "/components/courseCard/courseCard",
+    "empty-state": "/components/emptyState/emptyState"
+  },
+  "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

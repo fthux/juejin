@@ -1,0 +1,94 @@
+.rank-head {
+  height: 300rpx;
+  padding: 42rpx 32rpx 0;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #1f2329;
+}
+
+.rank-title {
+  font-size: 42rpx;
+  font-weight: 700;
+}
+
+.rank-caption {
+  margin-top: 12rpx;
+  color: #c9cdd4;
+  font-size: 24rpx;
+}
+
+.rank-tabs {
+  height: 88rpx;
+  margin-top: 38rpx;
+  display: flex;
+  gap: 52rpx;
+}
+
+.rank-tab {
+  position: relative;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  color: #86909c;
+}
+
+.rank-tab.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rank-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 36rpx;
+  height: 5rpx;
+  background: #1e80ff;
+  transform: translateX(-50%);
+}
+
+.author-row {
+  min-height: 154rpx;
+  padding: 22rpx 30rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.author-rank {
+  width: 54rpx;
+  color: #8a919f;
+  font-size: 31rpx;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.author-rank.rank-1 { color: #f53f3f; }
+.author-rank.rank-2 { color: #ff7d00; }
+.author-rank.rank-3 { color: #ffb400; }
+
+.author-copy {
+  min-width: 0;
+  margin-left: 18rpx;
+  flex: 1;
+}
+
+.author-name {
+  font-size: 29rpx;
+  font-weight: 600;
+}
+
+.author-caption,
+.author-stats {
+  margin-top: 7rpx;
+  color: #8a919f;
+  font-size: 22rpx;
+}
+
+.author-row .secondary-button {
+  min-height: 58rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}

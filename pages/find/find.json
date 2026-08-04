@@ -1,6 +1,4 @@
 {
-  "navigationBarTitleText": "搜索",
-  "usingComponents": {
-    "postItemTwo": "/components/postItemTwo/postItemTwo"
-  }
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
 }

@@ -1,0 +1,83 @@
+.pin-card {
+  padding: 28rpx 32rpx 0;
+  background: #ffffff;
+  border-bottom: 16rpx solid #f4f5f5;
+}
+
+.pin-head {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #f2f3f5;
+}
+
+.identity {
+  min-width: 0;
+  margin-left: 18rpx;
+  flex: 1;
+}
+
+.name {
+  color: #252933;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.caption {
+  margin-top: 6rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.more {
+  padding: 12rpx;
+  color: #8a919f;
+}
+
+.pin-content {
+  margin: 20rpx 0;
+  color: #252933;
+  font-size: 30rpx;
+  line-height: 1.65;
+  word-break: break-all;
+}
+
+.pin-pictures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8rpx;
+}
+
+.pin-picture {
+  width: 100%;
+  height: 210rpx;
+  border-radius: 4rpx;
+  background: #f2f3f5;
+}
+
+.topic {
+  margin-top: 18rpx;
+  color: #1e80ff;
+  font-size: 25rpx;
+}
+
+.pin-actions {
+  height: 88rpx;
+  margin-top: 18rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  color: #8a919f;
+  border-top: 1rpx solid #e5e6eb;
+  font-size: 25rpx;
+  text-align: center;
+}
+
+.liked {
+  color: #1e80ff;
+}

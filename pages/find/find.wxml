@@ -1,19 +1,37 @@
-<wxs module='filters' src='../../filter/filter.wxs'></wxs>
-<view class='container'>
-  <!-- <swiper autoplay circular interval="3500" duration="500" wx:if='{{bannerImgList.length}}' style='height:{{swiperHeight}}'>
-    <block wx:for="{{bannerImgList}}" wx:key="index">
-      <swiper-item>
-        <image src='{{item.screenshot}}' class="banner" mode='widthFix'></image>
-      </swiper-item>
-    </block>
-  </swiper> -->
-  <view class='hot card'>
-    <view class='btitle'>
-      <view class='l'>
-        <image class='icon' src='/img/pin_hot.png'></image>
-        <view>热门文章</view>
+<view class="page find-page">
+  <view class="find-hero">
+    <view class="find-title">发现</view>
+    <view class="search-bar" bindtap="openSearch">
+      <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
+      <text>搜索稀土掘金</text>
+    </view>
+  </view>
+
+  <view class="daily-card">
+    <view class="daily-copy">
+      <image src="/assets/app/find/find_page_ic_title_juejin_daily.svg" mode="aspectFit"></image>
+      <text>{{greeting}}</text>
+    </view>
+    <image class="calendar" src="/assets/app/find/find_page_bg_calendar.webp" mode="aspectFit"></image>
+  </view>
+
+  <view class="quick-grid section">
+    <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
+      <image src="{{item.icon}}" mode="aspectFit"></image>
+      <view class="quick-text">
+        <view class="quick-name">{{item.name}}</view>
+        <view class="quick-caption">{{item.caption}}</view>
       </view>
     </view>
-    <postItemTwo wx:for='{{list}}' avatar='{{item.author_user_info.avatar_large}}' userName='{{item.author_user_info.user_name}}' tags='{{item.tags}}' title='{{item.article_info.title}}' briefContent='{{item.article_info.brief_content}}' likeCount='{{item.digg_count}}' commentCount='{{item.comment_count}}' wx:for='{{list}}' wx:key='index'></postItemTwo>
+  </view>
+
+  <view class="section daily-section">
+    <view class="section-header">
+      <view class="section-title">掘金一刻</view>
+      <view class="section-more">今日精选</view>
+    </view>
+    <article-card wx:for="{{dailyArticles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    <empty-state wx:if="{{!loading && !dailyArticles.length}}" text="今日内容还在准备中"></empty-state>
+    <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
   </view>
 </view>

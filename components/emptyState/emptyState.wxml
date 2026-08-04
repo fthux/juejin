@@ -1,0 +1,4 @@
+<view class="empty-view">
+  <image src="{{type === 'network' ? '/assets/app/common/business_common_v3_ic_standard_net_error.webp' : '/assets/app/common/business_common_v3_ic_standard_empty.webp'}}" mode="aspectFit"></image>
+  <text>{{text}}</text>
+</view>

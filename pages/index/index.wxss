@@ -1,39 +1,138 @@
-.guide {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
+.home-page {
+  padding-bottom: 24rpx;
 }
-.guide .l {
-  flex: 1;
-}
-.guide .l .t,
-.guide .r {
-  font-size: 30rpx;
-}
-.guide .l .c {
-  line-height: 1.8em;
-  color: #666;
-}
-.guide .r {
-  font-size: 32rpx;
-  color: #3281ff;
-}
-.btitle {
+
+.home-head {
+  height: 96rpx;
+  padding: 0 30rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 90rpx;
-  padding: 0 30rpx;
-  color: #3281ff;
-  font-size: 30rpx;
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1rpx solid #f2f3f5;
 }
-.btitle .icon {
-  width: 40rpx;
-  height: 40rpx;
-  margin-right: 15rpx;
-}
-.btitle .l {
+
+.brand,
+.head-actions,
+.category-row,
+.sorts {
   display: flex;
   align-items: center;
+}
+
+.brand image {
+  width: 46rpx;
+  height: 46rpx;
+  margin-right: 14rpx;
+}
+
+.brand text {
+  color: #1e80ff;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.head-actions {
+  gap: 12rpx;
+}
+
+.icon-button {
+  width: 68rpx;
+  height: 68rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #515767;
+  font-size: 35rpx;
+}
+
+.search-button {
+  font-size: 46rpx;
+}
+
+.category-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.category-row {
+  height: 78rpx;
+  padding: 0 16rpx;
+}
+
+.category {
+  position: relative;
+  height: 78rpx;
+  padding: 0 20rpx;
+  display: inline-flex;
+  align-items: center;
+  color: #515767;
+  font-size: 27rpx;
+}
+
+.category.active {
+  color: #1e80ff;
+  font-weight: 600;
+}
+
+.category.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 30rpx;
+  height: 4rpx;
+  background: #1e80ff;
+  transform: translateX(-50%);
+}
+
+.login-guide {
+  margin: 16rpx 0;
+  padding: 24rpx 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+}
+
+.guide-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.guide-copy {
+  margin-top: 8rpx;
+  color: #8a919f;
+  font-size: 23rpx;
+}
+
+.login-guide .secondary-button {
+  min-height: 60rpx;
+}
+
+.feed-head {
+  height: 78rpx;
+  padding: 0 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #e5e6eb;
+}
+
+.sorts {
+  gap: 36rpx;
+}
+
+.sort {
+  color: #8a919f;
+  font-size: 25rpx;
+}
+
+.sort.active {
+  color: #252933;
+  font-weight: 600;
+}
+
+.offline-mark {
+  color: #8a919f;
+  font-size: 22rpx;
 }

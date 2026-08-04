@@ -1,0 +1,24 @@
+<view class="pin-card" bindtap="open">
+  <view class="pin-head">
+    <image class="avatar" src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
+    <view class="identity">
+      <view class="name ellipsis">{{item.author.user_name}}</view>
+      <view class="caption ellipsis">
+        <text wx:if="{{item.author.job_title}}">{{item.author.job_title}}</text>
+        <text wx:if="{{item.author.company}}"> @ {{item.author.company}}</text>
+        <text wx:if="{{item.ctime}}"> · {{item.ctime}}</text>
+      </view>
+    </view>
+    <text class="more">···</text>
+  </view>
+  <view class="pin-content">{{item.content}}</view>
+  <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
+    <image wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture" src="{{item}}" mode="aspectFill"></image>
+  </view>
+  <view wx:if="{{item.topic}}" class="topic"># {{item.topic.title || item.topic}}</view>
+  <view class="pin-actions">
+    <text>分享</text>
+    <text>评论 {{item.comment_count}}</text>
+    <text class="{{item.is_digg ? 'liked' : ''}}" catchtap="like">点赞 {{item.digg_count}}</text>
+  </view>
+</view>

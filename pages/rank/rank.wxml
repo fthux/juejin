@@ -1,0 +1,26 @@
+<view class="page rank-page">
+  <view class="rank-head">
+    <view class="rank-title">掘金榜单</view>
+    <view class="rank-caption">发现社区正在关注的优质内容与创作者</view>
+    <view class="rank-tabs">
+      <view class="rank-tab {{type === 'article' ? 'active' : ''}}" data-type="article" bindtap="switchType">文章榜</view>
+      <view class="rank-tab {{type === 'author' ? 'active' : ''}}" data-type="author" bindtap="switchType">作者榜</view>
+    </view>
+  </view>
+  <view wx:if="{{type === 'article'}}" class="surface">
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" rank="{{index + 1}}" bind:open="openArticle"></article-card>
+  </view>
+  <view wx:else class="surface">
+    <view wx:for="{{authors}}" wx:key="user_id" class="author-row">
+      <view class="author-rank rank-{{index + 1}}">{{index + 1}}</view>
+      <image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+      <view class="author-copy">
+        <view class="author-name">{{item.user_name}}</view>
+        <view class="author-caption ellipsis">{{item.job_title}}<text wx:if="{{item.company}}"> @ {{item.company}}</text></view>
+        <view class="author-stats">{{item.follower_count}} 关注者 · 获赞 {{item.got_digg_count}}</view>
+      </view>
+      <view class="secondary-button">关注</view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="loading-line">正在加载榜单...</view>
+</view>

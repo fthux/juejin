@@ -1,0 +1,17 @@
+.empty-view {
+  min-height: 460rpx;
+  padding: 80rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: #8a919f;
+  text-align: center;
+}
+
+image {
+  width: 220rpx;
+  height: 220rpx;
+  margin-bottom: 24rpx;
+}

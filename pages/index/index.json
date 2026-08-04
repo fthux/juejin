@@ -1,7 +1,5 @@
 {
-  "navigationBarTitleText": "稀土掘金",
+  "navigationStyle": "custom",
   "enablePullDownRefresh": true,
-  "usingComponents": {
-    "postItemTwo": "/components/postItemTwo/postItemTwo"
-  }
+  "backgroundTextStyle": "dark"
 }
