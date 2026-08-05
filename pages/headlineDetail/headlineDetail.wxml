@@ -1,0 +1,11 @@
+<view class="page headline-detail-page">
+  <view wx:if="{{item}}" class="headline-detail surface">
+    <view class="detail-title">{{item.title}}</view>
+    <view class="detail-meta">{{item.source}}<text wx:if="{{item.publish_time}}"> · {{item.publish_time}}</text></view>
+    <image wx:if="{{item.thumbnail}}" class="detail-image" src="{{item.thumbnail}}" mode="widthFix"></image>
+    <view wx:if="{{item.brief}}" class="detail-brief">{{item.brief}}</view>
+    <view class="source-note">该内容来自头条精选。小程序不直接嵌入第三方页面，可复制原文链接后在浏览器中查看。</view>
+    <button wx:if="{{item.url}}" class="primary-button original-button" bindtap="copyOriginal">复制原文链接</button>
+  </view>
+  <empty-state wx:else text="未找到这条头条内容"></empty-state>
+</view>

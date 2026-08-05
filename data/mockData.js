@@ -10,6 +10,89 @@ const categories = [
   { id: '6809637772874219534', name: '阅读' }
 ]
 
+const homeChannels = [
+  { id: 'following', name: '关注' },
+  { id: 'recommend', name: '推荐' },
+  { id: 'hot', name: '热榜' },
+  { id: 'headline', name: '头条精选' },
+  { id: 'backend', name: '后端', categoryId: '6809637769959178254' },
+  { id: 'frontend', name: '前端', categoryId: '6809637767543259144' },
+  { id: 'android', name: 'Android', categoryId: '6809635626879549454' },
+  { id: 'ios', name: 'iOS', categoryId: '6809635626661445640' },
+  { id: 'ai', name: '人工智能', categoryId: '6809637773935378440' },
+  { id: 'devtools', name: '开发工具', categoryId: '6809637771511070734' },
+  { id: 'career', name: '代码人生', categoryId: '6809637776263217160' },
+  { id: 'reading', name: '阅读', categoryId: '6809637772874219534' }
+]
+
+const categoryFilters = {
+  backend: [
+    { id: '', name: '全部' },
+    { id: '6809640408797167623', name: '后端' },
+    { id: '6809640445233070094', name: 'Java' },
+    { id: '6809640448827588622', name: 'Python' },
+    { id: '6809640407484334093', name: '前端' },
+    { id: '6809640404791590919', name: '面试' }
+  ],
+  frontend: [
+    { id: '', name: '全部' },
+    { id: '6809640407484334093', name: '前端' },
+    { id: '6809640398105870343', name: 'JavaScript' },
+    { id: '6809640369764958215', name: 'Vue.js' },
+    { id: '6809640357354012685', name: 'React.js' },
+    { id: '6809640404791590919', name: '面试' }
+  ],
+  android: [
+    { id: '', name: '全部' },
+    { id: '6809640400832167949', name: 'Android' },
+    { id: '6809640615584727053', name: 'Kotlin' },
+    { id: '6809640407484334093', name: '前端' },
+    { id: '6809641090145058824', name: 'Flutter' }
+  ],
+  ios: [
+    { id: '', name: '全部' },
+    { id: '6809640399544516616', name: 'iOS' },
+    { id: '6809640463633481741', name: 'Swift' },
+    { id: '6809641204351926286', name: 'SwiftUI' },
+    { id: '6809641090145058824', name: 'Flutter' }
+  ],
+  ai: [
+    { id: '', name: '全部' },
+    { id: '6809640642101116936', name: '人工智能' },
+    { id: '7197380506562871333', name: 'AIGC' },
+    { id: '7197380216015028281', name: 'ChatGPT' },
+    { id: '6809640525595934734', name: '机器学习' },
+    { id: '6809640679082295303', name: '深度学习' }
+  ],
+  devtools: [
+    { id: '', name: '全部' },
+    { id: '6809640373774712840', name: 'Git' },
+    { id: '6809640375880253447', name: 'GitHub' },
+    { id: '6809640656265281550', name: 'VS Code' },
+    { id: '6809640419505209358', name: '开源' }
+  ],
+  career: [
+    { id: '', name: '全部' },
+    { id: '6809640482725953550', name: '程序员' },
+    { id: '6809640404791590919', name: '面试' },
+    { id: '6809640419505209358', name: '开源' }
+  ],
+  reading: [
+    { id: '', name: '全部' },
+    { id: '6809640419505209358', name: '开源' },
+    { id: '6809640482725953550', name: '程序员' }
+  ]
+}
+
+const hotCategories = [
+  { id: '6809637767543259144', name: '前端' },
+  { id: '6809637769959178254', name: '后端' },
+  { id: '6809635626661445640', name: 'iOS' },
+  { id: '6809635626879549454', name: 'Android' },
+  { id: '6809637773935378440', name: '人工智能' },
+  { id: '6809637771511070734', name: '开发工具' }
+]
+
 const authors = [
   { user_id: 'user-1', user_name: '稀土掘金技术团队', avatar_large: '/assets/app/common/ic_juejin_logo.webp', job_title: '官方账号', company: '稀土掘金', follower_count: 128000 },
   { user_id: 'user-2', user_name: '前端森林', avatar_large: '/assets/app/common/default_avatar.webp', job_title: '前端工程师', company: '字节跳动', follower_count: 32640 },
@@ -80,6 +163,9 @@ function search(keyword, type) {
 
 module.exports = {
   categories,
+  homeChannels,
+  categoryFilters,
+  hotCategories,
   authors,
   articles,
   pins,

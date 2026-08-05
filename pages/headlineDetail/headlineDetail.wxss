@@ -1,0 +1,51 @@
+.headline-detail-page {
+  min-height: 100vh;
+}
+
+.headline-detail {
+  min-height: 100vh;
+  padding: 44rpx 34rpx 70rpx;
+  box-sizing: border-box;
+}
+
+.detail-title {
+  color: var(--jj-text);
+  font-size: 42rpx;
+  font-weight: 700;
+  line-height: 1.42;
+}
+
+.detail-meta {
+  margin-top: 24rpx;
+  color: var(--jj-text-3);
+  font-size: 24rpx;
+}
+
+.detail-image {
+  width: 100%;
+  margin-top: 34rpx;
+  border-radius: 6rpx;
+  background: var(--jj-fill);
+}
+
+.detail-brief {
+  margin-top: 34rpx;
+  color: var(--jj-text-2);
+  font-size: 30rpx;
+  line-height: 1.75;
+}
+
+.source-note {
+  margin-top: 42rpx;
+  padding: 26rpx;
+  border-radius: 6rpx;
+  color: var(--jj-text-3);
+  background: var(--jj-fill-2);
+  font-size: 23rpx;
+  line-height: 1.65;
+}
+
+.original-button {
+  width: 100%;
+  margin-top: 32rpx;
+}

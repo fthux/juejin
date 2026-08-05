@@ -1,0 +1,15 @@
+<view class="page channels-page surface">
+  <view class="channels-head">
+    <view>
+      <view class="channels-title">我的频道</view>
+      <view class="channels-caption">{{editMode ? '固定频道已保留，完成后可继续浏览' : '选择频道即可返回首页'}}</view>
+    </view>
+    <view class="edit-action" bindtap="toggleEdit">{{editMode ? '完成' : '编辑'}}</view>
+  </view>
+  <view class="channel-grid">
+    <view wx:for="{{channels}}" wx:key="id" class="channel-item {{editMode ? 'editing' : ''}}" data-id="{{item.id}}" bindtap="chooseChannel">
+      <text>{{item.name}}</text>
+      <view wx:if="{{editMode}}" class="fixed-mark">✓</view>
+    </view>
+  </view>
+</view>

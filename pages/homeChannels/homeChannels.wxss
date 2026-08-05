@@ -1,0 +1,65 @@
+.channels-page {
+  min-height: 100vh;
+  padding: 34rpx 28rpx;
+  box-sizing: border-box;
+}
+
+.channels-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.channels-title {
+  color: var(--jj-text);
+  font-size: 31rpx;
+  font-weight: 650;
+}
+
+.channels-caption {
+  margin-top: 8rpx;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}
+
+.edit-action {
+  min-width: 86rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--jj-blue);
+  font-size: 25rpx;
+}
+
+.channel-grid {
+  margin-top: 34rpx;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18rpx;
+}
+
+.channel-item {
+  position: relative;
+  height: 78rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4rpx;
+  color: var(--jj-text-2);
+  background: var(--jj-fill);
+  font-size: 25rpx;
+  text-align: center;
+}
+
+.channel-item.editing {
+  color: var(--jj-text-3);
+}
+
+.fixed-mark {
+  position: absolute;
+  top: 5rpx;
+  right: 7rpx;
+  color: var(--jj-blue);
+  font-size: 17rpx;
+}

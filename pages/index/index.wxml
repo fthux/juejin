@@ -12,29 +12,118 @@
     </view>
   </status-bar>
 
-  <scroll-view class="nav-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
-    <view class="nav-row">
-      <view wx:for="{{navTabs}}" wx:key="id" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
-      <view wx:if="{{extraCategory}}" class="nav-item active">{{extraCategory.name}}</view>
-      <view class="nav-menu" bindtap="openCategoryMenu">☰</view>
+  <view class="nav-bar surface">
+    <scroll-view class="nav-scroll" scroll-x enable-flex show-scrollbar="{{false}}" scroll-into-view="nav-{{activeNav}}" scroll-with-animation>
+      <view class="nav-row">
+        <view wx:for="{{navTabs}}" wx:key="id" id="nav-{{item.id}}" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
+      </view>
+    </scroll-view>
+    <view class="nav-menu" bindtap="openCategoryMenu" aria-label="全部频道">
+      <view class="menu-lines"><text></text><text></text><text></text></view>
+    </view>
+  </view>
+
+  <scroll-view wx:if="{{activeNav === 'hot'}}" class="filter-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="filter-row">
+      <view wx:for="{{hotCategories}}" wx:key="id" class="filter-chip {{hotCategoryId === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectFilter">{{item.name}}</view>
+    </view>
+  </scroll-view>
+  <scroll-view wx:elif="{{filters.length}}" class="filter-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="filter-row">
+      <view wx:for="{{filters}}" wx:key="name" class="filter-chip {{activeFilter === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectFilter">{{item.name}}</view>
     </view>
   </scroll-view>
 
-  <view wx:if="{{activeNav === 'recommend' && hotList.length}}" class="hot-section surface">
-    <view class="hot-heading"><view class="hot-title">热榜</view><view class="hot-type">文章</view></view>
-    <view wx:for="{{hotList}}" wx:key="article_id" class="hot-row" data-id="{{item.article_id}}" bindtap="openArticle">
-      <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
-      <view class="hot-name ellipsis">{{item.title}}</view>
-      <view class="hot-value">{{item.view_count}} 热度</view>
-    </view>
-    <view class="hot-dots"><text class="active"></text><text></text></view>
+  <view wx:if="{{activeNav === 'following'}}" class="following-empty surface">
+    <image src="/assets/app/common/business_common_v3_ic_standard_empty.webp" mode="aspectFit"></image>
+    <view class="following-title">小程序版不提供关注动态同步</view>
+    <view class="following-caption">关注内容请在稀土掘金官方 App 或网站登录后查看</view>
+    <button class="primary-button account-button" bindtap="openAccountInfo">查看账号说明</button>
   </view>
 
-  <view class="article-list">
-    <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" compact="{{true}}" home="{{true}}" bind:open="openArticle" bind:author="openAuthor"></article-card>
-  </view>
-  <empty-state wx:if="{{!loading && !list.length}}" text="{{activeNav === 'following' ? '关注作者后，这里会展示他们的文章' : '暂时没有找到文章'}}"></empty-state>
+  <block wx:elif="{{activeNav === 'hot'}}">
+    <view class="rank-page surface">
+      <view class="rank-page-head">
+        <view class="rank-page-title">热门文章榜</view>
+        <view class="rank-links">
+          <view data-type="collect" bindtap="openRank">收藏榜 <text>›</text></view>
+          <view data-type="author" bindtap="openRank">作者榜 <text>›</text></view>
+        </view>
+      </view>
+      <view wx:for="{{hotList}}" wx:key="article_id" class="ranking-row" data-id="{{item.article_id}}" bindtap="openArticle">
+        <view class="ranking-number rank-{{index + 1}}">{{index + 1}}</view>
+        <view class="ranking-copy">
+          <view class="ranking-title">{{item.title}}</view>
+          <view class="ranking-meta">
+            <text>{{item.author.user_name}}</text>
+            <text class="ranking-heat">热度 {{item.hot_rank}} ♨</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <empty-state wx:if="{{!loading && !hotList.length}}" text="暂时没有热门文章"></empty-state>
+  </block>
+
+  <block wx:elif="{{activeNav === 'headline'}}">
+    <view class="headline-list">
+      <view wx:for="{{headlineList}}" wx:key="content_id" class="headline-row surface" data-index="{{index}}" bindtap="openHeadline">
+        <view class="headline-copy">
+          <view class="headline-title two-lines">{{item.title}}</view>
+          <view class="headline-meta">
+            <text>{{item.source}}</text>
+            <text wx:if="{{item.publish_time}}">｜{{item.publish_time}}</text>
+            <text wx:if="{{item.digg_count !== '0'}}"> · {{item.digg_count}} 赞</text>
+          </view>
+        </view>
+        <image wx:if="{{item.thumbnail}}" class="headline-image" src="{{item.thumbnail}}" mode="aspectFill"></image>
+      </view>
+    </view>
+    <empty-state wx:if="{{!loading && !headlineList.length}}" text="暂时没有头条精选"></empty-state>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{activeNav === 'recommend'}}" class="account-card surface" bindtap="openAccountInfo">
+      <view>
+        <view class="account-card-title">账号功能说明</view>
+        <view class="account-card-caption">小程序不接入账号系统，收藏与阅读记录请使用官方平台</view>
+      </view>
+      <text class="account-card-link">查看</text>
+    </view>
+
+    <view wx:if="{{activeNav === 'recommend' && (hotRankArticles.length || hotRankAuthors.length)}}" class="hot-section surface">
+      <swiper class="hot-swiper" current="{{hotSwiper}}" bindchange="hotSwiperChanged" duration="260">
+        <swiper-item>
+          <view class="hot-page">
+            <view class="hot-heading"><view class="hot-title">热榜</view><view class="hot-type">文章</view></view>
+            <view wx:for="{{hotRankArticles}}" wx:key="article_id" class="hot-row" data-id="{{item.article_id}}" bindtap="openArticle">
+              <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
+              <view class="hot-name ellipsis">{{item.title}}</view>
+              <view class="hot-value">{{item.hot_rank}} 热度</view>
+            </view>
+          </view>
+        </swiper-item>
+        <swiper-item>
+          <view class="hot-page">
+            <view class="hot-heading"><view class="hot-title">热榜</view><view class="hot-type">作者</view></view>
+            <view wx:for="{{hotRankAuthors}}" wx:key="user_id" class="hot-author-row" data-id="{{item.user_id}}" bindtap="openAuthor">
+              <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
+              <image src="{{item.avatar_large}}" mode="aspectFill"></image>
+              <view class="hot-name ellipsis">{{item.user_name}}</view>
+              <view class="hot-value">热度 {{item.hot_rank}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="hot-dots"><text class="{{hotSwiper === 0 ? 'active' : ''}}"></text><text class="{{hotSwiper === 1 ? 'active' : ''}}"></text></view>
+    </view>
+
+    <view class="article-list">
+      <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" compact="{{true}}" home="{{true}}" bind:open="openArticle" bind:author="openAuthor"></article-card>
+    </view>
+    <empty-state wx:if="{{!loading && !list.length}}" text="暂时没有找到文章"></empty-state>
+  </block>
+
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
-  <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
+  <view wx:elif="{{activeNav !== 'following' && activeNav !== 'hot' && ((activeNav === 'headline' && headlineList.length) || (activeNav !== 'headline' && list.length)) && !hasMore}}" class="loading-line">没有更多了</view>
   <view wx:if="{{fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
 </view>

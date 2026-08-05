@@ -60,6 +60,18 @@ function categoryFeed(cateId, cursor) {
   }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
 }
 
+function categoryTagFeed(cateId, tagId, cursor) {
+  if (!tagId) return categoryFeed(cateId, cursor)
+  return withFallback(request('/recommend_api/v1/article/recommend_cate_tag_feed', {
+    id_type: 2,
+    sort_type: 200,
+    cate_id: cateId || '',
+    tag_id: tagId,
+    cursor: cursor || '0',
+    limit: 20
+  }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
+}
+
 function pins(cursor, options) {
   const config = options || {}
   return withFallback(request('/recommend_api/v1/short_msg/recommend', {
@@ -134,12 +146,45 @@ function daily() {
   return withFallback(request('/content_api/v1/article/daily', {}), () => ({ data: mock.daily }))
 }
 
-function hotArticles() {
-  return withFallback(request('/content_api/v1/content/list_by_hot', { cursor: '0', limit: 30 }), () => ({ data: mock.articles }))
+function recommendationRanks() {
+  return withFallback(request('/content_api/v1/requests', {
+    requests: [
+      {
+        url: '/content_api/v1/content/list_by_hot',
+        param: { type: 'hot', count: 3, item_type: 2 }
+      },
+      {
+        url: '/content_api/v1/author/list_by_hot',
+        param: { type: 'hot', count: 3 }
+      }
+    ]
+  }), () => ({ data: [mock.articles.slice(0, 3), mock.authors.slice(0, 3)] }))
 }
 
-function hotAuthors() {
-  return withFallback(request('/content_api/v1/author/list_by_hot', { cursor: '0', limit: 30 }), () => ({ data: mock.authors }))
+function hotArticles(options) {
+  const config = options || {}
+  return withFallback(request('/content_api/v1/content/list_by_hot', {
+    type: config.type || 'hot',
+    count: config.count || 40,
+    item_type: 2,
+    category_id: config.categoryId || '0'
+  }, { method: 'GET' }), () => ({ data: mock.articles }))
+}
+
+function hotAuthors(count) {
+  return withFallback(request('/content_api/v1/author/list_by_hot', {
+    type: 'hot',
+    count: count || 30
+  }, { method: 'GET' }), () => ({ data: mock.authors }))
+}
+
+function headlineFeed(cursor) {
+  return withFallback(request('/content_api/v1/content/list_by_category', {
+    item_type: 28,
+    page_size: 10,
+    category_id: '',
+    cursor: cursor || ''
+  }), () => ({ data: mock.articles, cursor: 'mock-end', has_more: false }))
 }
 
 function followers(userId, cursor) {
@@ -172,6 +217,7 @@ module.exports = {
   request,
   homeFeed,
   categoryFeed,
+  categoryTagFeed,
   pins,
   selectedPins,
   courses,
@@ -181,8 +227,10 @@ module.exports = {
   articleDetail,
   pinDetail,
   daily,
+  recommendationRanks,
   hotArticles,
   hotAuthors,
+  headlineFeed,
   followers,
   topics,
   search

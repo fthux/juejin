@@ -71,6 +71,63 @@ function normalizeArticle(raw) {
   }
 }
 
+function normalizeHotRank(raw) {
+  const item = raw || {}
+  const content = item.content || item.article_info || item
+  const counter = item.content_counter || item.counter || item
+  const author = item.author || item.author_user_info || {}
+  return {
+    article_id: content.content_id || content.article_id || item.article_id || '',
+    title: content.title || item.title || '无标题文章',
+    brief_content: content.brief || item.brief_content || '',
+    cover_image: content.cover_image || item.cover_image || '',
+    ctime: '',
+    digg_count: formatCount(counter.like || item.digg_count),
+    tags: [],
+    author: {
+      user_id: author.user_id || content.author_id || '',
+      user_name: author.name || author.user_name || item.author_name || '掘金用户',
+      avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.webp'
+    },
+    hot_rank: String(Math.round(Number(counter.hot_rank) || Number(item.hot_rank) || Number(item.view_count) || 0)),
+    collect_count: formatCount(counter.collect || item.collect_count),
+    comment_count: formatCount(counter.comment_count || item.comment_count),
+    view_count: formatCount(counter.view || item.view_count)
+  }
+}
+
+function normalizeHotAuthor(raw) {
+  const item = raw || {}
+  const author = item.author || item
+  const counter = item.author_counter || item
+  return {
+    user_id: author.user_id || '',
+    user_name: author.name || author.user_name || '掘金用户',
+    avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.webp',
+    job_title: author.job_title || '',
+    company: author.company || '',
+    follower_count: formatCount(counter.follower || author.follower_count),
+    got_digg_count: formatCount(counter.like || author.got_digg_count),
+    hot_rank: formatCount(Math.round(Number(counter.hot_rank) || 0))
+  }
+}
+
+function normalizeHeadline(raw) {
+  const item = raw || {}
+  const info = item.content_info || item
+  const author = item.author_user_info || item.author || {}
+  return {
+    content_id: info.content_id || item.content_id || info.article_id || item.article_id || '',
+    title: info.title || item.title || '无标题资讯',
+    brief: info.brief || info.brief_content || item.brief_content || '',
+    thumbnail: info.thumbnail || info.cover_image || item.cover_image || '',
+    url: info.content || info.link_url || item.link_url || '',
+    source: author.user_name || author.name || item.author_name || '头条精选',
+    publish_time: info.publish_time_string || formatTime(info.publish_time || info.ctime || item.ctime),
+    digg_count: formatCount((item.content_counter && item.content_counter.digg) || info.digg_count || item.digg_count)
+  }
+}
+
 function normalizePin(raw) {
   const item = raw || {}
   const info = item.msg_Info || item.msg_info || item
@@ -148,6 +205,9 @@ module.exports = {
   navigate,
   toast,
   normalizeArticle,
+  normalizeHotRank,
+  normalizeHotAuthor,
+  normalizeHeadline,
   normalizePin,
   normalizeCourse,
   formatPrice

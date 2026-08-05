@@ -5,12 +5,14 @@ Page({
   data: {
     type: 'article',
     articles: [],
+    collections: [],
     authors: [],
     loading: true
   },
 
   onLoad(query) {
-    this.setData({ type: query.type === 'author' ? 'author' : 'article' })
+    const type = ['article', 'collect', 'author'].indexOf(query.type) === -1 ? 'article' : query.type
+    this.setData({ type })
     this.load()
   },
 
@@ -19,22 +21,23 @@ Page({
   },
 
   load() {
-    Promise.all([api.hotArticles(), api.hotAuthors()]).then(([articleResponse, authorResponse]) => {
-      const articles = (articleResponse.result.data || []).map(utils.normalizeArticle)
-      const authors = (authorResponse.result.data || []).map((item) => ({
-        user_id: item.user_id || '',
-        user_name: item.user_name || '掘金用户',
-        avatar_large: item.avatar_large || '/assets/app/common/default_avatar.webp',
-        job_title: item.job_title || '',
-        company: item.company || '',
-        follower_count: utils.formatCount(item.follower_count),
-        got_digg_count: utils.formatCount(item.got_digg_count || item.follower_count)
-      }))
-      this.setData({ articles, authors, loading: false })
+    Promise.all([
+      api.hotArticles({ type: 'hot', count: 30 }),
+      api.hotArticles({ type: 'collect', count: 30 }),
+      api.hotAuthors(30)
+    ]).then(([articleResponse, collectionResponse, authorResponse]) => {
+      const articles = (articleResponse.result.data || []).map(utils.normalizeHotRank)
+      const collections = (collectionResponse.result.data || []).map(utils.normalizeHotRank)
+      const authors = (authorResponse.result.data || []).map(utils.normalizeHotAuthor)
+      this.setData({ articles, collections, authors, loading: false })
     }).finally(() => this.setData({ loading: false }))
   },
 
   openArticle(event) {
     wx.navigateTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+  },
+
+  openAccountInfo() {
+    wx.navigateTo({ url: '/pages/login/login' })
   }
 })

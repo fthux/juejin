@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/homeChannels/homeChannels",
+    "pages/headlineDetail/headlineDetail",
     "pages/feidian/feidian",
     "pages/find/find",
     "pages/discoverChannel/discoverChannel",
