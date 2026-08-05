@@ -1,9 +1,27 @@
-.rank-head {
-  height: 300rpx;
-  padding: 42rpx 32rpx 0;
-  box-sizing: border-box;
+.rank-page {
+  min-height: 100vh;
+  background: var(--jj-surface);
+}
+
+.rank-hero {
+  position: relative;
+  height: 238rpx;
+  overflow: hidden;
   color: #ffffff;
-  background: #1f2329;
+  background: #1e80ff;
+}
+
+.rank-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rank-hero-copy {
+  position: relative;
+  z-index: 1;
+  padding: 54rpx 40rpx 0;
 }
 
 .rank-title {
@@ -12,62 +30,166 @@
 }
 
 .rank-caption {
-  margin-top: 12rpx;
-  color: var(--jj-text-4);
+  margin-top: 14rpx;
+  color: rgba(255, 255, 255, 0.82);
   font-size: 24rpx;
 }
 
-.rank-tabs {
-  height: 88rpx;
-  margin-top: 38rpx;
-  display: flex;
-  gap: 52rpx;
+.rank-content {
+  position: relative;
+  z-index: 2;
+  min-height: calc(100vh - 238rpx);
+  margin-top: -32rpx;
+  padding: 0 30rpx;
+  border-radius: 12rpx 12rpx 0 0;
 }
 
-.rank-tab {
-  position: relative;
-  height: 88rpx;
+.list-title {
+  height: 94rpx;
   display: flex;
   align-items: center;
-  color: #86909c;
+  justify-content: space-between;
+  border-bottom: 1rpx solid var(--jj-line);
 }
 
-.rank-tab.active {
-  color: #ffffff;
+.list-title text:first-child {
+  font-size: 29rpx;
   font-weight: 600;
 }
 
-.rank-tab.active::after {
-  content: "";
+.list-title text:last-child {
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.collection-row {
+  min-height: 150rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid var(--jj-line);
+}
+
+.rank-number,
+.author-rank {
+  width: 62rpx;
+  flex: 0 0 auto;
+  color: var(--jj-text-3);
+  font-size: 27rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rank-number image {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.collection-copy {
+  min-width: 0;
+  padding: 22rpx 0;
+  flex: 1;
+}
+
+.collection-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.collection-meta {
+  margin-top: 12rpx;
+  display: flex;
+  justify-content: space-between;
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.author-content {
+  padding: 0;
+}
+
+.author-podium {
+  height: 306rpx;
+  padding: 30rpx 28rpx 20rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20rpx;
+  box-sizing: border-box;
+}
+
+.podium-item {
+  width: 30%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.podium-1 {
+  order: 2;
+  align-self: flex-start;
+}
+
+.podium-2 { order: 1; }
+.podium-3 { order: 3; }
+
+.podium-avatar {
+  position: relative;
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.podium-1 .podium-avatar {
+  width: 132rpx;
+  height: 132rpx;
+}
+
+.podium-avatar > image:first-child {
+  width: 100%;
+  height: 100%;
+  border: 4rpx solid #ffffff;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: var(--jj-fill);
+  box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.12);
+}
+
+.podium-medal {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  width: 36rpx;
-  height: 5rpx;
-  background: #1e80ff;
+  bottom: -17rpx;
+  width: 50rpx;
+  height: 50rpx;
   transform: translateX(-50%);
 }
 
+.podium-name {
+  width: 100%;
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.podium-count {
+  margin-top: 6rpx;
+  color: var(--jj-text-3);
+  font-size: 18rpx;
+}
+
+.author-list-title {
+  margin: 0 30rpx;
+}
+
 .author-row {
-  min-height: 154rpx;
-  padding: 22rpx 30rpx;
+  min-height: 148rpx;
+  padding: 20rpx 30rpx;
   display: flex;
   align-items: center;
   box-sizing: border-box;
   border-bottom: 1rpx solid var(--jj-line);
 }
-
-.author-rank {
-  width: 54rpx;
-  color: var(--jj-text-3);
-  font-size: 31rpx;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.author-rank.rank-1 { color: #f53f3f; }
-.author-rank.rank-2 { color: #ff7d00; }
-.author-rank.rank-3 { color: #ffb400; }
 
 .author-copy {
   min-width: 0;
@@ -76,7 +198,7 @@
 }
 
 .author-name {
-  font-size: 29rpx;
+  font-size: 28rpx;
   font-weight: 600;
 }
 
@@ -84,11 +206,17 @@
 .author-stats {
   margin-top: 7rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: 20rpx;
 }
 
-.author-row .secondary-button {
-  min-height: 58rpx;
-  padding: 0 24rpx;
-  font-size: 24rpx;
+.follow-button {
+  min-width: 94rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid var(--jj-blue);
+  border-radius: 5rpx;
+  color: var(--jj-blue);
+  font-size: 23rpx;
 }

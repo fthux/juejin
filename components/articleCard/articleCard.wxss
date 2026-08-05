@@ -113,19 +113,24 @@
 }
 
 .article-card.home-card {
-  min-height: 244rpx;
-  padding: 26rpx 30rpx;
-  align-items: center;
+  min-height: 286rpx;
+  padding: 24rpx 30rpx 22rpx;
+  align-items: stretch;
   border-bottom: 14rpx solid var(--jj-bg);
+}
+
+.home-main {
+  width: 100%;
 }
 
 .home-card .article-title {
   margin-top: 0;
-  font-size: 29rpx;
+  font-size: 30rpx;
+  line-height: 1.42;
 }
 
 .home-author-row {
-  margin-top: 14rpx;
+  margin-top: 12rpx;
   display: flex;
   align-items: center;
   gap: 10rpx;
@@ -134,30 +139,86 @@
 }
 
 .home-author-row image {
-  width: 30rpx;
-  height: 30rpx;
+  width: 32rpx;
+  height: 32rpx;
   border-radius: 50%;
 }
 
+.home-summary-row {
+  min-width: 0;
+  margin-top: 12rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
 .home-card .article-brief {
-  margin-top: 14rpx;
+  min-width: 0;
+  margin-top: 0;
+  flex: 1;
   font-size: 23rpx;
+  line-height: 1.55;
   -webkit-line-clamp: 2;
 }
 
+.home-card .home-cover {
+  width: 166rpx;
+  height: 108rpx;
+}
+
 .home-card .home-stats {
-  margin-top: 18rpx;
+  min-height: 42rpx;
+  margin-top: 14rpx;
   display: flex;
+  gap: 28rpx;
+}
+
+.home-stats .stat {
+  display: flex;
+  align-items: center;
+  gap: 7rpx;
+}
+
+.home-stats .stat image {
+  width: 28rpx;
+  height: 28rpx;
 }
 
 .home-tag {
   margin-left: auto;
-  padding: 6rpx 12rpx;
+  max-width: 150rpx;
+  padding: 5rpx 12rpx;
+  overflow: hidden;
   border-radius: 4rpx;
   color: var(--jj-text-3);
   background: var(--jj-fill);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.home-more {
-  margin-left: 4rpx;
+.home-dislike {
+  position: relative;
+  width: 42rpx;
+  height: 42rpx;
+  margin-left: -4rpx;
+  flex: 0 0 auto;
+}
+
+.home-dislike::before,
+.home-dislike::after {
+  content: "";
+  position: absolute;
+  left: 20rpx;
+  top: 9rpx;
+  width: 2rpx;
+  height: 24rpx;
+  border-radius: 1rpx;
+  background: var(--jj-text-3);
+}
+
+.home-dislike::before { transform: rotate(45deg); }
+.home-dislike::after { transform: rotate(-45deg); }
+
+.home-dislike text {
+  display: none;
 }

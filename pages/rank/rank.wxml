@@ -1,29 +1,47 @@
 <view class="page rank-page">
-  <view class="rank-head">
-    <view class="rank-title">掘金榜单</view>
-    <view class="rank-caption">发现社区正在关注的优质内容与创作者</view>
-    <view class="rank-tabs">
-      <view class="rank-tab {{type === 'article' ? 'active' : ''}}" data-type="article" bindtap="switchType">文章榜</view>
-      <view class="rank-tab {{type === 'collect' ? 'active' : ''}}" data-type="collect" bindtap="switchType">收藏榜</view>
-      <view class="rank-tab {{type === 'author' ? 'active' : ''}}" data-type="author" bindtap="switchType">作者榜</view>
+  <view class="rank-hero">
+    <image class="rank-hero-bg" src="/assets/app/rank/bg_rank_list_head.webp" mode="aspectFill"></image>
+    <view class="rank-hero-copy">
+      <view class="rank-title">{{title}}</view>
+      <view class="rank-caption">{{type === 'author' ? '发现本周最受关注的优秀创作者' : '本周最值得收藏的优质技术文章'}}</view>
     </view>
   </view>
-  <view wx:if="{{type === 'article'}}" class="surface">
-    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" rank="{{index + 1}}" bind:open="openArticle"></article-card>
+
+  <view wx:if="{{type === 'collect'}}" class="surface rank-content">
+    <view class="list-title"><text>收藏排行</text><text>每周更新</text></view>
+    <view wx:for="{{collections}}" wx:key="article_id" class="collection-row" data-id="{{item.article_id}}" bindtap="openArticle">
+      <view class="rank-number rank-{{index + 1}}">
+        <image wx:if="{{item.medal}}" src="{{item.medal}}" mode="aspectFit"></image>
+        <text wx:else>{{index + 1}}</text>
+      </view>
+      <view class="collection-copy">
+        <view class="collection-title two-lines">{{item.title}}</view>
+        <view class="collection-meta"><text>{{item.author.user_name}}</text><text>{{item.collect_count}} 收藏</text></view>
+      </view>
+    </view>
   </view>
-  <view wx:elif="{{type === 'collect'}}" class="surface">
-    <article-card wx:for="{{collections}}" wx:key="article_id" item="{{item}}" rank="{{index + 1}}" bind:open="openArticle"></article-card>
-  </view>
-  <view wx:else class="surface">
-    <view wx:for="{{authors}}" wx:key="user_id" class="author-row">
-      <view class="author-rank rank-{{index + 1}}">{{index + 1}}</view>
+
+  <view wx:else class="surface rank-content author-content">
+    <view class="author-podium">
+      <view wx:for="{{authors}}" wx:key="user_id" wx:if="{{index < 3}}" class="podium-item podium-{{index + 1}}" data-id="{{item.user_id}}" bindtap="openAuthor">
+        <view class="podium-avatar">
+          <image src="{{item.avatar_large}}" mode="aspectFill"></image>
+          <image class="podium-medal" src="{{item.medal}}" mode="aspectFit"></image>
+        </view>
+        <view class="podium-name ellipsis">{{item.user_name}}</view>
+        <view class="podium-count">{{item.follower_count}} 关注者</view>
+      </view>
+    </view>
+    <view class="list-title author-list-title"><text>作者排行</text><text>每周更新</text></view>
+    <view wx:for="{{authors}}" wx:key="user_id" wx:if="{{index > 2}}" class="author-row" data-id="{{item.user_id}}" bindtap="openAuthor">
+      <view class="author-rank">{{index + 1}}</view>
       <image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
       <view class="author-copy">
         <view class="author-name">{{item.user_name}}</view>
         <view class="author-caption ellipsis">{{item.job_title}}<text wx:if="{{item.company}}"> @ {{item.company}}</text></view>
         <view class="author-stats">{{item.follower_count}} 关注者 · 获赞 {{item.got_digg_count}}</view>
       </view>
-      <view class="secondary-button" bindtap="openAccountInfo">关注</view>
+      <view class="follow-button" catchtap="openAccountInfo">关注</view>
     </view>
   </view>
   <view wx:if="{{loading}}" class="loading-line">正在加载榜单...</view>

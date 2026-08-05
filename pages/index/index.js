@@ -219,6 +219,13 @@ Page({
     if (userId) wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
   },
 
+  dislikeArticle(event) {
+    const item = event.detail && event.detail.item
+    if (!item) return
+    this.setData({ list: this.data.list.filter((article) => article.article_id !== item.article_id) })
+    wx.showToast({ title: '将减少此类内容推荐', icon: 'none' })
+  },
+
   openHeadline(event) {
     const item = this.data.headlineList[event.currentTarget.dataset.index]
     if (!item) return

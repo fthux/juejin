@@ -1,35 +1,42 @@
 const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
+const medals = [
+  '/assets/app/rank/ic_rank_1.webp',
+  '/assets/app/rank/ic_rank_2.webp',
+  '/assets/app/rank/ic_rank_3.webp'
+]
 
 Page({
   data: {
-    type: 'article',
-    articles: [],
+    type: 'collect',
+    title: '收藏榜',
     collections: [],
     authors: [],
     loading: true
   },
 
   onLoad(query) {
-    const type = ['article', 'collect', 'author'].indexOf(query.type) === -1 ? 'article' : query.type
-    this.setData({ type })
+    const type = query.type === 'author' ? 'author' : 'collect'
+    const title = type === 'author' ? '作者榜' : '收藏榜'
+    this.setData({ type, title })
+    wx.setNavigationBarTitle({ title })
     this.load()
-  },
-
-  switchType(event) {
-    this.setData({ type: event.currentTarget.dataset.type })
   },
 
   load() {
     Promise.all([
-      api.hotArticles({ type: 'hot', count: 30 }),
       api.hotArticles({ type: 'collect', count: 30 }),
       api.hotAuthors(30)
-    ]).then(([articleResponse, collectionResponse, authorResponse]) => {
-      const articles = (articleResponse.result.data || []).map(utils.normalizeHotRank)
-      const collections = (collectionResponse.result.data || []).map(utils.normalizeHotRank)
-      const authors = (authorResponse.result.data || []).map(utils.normalizeHotAuthor)
-      this.setData({ articles, collections, authors, loading: false })
+    ]).then(([collectionResponse, authorResponse]) => {
+      const collections = (collectionResponse.result.data || []).map((item, index) => Object.assign(
+        utils.normalizeHotRank(item),
+        { medal: medals[index] || '' }
+      ))
+      const authors = (authorResponse.result.data || []).map((item, index) => Object.assign(
+        utils.normalizeHotAuthor(item),
+        { medal: medals[index] || '' }
+      ))
+      this.setData({ collections, authors, loading: false })
     }).finally(() => this.setData({ loading: false }))
   },
 
@@ -39,5 +46,10 @@ Page({
 
   openAccountInfo() {
     wx.navigateTo({ url: '/pages/login/login' })
+  },
+
+  openAuthor(event) {
+    const userId = event.currentTarget.dataset.id
+    if (userId) wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
   }
 })

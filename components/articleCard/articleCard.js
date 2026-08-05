@@ -27,6 +27,9 @@ Component({
     },
     openAuthor() {
       this.triggerEvent('author', { author: this.data.item.author })
+    },
+    dislike() {
+      this.triggerEvent('dislike', { item: this.data.item })
     }
   }
 })
