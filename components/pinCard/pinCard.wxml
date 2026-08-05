@@ -10,16 +10,23 @@
       </view>
     </view>
     <view wx:if="{{showFollow}}" class="card-follow {{followed ? 'followed' : ''}}" catchtap="follow">{{followed ? '已关注' : '关注'}}</view>
-    <text wx:else class="more">···</text>
+    <image wx:else class="more" src="/assets/app/pins/ic_pin_more.png" mode="aspectFit" catchtap="more"></image>
   </view>
   <view class="pin-content">{{item.content}}</view>
   <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
-    <image wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture" src="{{item}}" mode="aspectFill"></image>
+    <image wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture" src="{{item}}" data-src="{{item}}" mode="aspectFill" catchtap="previewImage"></image>
+  </view>
+  <view wx:if="{{item.link}}" class="pin-link">
+    <view class="link-icon">↗</view>
+    <view class="link-copy">
+      <view class="link-title ellipsis">{{item.link_title || item.link}}</view>
+      <view class="link-host ellipsis">{{item.link}}</view>
+    </view>
   </view>
   <view wx:if="{{item.topic}}" class="topic"># {{item.topic}}</view>
-  <view class="pin-actions">
-    <button class="pin-action" open-type="share" data-item="{{item}}" catchtap="noop"><text>分享</text></button>
-    <view class="pin-action"><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>评论 {{item.comment_count}}</text></view>
+  <view wx:if="{{showActions}}" class="pin-actions">
+    <button class="pin-action" open-type="share" data-item="{{item}}" catchtap="noop"><image src="/assets/app/pins/fd_share.png" mode="aspectFit"></image><text>分享</text></button>
+    <view class="pin-action"><image src="/assets/app/pins/fd_reply.png" mode="aspectFit"></image><text>评论 {{item.comment_count}}</text></view>
     <view class="pin-action {{item.is_digg ? 'liked' : ''}}" catchtap="like"><image src="{{item.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image><text>点赞 {{item.digg_count}}</text></view>
   </view>
 </view>

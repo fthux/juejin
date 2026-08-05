@@ -1,22 +1,48 @@
 <view class="page pin-detail-page">
-  <pin-card wx:if="{{item}}" item="{{item}}" bind:like="toggleLike"></pin-card>
-  <view class="comments section">
-    <view class="section-header">
-      <view class="section-title">全部评论 · {{comments.length}}</view>
+  <status-bar navigation="{{true}}">
+    <view class="detail-navigation">
+      <view class="detail-back" bindtap="back">‹</view>
+      <view class="detail-title">沸点详情</view>
+      <view class="detail-more" bindtap="showMore">•••</view>
     </view>
-    <view wx:for="{{comments}}" wx:key="id" class="comment-row">
-      <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+  </status-bar>
+
+  <pin-card wx:if="{{item}}" item="{{item}}" show-follow="{{true}}" show-actions="{{false}}" bind:follow="requireAccount" bind:author="openAuthor"></pin-card>
+
+  <view wx:if="{{recommendations.length}}" class="recommend-section surface">
+    <view class="recommend-title">相关推荐</view>
+    <scroll-view class="recommend-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view wx:for="{{recommendations}}" wx:key="msg_id" class="recommend-card" data-id="{{item.msg_id}}" bindtap="openRecommendation">
+        <view class="recommend-topic ellipsis"># {{item.topic || '热门沸点'}}</view>
+        <view class="recommend-content two-lines">{{item.content}}</view>
+        <view class="recommend-meta ellipsis">{{item.author.user_name}} · {{item.digg_count}} 人点赞</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="comments surface">
+    <view class="section-header">
+      <view class="section-title">全部评论 <text wx:if="{{item}}">{{item.comment_count}}</text></view>
+    </view>
+    <view wx:for="{{comments}}" wx:for-item="comment" wx:key="id" class="comment-row">
+      <image class="avatar" src="{{comment.avatar}}" mode="aspectFill"></image>
       <view class="comment-body">
-        <view class="comment-user">{{item.user}}</view>
-        <view class="comment-content">{{item.content}}</view>
-        <view class="comment-time">{{item.time}} · 回复</view>
+        <view class="comment-user">{{comment.user}}</view>
+        <view class="comment-content">{{comment.content}}</view>
+        <view class="comment-foot">
+          <text>{{comment.time}} · 回复{{comment.reply_count ? ' ' + comment.reply_count : ''}}</text>
+          <text>♡ {{comment.digg_count}}</text>
+        </view>
       </view>
     </view>
-    <view wx:if="{{!comments.length}}" class="comment-empty">还没有评论，来说两句吧</view>
+    <view wx:if="{{commentsLoading}}" class="loading-line">正在加载评论...</view>
+    <view wx:elif="{{!comments.length}}" class="comment-empty">暂无评论</view>
   </view>
+
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
   <view class="comment-bar safe-bottom">
-    <view class="comment-input" bindtap="addComment">说点什么...</view>
-    <button open-type="share" class="share-button">分享</button>
+    <view class="comment-input" bindtap="requireAccount">绑定手机后发表评论</view>
+    <view class="bottom-action" bindtap="requireAccount"><text class="like-icon">♡</text><text>{{item ? item.digg_count : 0}}</text></view>
+    <view class="bottom-action" bindtap="requireAccount"><text class="comment-icon">▢</text><text>{{item ? item.comment_count : 0}}</text></view>
   </view>
 </view>

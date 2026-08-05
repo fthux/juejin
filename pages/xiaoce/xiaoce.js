@@ -35,6 +35,11 @@ Page({
     this.load(true)
   },
 
+  onShow() {
+    const tabBar = this.getTabBar && this.getTabBar()
+    if (tabBar) tabBar.setData({ selected: 3 })
+  },
+
   onPullDownRefresh() {
     this.load(true)
   },

@@ -2,6 +2,7 @@
 
 # Local APK and device-research artifacts
 *.apk
+artifacts/
 juejin-adb-screen.png
 research/
 scripts/capture-adb-*.sh

@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "创作"
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "发布"
 }

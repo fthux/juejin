@@ -133,13 +133,12 @@
 }
 
 .sort-row {
-  height: 76rpx;
-  margin-top: 12rpx;
-  padding: 0 24rpx;
+  height: 82rpx;
+  padding: 0 28rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1rpx solid var(--jj-line);
+  border-top: 1rpx solid var(--jj-line);
 }
 
 .sort-label {
@@ -147,19 +146,27 @@
   font-size: 23rpx;
 }
 
-.sort-options {
+.sort-switch {
+  padding: 4rpx;
   display: flex;
-  gap: 30rpx;
+  border-radius: 30rpx;
+  background: var(--jj-fill);
 }
 
-.sort-option {
+.sort-switch view {
+  height: 46rpx;
+  padding: 0 18rpx;
+  display: flex;
+  align-items: center;
+  border-radius: 25rpx;
   color: var(--jj-text-3);
   font-size: 22rpx;
 }
 
-.sort-option.active {
+.sort-switch view.active {
   color: var(--jj-text);
-  font-weight: 600;
+  border: 1rpx solid var(--jj-text-3);
+  background: var(--jj-surface);
 }
 
 .selected-section {
@@ -223,6 +230,40 @@
   text-align: center;
 }
 
+.following-login {
+  min-height: 720rpx;
+  padding: 100rpx 40rpx 180rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.following-login image {
+  width: 230rpx;
+  height: 230rpx;
+}
+
+.following-title {
+  margin-top: 30rpx;
+  color: var(--jj-text-2);
+  font-size: 27rpx;
+}
+
+.following-button {
+  width: 220rpx;
+  height: 68rpx;
+  margin-top: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5rpx;
+  color: #ffffff;
+  background: var(--jj-blue);
+  font-size: 27rpx;
+}
+
 .publish-fab {
   position: fixed;
   z-index: 8;
@@ -238,4 +279,9 @@
   background: var(--jj-blue);
   box-shadow: 0 10rpx 28rpx rgba(30, 128, 255, 0.3);
   font-size: 42rpx;
+}
+
+.publish-fab text {
+  display: block;
+  transform: translateY(-2rpx);
 }

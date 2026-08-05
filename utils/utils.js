@@ -35,6 +35,14 @@ function getUuid() {
   return uuid
 }
 
+function normalizeImageUrl(value, size) {
+  let url = String(value || '').split('#')[0]
+  if (size && /~tplv-k3u1fbpfcp-jj:0:0:0:0/.test(url)) {
+    url = url.replace('~tplv-k3u1fbpfcp-jj:0:0:0:0', `~tplv-k3u1fbpfcp-jj:${size}:${size}:0:0`)
+  }
+  return url
+}
+
 function navigate(event) {
   const url = event.currentTarget.dataset.url
   if (!url) return
@@ -137,12 +145,15 @@ function normalizePin(raw) {
   return {
     msg_id: item.msg_id || info.msg_id || '',
     content: info.content || '',
-    pic_list: info.pic_list || [],
+    pic_list: (info.pic_list || []).map((pic) => typeof pic === 'string' ? pic : (pic.pic_url || pic.url || '')).filter(Boolean),
+    link: info.link || info.url || item.link || '',
+    link_title: info.url_title || info.link_title || '',
     topic,
     ctime: formatTime(info.ctime || item.ctime),
     digg_count: formatCount(item.digg_count || info.digg_count),
     comment_count: formatCount(item.comment_count || info.comment_count),
     is_digg: Boolean(item.user_interact && item.user_interact.is_digg),
+    is_followed: Boolean(item.user_interact && item.user_interact.is_follow),
     author: {
       user_id: author.user_id || '',
       user_name: author.user_name || '掘友',
@@ -150,6 +161,22 @@ function normalizePin(raw) {
       job_title: author.job_title || '',
       company: author.company || ''
     }
+  }
+}
+
+function normalizeComment(raw) {
+  const item = raw || {}
+  const info = item.comment_info || item
+  const user = item.user_info || {}
+  return {
+    id: item.comment_id || info.comment_id || '',
+    content: info.comment_content || '',
+    time: formatTime(info.ctime),
+    digg_count: formatCount(info.digg_count),
+    reply_count: Number(info.reply_count) || 0,
+    avatar: user.avatar_large || '/assets/app/common/default_avatar.webp',
+    user: user.user_name || '掘友',
+    user_id: user.user_id || ''
   }
 }
 
@@ -202,6 +229,7 @@ module.exports = {
   formatTime,
   dateKey,
   getUuid,
+  normalizeImageUrl,
   navigate,
   toast,
   normalizeArticle,
@@ -209,6 +237,7 @@ module.exports = {
   normalizeHotAuthor,
   normalizeHeadline,
   normalizePin,
+  normalizeComment,
   normalizeCourse,
   formatPrice
 }

@@ -16,9 +16,9 @@
         <view class="topic-icon discover-more">◉</view>
         <view class="topic-name ellipsis">发现更多</view>
       </view>
-      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-id="{{item.topic_id}}" bindtap="openTopic">
+      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-index="{{index}}" bindtap="openTopic">
         <view class="topic-icon">
-          <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill"></image>
+          <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onTopicIconError"></image>
           <text wx:else>{{item.iconText}}</text>
         </view>
         <view class="topic-name ellipsis">{{item.title}}</view>
@@ -27,17 +27,23 @@
     </scroll-view>
   </view>
 
-  <view class="sort-row surface">
+  <view wx:if="{{topTab === 'discover'}}" class="sort-row surface">
     <view class="sort-label">排序</view>
-    <view class="sort-options">
-      <view class="sort-option {{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="selectSort">热门</view>
-      <view class="sort-option {{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="selectSort">最新</view>
+    <view class="sort-switch">
+      <view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="selectSort">最新</view>
+      <view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="selectSort">热门</view>
     </view>
   </view>
 
-  <view class="pin-list">
+  <view wx:if="{{topTab === 'following'}}" class="following-login surface">
+    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <view class="following-title">立刻登录，围观掘友精彩沸点吧</view>
+    <view class="following-button" bindtap="requireAccount">登录</view>
+  </view>
+
+  <view wx:if="{{topTab === 'discover'}}" class="pin-list">
     <block wx:for="{{list}}" wx:key="msg_id">
-      <pin-card item="{{item}}" compact="{{true}}" followed="{{item.followed}}" bind:open="openDetail" bind:author="openAuthor" bind:like="toggleLike" bind:follow="toggleFollow"></pin-card>
+      <pin-card item="{{item}}" compact="{{true}}" bind:open="openDetail" bind:author="openAuthor" bind:like="requireAccount" bind:follow="requireAccount" bind:more="pinMore"></pin-card>
       <view wx:if="{{topTab === 'discover' && index === 1 && selectedPins.length}}" id="selected-section" class="selected-section surface">
         <view class="selected-head">
           <view class="block-title">精选沸点</view>
@@ -51,7 +57,7 @@
       </view>
     </block>
   </view>
-  <empty-state wx:if="{{!loading && !list.length}}" text="{{topTab === 'following' ? '关注感兴趣的掘友后，这里会出现他们的沸点' : '暂无沸点'}}"></empty-state>
+  <empty-state wx:if="{{topTab === 'discover' && !loading && !list.length}}" text="暂无沸点"></empty-state>
 
   <view wx:if="{{topTab === 'discover' && list.length < 2 && selectedPins.length}}" id="selected-section" class="selected-section surface">
     <view class="selected-head">
@@ -66,8 +72,8 @@
     </scroll-view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
-  <view wx:elif="{{list.length && !hasMore}}" class="loading-line">没有更多了</view>
-  <view wx:if="{{fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
-  <view class="publish-fab" bindtap="openPublish">✎</view>
+  <view wx:if="{{topTab === 'discover' && loading}}" class="loading-line">正在加载...</view>
+  <view wx:elif="{{topTab === 'discover' && list.length && !hasMore}}" class="loading-line">没有更多了</view>
+  <view wx:if="{{topTab === 'discover' && fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
+  <view class="publish-fab" bindtap="openPublish"><text>✎</text></view>
 </view>

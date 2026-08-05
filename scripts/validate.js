@@ -81,8 +81,7 @@ const privatePages = [
   'pages/publish/publish',
   'pages/readHistory/readHistory',
   'pages/registrations/registrations',
-  'pages/sign/sign',
-  'pages/tags/tags'
+  'pages/sign/sign'
 ]
 
 for (const page of privatePages) {

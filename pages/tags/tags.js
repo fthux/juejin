@@ -16,11 +16,11 @@ Page({
   data: { activeTab: 'all', allTags: [], tags: [], followed: [] },
 
   onLoad() {
-    this.authorized = session.requirePage('/pages/tags/tags')
+    this.load()
   },
 
   onShow() {
-    if (this.authorized) this.load()
+    this.load()
   },
 
   load() {

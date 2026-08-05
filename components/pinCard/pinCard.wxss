@@ -35,8 +35,9 @@
 }
 
 .more {
-  padding: 12rpx;
-  color: var(--jj-text-3);
+  width: 46rpx;
+  height: 46rpx;
+  padding: 8rpx;
 }
 
 .card-follow {
@@ -56,7 +57,7 @@
 }
 
 .pin-content {
-  margin: 20rpx 0;
+  margin: 20rpx 0 16rpx;
   color: var(--jj-text);
   font-size: 30rpx;
   line-height: 1.65;
@@ -76,9 +77,51 @@
   background: var(--jj-fill);
 }
 
+.pin-link {
+  min-height: 104rpx;
+  margin-top: 16rpx;
+  padding: 14rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background: var(--jj-fill);
+}
+
+.link-icon {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: var(--jj-blue);
+  font-size: 34rpx;
+}
+
+.link-copy {
+  min-width: 0;
+  margin-left: 16rpx;
+  flex: 1;
+}
+
+.link-title {
+  color: var(--jj-text-2);
+  font-size: 23rpx;
+}
+
+.link-host {
+  margin-top: 8rpx;
+  color: var(--jj-text-3);
+  font-size: 20rpx;
+}
+
 .topic {
+  width: fit-content;
   margin-top: 18rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 4rpx;
   color: #1e80ff;
+  background: var(--jj-blue-soft);
   font-size: 25rpx;
 }
 
@@ -109,8 +152,9 @@
 }
 
 .pin-action image {
-  width: 28rpx;
-  height: 28rpx;
+  width: 30rpx;
+  height: 30rpx;
+  opacity: 0.78;
 }
 
 .liked {
@@ -118,9 +162,9 @@
 }
 
 .pin-card.compact {
-  padding: 22rpx 24rpx 0;
-  border-bottom-width: 1rpx;
-  border-bottom-color: var(--jj-line);
+  padding: 24rpx 28rpx 0;
+  border-bottom-width: 14rpx;
+  border-bottom-color: var(--jj-bg);
 }
 
 .compact .avatar {

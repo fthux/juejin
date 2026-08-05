@@ -14,7 +14,7 @@ function request(path, data, options) {
       url,
       method: config.method || 'POST',
       data: data || {},
-      header: { 'content-type': 'application/json' },
+      header: config.header || { 'content-type': 'application/json' },
       timeout: config.timeout || 12000,
       success(response) {
         const body = response.data || {}
@@ -74,19 +74,34 @@ function categoryTagFeed(cateId, tagId, cursor) {
 
 function pins(cursor, options) {
   const config = options || {}
-  return withFallback(request('/recommend_api/v1/short_msg/recommend', {
+  const isHot = config.sort === 'hot'
+  const path = isHot ? '/recommend_api/v1/short_msg/hot' : '/recommend_api/v1/short_msg/recommend'
+  return withFallback(request(path, {
     id_type: 4,
-    sort_type: config.sortType || 300,
+    sort_type: isHot ? 200 : 300,
+    cursor: cursor || '0',
+    limit: 20
+  }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
+}
+
+function topicPins(topicId, cursor, options) {
+  const config = options || {}
+  return withFallback(request('/recommend_api/v1/short_msg/topic', {
+    id_type: 11,
+    sort_type: config.sortType || 500,
+    topic_id: topicId || '',
     cursor: cursor || '0',
     limit: 20
   }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
 }
 
 function selectedPins(cursor) {
-  return withFallback(request('/content_api/v1/short_msg/list_by_selected', {
-    cursor: cursor || '0',
-    limit: 20
-  }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
+  return withFallback(request('/content_api/v1/short_msg/list_by_selected_cursor', {
+    page_size: 20,
+    cursor: cursor || '0'
+  }, {
+    header: { 'content-type': 'application/x-www-form-urlencoded' }
+  }), { data: [], cursor: '', has_more: false })
 }
 
 function courses(cursor, options) {
@@ -140,6 +155,23 @@ function pinDetail(msgId) {
   return withFallback(request('/content_api/v1/short_msg/detail', { msg_id: msgId }), () => ({
     data: mock.pins.find((item) => item.msg_id === msgId) || mock.pins[0]
   }))
+}
+
+function pinRecommendations(msgId, cursor) {
+  return withFallback(request('/recommend_api/v1/short_msg/detail_rec', {
+    msg_id: msgId,
+    cursor: cursor || '0',
+    limit: 10
+  }), { data: [], cursor: '0', has_more: false })
+}
+
+function pinComments(msgId, cursor) {
+  return withFallback(request('/interact_api/v1/comment/list', {
+    item_id: msgId,
+    item_type: 4,
+    cursor: cursor || '0',
+    limit: 20
+  }), { data: [], cursor: '0', has_more: false })
 }
 
 function daily() {
@@ -196,8 +228,36 @@ function followers(userId, cursor) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
-function topics() {
-  return withFallback(request('/tag_api/v1/topic/list_by_rec', { cursor: '0', limit: 30 }), () => ({ data: mock.topics }))
+function topics(cursor, limit) {
+  return withFallback(request('/tag_api/v1/topic/list_by_rec', {
+    cursor: cursor || '0',
+    limit: limit || 30
+  }), () => ({ data: mock.topics, cursor: 'mock-end', has_more: false }))
+}
+
+function topicsByCategory(categoryId, cursor) {
+  return withFallback(request('/tag_api/v1/topic/list_by_cate_cursor', {
+    cate_id: categoryId,
+    cursor: cursor || '0',
+    limit: 20
+  }), () => ({ data: mock.topics, cursor: 'mock-end', has_more: false }))
+}
+
+function searchTopics(keyword, cursor) {
+  const query = String(keyword || '').trim()
+  if (!query) return topics(cursor, 20)
+  return withFallback(request('/tag_api/v1/topic/list_by_search_cursor', {
+    keyword: query,
+    cursor: cursor || '0',
+    limit: 20
+  }), () => ({
+    data: mock.topics.filter((item) => {
+      const topic = item.topic || item
+      return `${topic.title || ''}${topic.description || ''}`.indexOf(query) !== -1
+    }),
+    cursor: 'mock-end',
+    has_more: false
+  }))
 }
 
 function search(keyword, type) {
@@ -219,6 +279,7 @@ module.exports = {
   categoryFeed,
   categoryTagFeed,
   pins,
+  topicPins,
   selectedPins,
   courses,
   courseDetail,
@@ -226,6 +287,8 @@ module.exports = {
   courseShelf,
   articleDetail,
   pinDetail,
+  pinRecommendations,
+  pinComments,
   daily,
   recommendationRanks,
   hotArticles,
@@ -233,5 +296,7 @@ module.exports = {
   headlineFeed,
   followers,
   topics,
+  topicsByCategory,
+  searchTopics,
   search
 }

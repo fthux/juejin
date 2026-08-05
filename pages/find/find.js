@@ -1,6 +1,5 @@
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
-const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
 
 Page({
@@ -30,6 +29,8 @@ Page({
   },
 
   onShow() {
+    const tabBar = this.getTabBar && this.getTabBar()
+    if (tabBar) tabBar.setData({ selected: 2 })
     this.syncPinState()
   },
 
@@ -45,7 +46,7 @@ Page({
         ? dailyData
         : (dailyData.article_info ? [dailyData] : (dailyData.articles || dailyData.article_list || []))
       const pinRows = pinResponse.result.data || []
-      const selectedPins = (pinRows.length ? pinRows : mock.pins).map(utils.normalizePin).slice(0, 8)
+      const selectedPins = pinRows.map(utils.normalizePin).slice(0, 8)
       this.setData({
         greeting: dailyData.greeting || this.data.greeting,
         dailyArticle: dailyRows.length ? utils.normalizeArticle(dailyRows[0]) : null,
@@ -59,11 +60,9 @@ Page({
   },
 
   withPinState(pins) {
-    const likes = session.getList('likes')
-    const follows = session.getList('follows')
     return pins.map((pin) => Object.assign({}, pin, {
-      is_digg: likes.indexOf(pin.msg_id) !== -1 || pin.is_digg,
-      followed: follows.indexOf(pin.author.user_id) !== -1
+      is_digg: Boolean(pin.is_digg),
+      followed: Boolean(pin.is_followed)
     }))
   },
 
