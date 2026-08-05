@@ -1,6 +1,5 @@
 const utils = require('../utils/utils.js')
 const mock = require('../data/mockData.js')
-const passport = require('./passport.js')
 
 const BASE_URL = 'https://api.juejin.cn'
 const DEFAULT_QUERY = 'aid=2608&spider=0'
@@ -15,10 +14,9 @@ function request(path, data, options) {
       url,
       method: config.method || 'POST',
       data: data || {},
-      header: Object.assign({ 'content-type': 'application/json' }, passport.getAuthHeaders()),
+      header: { 'content-type': 'application/json' },
       timeout: config.timeout || 12000,
       success(response) {
-        passport.captureCookies(response)
         const body = response.data || {}
         if (response.statusCode >= 200 && response.statusCode < 300 && body.err_no === 0) {
           resolve(body)

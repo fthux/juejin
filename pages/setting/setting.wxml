@@ -22,6 +22,5 @@
     <view class="setting-row" data-id="about" bindtap="action"><text>关于</text><text class="arrow">›</text></view>
   </view>
 
-  <button wx:if="{{loggedIn}}" class="logout-button" bindtap="logout">退出登录</button>
   <view class="version">当前版本: {{version}}</view>
 </view>

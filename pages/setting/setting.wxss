@@ -44,16 +44,6 @@
   font-weight: 200;
 }
 
-.logout-button {
-  height: 92rpx;
-  margin: 18rpx 0 0;
-  border-radius: 0;
-  color: #f53f3f;
-  background: var(--jj-surface);
-  font-size: 28rpx;
-  line-height: 92rpx;
-}
-
 .version {
   margin-top: 28rpx;
   color: var(--jj-text-3);

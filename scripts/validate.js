@@ -41,7 +41,7 @@ for (const base of roots) {
   }
 }
 
-const runtimeFiles = ['app.js', 'services/api.js', 'services/passport.js', 'services/session.js', 'utils/chart.js', 'utils/md5.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
+const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'utils/chart.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
   .concat(app.pages.map((page) => `${page}.js`))
   .concat(componentRoots.map((component) => `${component}.js`))
 
@@ -91,26 +91,12 @@ for (const page of privatePages) {
 }
 
 const loginSource = read('pages/login/login.js')
-const loginCodeSource = read('pages/loginCode/loginCode.js')
-if (!loginSource.includes('/pages/loginCode/loginCode?')) fail('手机号登录第一步必须跳转到验证码页面')
-if (!loginSource.includes('passport.sendCode(') || !loginSource.includes("'sent=1'")) fail('手机号页按钮必须先发送验证码再跳转')
-if (!loginCodeSource.includes('this.sendCode()')) fail('验证码页面必须在加载时自动发送验证码')
-if (!loginCodeSource.includes("query.sent === '1'")) fail('验证码页面必须避免重复发送验证码')
-if (!/code\.length\s*===\s*6/.test(loginCodeSource) || !loginCodeSource.includes('this.login()')) {
-  fail('验证码输入满六位后必须自动登录')
-}
-if (!loginSource.includes('redirect') || !loginCodeSource.includes('redirect')) fail('登录两步必须保留深链跳转参数')
-if (/需要安全验证|滑块验证/.test(loginCodeSource)) fail('短信登录不得出现滑块安全验证分支')
-
-const md5 = require(path.join(root, 'utils/md5.js'))
-if (md5('') !== 'd41d8cd98f00b204e9800998ecf8427e') fail('MD5 空字符串向量校验失败')
-if (md5('abc') !== '900150983cd24fb0d6963f7d28e17f72') fail('MD5 abc 向量校验失败')
-
-const passport = require(path.join(root, 'services/passport.js'))
-const mixed = passport.mixFields({ mobile: '13800138000', type: 24 }, ['mobile', 'type'])
-if (mixed.mobile === '13800138000' || mixed.type === 24 || mixed.mix_mode !== 1 || mixed.fixed_mix_mode !== 1) {
-  fail('掘金 Passport 字段混淆校验失败')
-}
+const loginTemplate = read('pages/login/login.wxml')
+if (pageSet.has('pages/loginCode/loginCode')) fail('小程序不得注册验证码登录页')
+if (exists('services/passport.js')) fail('小程序不得包含 Passport 登录实现')
+if (/<input|password=|sendCode|loginWith/.test(loginTemplate)) fail('账号说明页不得包含登录表单')
+if (!loginTemplate.includes('小程序版不提供账号登录') || !loginTemplate.includes('稀土掘金官方 App')) fail('账号说明页缺少安全提示')
+if (!loginSource.includes('https://juejin.cn/')) fail('账号说明页必须提供官方站点地址')
 
 for (const base of roots) {
   const sources = [read(`${base}.js`), read(`${base}.wxml`), read(`${base}.wxss`)]

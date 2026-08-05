@@ -1,20 +1,16 @@
 <view class="page login-page">
   <view class="login-main">
     <image class="login-logo" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
-    <view class="login-title">手机号登录</view>
-    <view class="login-caption">未注册手机号验证后将自动创建账号</view>
-
-    <view class="login-form">
-      <view class="login-field">
-        <text class="country-code">+86</text>
-        <input type="number" value="{{mobile}}" maxlength="11" placeholder="请输入手机号" focus bindinput="onMobileInput" bindconfirm="continue"></input>
-      </view>
+    <view class="security-mark"><view class="security-check">✓</view></view>
+    <view class="login-title">小程序版不提供账号登录</view>
+    <view class="login-caption">为保护你的账号与个人信息，本项目不会接入或模拟稀土掘金账号登录，也不会尝试绕过第三方账号系统的验证和安全策略。</view>
+    <view class="official-note">
+      <view class="note-title">需要使用账号功能？</view>
+      <view class="note-copy">请前往稀土掘金官方 App 或官方网站登录。收藏同步、内容发布、消息与创作者中心等账号功能请以官方平台为准。</view>
+      <view class="website">juejin.cn</view>
     </view>
-
-    <button class="primary-button login-button" disabled="{{continuing}}" bindtap="continue">{{continuing ? '正在发送...' : '获取验证码'}}</button>
-    <view class="agreement" bindtap="toggleAgree">
-      <view class="check {{agreed ? 'checked' : ''}}">{{agreed ? '✓' : ''}}</view>
-      <text>已阅读并同意《用户协议》和《隐私政策》</text>
-    </view>
+    <button class="primary-button copy-button" bindtap="copyWebsite">复制官网地址</button>
+    <button class="back-button" bindtap="back">返回浏览</button>
+    <view class="privacy-note">小程序不会收集手机号、密码或验证码</view>
   </view>
 </view>

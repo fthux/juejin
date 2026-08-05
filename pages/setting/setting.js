@@ -6,7 +6,6 @@ Page({
     darkMode: false,
     personalized: true,
     pushEnabled: true,
-    loggedIn: false,
     version: 'v6.7.6 (Build-73acaa583)'
   },
 
@@ -16,8 +15,7 @@ Page({
     this.setData({
       darkMode: storedDark === '' ? windowInfo.theme === 'dark' : Boolean(storedDark),
       personalized: wx.getStorageSync('jj:personalized') !== false,
-      pushEnabled: wx.getStorageSync('jj:push-enabled') !== false,
-      loggedIn: Boolean(session.getSession())
+      pushEnabled: wx.getStorageSync('jj:push-enabled') !== false
     })
   },
 
@@ -72,21 +70,5 @@ Page({
     wx.setStorageSync('jj:dark-mode', darkMode)
     this.setData({ darkMode })
     utils.toast(darkMode ? '已开启深色模式' : '已关闭深色模式')
-  },
-
-  logout() {
-    const that = this
-    wx.showModal({
-      title: '退出登录',
-      content: '退出后仍会保留本地浏览记录',
-      success(result) {
-        if (!result.confirm) return
-        session.logout().finally(() => {
-          getApp().refreshSession()
-          that.setData({ loggedIn: false })
-          utils.toast('已退出登录')
-        })
-      }
-    })
   }
 })

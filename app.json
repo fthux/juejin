@@ -27,7 +27,6 @@
     "pages/level/level",
     "pages/vip/vip",
     "pages/login/login",
-    "pages/loginCode/loginCode",
     "pages/setting/setting",
     "pages/dislike/dislike",
     "pages/personalized/personalized",

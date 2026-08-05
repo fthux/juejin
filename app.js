@@ -1,19 +1,12 @@
-const session = require('./services/session.js')
-
 App({
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {}
     const theme = wx.getStorageSync('jj:theme') || 'light'
-    session.ensureLocalData()
+    wx.removeStorageSync('jj:session')
+    wx.removeStorageSync('jj:passport-cookies')
 
     this.globalData.systemInfo = systemInfo
     this.globalData.theme = theme
-    this.globalData.session = session.getSession()
-    if (this.globalData.session) {
-      session.refresh().then((current) => {
-        this.globalData.session = current
-      })
-    }
   },
 
   setTheme(theme) {
@@ -22,16 +15,10 @@ App({
     wx.setStorageSync('jj:theme', nextTheme)
   },
 
-  refreshSession() {
-    this.globalData.session = session.getSession()
-    return this.globalData.session
-  },
-
   globalData: {
     appVersion: '6.7.6',
     apiBaseUrl: 'https://api.juejin.cn',
     systemInfo: {},
-    theme: 'light',
-    session: null
+    theme: 'light'
   }
 })
