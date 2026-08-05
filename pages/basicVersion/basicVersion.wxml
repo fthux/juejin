@@ -1,0 +1,9 @@
+<view class="page basic-version-page">
+  <view class="basic-version-row surface">
+    <view class="basic-version-copy">
+      <view class="basic-version-title">{{enabled ? '已开启全部功能' : '已关闭全部功能'}}</view>
+      <view class="basic-version-caption">{{enabled ? '关闭后无法使用完整功能' : '开启后可使用完整功能'}}</view>
+    </view>
+    <switch checked="{{enabled}}" color="#1e80ff" bindchange="toggle"></switch>
+  </view>
+</view>

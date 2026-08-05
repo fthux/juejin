@@ -33,19 +33,31 @@ Page({
       return
     }
     if (id === 'messages') {
-      wx.navigateTo({ url: '/pages/notifications/notifications' })
+      wx.navigateTo({ url: '/pages/messageSettings/messageSettings' })
       return
     }
     if (id === 'blocking') {
-      utils.toast('当前没有已屏蔽的用户')
+      wx.navigateTo({ url: '/pages/dislike/dislike' })
+      return
+    }
+    if (id === 'personalized') {
+      wx.navigateTo({ url: '/pages/personalized/personalized' })
+      return
+    }
+    if (id === 'push') {
+      wx.navigateTo({ url: '/pages/pushSettings/pushSettings' })
+      return
+    }
+    if (id === 'dark') {
+      wx.navigateTo({ url: '/pages/darkMode/darkMode' })
       return
     }
     if (id === 'privacy') {
-      wx.navigateTo({ url: '/pages/about/about?section=privacy' })
+      wx.navigateTo({ url: '/pages/personalInfo/personalInfo' })
       return
     }
     if (id === 'basic') {
-      utils.toast('当前已是完整体验版')
+      wx.navigateTo({ url: '/pages/basicVersion/basicVersion' })
       return
     }
     if (id === 'update') {
@@ -53,18 +65,6 @@ Page({
       return
     }
     if (id === 'about') wx.navigateTo({ url: '/pages/about/about' })
-  },
-
-  togglePersonalized(event) {
-    const personalized = event.detail.value
-    wx.setStorageSync('jj:personalized', personalized)
-    this.setData({ personalized })
-  },
-
-  togglePush(event) {
-    const pushEnabled = event.detail.value
-    wx.setStorageSync('jj:push-enabled', pushEnabled)
-    this.setData({ pushEnabled })
   },
 
   toggleDark() {

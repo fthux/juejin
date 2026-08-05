@@ -1,0 +1,13 @@
+.dislike-page { background: var(--jj-bg); }
+.dislike-tabs { height: 88rpx; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1rpx solid var(--jj-line); }
+.dislike-tab { position: relative; display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 28rpx; }
+.dislike-tab.active { color: var(--jj-blue); }
+.dislike-tab.active::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 54rpx; height: 5rpx; border-radius: 3rpx; background: var(--jj-blue); transform: translateX(-50%); }
+.blocked-row { min-height: 108rpx; padding: 18rpx 30rpx; display: flex; align-items: center; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
+.blocked-row image, .tag-mark { width: 72rpx; height: 72rpx; flex: 0 0 auto; border-radius: 50%; }
+.tag-mark { display: flex; align-items: center; justify-content: center; color: var(--jj-blue); background: var(--jj-blue-soft); font-size: 34rpx; }
+.blocked-name { min-width: 0; margin-left: 20rpx; flex: 1; }
+.remove-button { padding: 12rpx 18rpx; border: 1rpx solid var(--jj-line); border-radius: 5rpx; color: var(--jj-text-2); font-size: 23rpx; }
+.dislike-empty { min-height: 960rpx; padding: 150rpx 32rpx 80rpx; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; color: var(--jj-text-3); font-size: 25rpx; }
+.dislike-empty image { width: 300rpx; height: 300rpx; margin-bottom: 34rpx; }
+.dislike-empty .primary-button { min-width: 220rpx; margin-top: 42rpx; }

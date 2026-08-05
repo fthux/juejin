@@ -1,0 +1,23 @@
+<view class="page push-settings-page">
+  <view class="settings-label">系统级开关</view>
+  <view class="push-row surface">
+    <text>应用外推送</text>
+    <switch checked="{{settings.external}}" color="#1e80ff" data-id="external" bindchange="toggle"></switch>
+  </view>
+
+  <view class="settings-label">互动通知</view>
+  <view class="surface">
+    <view wx:for="{{interactionItems}}" wx:key="id" class="push-row">
+      <text>{{item.name}}</text>
+      <switch checked="{{settings[item.id]}}" color="#1e80ff" data-id="{{item.id}}" bindchange="toggle"></switch>
+    </view>
+  </view>
+
+  <view class="settings-label">内容通知</view>
+  <view class="surface">
+    <view wx:for="{{contentItems}}" wx:key="id" class="push-row">
+      <text>{{item.name}}</text>
+      <switch checked="{{settings[item.id]}}" color="#1e80ff" data-id="{{item.id}}" bindchange="toggle"></switch>
+    </view>
+  </view>
+</view>

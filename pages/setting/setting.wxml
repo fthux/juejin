@@ -7,9 +7,9 @@
 
   <view class="setting-group surface">
     <view class="setting-row" data-id="blocking" bindtap="action"><text>屏蔽管理</text><text class="arrow">›</text></view>
-    <view class="setting-row"><text>个性化推荐设置</text><switch checked="{{personalized}}" color="#1e80ff" bindchange="togglePersonalized"></switch></view>
-    <view class="setting-row"><text>推送通知和设置</text><switch checked="{{pushEnabled}}" color="#1e80ff" bindchange="togglePush"></switch></view>
-    <view class="setting-row" bindtap="toggleDark"><text>深色模式</text><view class="setting-value">{{darkMode ? '已开启' : '已关闭'}} <text class="arrow">›</text></view></view>
+    <view class="setting-row" data-id="personalized" bindtap="action"><text>个性化推荐设置</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="push" bindtap="action"><text>推送通知设置</text><text class="arrow">›</text></view>
+    <view class="setting-row" data-id="dark" bindtap="action"><text>深色模式</text><view class="setting-value">{{darkMode ? '已开启' : '已关闭'}} <text class="arrow">›</text></view></view>
   </view>
 
   <view class="setting-group surface">

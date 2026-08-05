@@ -11,10 +11,10 @@ Page({
     loading: true,
     loadError: false,
     channelEntries: [
-      { title: '面试锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', url: '/pages/discoverChannel/discoverChannel?type=interview&title=面试锦囊' },
+      { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', url: '/pages/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
       { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', url: '/pages/discoverChannel/discoverChannel?type=news&title=行业速递' },
       { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', url: '/pages/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
-      { title: '高校必读', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', url: '/pages/discoverChannel/discoverChannel?type=student&title=高校必读' }
+      { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', url: '/pages/discoverChannel/discoverChannel?type=student&title=高校精选' }
     ],
     quickEntries: [
       { name: '直播', icon: '/assets/app/find/find_page_ic_live.svg', url: '/pages/discoverChannel/discoverChannel?type=live&title=直播' },

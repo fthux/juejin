@@ -1,0 +1,16 @@
+.popularize-page { min-height: 100vh; padding: 0 38rpx 80rpx; box-sizing: border-box; background: var(--jj-bg); color: var(--jj-text); }
+.popularize-head { height: 112rpx; display: flex; align-items: center; justify-content: space-between; font-size: 34rpx; font-weight: 700; border-bottom: 1rpx solid var(--jj-line); }
+.help { color: #1e80ff; font-size: 28rpx; font-weight: 400; }
+.withdraw-card { position: relative; margin-top: 44rpx; padding: 44rpx 38rpx; border-radius: 22rpx; background: #4e82f7 url('/assets/app/popularize/ic_popularize_bg.webp') right center / cover no-repeat; color: #fff; font-size: 26rpx; }
+.withdraw-value { margin-top: 28rpx; font-size: 60rpx; }
+.withdraw-button { position: absolute; right: 38rpx; top: 112rpx; padding: 18rpx 46rpx; border-radius: 12rpx; background: #fff; color: #8eb9fb; font-size: 28rpx; }
+.section-title { margin: 52rpx 0 22rpx; font-size: 34rpx; font-weight: 700; }
+.category-tabs { white-space: nowrap; margin-bottom: 12rpx; }
+.category-tab { display: inline-block; margin-right: 44rpx; padding: 10rpx 20rpx; color: var(--jj-text-3); font-size: 28rpx; }
+.category-tab.active { border-radius: 38rpx; background: rgba(30,128,255,.2); color: #1e80ff; }
+.course-row { padding: 30rpx 0; border-bottom: 1rpx solid var(--jj-line); }
+.course-title { font-size: 30rpx; }
+.course-author { margin-top: 22rpx; color: var(--jj-text-3); font-size: 26rpx; }
+.course-price { margin-top: 24rpx; color: #1e80ff; font-size: 28rpx; }
+.old-price { margin-left: 14rpx; color: var(--jj-text-3); text-decoration: line-through; }
+.reward { float: right; padding: 12rpx 24rpx; border-radius: 36rpx; background: rgba(255,132,54,.2); color: #ff853b; font-size: 25rpx; }

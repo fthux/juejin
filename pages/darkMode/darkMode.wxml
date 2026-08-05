@@ -1,0 +1,11 @@
+<view class="dark-mode-page">
+  <view class="system-section surface">
+    <view class="system-head"><text>跟随系统</text><switch checked="{{followSystem}}" color="#1e80ff" bindchange="toggleSystem"></switch></view>
+    <view class="system-caption">开启后，将跟随系统打开或关闭深色模式</view>
+  </view>
+  <view class="settings-label">手动选择</view>
+  <view class="mode-list surface">
+    <view class="mode-row" data-mode="light" bindtap="chooseMode"><text>普通模式</text><text wx:if="{{selected === 'light'}}" class="check">✓</text></view>
+    <view class="mode-row" data-mode="dark" bindtap="chooseMode"><text>深色模式</text><text wx:if="{{selected === 'dark'}}" class="check">✓</text></view>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+.personalized-page { padding-top: 36rpx; background: var(--jj-bg); }
+.personalized-row { min-height: 124rpx; padding: 20rpx 32rpx; display: flex; align-items: center; box-sizing: border-box; }
+.personalized-copy { min-width: 0; flex: 1; }
+.personalized-title { color: var(--jj-text); font-size: 29rpx; }
+.personalized-caption { margin-top: 10rpx; color: var(--jj-text-3); font-size: 23rpx; }
+.personalized-row switch { margin-left: 24rpx; transform: scale(.82); transform-origin: right center; }

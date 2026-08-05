@@ -8,8 +8,8 @@
 .profile-name { max-width: 260rpx; font-size: 36rpx; font-weight: 700; }
 .level-badge, .jy-badge { height: 30rpx; padding: 0 8rpx; border-radius: 4rpx; display: inline-flex; align-items: center; color: #fff; background: #557ff0; font-size: 18rpx; font-style: italic; font-weight: 700; }
 .jy-badge { background: #7c55d9; }
-.profile-job { margin-top: 8rpx; color: var(--jj-text-3); font-size: 24rpx; }
 .profile-description { padding: 24rpx 32rpx 0; color: var(--jj-text-2); font-size: 26rpx; }
+.profile-link { padding: 12rpx 32rpx 0; color: var(--jj-text-3); font-size: 25rpx; }
 .profile-stats { padding: 26rpx 32rpx 30rpx; display: flex; align-items: center; gap: 70rpx; }
 .profile-stats > view { display: flex; flex-direction: column; gap: 6rpx; color: var(--jj-text-3); font-size: 21rpx; }
 .profile-stats > view text:first-child { color: var(--jj-text); font-size: 28rpx; font-weight: 600; }

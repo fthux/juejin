@@ -1,0 +1,9 @@
+<view class="page personalized-page">
+  <view class="personalized-row surface">
+    <view class="personalized-copy">
+      <view class="personalized-title">个性化推荐</view>
+      <view class="personalized-caption">关闭后将无法看到个性化推荐内容</view>
+    </view>
+    <switch checked="{{enabled}}" color="#1e80ff" bindchange="toggle"></switch>
+  </view>
+</view>

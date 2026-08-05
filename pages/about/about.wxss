@@ -1,40 +1,25 @@
-.about-head {
-  padding: 80rpx 32rpx 44rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.about-head image {
-  width: 112rpx;
-  height: 112rpx;
-}
-
-.about-name {
-  margin-top: 24rpx;
-  font-size: 36rpx;
-  font-weight: 700;
-}
-
-.about-version {
-  margin-top: 10rpx;
-  color: var(--jj-text-3);
-  font-size: 23rpx;
-}
-
-.about-copy {
-  margin-top: 16rpx;
-  padding: 32rpx;
-  color: var(--jj-text-2);
-  font-size: 26rpx;
-  line-height: 1.75;
+.about-page {
+  padding-top: 16rpx;
+  background: var(--jj-bg);
 }
 
 .about-row {
-  min-height: 96rpx;
-  padding: 0 32rpx;
+  min-height: 98rpx;
+  padding: 0 38rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1rpx solid var(--jj-line);
+  color: var(--jj-text);
+  font-size: 28rpx;
+}
+
+.about-row:last-child {
+  border-bottom: 0;
+}
+
+.arrow {
+  color: var(--jj-text-3);
+  font-size: 42rpx;
+  font-weight: 200;
 }

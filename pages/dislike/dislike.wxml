@@ -1,0 +1,25 @@
+<view class="page dislike-page">
+  <view class="dislike-tabs surface">
+    <view wx:for="{{tabs}}" wx:key="id" class="dislike-tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
+  </view>
+
+  <view wx:if="{{activeTab === 'authors' && authors.length}}" class="blocked-list surface">
+    <view wx:for="{{authors}}" wx:key="id" class="blocked-row">
+      <image src="{{item.avatar_large || '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
+      <view class="blocked-name ellipsis">{{item.user_name || item.name}}</view>
+      <view class="remove-button" data-id="{{item.id || item.user_id}}" bindtap="removeItem">取消屏蔽</view>
+    </view>
+  </view>
+  <view wx:elif="{{activeTab === 'tags' && tags.length}}" class="blocked-list surface">
+    <view wx:for="{{tags}}" wx:key="id" class="blocked-row">
+      <view class="tag-mark">#</view>
+      <view class="blocked-name ellipsis">{{item.name || item.tag_name}}</view>
+      <view class="remove-button" data-id="{{item.id || item.tag_id}}" bindtap="removeItem">取消屏蔽</view>
+    </view>
+  </view>
+  <view wx:else class="dislike-empty">
+    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <view>{{activeTab === 'authors' ? '您当前尚未屏蔽任何作者~' : '您当前尚未屏蔽任何标签~'}}</view>
+    <view class="primary-button" bindtap="goHome">去首页逛逛</view>
+  </view>
+</view>

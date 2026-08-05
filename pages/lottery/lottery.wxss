@@ -1,0 +1,15 @@
+.lottery-page { min-height: 100vh; padding: 50rpx 38rpx 100rpx; box-sizing: border-box; background: #1762ed; color: #fff; }
+.lottery-head { position: relative; padding: 34rpx 0 44rpx; text-align: center; }
+.lottery-title { color: #fff4bd; font-size: 52rpx; font-weight: 700; letter-spacing: 2rpx; }
+.lottery-subtitle { margin-top: 24rpx; font-size: 30rpx; }
+.lottery-ore { position: absolute; left: 16rpx; bottom: 14rpx; display: flex; align-items: center; gap: 12rpx; padding: 12rpx 34rpx; border-radius: 42rpx; background: #2d7ef5; color: #fff4bd; font-size: 36rpx; }
+.lottery-ore image { width: 40rpx; height: 40rpx; }
+.lottery-links { position: absolute; right: 0; bottom: 14rpx; display: flex; flex-direction: column; gap: 18rpx; font-size: 28rpx; }
+.lottery-board { padding: 34rpx 30rpx 42rpx; border: 18rpx solid #ffdc8b; border-radius: 34rpx; background: #ec7810; box-shadow: inset 0 0 0 2rpx #f7ab35; }
+.prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22rpx; }
+.prize { min-height: 190rpx; padding: 18rpx 10rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; border-radius: 12rpx; background: #fff8f5; color: #e36b09; font-size: 24rpx; text-align: center; }
+.prize image { width: 100rpx; height: 100rpx; margin-bottom: 10rpx; }
+.prize.locked { color: #eebfa4; opacity: .7; }
+.lottery-actions { display: flex; gap: 40rpx; margin-top: 38rpx; }
+.lottery-action { flex: 1; padding: 24rpx 8rpx; border-radius: 54rpx; background: #ff9b31; box-shadow: 0 8rpx 0 #db6800; font-size: 30rpx; text-align: center; }
+.lottery-action text { display: block; margin-top: 8rpx; font-size: 22rpx; }

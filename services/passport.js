@@ -187,6 +187,7 @@ function normalizeUser(account, profile) {
     job_title: source.job_title || '',
     company: source.company || '',
     description: source.description || source.user_description || '',
+    blog_address: source.blog_address || source.home_page || source.web_site || '',
     level: Number(source.level || growth.jpower_level) || 0,
     follower_count: Number(source.follower_count) || 0,
     followee_count: Number(source.followee_count) || 0,

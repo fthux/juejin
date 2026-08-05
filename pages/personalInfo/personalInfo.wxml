@@ -1,0 +1,8 @@
+<view class="personal-info-page">
+  <view class="personal-info-list">
+    <view wx:for="{{items}}" wx:key="*this" class="personal-info-row">
+      <text>{{item}}</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+</view>

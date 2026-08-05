@@ -1,0 +1,8 @@
+.coupon-page { min-height: 100vh; background: var(--jj-bg); color: var(--jj-text); }
+.coupon-tabs { height: 112rpx; display: flex; justify-content: space-around; align-items: flex-end; }
+.coupon-tab { position: relative; padding-bottom: 22rpx; color: var(--jj-text-3); font-size: 30rpx; }
+.coupon-tab.active { color: #1e80ff; }
+.coupon-tab.active::after { content: ''; position: absolute; left: 20%; right: 20%; bottom: 0; height: 8rpx; border-radius: 8rpx; background: #1e80ff; }
+.coupon-notice { padding: 20rpx 38rpx; background: rgba(255,124,46,.2); color: #ff853b; font-size: 25rpx; }
+.coupon-empty { padding-top: 380rpx; display: flex; flex-direction: column; align-items: center; color: var(--jj-text-3); font-size: 28rpx; }
+.coupon-empty image { width: 240rpx; height: 240rpx; margin-bottom: 34rpx; }

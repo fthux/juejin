@@ -1,0 +1,4 @@
+.push-settings-page { background: var(--jj-bg); }
+.settings-label { height: 76rpx; padding: 0 38rpx; display: flex; align-items: flex-end; box-sizing: border-box; color: var(--jj-text-3); font-size: 24rpx; }
+.push-row { min-height: 82rpx; padding: 0 38rpx; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; color: var(--jj-text); font-size: 27rpx; }
+.push-row switch { margin-left: 24rpx; transform: scale(.8); transform-origin: right center; }

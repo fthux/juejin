@@ -1,0 +1,31 @@
+.personal-info-page {
+  min-height: 100vh;
+  padding-top: 16rpx;
+  box-sizing: border-box;
+  background: #f5f5f5;
+}
+
+.personal-info-list {
+  padding: 0 30rpx;
+  background: #ffffff;
+}
+
+.personal-info-row {
+  min-height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #eeeeee;
+  color: #1f2329;
+  font-size: 28rpx;
+}
+
+.personal-info-row:last-child {
+  border-bottom: 0;
+}
+
+.arrow {
+  color: #d8d8d8;
+  font-size: 42rpx;
+  font-weight: 200;
+}

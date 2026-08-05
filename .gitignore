@@ -1,0 +1,7 @@
+.codegraph/
+
+# Local APK and device-research artifacts
+*.apk
+juejin-adb-screen.png
+research/
+scripts/capture-adb-*.sh

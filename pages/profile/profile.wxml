@@ -9,7 +9,6 @@
           <text class="level-badge">LV.{{user.level || 1}}</text>
           <text class="jy-badge">JY.{{user.level || 1}}</text>
         </view>
-        <view class="profile-job">{{user.job_title || '掘金创作者'}}<text wx:if="{{user.company}}"> @ {{user.company}}</text></view>
       </view>
       <view wx:if="{{isCurrentUser}}" class="outline-button" bindtap="editProfile">编辑</view>
       <view wx:else class="profile-actions">
@@ -17,7 +16,8 @@
         <view class="primary-button" bindtap="toggleFollow">{{followed ? '已关注' : '关注'}}</view>
       </view>
     </view>
-    <view class="profile-description">{{user.description || '持续学习，分享技术与思考。'}}</view>
+    <view class="profile-description">{{user.description || user.job_title || '暂无个人介绍'}}</view>
+    <view wx:if="{{user.blog_address}}" class="profile-link ellipsis">{{user.blog_address}}</view>
     <view class="profile-stats">
       <view><text>{{user.followee_count || 0}}</text><text>关注</text></view>
       <view><text>{{user.follower_count || 0}}</text><text>关注者</text></view>

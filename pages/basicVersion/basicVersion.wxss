@@ -1,0 +1,34 @@
+.basic-version-page {
+  padding-top: 16rpx;
+  background: var(--jj-bg);
+}
+
+.basic-version-row {
+  min-height: 124rpx;
+  padding: 22rpx 38rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.basic-version-copy {
+  min-width: 0;
+}
+
+.basic-version-title {
+  color: var(--jj-text);
+  font-size: 28rpx;
+}
+
+.basic-version-caption {
+  margin-top: 8rpx;
+  color: var(--jj-text-3);
+  font-size: 24rpx;
+}
+
+.basic-version-row switch {
+  margin-left: 24rpx;
+  transform: scale(.8);
+  transform-origin: right center;
+}

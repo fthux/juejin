@@ -1,0 +1,7 @@
+<view class="coupon-page">
+  <view class="coupon-tabs">
+    <view wx:for="{{tabs}}" wx:key="*this" class="coupon-tab {{activeTab === item ? 'active' : ''}}" data-tab="{{item}}" bindtap="selectTab">{{item}}</view>
+  </view>
+  <view class="coupon-notice">ⓘ　优惠券/兑换码仅在 Web、Android 端支持　×</view>
+  <view class="coupon-empty"><image src="/assets/app/welfare/ic_yoyo_empty.webp" mode="aspectFit"></image><text>暂无可用优惠券</text></view>
+</view>

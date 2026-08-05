@@ -1,0 +1,9 @@
+.dark-mode-page { min-height: 100vh; background: #000; color: var(--jj-text); }
+.system-section { padding: 34rpx 38rpx 40rpx; }
+.system-head { display: flex; align-items: center; justify-content: space-between; font-size: 30rpx; }
+.system-head switch { transform: scale(.82); transform-origin: right center; }
+.system-caption { margin-top: 16rpx; color: var(--jj-text-3); font-size: 25rpx; }
+.settings-label { height: 92rpx; padding: 0 38rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 26rpx; }
+.mode-row { min-height: 108rpx; padding: 0 38rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 1rpx solid var(--jj-line); font-size: 28rpx; }
+.mode-row:last-child { border-bottom: 0; }
+.check { color: #1e80ff; font-size: 44rpx; }
