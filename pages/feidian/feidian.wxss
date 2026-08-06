@@ -2,8 +2,16 @@
   padding-bottom: 26rpx;
 }
 
-.pin-navigation {
+.pin-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   width: 100%;
+  background: var(--jj-surface);
+}
+
+.pin-navigation {
+  width: 100vw;
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -66,6 +74,12 @@
   width: 100%;
   margin-top: 20rpx;
   white-space: nowrap;
+}
+
+.topic-scroll {
+  margin-top: 12rpx;
+  padding-top: 8rpx;
+  box-sizing: border-box;
 }
 
 .topic-item {

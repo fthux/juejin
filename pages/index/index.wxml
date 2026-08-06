@@ -1,25 +1,27 @@
 <view class="page home-page">
-  <status-bar navigation="{{true}}">
-    <view class="home-head surface">
-      <view class="home-search" bindtap="openSearch">
-        <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
-        <text>搜索稀土掘金</text>
+  <view class="home-sticky">
+    <status-bar navigation="{{true}}">
+      <view class="home-head surface">
+        <view class="home-search" bindtap="openSearch">
+          <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
+          <text>搜索稀土掘金</text>
+        </view>
+        <view class="calendar-entry" bindtap="openSign">
+          <view class="calendar-icon"><text>✓</text></view>
+          <text>签到</text>
+        </view>
       </view>
-      <view class="calendar-entry" bindtap="openSign">
-        <view class="calendar-icon"><text>✓</text></view>
-        <text>签到</text>
-      </view>
-    </view>
-  </status-bar>
+    </status-bar>
 
-  <view class="nav-bar surface">
-    <scroll-view class="nav-scroll" scroll-x enable-flex show-scrollbar="{{false}}" scroll-into-view="nav-{{activeNav}}" scroll-with-animation>
-      <view class="nav-row">
-        <view wx:for="{{navTabs}}" wx:key="id" id="nav-{{item.id}}" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
+    <view class="nav-bar surface">
+      <scroll-view class="nav-scroll" scroll-x enable-flex show-scrollbar="{{false}}" scroll-into-view="nav-{{activeNav}}" scroll-with-animation>
+        <view class="nav-row">
+          <view wx:for="{{navTabs}}" wx:key="id" id="nav-{{item.id}}" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
+        </view>
+      </scroll-view>
+      <view class="nav-menu" bindtap="openCategoryMenu" aria-label="全部频道">
+        <view class="menu-lines"><text></text><text></text><text></text></view>
       </view>
-    </scroll-view>
-    <view class="nav-menu" bindtap="openCategoryMenu" aria-label="全部频道">
-      <view class="menu-lines"><text></text><text></text><text></text></view>
     </view>
   </view>
 

@@ -117,4 +117,10 @@ for (const item of app.tabBar.list) {
   }
 }
 
+const markdown = require(path.join(root, 'utils/markdown.js'))
+const signedImage = 'https://p3.example.com/image.webp?rk3s=test&x-expires=1&x-signature=test'
+const renderedImage = markdown.toHtml(`![](${signedImage})`)
+if (!renderedImage.includes(`src="${signedImage}"`)) fail('Markdown 图片签名参数被 HTML 实体破坏')
+if (markdown.normalizeImageSources('<p>&amp;</p>').includes('<p>&</p>')) fail('图片 URL 修复不应改动正文实体')
+
 console.log(`Validated ${app.pages.length} pages, ${componentRoots.length} components, navigation, local assets and API boundaries.`)

@@ -2,13 +2,21 @@
   <view wx:if="{{article}}" class="article-detail surface">
     <view class="detail-title">{{article.title}}</view>
     <view class="author-row">
-      <image class="avatar" src="{{article.author.avatar_large}}" mode="aspectFill" bindtap="openAuthor"></image>
+      <image class="author-avatar" src="{{article.author.avatar_large}}" mode="aspectFill" bindtap="openAuthor"></image>
       <view class="author-copy" bindtap="openAuthor">
-        <view class="author-name">{{article.author.user_name}}</view>
-        <view class="author-meta">{{article.ctime}} · 阅读 {{article.view_count}}</view>
+        <view class="author-heading">
+          <text class="author-name ellipsis">{{article.author.user_name}}</text>
+          <text wx:if="{{article.author.level}}" class="level-badge">LV.{{article.author.level}}</text>
+        </view>
+        <view class="author-meta">
+          <text>{{article.publish_date}}</text>
+          <view class="meta-item"><view class="eye-icon"><view></view></view><text>{{article.view_count}}</text></view>
+          <view wx:if="{{article.read_time}}" class="meta-item"><view class="clock-icon"></view><text>阅读{{article.read_time}}</text></view>
+        </view>
       </view>
       <view class="follow-button {{isFollowed ? 'followed' : ''}}" bindtap="toggleFollow">{{isFollowed ? '已关注' : '关注'}}</view>
     </view>
+
     <view class="article-content">
       <rich-text wx:if="{{content}}" nodes="{{content}}" user-select></rich-text>
       <view wx:if="{{loadError}}" class="content-error">
@@ -16,8 +24,18 @@
         <view class="text-button" bindtap="retry">重新加载</view>
       </view>
     </view>
-    <view class="article-tags">
-      <view wx:for="{{article.tags}}" wx:key="*this" class="chip">{{item}}</view>
+
+    <view wx:if="{{article.tags.length || article.themes.length}}" class="article-tags">
+      <view class="tag-leading" aria-hidden="true"></view>
+      <view class="tag-list">
+        <view wx:for="{{article.tags}}" wx:key="*this" class="article-tag">{{item}}</view>
+        <view wx:for="{{article.themes}}" wx:key="*this" class="article-tag theme-tag">#{{item}}#</view>
+      </view>
+    </view>
+    <view wx:if="{{article.update_time}}" class="update-row">
+      <view class="update-line"></view>
+      <text>本文更新于 {{article.update_time}}</text>
+      <view class="update-line"></view>
     </view>
   </view>
 
@@ -26,38 +44,82 @@
     <view class="text-button" bindtap="retry">重新加载</view>
   </view>
 
-  <view wx:if="{{article}}" class="section">
-    <view class="section-header">
-      <view class="section-title">评论 · {{comments.length}}</view>
+  <view wx:if="{{article && related.length}}" class="detail-section">
+    <view class="detail-section-title">相关推荐</view>
+    <view wx:for="{{related}}" wx:key="article_id" class="recommend-row" data-id="{{item.article_id}}" bindtap="openRelated">
+      <view class="recommend-title">{{item.title}}</view>
+      <view class="recommend-meta">{{item.author.user_name}} · {{item.view_count}}阅读 · {{item.digg_count}}赞</view>
     </view>
-    <view wx:for="{{comments}}" wx:key="id" class="local-comment">
-      <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
-      <view class="local-comment-copy"><view>{{item.user}}</view><text>{{item.content}}</text><view class="local-comment-time">{{item.time}}</view></view>
-    </view>
-    <view wx:if="{{!comments.length}}" class="comment-empty">还没有评论，来说两句吧</view>
   </view>
 
-  <view wx:if="{{article}}" class="section">
-    <view class="section-header">
-      <view class="section-title">相关推荐</view>
+  <view wx:if="{{article && featured.length}}" class="detail-section">
+    <view class="detail-section-title">精选内容</view>
+    <view wx:for="{{featured}}" wx:key="article_id" class="recommend-row" data-id="{{item.article_id}}" bindtap="openRelated">
+      <view class="recommend-title">{{item.title}}</view>
+      <view class="recommend-meta">{{item.author.user_name}} · {{item.view_count}}阅读 · {{item.digg_count}}赞</view>
     </view>
-    <article-card wx:for="{{related}}" wx:key="article_id" item="{{item}}" bind:open="openRelated"></article-card>
   </view>
+
+  <view wx:if="{{article}}" id="article-comments" class="detail-section comment-section">
+    <view class="comment-header">
+      <view class="detail-section-title comment-title">评论 {{commentTotal}}</view>
+      <view class="comment-sort">
+        <view class="sort-item {{commentSort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchCommentSort">最新</view>
+        <view class="sort-item {{commentSort === 'hot' ? 'active' : ''}}" data-sort="hot" bindtap="switchCommentSort">最热</view>
+      </view>
+    </view>
+    <view wx:for="{{comments}}" wx:key="id" class="comment-row">
+      <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+      <view class="comment-body">
+        <view class="comment-user-row">
+          <text class="comment-user ellipsis">{{item.user}}</text>
+          <text wx:if="{{item.is_author}}" class="author-mark">作者</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+        <view class="comment-footer">
+          <text>{{item.time}}</text>
+          <view class="comment-actions">
+            <text class="more-action">···</text>
+            <view class="comment-action" bindtap="addComment">
+              <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
+              <text wx:if="{{item.reply_count}}">{{item.reply_count}}</text>
+            </view>
+            <view class="comment-action" bindtap="toggleLike">
+              <image src="{{item.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image>
+              <text wx:if="{{item.digg_count_value}}">{{item.digg_count}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{commentsLoading}}" class="comments-state">正在加载评论...</view>
+    <view wx:elif="{{!comments.length}}" class="comments-state">还没有评论，来说两句吧</view>
+  </view>
+
   <view wx:if="{{loading}}" class="loading-line">正在加载文章...</view>
 
-  <view wx:if="{{article}}" class="action-bar safe-bottom">
-    <view class="comment-entry" bindtap="addComment">写评论...</view>
-    <view class="action {{isLiked ? 'active' : ''}}" bindtap="toggleLike">
-      <text class="action-icon">△</text>
-      <text>{{isLiked ? article.digg_count + 1 : article.digg_count}}</text>
+  <view wx:if="{{article}}" class="action-bar">
+    <view class="comment-entry" bindtap="addComment">
+      <text class="comment-pencil">✎</text>
+      <text class="comment-placeholder ellipsis">绑定手机后发表评论</text>
     </view>
-    <view class="action {{isCollected ? 'active' : ''}}" bindtap="toggleCollect">
-      <text class="action-icon">☆</text>
-      <text>{{isCollected ? '已收藏' : '收藏'}}</text>
+    <view class="footer-action" bindtap="showCatalog" aria-label="文章目录">
+      <view class="catalog-icon"><view class="catalog-line"></view><view class="catalog-line"></view><view class="catalog-line"></view></view>
     </view>
-    <button class="action share-action" open-type="share">
-      <text class="action-icon">↗</text>
-      <text>分享</text>
-    </button>
+    <view class="footer-action" bindtap="scrollToComments" aria-label="查看评论">
+      <view class="footer-icon-wrap">
+        <image class="footer-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
+        <text wx:if="{{commentTotal !== '0'}}" class="footer-count comment-count">{{commentTotal}}</text>
+      </view>
+    </view>
+    <view class="footer-action {{isLiked ? 'active' : ''}}" bindtap="toggleLike" aria-label="点赞">
+      <view class="footer-icon-wrap">
+        <image class="footer-icon" src="{{isLiked ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image>
+        <text wx:if="{{article.digg_count_value}}" class="footer-count">{{article.digg_count}}</text>
+      </view>
+    </view>
+    <view class="footer-action {{isCollected ? 'active' : ''}}" bindtap="toggleCollect" aria-label="收藏">
+      <text class="collection-icon">{{isCollected ? '★' : '☆'}}</text>
+    </view>
   </view>
 </view>

@@ -1,10 +1,13 @@
 .byte-course-card {
   min-height: 238rpx;
   padding: 32rpx 32rpx 0;
-  display: flex;
-  gap: 32rpx;
   box-sizing: border-box;
   background: var(--jj-surface);
+}
+
+.byte-course-content {
+  display: flex;
+  gap: 32rpx;
 }
 
 .byte-course-cover {
@@ -20,12 +23,15 @@
 .byte-course-body {
   min-width: 0;
   flex: 1;
-  padding-bottom: 26rpx;
-  border-bottom: 1rpx solid var(--jj-line);
 }
 
 .byte-course-title {
   min-height: 44rpx;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   color: var(--jj-text);
   font-size: 30rpx;
   font-weight: 600;
@@ -59,14 +65,24 @@
 .video-icon {
   width: 32rpx;
   height: 32rpx;
-  margin-right: 8rpx;
   flex: 0 0 auto;
+}
+
+.bytetech-logo {
+  margin-right: 8rpx;
+}
+
+.video-icon {
+  margin-right: 4rpx;
 }
 
 .video-meta {
   margin-top: 4rpx;
 }
 
-.video-meta .video-icon {
-  margin-right: 4rpx;
+.byte-course-divider {
+  width: 100%;
+  height: 1rpx;
+  margin-top: 26rpx;
+  background: var(--jj-line);
 }

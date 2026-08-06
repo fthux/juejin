@@ -217,6 +217,30 @@ function articleDetail(articleId) {
   }), { data: null })
 }
 
+function articleRecommendations(articleId, userId, tagIds) {
+  return withFallback(request('/recommend_api/v1/article/detail_rela_rec', {
+    item_id: articleId,
+    user_id: userId || '',
+    tag_ids: tagIds || []
+  }), { data: [], cursor: '0', has_more: false })
+}
+
+function articleFeatured(articleId) {
+  return withFallback(request('/recommend_api/v1/article/detail_featured', {
+    article_id: articleId
+  }), { data: [] })
+}
+
+function articleComments(articleId, cursor) {
+  return withFallback(request('/interact_api/v1/comment/list', {
+    item_id: articleId,
+    item_type: 2,
+    cursor: cursor || '0',
+    limit: 20,
+    client_type: 2608
+  }), { data: [], cursor: '0', count: 0, has_more: false })
+}
+
 function pinDetail(msgId) {
   return withFallback(request('/content_api/v1/short_msg/detail', { msg_id: msgId }), () => ({
     data: mock.pins.find((item) => item.msg_id === msgId) || mock.pins[0]
@@ -359,6 +383,9 @@ module.exports = {
   courseSection,
   courseShelf,
   articleDetail,
+  articleRecommendations,
+  articleFeatured,
+  articleComments,
   pinDetail,
   pinRecommendations,
   pinComments,

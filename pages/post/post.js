@@ -1,8 +1,25 @@
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
-const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
 const markdown = require('../../utils/markdown.js')
+
+function sortComments(comments, sort) {
+  const rows = comments.slice()
+  if (sort === 'hot') {
+    return rows.sort((left, right) => right.digg_count_value - left.digg_count_value || right.ctime_value - left.ctime_value)
+  }
+  return rows.sort((left, right) => right.ctime_value - left.ctime_value)
+}
+
+function buildCatalog(source) {
+  const headings = []
+  const markdownHeadings = String(source || '').matchAll(/^#{1,3}\s+(.+)$/gm)
+  for (const match of markdownHeadings) {
+    const title = match[1].replace(/[*_`~\[\]]/g, '').trim()
+    if (title) headings.push(title)
+  }
+  return headings.slice(0, 6)
+}
 
 Page({
   data: {
@@ -10,7 +27,14 @@ Page({
     article: null,
     content: '',
     related: [],
+    featured: [],
     comments: [],
+    commentTotal: '0',
+    commentCursor: '0',
+    commentsHasMore: false,
+    commentsLoading: false,
+    commentSort: 'latest',
+    catalog: [],
     loading: true,
     isLiked: false,
     isCollected: false,
@@ -26,6 +50,10 @@ Page({
       return
     }
     this.loadDetail()
+  },
+
+  onReachBottom() {
+    if (this.data.commentsHasMore) this.loadComments(false)
   },
 
   loadDetail() {
@@ -44,14 +72,21 @@ Page({
       const info = detail.article_info || {}
       const markdownContent = detail.mark_content || info.mark_content || (local && local.content)
       const htmlContent = detail.app_html_content || info.app_html_content || detail.web_html_content || info.web_html_content || detail.article_content || detail.content
-      const content = markdownContent ? markdown.toHtml(markdownContent) : (htmlContent || '')
+      const content = markdownContent
+        ? markdown.toHtml(markdownContent)
+        : markdown.normalizeImageSources(htmlContent || '')
+      article.tags = article.all_tags
+      article.themes = (detail.theme_list || []).map((theme) => theme.name || theme.theme_name || '').filter(Boolean)
       session.addHistory(article)
       session.cacheArticle(article)
       this.setData({
         article,
         content,
-        related: mock.articles.filter((item) => item.article_id !== article.article_id).slice(0, 3).map(utils.normalizeArticle),
-        comments: session.getComments('article', article.article_id),
+        related: [],
+        featured: [],
+        comments: [],
+        commentTotal: article.comment_count,
+        catalog: buildCatalog(markdownContent || ''),
         isLiked: session.getList('likes').indexOf(article.article_id) !== -1,
         isCollected: session.getList('collections').indexOf(article.article_id) !== -1,
         isFollowed: session.getList('follows').indexOf(article.author.user_id) !== -1,
@@ -59,6 +94,7 @@ Page({
         loading: false
       })
       wx.setNavigationBarTitle({ title: article.title || '文章详情' })
+      this.loadSupplementary(detail, article)
     }).catch(() => {
       const cached = session.getCachedArticle(this.data.articleId)
       const article = cached ? utils.normalizeArticle(cached) : null
@@ -75,6 +111,44 @@ Page({
 
   retry() {
     this.loadDetail()
+  },
+
+  loadSupplementary(detail, article) {
+    const tagIds = (detail.tags || []).map((tag) => String(tag.tag_id || tag.id || '')).filter(Boolean)
+    Promise.all([
+      api.articleRecommendations(article.article_id, article.author.user_id, tagIds),
+      api.articleFeatured(article.article_id)
+    ]).then(([relatedResponse, featuredResponse]) => {
+      if (article.article_id !== this.data.articleId) return
+      const related = (relatedResponse.result.data || []).map(utils.normalizeArticle)
+        .filter((item) => item.article_id && item.article_id !== article.article_id).slice(0, 5)
+      const featured = (featuredResponse.result.data || []).map(utils.normalizeArticle)
+        .filter((item) => item.article_id && item.article_id !== article.article_id).slice(0, 5)
+      this.setData({ related, featured })
+    })
+    this.loadComments(true)
+  },
+
+  loadComments(reload) {
+    if (this.data.commentsLoading && !reload) return
+    const cursor = reload ? '0' : this.data.commentCursor
+    this.setData({ commentsLoading: true })
+    api.articleComments(this.data.articleId, cursor).then(({ result }) => {
+      const rows = (result.data || []).map(utils.normalizeComment).filter((item) => item.id)
+      const comments = reload ? rows : this.data.comments.concat(rows)
+      this.setData({
+        comments: sortComments(comments, this.data.commentSort),
+        commentTotal: utils.formatCount(Number(result.count) || Number(this.data.article.comment_count_value) || comments.length),
+        commentCursor: result.cursor || '0',
+        commentsHasMore: Boolean(result.has_more) && rows.length > 0,
+        commentsLoading: false
+      })
+    }).catch(() => this.setData({ commentsLoading: false, commentsHasMore: false }))
+  },
+
+  switchCommentSort(event) {
+    const commentSort = event.currentTarget.dataset.sort === 'hot' ? 'hot' : 'latest'
+    this.setData({ commentSort, comments: sortComments(this.data.comments, commentSort) })
   },
 
   toggleLike() {
@@ -104,7 +178,20 @@ Page({
   },
 
   openRelated(event) {
-    wx.redirectTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+    const articleId = event.detail && event.detail.item ? event.detail.item.article_id : event.currentTarget.dataset.id
+    if (articleId) wx.redirectTo({ url: `/pages/post/post?id=${articleId}` })
+  },
+
+  scrollToComments() {
+    wx.pageScrollTo({ selector: '#article-comments', duration: 250 })
+  },
+
+  showCatalog() {
+    if (!this.data.catalog.length) {
+      utils.toast('这篇文章暂无目录')
+      return
+    }
+    wx.showActionSheet({ itemList: this.data.catalog })
   },
 
   addComment() {

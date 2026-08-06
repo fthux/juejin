@@ -1,10 +1,12 @@
 <view class="page pin-page">
-  <status-bar navigation="{{true}}">
-    <view class="pin-navigation">
-      <view class="top-tab {{topTab === 'discover' ? 'active' : ''}}" data-id="discover" bindtap="switchTopTab">发现</view>
-      <view class="top-tab {{topTab === 'following' ? 'active' : ''}}" data-id="following" bindtap="switchTopTab">关注</view>
-    </view>
-  </status-bar>
+  <view class="pin-sticky">
+    <status-bar navigation="{{true}}">
+      <view class="pin-navigation">
+        <view class="top-tab {{topTab === 'discover' ? 'active' : ''}}" data-id="discover" bindtap="switchTopTab">发现</view>
+        <view class="top-tab {{topTab === 'following' ? 'active' : ''}}" data-id="following" bindtap="switchTopTab">关注</view>
+      </view>
+    </status-bar>
+  </view>
 
   <view wx:if="{{topTab === 'discover'}}" class="topic-section surface">
     <view class="topic-heading">
@@ -50,7 +52,7 @@
         </view>
         <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
           <view wx:for="{{selectedPins}}" wx:for-item="selected" wx:key="msg_id" class="selected-pin" data-id="{{selected.msg_id}}" bindtap="openDetail">
-            <view class="selected-pin-title ellipsis"><text>荐</text> #{{selected.topic || selected.content}}</view>
+            <view class="selected-pin-title ellipsis"><text>荐</text> #{{selected.topic || '精选沸点'}}</view>
             <view class="selected-actions ellipsis">{{selected.author.user_name}} · {{selected.digg_count}}人点赞 · {{selected.comment_count}}人评论</view>
           </view>
         </scroll-view>
@@ -66,7 +68,7 @@
     </view>
     <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
       <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" bindtap="openDetail">
-        <view class="selected-pin-title ellipsis"><text>荐</text> #{{item.topic || item.content}}</view>
+        <view class="selected-pin-title ellipsis"><text>荐</text> #{{item.topic || '精选沸点'}}</view>
         <view class="selected-actions ellipsis">{{item.author.user_name}} · {{item.digg_count}}人点赞 · {{item.comment_count}}人评论</view>
       </view>
     </scroll-view>

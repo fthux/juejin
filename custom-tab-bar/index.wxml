@@ -1,7 +1,7 @@
 <view class="app-tab-bar safe-bottom">
   <view wx:for="{{tabs}}" wx:key="pagePath" class="tab-item {{selected === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchTab">
     <view class="tab-icon-box">
-      <image src="{{darkMode ? (selected === index ? item.darkSelectedIcon : item.darkIcon) : (selected === index ? item.selectedIcon : item.icon)}}" mode="aspectFit"></image>
+      <image class="tab-icon {{index === 4 && selected !== index ? 'profile-normal' : ''}}" src="{{darkMode ? (selected === index ? item.darkSelectedIcon : item.darkIcon) : (selected === index ? item.selectedIcon : item.icon)}}" mode="aspectFit"></image>
     </view>
     <text>{{item.text}}</text>
   </view>

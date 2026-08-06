@@ -2,6 +2,14 @@
   padding-bottom: 24rpx;
 }
 
+.home-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  background: var(--jj-surface);
+}
+
 .home-head {
   width: 100%;
   height: 100%;
@@ -81,9 +89,6 @@
 .calendar-icon::after { right: 8rpx; }
 
 .nav-bar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   width: 100%;
   height: 78rpx;
   display: flex;

@@ -26,6 +26,15 @@ function dateKey(date) {
   return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`
 }
 
+function formatDateTime(value, includeTime) {
+  if (!value) return ''
+  const input = typeof value === 'number' && value < 1000000000000 ? value * 1000 : Number(value) < 1000000000000 ? Number(value) * 1000 : value
+  const date = new Date(input)
+  if (Number.isNaN(date.getTime())) return ''
+  const datePart = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+  return includeTime ? `${datePart} ${pad(date.getHours())}:${pad(date.getMinutes())}` : datePart
+}
+
 function getUuid() {
   let uuid = wx.getStorageSync('jj:uuid')
   if (!uuid) {
@@ -58,6 +67,11 @@ function normalizeArticle(raw) {
   const info = item.article_info || item
   const author = item.author_user_info || raw.author_user_info || item.author || raw.author || {}
   const tags = item.tags || raw.tags || []
+  const authorGrowth = author.user_growth_info || {}
+  const ctime = Number(info.ctime || item.ctime) || 0
+  const mtime = Number(info.mtime || item.mtime || info.rtime || item.rtime) || ctime
+  const contentCount = Number(info.content_count || item.content_count) || 0
+  const estimatedMinutes = contentCount ? Math.max(1, Math.ceil(contentCount / 300)) : 0
   return {
     article_id: info.article_id || item.article_id || item.item_id || '',
     title: info.title || item.title || '无标题文章',
@@ -68,14 +82,21 @@ function normalizeArticle(raw) {
     comment_count: formatCount(info.comment_count || item.comment_count),
     view_count: formatCount(info.view_count || item.view_count),
     collect_count: formatCount(info.collect_count || item.collect_count),
+    digg_count_value: Number(info.digg_count || item.digg_count) || 0,
+    comment_count_value: Number(info.comment_count || item.comment_count) || 0,
+    publish_date: formatDateTime(ctime, false),
+    update_time: formatDateTime(mtime, true),
+    read_time: info.read_time || item.read_time || (estimatedMinutes ? `${estimatedMinutes}分钟` : ''),
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',
       avatar_large: author.avatar_large || '/assets/app/common/default_avatar.webp',
       job_title: author.job_title || '',
-      company: author.company || ''
+      company: author.company || '',
+      level: Number(author.level || authorGrowth.jpower_level) || 0
     },
-    tags: tags.slice(0, 2).map((tag) => tag.tag_name || tag.name || tag)
+    tags: tags.slice(0, 2).map((tag) => tag.tag_name || tag.name || tag),
+    all_tags: tags.map((tag) => tag.tag_name || tag.name || tag).filter(Boolean)
   }
 }
 
@@ -141,7 +162,10 @@ function normalizePin(raw) {
   const info = item.msg_Info || item.msg_info || item
   const author = item.author_user_info || info.author_user_info || {}
   const rawTopic = info.topic || item.topic
-  const topic = typeof rawTopic === 'string' ? rawTopic : ((rawTopic && rawTopic.title) || '')
+  const rawTopicTitle = typeof rawTopic === 'string' ? rawTopic : ((rawTopic && rawTopic.title) || '')
+  const theme = item.theme || info.theme || {}
+  const topicTitle = /^\d+$/.test(String(rawTopicTitle).trim()) ? '' : rawTopicTitle
+  const topic = String(topicTitle || theme.name || '').trim()
   return {
     msg_id: item.msg_id || info.msg_id || '',
     content: info.content || '',
@@ -305,11 +329,15 @@ function normalizeComment(raw) {
     id: item.comment_id || info.comment_id || '',
     content: info.comment_content || '',
     time: formatTime(info.ctime),
+    ctime_value: Number(info.ctime) || 0,
     digg_count: formatCount(info.digg_count),
+    digg_count_value: Number(info.digg_count) || 0,
     reply_count: Number(info.reply_count) || 0,
     avatar: user.avatar_large || '/assets/app/common/default_avatar.webp',
     user: user.user_name || '掘友',
-    user_id: user.user_id || ''
+    user_id: user.user_id || '',
+    is_author: Boolean(item.is_author),
+    is_digg: Boolean(info.is_digg || (item.user_interact && item.user_interact.is_digg))
   }
 }
 
@@ -399,6 +427,7 @@ function normalizeByteCourse(raw) {
 module.exports = {
   formatCount,
   formatTime,
+  formatDateTime,
   dateKey,
   getUuid,
   normalizeImageUrl,

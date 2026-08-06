@@ -3,7 +3,7 @@
     <view class="article-main home-main">
       <view class="article-title two-lines">{{item.title}}</view>
       <view class="home-author-row">
-        <image src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
+        <image class="home-author-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
         <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
       </view>
       <view class="home-summary-row">
@@ -11,10 +11,10 @@
         <image wx:if="{{item.cover_image}}" class="article-cover home-cover" src="{{item.cover_image}}" mode="aspectFill"></image>
       </view>
       <view class="article-stats home-stats">
-        <view class="stat"><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_count > 0 ? item.digg_count : '赞'}}</text></view>
-        <view class="stat"><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_count > 0 ? item.comment_count : '评论'}}</text></view>
+        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text class="stat-label">{{item.digg_count > 0 ? item.digg_count : '赞'}}</text></view>
+        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text class="stat-label">{{item.comment_count > 0 ? item.comment_count : '评论'}}</text></view>
         <text wx:if="{{item.tags.length}}" class="home-tag">{{item.tags[0]}}</text>
-        <view class="home-dislike" catchtap="dislike" aria-label="减少类似推荐"><text></text></view>
+        <view class="home-dislike" catchtap="dislike" aria-label="减少类似推荐"><text class="dislike-mark"></text></view>
       </view>
     </view>
   </block>

@@ -149,7 +149,7 @@
   font-size: 22rpx;
 }
 
-.home-author-row image {
+.home-author-avatar {
   width: 32rpx;
   height: 32rpx;
   flex: 0 0 auto;
@@ -198,13 +198,13 @@
   gap: 7rpx;
 }
 
-.home-stats .stat image {
+.home-stats .stat-icon {
   width: 28rpx;
   height: 28rpx;
   flex: 0 0 auto;
 }
 
-.home-stats .stat text {
+.home-stats .stat-label {
   height: 28rpx;
   display: block;
   line-height: 28rpx;
@@ -245,6 +245,6 @@
 .home-dislike::before { transform: rotate(45deg); }
 .home-dislike::after { transform: rotate(-45deg); }
 
-.home-dislike text {
+.home-dislike .dislike-mark {
   display: none;
 }

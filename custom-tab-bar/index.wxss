@@ -34,9 +34,15 @@
   justify-content: center;
 }
 
-.tab-icon-box image {
+.tab-icon {
   width: 44rpx;
   height: 44rpx;
+}
+
+.tab-icon.profile-normal {
+  border: 3rpx solid #252933;
+  border-radius: 50%;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,5 +57,9 @@
 
   .tab-item.active {
     color: #1e80ff;
+  }
+
+  .tab-icon.profile-normal {
+    border-color: #ffffff;
   }
 }

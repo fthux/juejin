@@ -128,8 +128,7 @@
 .pin-actions {
   height: 88rpx;
   margin-top: 18rpx;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   align-items: center;
   color: var(--jj-text-3);
   border-top: 1rpx solid var(--jj-line);
@@ -138,9 +137,12 @@
 }
 
 .pin-action {
+  width: 0;
+  min-width: 0;
   height: 88rpx;
   margin: 0;
   padding: 0;
+  flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,6 +151,15 @@
   background: transparent;
   font-size: inherit;
   line-height: 1;
+  box-sizing: border-box;
+}
+
+.pin-action:first-child {
+  justify-content: center;
+}
+
+.pin-action:last-child {
+  justify-content: center;
 }
 
 .pin-action image {

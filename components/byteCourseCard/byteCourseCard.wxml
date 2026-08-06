@@ -1,14 +1,17 @@
 <view class="byte-course-card" bindtap="open">
-  <image class="byte-course-cover" src="{{coverFailed ? '/assets/app/course/byte/default.webp' : (item.cover || '/assets/app/course/byte/default.webp')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
-  <view class="byte-course-body">
-    <view class="byte-course-title two-lines"><text class="vip-free">VIP免费</text><text>{{item.title}}</text></view>
-    <view class="byte-course-meta">
-      <image class="bytetech-logo" src="/assets/app/course/byte/ic_bytetech.webp" mode="aspectFit"></image>
-      <text>ByteTech</text>
-    </view>
-    <view wx:if="{{item.videoCount}}" class="byte-course-meta video-meta">
-      <image class="video-icon" src="/assets/app/course/byte/ic_video_collection.svg" mode="aspectFit"></image>
-      <text>{{item.videoCount}}个视频 · {{item.duration}}</text>
+  <view class="byte-course-content">
+    <image class="byte-course-cover" src="{{coverFailed ? '/assets/app/course/byte/default.webp' : (item.cover || '/assets/app/course/byte/default.webp')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
+    <view class="byte-course-body">
+      <view class="byte-course-title"><text class="vip-free">VIP免费</text><text>{{item.title}}</text></view>
+      <view class="byte-course-meta">
+        <image class="bytetech-logo" src="/assets/app/course/byte/ic_bytetech.webp" mode="aspectFit"></image>
+        <text>ByteTech</text>
+      </view>
+      <view wx:if="{{item.videoCount}}" class="byte-course-meta video-meta">
+        <image class="video-icon" src="/assets/app/course/byte/ic_video_collection.svg" mode="aspectFit"></image>
+        <text>{{item.videoCount}}个视频 · {{item.duration}}</text>
+      </view>
     </view>
   </view>
+  <view class="byte-course-divider"></view>
 </view>

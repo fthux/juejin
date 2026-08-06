@@ -10,7 +10,7 @@
   text-align: center;
 }
 
-image {
+.empty-image {
   width: 220rpx;
   height: 220rpx;
   margin-bottom: 24rpx;
