@@ -121,6 +121,30 @@ const markdown = require(path.join(root, 'utils/markdown.js'))
 const signedImage = 'https://p3.example.com/image.webp?rk3s=test&x-expires=1&x-signature=test'
 const renderedImage = markdown.toHtml(`![](${signedImage})`)
 if (!renderedImage.includes(`src="${signedImage}"`)) fail('Markdown 图片签名参数被 HTML 实体破坏')
+if (!renderedImage.includes('max-width:100%;height:auto;display:block')) fail('Markdown 图片缺少响应式尺寸样式')
 if (markdown.normalizeImageSources('<p>&amp;</p>').includes('<p>&</p>')) fail('图片 URL 修复不应改动正文实体')
+
+const fixedImage = markdown.normalizeImageSources('<img width="960" height="540" style="width:960px;max-width:none;height:540px;object-fit:cover" src="https://p3.example.com/a.webp?x=1&amp;y=2">')
+if (/\s(?:width|height)=/i.test(fixedImage)) fail('正文图片仍包含固定宽高属性')
+if (/(?:^|;)\s*(?:width|min-width|max-width|height|min-height|max-height)\s*:(?!\s*(?:100%|auto))/i.test(fixedImage)) fail('正文图片仍包含固定尺寸样式')
+if (!fixedImage.includes('object-fit:cover')) fail('图片响应式处理不应移除无关样式')
+if (!fixedImage.includes('src="https://p3.example.com/a.webp?x=1&y=2"')) fail('图片响应式处理破坏了签名参数')
+
+const utils = require(path.join(root, 'utils/utils.js'))
+const normalizedComment = utils.normalizeComment({
+  comment_id: 'comment-1',
+  comment_info: { comment_content: '一级评论', reply_count: 2 },
+  reply_infos: [{
+    reply_id: 9007199254740992,
+    reply_info: { reply_id: 'reply-1', reply_content: '回复内容', reply_to_user_id: 'user-2' },
+    user_info: { user_id: 'user-1', user_name: '回复者' },
+    reply_user: { user_id: 'user-2', user_name: '被回复者' },
+    is_author: true
+  }]
+})
+if (normalizedComment.replies.length !== 1) fail('评论归一化丢失接口返回的回复')
+if (normalizedComment.replies[0].id !== 'reply-1') fail('评论回复应优先使用精确的字符串 ID')
+if (normalizedComment.replies[0].reply_user !== '被回复者') fail('评论回复缺少被回复用户')
+if (!normalizedComment.reply_has_more) fail('评论回复数量不完整时应显示查看更多入口')
 
 console.log(`Validated ${app.pages.length} pages, ${componentRoots.length} components, navigation, local assets and API boundaries.`)

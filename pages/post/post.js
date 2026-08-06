@@ -151,6 +151,38 @@ Page({
     this.setData({ commentSort, comments: sortComments(this.data.comments, commentSort) })
   },
 
+  loadCommentReplies(event) {
+    const commentId = String(event.currentTarget.dataset.id || '')
+    const index = this.data.comments.findIndex((comment) => String(comment.id) === commentId)
+    if (index === -1 || this.data.comments[index].reply_loading) return
+
+    const comment = this.data.comments[index]
+    const cursor = comment.reply_cursor || '0'
+    this.setData({ [`comments[${index}].reply_loading`]: true })
+    api.articleCommentReplies(this.data.articleId, commentId, cursor).then(({ result, fromCache }) => {
+      if (fromCache) throw new Error('reply request failed')
+      const currentIndex = this.data.comments.findIndex((item) => String(item.id) === commentId)
+      if (currentIndex === -1) return
+      const currentComment = this.data.comments[currentIndex]
+      const rows = (result.data || []).map(utils.normalizeReply).filter((reply) => reply.id)
+      const existing = cursor === '0' ? [] : currentComment.replies
+      const repliesById = {}
+      existing.concat(rows).forEach((reply) => { repliesById[reply.id] = reply })
+      const replies = Object.keys(repliesById).map((id) => repliesById[id])
+        .sort((left, right) => left.ctime_value - right.ctime_value)
+      this.setData({
+        [`comments[${currentIndex}].replies`]: replies,
+        [`comments[${currentIndex}].reply_cursor`]: result.cursor || '0',
+        [`comments[${currentIndex}].reply_has_more`]: Boolean(result.has_more),
+        [`comments[${currentIndex}].reply_loading`]: false
+      })
+    }).catch(() => {
+      const currentIndex = this.data.comments.findIndex((item) => String(item.id) === commentId)
+      if (currentIndex !== -1) this.setData({ [`comments[${currentIndex}].reply_loading`]: false })
+      utils.toast('回复加载失败，请稍后重试')
+    })
+  },
+
   toggleLike() {
     if (!session.requireLogin()) return
     const active = session.toggle('likes', this.data.article.article_id)

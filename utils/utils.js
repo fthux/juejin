@@ -321,10 +321,34 @@ function normalizeLiveActivity(raw) {
   }
 }
 
+function normalizeReply(raw) {
+  const item = raw || {}
+  const info = item.reply_info || item
+  const user = item.user_info || {}
+  const replyUser = item.reply_user || {}
+  const replyToUserId = String(info.reply_to_user_id || '')
+  return {
+    id: String(info.reply_id || item.reply_id || ''),
+    content: info.reply_content || '',
+    time: formatTime(info.ctime),
+    ctime_value: Number(info.ctime) || 0,
+    digg_count: formatCount(info.digg_count),
+    digg_count_value: Number(info.digg_count) || 0,
+    avatar: user.avatar_large || '/assets/app/common/default_avatar.webp',
+    user: user.user_name || '掘友',
+    user_id: String(user.user_id || ''),
+    reply_user: replyToUserId && replyToUserId !== '0' ? (replyUser.user_name || '') : '',
+    is_author: Boolean(item.is_author),
+    is_digg: Boolean(info.is_digg || (item.user_interact && item.user_interact.is_digg))
+  }
+}
+
 function normalizeComment(raw) {
   const item = raw || {}
   const info = item.comment_info || item
   const user = item.user_info || {}
+  const replies = (item.reply_infos || []).map(normalizeReply).filter((reply) => reply.id)
+    .sort((left, right) => left.ctime_value - right.ctime_value)
   return {
     id: item.comment_id || info.comment_id || '',
     content: info.comment_content || '',
@@ -337,7 +361,11 @@ function normalizeComment(raw) {
     user: user.user_name || '掘友',
     user_id: user.user_id || '',
     is_author: Boolean(item.is_author),
-    is_digg: Boolean(info.is_digg || (item.user_interact && item.user_interact.is_digg))
+    is_digg: Boolean(info.is_digg || (item.user_interact && item.user_interact.is_digg)),
+    replies,
+    reply_cursor: '0',
+    reply_has_more: Number(info.reply_count) > replies.length,
+    reply_loading: false
   }
 }
 
@@ -445,6 +473,7 @@ module.exports = {
   authorToColumn,
   normalizeColumn,
   normalizeLiveActivity,
+  normalizeReply,
   normalizeComment,
   normalizeCourse,
   normalizeByteCourse,

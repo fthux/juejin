@@ -76,6 +76,21 @@
           <text wx:if="{{item.is_author}}" class="author-mark">作者</text>
         </view>
         <view class="comment-content">{{item.content}}</view>
+        <view wx:if="{{item.replies.length || item.reply_has_more}}" class="comment-replies">
+          <view wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id" class="reply-row">
+            <view class="reply-copy">
+              <text class="reply-user">{{reply.user}}</text>
+              <text wx:if="{{reply.is_author}}" class="reply-author-mark">作者</text>
+              <text wx:if="{{reply.reply_user}}" class="reply-target"> 回复 @{{reply.reply_user}}</text>
+              <text>：{{reply.content}}</text>
+            </view>
+            <view class="reply-time">{{reply.time}}</view>
+          </view>
+          <view wx:if="{{item.reply_loading}}" class="reply-more">正在加载回复...</view>
+          <view wx:elif="{{item.reply_has_more}}" class="reply-more" data-id="{{item.id}}" bindtap="loadCommentReplies">
+            查看全部 {{item.reply_count}} 条回复
+          </view>
+        </view>
         <view class="comment-footer">
           <text>{{item.time}}</text>
           <view class="comment-actions">

@@ -158,6 +158,11 @@
   overflow: hidden;
 }
 
+.article-content image {
+  max-width: 100%;
+  height: auto;
+}
+
 .content-error {
   padding: 72rpx 24rpx;
   color: var(--jj-text-3);
@@ -358,6 +363,52 @@
   font-size: 27rpx;
   line-height: 1.58;
   word-break: break-word;
+}
+
+.comment-replies {
+  margin-top: 14rpx;
+  padding: 14rpx 18rpx;
+  border-radius: 4rpx;
+  background: var(--jj-fill);
+}
+
+.reply-row + .reply-row {
+  margin-top: 14rpx;
+}
+
+.reply-copy {
+  color: var(--jj-text-2);
+  font-size: 24rpx;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.reply-user,
+.reply-target {
+  color: var(--jj-blue);
+}
+
+.reply-author-mark {
+  margin-left: 7rpx;
+  padding: 1rpx 6rpx;
+  border-radius: 3rpx;
+  color: var(--jj-blue);
+  background: var(--jj-blue-soft);
+  font-size: 17rpx;
+}
+
+.reply-time {
+  margin-top: 4rpx;
+  color: var(--jj-text-3);
+  font-size: 19rpx;
+}
+
+.reply-more {
+  min-height: 48rpx;
+  display: flex;
+  align-items: flex-end;
+  color: var(--jj-blue);
+  font-size: 22rpx;
 }
 
 .comment-footer {

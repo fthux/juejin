@@ -241,6 +241,17 @@ function articleComments(articleId, cursor) {
   }), { data: [], cursor: '0', count: 0, has_more: false })
 }
 
+function articleCommentReplies(articleId, commentId, cursor) {
+  return withFallback(request('/interact_api/v1/reply/list', {
+    item_id: articleId,
+    item_type: 2,
+    comment_id: commentId,
+    cursor: cursor || '0',
+    limit: 20,
+    client_type: 2608
+  }), { data: [], cursor: '0', count: 0, has_more: false })
+}
+
 function pinDetail(msgId) {
   return withFallback(request('/content_api/v1/short_msg/detail', { msg_id: msgId }), () => ({
     data: mock.pins.find((item) => item.msg_id === msgId) || mock.pins[0]
@@ -386,6 +397,7 @@ module.exports = {
   articleRecommendations,
   articleFeatured,
   articleComments,
+  articleCommentReplies,
   pinDetail,
   pinRecommendations,
   pinComments,
