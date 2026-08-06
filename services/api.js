@@ -169,8 +169,15 @@ function courses(cursor, options) {
     return withFallback(request('/booklet_api/v1/bytecourse/list_by_category', {
       category_id: config.categoryId || '0',
       cursor: cursor || '0',
-      limit: 20
-    }), { data: [], cursor: '0', has_more: false })
+      page_size: 20
+    }, { method: 'GET' }), () => ({
+      data: mock.byteCourses.filter((item) => {
+        if (!config.categoryId) return true
+        return (item.categories || []).some((category) => String(category.category_id) === String(config.categoryId))
+      }),
+      cursor: 'mock-end',
+      has_more: false
+    }))
   }
 
   const isRecommended = !config.categoryId && (!config.sort || config.sort === 'all')

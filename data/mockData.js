@@ -148,6 +148,33 @@ const courses = [
   { booklet_id: 'course-4', base_info: { title: '前端性能优化原理与实践', summary: '从指标到工具，再到落地方案', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, section_count: 31, is_finished: true }, user_info: authors[1] }
 ]
 
+const byteCourses = [
+  {
+    content: { item_id: '7472685250229846067', item_type: 60, name: '大数据 - 资源和调度', cover_image: { url: '/assets/app/course/byte/big-data-scheduling.jpg' }, extra: { course_package: { chapter_count: 5, duration: 12628523 } } },
+    categories: [{ category_id: '6809637769959178254' }]
+  },
+  {
+    content: { item_id: '7472685250247098405', item_type: 60, name: '开源实践入门', cover_image: { url: '/assets/app/course/byte/open-source.jpg' }, extra: { course_package: { chapter_count: 1, duration: 1030536 } } },
+    categories: [{ category_id: '6809637771511070734' }]
+  },
+  {
+    content: { item_id: '7142808926348640263', item_type: 60, name: '后端 - 算法、安全、性能优化', cover_image: { url: '/assets/app/course/byte/backend-performance.jpg' }, extra: { course_package: { chapter_count: 7, duration: 12953106 } } },
+    categories: [{ category_id: '6809637769959178254' }]
+  },
+  {
+    content: { item_id: '7142838251227709448', item_type: 60, name: '后端入门 - 存储与数据库', cover_image: { url: '/assets/app/course/byte/backend-storage.jpg' }, extra: { course_package: { chapter_count: 13, duration: 35279214 } } },
+    categories: [{ category_id: '6809637769959178254' }]
+  },
+  {
+    content: { item_id: '7140987981803814919', item_type: 60, name: '后端入门 - Go 语言原理与实践', cover_image: { url: '/assets/app/course/byte/backend-go.jpg' }, extra: { course_package: { chapter_count: 13, duration: 28321572 } } },
+    categories: [{ category_id: '6809637769959178254' }]
+  },
+  {
+    content: { item_id: '7158744309133475848', item_type: 60, name: '通用素质 - 技术写作原理', cover_image: { url: '/assets/app/course/byte/technical-writing.jpg' }, extra: { course_package: { chapter_count: 6, duration: 3225680 } } },
+    categories: [{ category_id: '6809637776263217160' }]
+  }
+]
+
 const topics = [
   { topic_id: 'topic-1', title: '上班摸鱼', description: '聊聊开发者工作日常', follower_count: 82400, icon: '摸' },
   { topic_id: 'topic-2', title: '技术交流', description: '分享今天解决的技术问题', follower_count: 76200, icon: '技' },
@@ -179,6 +206,7 @@ module.exports = {
   articles,
   pins,
   courses,
+  byteCourses,
   topics,
   daily,
   search

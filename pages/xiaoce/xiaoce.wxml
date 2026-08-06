@@ -7,29 +7,32 @@
         </view>
       </view>
       <view class="course-actions">
-        <image class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
+        <image wx:if="{{activeCourseType === 'booklet'}}" class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
         <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
       </view>
     </view>
   </status-bar>
 
-  <scroll-view class="category-scroll surface" scroll-x enhanced show-scrollbar="{{false}}">
+  <scroll-view class="category-scroll surface {{activeCourseType === 'byte' ? 'byte' : ''}}" scroll-x enhanced show-scrollbar="{{false}}">
     <view class="category-row">
       <view wx:for="{{categories}}" wx:key="id" class="category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view>
     </view>
   </scroll-view>
 
-  <view class="course-filters surface">
+  <view wx:if="{{activeCourseType === 'booklet'}}" class="course-filters surface">
     <view class="sort-row">
       <view wx:for="{{sorts}}" wx:key="id" class="sort-item {{activeSort === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectSort">
         <text>{{item.name}}</text>
         <view wx:if="{{item.id === 'price'}}" class="sort-arrows {{priceDirection}}"><text>▲</text><text>▼</text></view>
       </view>
     </view>
-    <view wx:if="{{activeCourseType === 'booklet'}}" class="vip-filter {{onlyVip ? 'active' : ''}}" bindtap="toggleVip"><text class="vip-check">{{onlyVip ? '✓' : ''}}</text><text>只看 VIP 课程</text></view>
+    <view class="vip-filter {{onlyVip ? 'active' : ''}}" bindtap="toggleVip"><text class="vip-check">{{onlyVip ? '✓' : ''}}</text><text>只看 VIP 课程</text></view>
   </view>
 
-  <view class="course-list surface">
+  <view wx:if="{{activeCourseType === 'byte'}}" class="byte-course-list surface">
+    <byte-course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:open="openCourse"></byte-course-card>
+  </view>
+  <view wx:else class="course-list surface">
     <course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
   </view>
   <empty-state wx:if="{{!loading && !list.length}}" text="{{loadError ? '课程暂时无法加载' : '这里还没有课程'}}"></empty-state>

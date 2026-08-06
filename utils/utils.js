@@ -357,6 +357,45 @@ function normalizeCourse(raw) {
   }
 }
 
+function formatCourseDuration(value) {
+  const totalMinutes = Math.ceil(Math.max(0, Number(value) || 0) / 60000)
+  if (!totalMinutes) return ''
+  if (totalMinutes < 60) return `${totalMinutes}分钟`
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  return `${hours}小时${minutes ? `${minutes}分钟` : ''}`
+}
+
+const BYTE_COURSE_LOCAL_COVERS = {
+  '7472685250229846067': '/assets/app/course/byte/big-data-scheduling.jpg',
+  '7472685250247098405': '/assets/app/course/byte/open-source.jpg',
+  '7142808926348640263': '/assets/app/course/byte/backend-performance.jpg',
+  '7142838251227709448': '/assets/app/course/byte/backend-storage.jpg',
+  '7140987981803814919': '/assets/app/course/byte/backend-go.jpg',
+  '7158744309133475848': '/assets/app/course/byte/technical-writing.jpg'
+}
+
+function normalizeByteCourse(raw) {
+  const item = raw || {}
+  const content = item.content || item
+  const extra = content.extra || {}
+  const coursePackage = extra.course_package || {}
+  const coverImage = content.cover_image || {}
+  const id = String(content.item_id || item.item_id || '')
+
+  return {
+    id,
+    itemType: Number(content.item_type || item.item_type) || 60,
+    courseType: 'byte',
+    title: String(content.name || item.name || '字节内部课').replace(/\s+/g, ' ').trim(),
+    cover: BYTE_COURSE_LOCAL_COVERS[id] || normalizeImageUrl(coverImage.url || content.cover || item.cover || ''),
+    author: 'ByteTech',
+    videoCount: Number(coursePackage.chapter_count) || 0,
+    duration: formatCourseDuration(coursePackage.duration),
+    vip: true
+  }
+}
+
 module.exports = {
   formatCount,
   formatTime,
@@ -379,5 +418,6 @@ module.exports = {
   normalizeLiveActivity,
   normalizeComment,
   normalizeCourse,
+  normalizeByteCourse,
   formatPrice
 }

@@ -102,6 +102,7 @@
     "article-card": "/components/articleCard/articleCard",
     "pin-card": "/components/pinCard/pinCard",
     "course-card": "/components/courseCard/courseCard",
+    "byte-course-card": "/components/byteCourseCard/byteCourseCard",
     "empty-state": "/components/emptyState/emptyState"
   },
   "style": "v2",

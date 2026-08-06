@@ -1,0 +1,72 @@
+.byte-course-card {
+  min-height: 238rpx;
+  padding: 32rpx 32rpx 0;
+  display: flex;
+  gap: 32rpx;
+  box-sizing: border-box;
+  background: var(--jj-surface);
+}
+
+.byte-course-cover {
+  width: 284rpx;
+  height: 178rpx;
+  flex: 0 0 auto;
+  border: 1rpx solid var(--jj-line);
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  background: var(--jj-fill);
+}
+
+.byte-course-body {
+  min-width: 0;
+  flex: 1;
+  padding-bottom: 26rpx;
+  border-bottom: 1rpx solid var(--jj-line);
+}
+
+.byte-course-title {
+  min-height: 44rpx;
+  color: var(--jj-text);
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 1.42;
+}
+
+.vip-free {
+  display: inline-block;
+  margin-right: 10rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 3rpx;
+  color: #806126;
+  background: #f6e5bc;
+  font-size: 23rpx;
+  font-weight: 500;
+  line-height: 1.35;
+  vertical-align: 3rpx;
+}
+
+.byte-course-meta {
+  height: 40rpx;
+  margin-top: 4rpx;
+  display: flex;
+  align-items: center;
+  color: var(--jj-text-2);
+  font-size: 24rpx;
+  line-height: 40rpx;
+}
+
+.bytetech-logo,
+.video-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 8rpx;
+  flex: 0 0 auto;
+}
+
+.video-meta {
+  margin-top: 4rpx;
+}
+
+.video-meta .video-icon {
+  margin-right: 4rpx;
+}

@@ -4,12 +4,20 @@ const utils = require('../../utils/utils.js')
 const session = require('../../services/session.js')
 
 const bookletCategories = mock.categories
+const byteCourseCategories = [
+  { id: '', name: '全部' },
+  { id: '6809637769959178254', name: '后端' },
+  { id: '6809637767543259144', name: '前端' },
+  { id: '6809635626879549454', name: 'Android' },
+  { id: '6809635626661445640', name: 'iOS' },
+  { id: '6809637776263217160', name: '代码人生' }
+]
 
 Page({
   data: {
     courseTypes: [
       { id: 'booklet', name: '掘金小册' },
-      { id: 'byte', name: '字节内部课', badge: 'VIP 免费' }
+      { id: 'byte', name: '字节内部课', badge: 'VIP免费' }
     ],
     activeCourseType: 'booklet',
     categories: bookletCategories,
@@ -60,6 +68,7 @@ Page({
     if (id === this.data.activeCourseType) return
     this.setData({
       activeCourseType: id,
+      categories: id === 'byte' ? byteCourseCategories : bookletCategories,
       activeCategory: '',
       activeSort: 'all',
       priceDirection: '',
@@ -95,9 +104,11 @@ Page({
       sort: this.data.activeSort,
       courseType: this.data.activeCourseType
     }).then(({ result, fromCache }) => {
-      const rows = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
+      const normalize = this.data.activeCourseType === 'byte' ? utils.normalizeByteCourse : utils.normalizeCourse
+      const rows = (Array.isArray(result.data) ? result.data : []).map(normalize).filter((item) => item.id)
       const allCourses = reload ? rows : this.data.allCourses.concat(rows)
-      wx.setStorageSync('jj:course-cache', allCourses)
+      const cacheKey = this.data.activeCourseType === 'byte' ? 'jj:byte-course-cache' : 'jj:course-cache'
+      wx.setStorageSync(cacheKey, allCourses)
       this.setData({
         allCourses,
         cursor: result.cursor || '0',
