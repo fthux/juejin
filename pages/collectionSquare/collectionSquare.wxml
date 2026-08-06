@@ -1,0 +1,23 @@
+<view class="page collection-square-page">
+  <block wx:if="{{mode === 'list'}}">
+    <view class="sort-bar surface"><text>排序</text><view class="sort-control"><view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="switchSort">最新</view><view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="switchSort">最热</view></view></view>
+    <view class="collection-list surface">
+      <view wx:for="{{sets}}" wx:key="collection_id" class="collection-row" data-index="{{index}}" bindtap="openCollection">
+        <view class="collection-copy"><view class="collection-name two-lines">{{item.name}}</view><view wx:if="{{item.description}}" class="collection-description two-lines">{{item.description}}</view><view class="collection-meta">{{item.creator.user_name}} · {{item.article_count}}文章 · {{item.follower_count}}订阅</view></view>
+        <view class="subscribe" catchtap="subscribe">订阅</view>
+      </view>
+    </view>
+    <empty-state wx:if="{{!loading && !sets.length}}" text="暂时没有公开收藏集"></empty-state>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{current}}" class="collection-detail">
+      <view class="detail-head surface"><view class="detail-title">{{current.name}}</view><view class="detail-description">{{current.description || '收录值得反复阅读的优质文章'}}</view><view class="detail-owner" data-id="{{current.creator.user_id}}" bindtap="openCreator"><image src="{{current.creator.avatar_large}}" mode="aspectFill"></image><text>{{current.creator.user_name}} · {{current.article_count}} 篇文章 · {{current.follower_count}} 订阅</text></view><view class="subscribe detail-subscribe" bindtap="subscribe">订阅</view></view>
+      <view class="detail-articles surface"><view wx:for="{{current.articles}}" wx:key="article_id" class="article-row" data-id="{{item.article_id}}" bindtap="openArticle"><view class="article-title two-lines">{{item.title}}</view><view class="article-meta">{{item.author.user_name}} · 点赞 {{item.digg_count}} · 评论 {{item.comment_count}}</view></view></view>
+      <empty-state wx:if="{{!current.articles.length}}" text="该收藏集暂未返回公开文章"></empty-state>
+    </view>
+    <empty-state wx:elif="{{!loading}}" text="未找到这个收藏集"></empty-state>
+  </block>
+  <view wx:if="{{loading}}" class="loading-line">正在加载收藏集...</view>
+  <view wx:if="{{fromCache && !loading}}" class="cache-tip">当前网络内容暂不可用</view>
+</view>

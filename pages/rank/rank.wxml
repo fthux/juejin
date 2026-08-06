@@ -3,20 +3,20 @@
     <image class="rank-hero-bg" src="/assets/app/rank/bg_rank_list_head.webp" mode="aspectFill"></image>
     <view class="rank-hero-copy">
       <view class="rank-title">{{title}}</view>
-      <view class="rank-caption">{{type === 'author' ? '发现本周最受关注的优秀创作者' : '本周最值得收藏的优质技术文章'}}</view>
+      <view class="rank-caption">{{type === 'author' ? '发现本周最受关注的优秀创作者' : (type === 'collect' ? '本周最值得收藏的优质技术文章' : '实时发现社区热门技术文章')}}</view>
     </view>
   </view>
 
-  <view wx:if="{{type === 'collect'}}" class="surface rank-content">
-    <view class="list-title"><text>收藏排行</text><text>每周更新</text></view>
-    <view wx:for="{{collections}}" wx:key="article_id" class="collection-row" data-id="{{item.article_id}}" bindtap="openArticle">
+  <view wx:if="{{type !== 'author'}}" class="surface rank-content">
+    <view class="list-title"><text>{{type === 'collect' ? '收藏排行' : '文章排行'}}</text><text>实时更新</text></view>
+    <view wx:for="{{articles}}" wx:key="article_id" class="collection-row" data-id="{{item.article_id}}" bindtap="openArticle">
       <view class="rank-number rank-{{index + 1}}">
         <image wx:if="{{item.medal}}" src="{{item.medal}}" mode="aspectFit"></image>
         <text wx:else>{{index + 1}}</text>
       </view>
       <view class="collection-copy">
         <view class="collection-title two-lines">{{item.title}}</view>
-        <view class="collection-meta"><text>{{item.author.user_name}}</text><text>{{item.collect_count}} 收藏</text></view>
+        <view class="collection-meta"><text>{{item.author.user_name}}</text><text wx:if="{{type === 'collect'}}">{{item.collect_count}} 收藏</text><text wx:else>热度 {{item.hot_rank}}</text></view>
       </view>
     </view>
   </view>

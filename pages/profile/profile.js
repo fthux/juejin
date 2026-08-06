@@ -26,9 +26,11 @@ Page({
     const currentSession = session.getSession()
     const cachedArticles = session.getCachedArticles()
     const cachedUser = cachedArticles.map((item) => item.author).find((item) => item && item.user_id === query.id)
+    const discoverUser = wx.getStorageSync('jj:user-current')
+    const matchedDiscoverUser = discoverUser && String(discoverUser.user_id) === String(query.id) ? discoverUser : null
     const isCurrentUser = currentSession && currentSession.user.user_id === query.id
-    const user = isCurrentUser ? currentSession.user : (mock.authors.find((item) => item.user_id === query.id) || cachedUser || mock.authors[0])
-    const sourceArticles = isCurrentUser ? session.getList('articles') : cachedArticles.concat(mock.articles)
+    const user = isCurrentUser ? currentSession.user : (matchedDiscoverUser || mock.authors.find((item) => item.user_id === query.id) || cachedUser || mock.authors[0])
+    const sourceArticles = isCurrentUser ? session.getList('articles') : (matchedDiscoverUser && matchedDiscoverUser.articles || []).concat(cachedArticles, mock.articles)
     const sourcePins = isCurrentUser ? session.getList('pins') : mock.pins
     const articles = sourceArticles.filter((item) => {
       const author = item.author_user_info || item.author || {}

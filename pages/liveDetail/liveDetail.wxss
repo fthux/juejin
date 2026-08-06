@@ -1,0 +1,9 @@
+.live-detail-page { padding: 28rpx; background: var(--jj-bg); }
+.live-detail { padding: 24rpx; border-radius: 7rpx; }
+.live-cover { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6rpx; background: var(--jj-fill); }
+.live-cover image { width: 100%; height: 100%; }
+.live-cover text { position: absolute; left: 16rpx; top: 16rpx; padding: 7rpx 14rpx; border-radius: 3rpx; color: #fff; background: rgba(0, 0, 0, .64); font-size: 21rpx; }
+.live-title { margin-top: 26rpx; font-size: 34rpx; font-weight: 700; line-height: 1.5; }
+.live-time { margin-top: 16rpx; color: var(--jj-text-3); font-size: 24rpx; }
+.watch-button, .copy-button { width: 100%; margin-top: 30rpx; }
+.copy-button { margin-top: 16rpx; }

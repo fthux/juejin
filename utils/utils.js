@@ -164,6 +164,139 @@ function normalizePin(raw) {
   }
 }
 
+function normalizeTopic(raw) {
+  const item = raw || {}
+  const topic = item.topic || item
+  const icon = normalizeImageUrl(topic.icon || topic.icon_url || topic.topic_pic || '', 160)
+  return {
+    topic_id: String(item.topic_id || topic.topic_id || ''),
+    title: String(topic.title || '圈子'),
+    description: topic.description || topic.notice || '',
+    iconUrl: /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : '',
+    iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : String(topic.title || '#').slice(0, 2),
+    follower_count: formatCount(topic.follower_count || item.follower_count),
+    msg_count: formatCount(topic.msg_count || item.msg_count || item.short_msg_count)
+  }
+}
+
+function normalizeTheme(raw) {
+  const item = raw || {}
+  const theme = item.theme || item
+  return {
+    theme_id: String(theme.theme_id || ''),
+    name: theme.name || '掘金活动',
+    cover: normalizeImageUrl(theme.cover || '', 700),
+    brief: theme.brief || '',
+    hot: formatCount(theme.hot),
+    user_count: formatCount(theme.user_cnt),
+    recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
+      user_id: String(user.user_id || ''),
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+    }))
+  }
+}
+
+function normalizeCollectionSet(raw) {
+  const item = raw || {}
+  const info = item.collection_set || item.collection || item
+  const creator = item.creator || item.user_info || {}
+  return {
+    collection_id: String(info.collection_id || info.collection_set_id || ''),
+    name: info.collection_name || info.name || '优质收藏集',
+    description: info.description || item.description || '',
+    update_time: Number(info.update_time || info.mtime) || 0,
+    article_count: Number(info.post_article_count || info.article_count) || 0,
+    follower_value: Number(info.concern_user_count || info.follow_count) || 0,
+    follower_count: formatCount(info.concern_user_count || info.follow_count),
+    is_follow: Boolean(info.is_follow),
+    creator: {
+      user_id: String(creator.user_id || info.creator_id || ''),
+      user_name: creator.user_name || creator.name || '掘金用户',
+      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+    },
+    articles: (item.articles || item.article_list || []).map(normalizeArticle)
+  }
+}
+
+function normalizeRecommendedAuthor(raw) {
+  const item = raw || {}
+  const articleAuthor = item.articles && item.articles.length
+    ? ((item.articles[0].author_user_info) || {})
+    : {}
+  return {
+    user_id: String(item.user_id || articleAuthor.user_id || ''),
+    user_name: item.user_name || articleAuthor.user_name || '掘金用户',
+    avatar_large: normalizeImageUrl(item.avatar_large || articleAuthor.avatar_large || '/assets/app/common/default_avatar.webp', 160),
+    job_title: item.job_title || articleAuthor.job_title || '',
+    company: item.company || articleAuthor.company || '',
+    description: item.author_desc || item.description || articleAuthor.description || '',
+    follower_count: formatCount(item.follower_count || articleAuthor.follower_count),
+    got_digg_count: formatCount(item.got_digg_count || articleAuthor.got_digg_count),
+    got_view_count: formatCount(item.got_view_count || articleAuthor.got_view_count),
+    article_count: Number(item.post_article_count || articleAuthor.post_article_count) || 0,
+    is_followed: Boolean(item.isfollowed),
+    articles: (item.articles || []).slice(0, 3).map(normalizeArticle)
+  }
+}
+
+function authorToColumn(author) {
+  const item = author || {}
+  const firstArticle = item.articles && item.articles[0]
+  return {
+    column_id: `author-${item.user_id || ''}`,
+    title: `${item.user_name || '掘金作者'} 的专栏`,
+    description: item.description || '持续分享一线技术实践与思考',
+    cover: item.avatar_large || '',
+    tag: firstArticle && firstArticle.tags && firstArticle.tags.length ? firstArticle.tags[0] : '',
+    article_count: item.article_count || (item.articles || []).length,
+    follower_value: 0,
+    follower_count: item.follower_count || '0',
+    creator: { user_id: String(item.user_id || ''), user_name: item.user_name || '掘金用户' },
+    articles: item.articles || []
+  }
+}
+
+function normalizeColumn(raw) {
+  const item = raw || {}
+  const info = item.column || item.column_info || item
+  const creator = item.creator || item.author_user_info || item.user_info || {}
+  return {
+    column_id: String(info.column_id || info.id || ''),
+    title: info.title || info.column_name || info.name || '技术专栏',
+    description: info.description || info.brief || '',
+    cover: normalizeImageUrl(info.cover || info.cover_image || '', 240),
+    tag: info.tag_name || info.category_name || '',
+    article_count: Number(info.article_count || info.post_article_count) || 0,
+    follower_value: Number(info.follow_count || info.concern_user_count) || 0,
+    follower_count: formatCount(info.follow_count || info.concern_user_count),
+    creator: {
+      user_id: String(creator.user_id || info.user_id || ''),
+      user_name: creator.user_name || creator.name || '掘金用户'
+    },
+    articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
+  }
+}
+
+function normalizeLiveActivity(raw) {
+  const item = raw || {}
+  const statusMap = { 1: '直播中', 2: '预告', 3: '回放', 4: '已结束' }
+  const timestamp = Number(item.live_time) || 0
+  const date = timestamp ? new Date(timestamp * 1000) : null
+  return {
+    activity_id: String(item.activity_id || item.id || ''),
+    activity_type: Number(item.activity_type) || 0,
+    status: Number(item.status) || 0,
+    status_text: statusMap[Number(item.status)] || '直播',
+    name: item.name || '掘金直播',
+    cover_img: normalizeImageUrl(item.cover_img || item.cover || '', 720),
+    live_time: date && !Number.isNaN(date.getTime())
+      ? `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
+      : '',
+    view_url: item.view_url || item.sign_url || '',
+    can_reserve: Boolean(item.is_reservation_enable)
+  }
+}
+
 function normalizeComment(raw) {
   const item = raw || {}
   const info = item.comment_info || item
@@ -237,6 +370,13 @@ module.exports = {
   normalizeHotAuthor,
   normalizeHeadline,
   normalizePin,
+  normalizeTopic,
+  normalizeTheme,
+  normalizeCollectionSet,
+  normalizeRecommendedAuthor,
+  authorToColumn,
+  normalizeColumn,
+  normalizeLiveActivity,
   normalizeComment,
   normalizeCourse,
   formatPrice

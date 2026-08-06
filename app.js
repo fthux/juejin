@@ -1,7 +1,10 @@
 App({
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {}
-    const theme = wx.getStorageSync('jj:theme') || 'light'
+    const themePreference = wx.getStorageSync('jj:dark-mode-v2') || {}
+    const theme = themePreference.followSystem
+      ? (systemInfo.theme || 'light')
+      : (themePreference.selected || systemInfo.theme || 'light')
     wx.removeStorageSync('jj:session')
     wx.removeStorageSync('jj:passport-cookies')
 

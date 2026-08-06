@@ -1,0 +1,11 @@
+<web-view wx:if="{{showWeb && item}}" src="{{item.view_url}}"></web-view>
+<view wx:else class="page live-detail-page">
+  <view wx:if="{{item}}" class="live-detail surface">
+    <view class="live-cover"><image src="{{item.cover_img}}" mode="aspectFill"></image><text>{{item.status_text}}</text></view>
+    <view class="live-title">{{item.name}}</view>
+    <view class="live-time">{{item.live_time}}</view>
+    <view class="primary-button watch-button" bindtap="watch">打开官方直播页</view>
+    <view class="secondary-button copy-button" bindtap="copyLink">复制直播链接</view>
+  </view>
+  <empty-state wx:else text="直播信息已失效，请返回列表重试"></empty-state>
+</view>

@@ -1,12 +1,27 @@
 <view class="page channel-page">
-  <view class="channel-head">
-    <view class="channel-page-title">{{title}}</view>
-    <view class="channel-page-caption">发现社区里的优质内容</view>
-  </view>
-  <view class="surface">
-    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
-  </view>
-  <empty-state wx:if="{{!loading && !articles.length}}" text="这里还没有可展示的内容"></empty-state>
+  <block wx:if="{{mode === 'live'}}">
+    <scroll-view class="live-type-tabs surface" scroll-x enable-flex><view wx:for="{{liveTypes}}" wx:key="type" class="live-type {{activeLiveType === item.type ? 'active' : ''}}" data-id="{{item.type}}" bindtap="selectLiveType">{{item.name}}</view></scroll-view>
+    <scroll-view class="live-status-tabs surface" scroll-x enable-flex><view wx:for="{{liveStatuses}}" wx:key="status" class="live-status {{activeLiveStatus === item.status ? 'active' : ''}}" data-id="{{item.status}}" bindtap="selectLiveStatus">{{item.name}}</view></scroll-view>
+    <view class="live-grid surface"><view wx:for="{{liveList}}" wx:key="activity_id" class="live-card" data-index="{{index}}" bindtap="openLive"><view class="live-cover"><image src="{{item.cover_img}}" mode="aspectFill"></image><text>{{item.status_text}}</text></view><view class="live-title three-lines">{{item.name}}</view><view class="live-time">{{item.live_time}}</view></view></view>
+    <empty-state wx:if="{{!loading && !liveList.length}}" text="当前筛选下暂无直播"></empty-state>
+  </block>
+
+  <block wx:elif="{{mode === 'headline'}}">
+    <view class="headline-list surface"><view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" bindtap="openHeadline"><view class="headline-copy"><view class="headline-title two-lines">{{item.title}}</view><view class="headline-meta">{{item.source}} · {{item.publish_time}}</view><view class="headline-brief three-lines">{{item.brief}}</view><view class="headline-actions">♡ 点赞　▢ 评论</view></view><image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill"></image></view></view>
+    <empty-state wx:if="{{!loading && !headlines.length}}" text="暂时没有行业资讯"></empty-state>
+  </block>
+
+  <block wx:elif="{{mode === 'collection'}}">
+    <view class="channel-collection-list surface"><view wx:for="{{collections}}" wx:key="collection_id" class="channel-collection"><view class="collection-head"><view><view class="collection-title two-lines">{{item.name}}</view><view class="collection-meta">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="collection-meta">{{item.creator.user_name}} 收藏</view></view><view class="subscribe" catchtap="subscribe">订阅</view></view><view class="collection-articles"><view wx:for="{{item.articles}}" wx:for-item="article" wx:key="article_id" class="collection-article" data-id="{{article.article_id}}" bindtap="openCollectionArticle"><view class="two-lines">{{article.title}}</view><text>{{article.author.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view><view class="collection-more" data-index="{{index}}" bindtap="openCollection">查看收藏集 · {{item.article_count}}篇文章</view></view></view>
+    <empty-state wx:if="{{!loading && !collections.length}}" text="暂时没有推荐收藏集"></empty-state>
+  </block>
+
+  <block wx:else>
+    <view class="channel-head"><view class="channel-page-title">{{title}}</view><view class="channel-page-caption">发现社区里的优质内容</view></view>
+    <view class="surface"><article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card></view>
+    <empty-state wx:if="{{!loading && !articles.length}}" text="这里还没有可展示的内容"></empty-state>
+  </block>
+
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
-  <view wx:if="{{fromCache && !loading && articles.length}}" class="cache-tip">当前展示本地缓存内容</view>
+  <view wx:if="{{fromCache && !loading}}" class="cache-tip">当前网络内容暂不可用</view>
 </view>

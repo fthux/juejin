@@ -6,6 +6,7 @@
     "pages/feidian/feidian",
     "pages/find/find",
     "pages/discoverChannel/discoverChannel",
+    "pages/liveDetail/liveDetail",
     "pages/xiaoce/xiaoce",
     "pages/my/my",
     "pages/search/search",
@@ -45,6 +46,7 @@
     "pages/feidianDetail/feidianDetail",
     "pages/readHistory/readHistory",
     "pages/collectionSet/collectionSet",
+    "pages/collectionSquare/collectionSquare",
     "pages/tags/tags",
     "pages/registrations/registrations",
     "pages/feedback/feedback"

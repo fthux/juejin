@@ -104,6 +104,65 @@ function selectedPins(cursor) {
   }), { data: [], cursor: '', has_more: false })
 }
 
+function recommendedThemes(cursor, limit) {
+  return withFallback(request('/tag_api/v1/theme/list_by_hot', {
+    cursor: cursor || '0',
+    limit: limit || 8
+  }), { data: [], cursor: '0', has_more: false })
+}
+
+function recommendedCollectionSets(cursor, limit, options) {
+  const config = options || {}
+  const data = {
+    cursor: cursor || '0',
+    limit: limit || 8
+  }
+  if (config.moduleType !== undefined) data.module_type = Number(config.moduleType)
+  return withFallback(request('/interact_api/v2/collectionset/recommend', data), {
+    data: [], cursor: '0', has_more: false
+  })
+}
+
+function collectionSetDetail(collectionId, cursor) {
+  return withFallback(request('/interact_api/v2/collectionset/detail', {
+    collection_id: collectionId,
+    cursor: cursor || '0',
+    limit: 20
+  }), { data: null, cursor: '0', has_more: false })
+}
+
+function recommendedAuthors(cursor, limit) {
+  return withFallback(request('/user_api/v1/author/recommend', {
+    cursor: cursor || '0',
+    limit: limit || 8,
+    need_article: 1
+  }, { method: 'GET' }), { data: [], cursor: '0', has_more: false })
+}
+
+function recommendedColumns(cursor, limit) {
+  return withFallback(request('/content_api/v1/column/recommend', {
+    cursor: cursor || '0',
+    limit: limit || 8
+  }), { data: [], cursor: '0', has_more: false })
+}
+
+function liveTypes() {
+  return withFallback(request('/study_api/v1/live/get_activity_types', {}), { data: [] })
+}
+
+function liveActivities(cursor, options) {
+  const config = options || {}
+  const data = {
+    cursor: cursor || '0',
+    limit: config.limit || 20
+  }
+  if (config.activityType) data.activity_type = Number(config.activityType)
+  if (config.status) data.status = Number(config.status)
+  return withFallback(request('/study_api/v1/live/activity_list', data), {
+    data: [], cursor: '0', has_more: false
+  })
+}
+
 function courses(cursor, options) {
   const config = options || {}
   if (config.courseType === 'byte') {
@@ -281,6 +340,13 @@ module.exports = {
   pins,
   topicPins,
   selectedPins,
+  recommendedThemes,
+  recommendedCollectionSets,
+  collectionSetDetail,
+  recommendedAuthors,
+  recommendedColumns,
+  liveTypes,
+  liveActivities,
   courses,
   courseDetail,
   courseSection,

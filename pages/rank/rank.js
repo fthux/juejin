@@ -8,16 +8,16 @@ const medals = [
 
 Page({
   data: {
-    type: 'collect',
-    title: '收藏榜',
-    collections: [],
+    type: 'article',
+    title: '文章榜',
+    articles: [],
     authors: [],
     loading: true
   },
 
   onLoad(query) {
-    const type = query.type === 'author' ? 'author' : 'collect'
-    const title = type === 'author' ? '作者榜' : '收藏榜'
+    const type = query.type === 'author' ? 'author' : (query.type === 'collect' ? 'collect' : 'article')
+    const title = type === 'author' ? '作者榜' : (type === 'collect' ? '收藏榜' : '文章榜')
     this.setData({ type, title })
     wx.setNavigationBarTitle({ title })
     this.load()
@@ -25,10 +25,10 @@ Page({
 
   load() {
     Promise.all([
-      api.hotArticles({ type: 'collect', count: 30 }),
+      api.hotArticles({ type: this.data.type === 'collect' ? 'collect' : 'hot', count: 30 }),
       api.hotAuthors(30)
     ]).then(([collectionResponse, authorResponse]) => {
-      const collections = (collectionResponse.result.data || []).map((item, index) => Object.assign(
+      const articles = (collectionResponse.result.data || []).map((item, index) => Object.assign(
         utils.normalizeHotRank(item),
         { medal: medals[index] || '' }
       ))
@@ -36,12 +36,13 @@ Page({
         utils.normalizeHotAuthor(item),
         { medal: medals[index] || '' }
       ))
-      this.setData({ collections, authors, loading: false })
+      this.setData({ articles, authors, loading: false })
     }).finally(() => this.setData({ loading: false }))
   },
 
   openArticle(event) {
-    wx.navigateTo({ url: `/pages/post/post?id=${event.detail.item.article_id}` })
+    const id = event.currentTarget.dataset.id
+    if (id) wx.navigateTo({ url: `/pages/post/post?id=${id}` })
   },
 
   openAccountInfo() {
@@ -50,6 +51,9 @@ Page({
 
   openAuthor(event) {
     const userId = event.currentTarget.dataset.id
-    if (userId) wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
+    if (!userId) return
+    const user = this.data.authors.find((item) => String(item.user_id) === String(userId))
+    if (user) wx.setStorageSync('jj:user-current', user)
+    wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
   }
 })
