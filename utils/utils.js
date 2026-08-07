@@ -6,7 +6,10 @@ function formatCount(value) {
 
 function formatTime(value) {
   if (!value) return ''
-  const input = typeof value === 'number' && value < 1000000000000 ? value * 1000 : value
+  const timestamp = Number(value)
+  const input = Number.isFinite(timestamp) && timestamp > 0
+    ? (timestamp < 1000000000000 ? timestamp * 1000 : timestamp)
+    : value
   const date = new Date(input)
   if (Number.isNaN(date.getTime())) return ''
   const diff = Date.now() - date.getTime()
@@ -157,25 +160,96 @@ function normalizeHeadline(raw) {
   }
 }
 
+function parsePinContent(value) {
+  const source = String(value || '')
+  const segments = []
+  const themes = []
+  const markerPattern = /\[(\d+)#([^#\]\r\n]+)#\]/g
+  let cursor = 0
+  let match
+
+  while ((match = markerPattern.exec(source))) {
+    if (match.index > cursor) {
+      segments.push({ type: 'text', text: source.slice(cursor, match.index) })
+    }
+    const theme = { theme_id: String(match[1]), name: String(match[2]).trim() }
+    themes.push(theme)
+    segments.push({ type: 'theme', text: theme.name, theme_id: theme.theme_id })
+    cursor = markerPattern.lastIndex
+  }
+  if (cursor < source.length) segments.push({ type: 'text', text: source.slice(cursor) })
+  if (!segments.length && source) segments.push({ type: 'text', text: source })
+
+  return {
+    content: segments.map((segment) => segment.type === 'theme' ? `#${segment.text}#` : segment.text).join(''),
+    segments: segments.map((segment, index) => Object.assign({ key: `${segment.type}-${index}` }, segment)),
+    themes
+  }
+}
+
 function normalizePin(raw) {
   const item = raw || {}
   const info = item.msg_Info || item.msg_info || item
   const author = item.author_user_info || info.author_user_info || {}
-  const rawTopic = info.topic || item.topic
+  const rawTopic = item.topic || info.topic || {}
+  const rawTopicId = String(rawTopic.topic_id || info.topic_id || item.topic_id || '')
   const rawTopicTitle = typeof rawTopic === 'string' ? rawTopic : ((rawTopic && rawTopic.title) || '')
   const theme = item.theme || info.theme || {}
-  const topicTitle = /^\d+$/.test(String(rawTopicTitle).trim()) ? '' : rawTopicTitle
-  const topic = String(topicTitle || theme.name || '').trim()
+  const parsedContent = parsePinContent(info.content)
+  const markerTheme = parsedContent.themes[0] || {}
+  const rawThemeId = String(theme.theme_id || info.theme_id || item.theme_id || markerTheme.theme_id || '')
+  const topicId = rawTopicId && rawTopicId !== '0' ? rawTopicId : ''
+  const themeId = rawThemeId && rawThemeId !== '0' ? rawThemeId : ''
+  const topicTitle = /^\d+$/.test(String(rawTopicTitle).trim()) ? '' : String(rawTopicTitle || '').trim()
+  const topic = topicId && topicTitle ? topicTitle : ''
+  const normalizedTheme = themeId ? {
+    theme_id: themeId,
+    name: String(theme.name || markerTheme.name || '').trim(),
+    cover: normalizeImageUrl(theme.cover || '', 700),
+    brief: theme.brief || '',
+    view_count: String(theme.hot || theme.view_cnt || 0),
+    user_count: formatCount(theme.user_cnt)
+  } : null
+  const diggCount = Number(item.digg_count || info.digg_count) || 0
+  const commentCount = Number(item.comment_count || info.comment_count) || 0
+  const hotComment = item.hot_comment || info.hot_comment || {}
+  const hotCommentInfo = hotComment.comment_info || hotComment.comment || hotComment
+  const hotCommentContent = String(hotCommentInfo.comment_content || hotCommentInfo.content || '').trim()
+  const hotCommentDiggCount = Number(hotCommentInfo.digg_count || hotComment.digg_count) || 0
+  const diggUsers = item.digg_user || info.digg_user || item.digg_users || info.digg_users || []
   return {
     msg_id: item.msg_id || info.msg_id || '',
-    content: info.content || '',
+    content: parsedContent.content,
+    content_segments: parsedContent.segments,
     pic_list: (info.pic_list || []).map((pic) => typeof pic === 'string' ? pic : (pic.pic_url || pic.url || '')).filter(Boolean),
     link: info.link || info.url || item.link || '',
     link_title: info.url_title || info.link_title || '',
     topic,
+    topic_id: topicId,
+    topic_info: topicId ? {
+      topic_id: topicId,
+      title: topicTitle || '圈子',
+      description: rawTopic.description || '',
+      icon: rawTopic.icon || '',
+      msg_count: rawTopic.msg_count || 0,
+      follower_count: rawTopic.follower_count || 0
+    } : null,
+    theme: normalizedTheme,
     ctime: formatTime(info.ctime || item.ctime),
-    digg_count: formatCount(item.digg_count || info.digg_count),
-    comment_count: formatCount(item.comment_count || info.comment_count),
+    digg_count: formatCount(diggCount),
+    comment_count: formatCount(commentCount),
+    digg_count_value: diggCount,
+    comment_count_value: commentCount,
+    hot_comment: hotCommentContent ? {
+      content: hotCommentContent,
+      digg_count: formatCount(hotCommentDiggCount),
+      digg_count_value: hotCommentDiggCount
+    } : null,
+    digg_users: Array.isArray(diggUsers) ? diggUsers.slice(0, 3).map((user) => ({
+      user_id: String(user.user_id || ''),
+      user_name: user.user_name || '掘友',
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+    })) : [],
     is_digg: Boolean(item.user_interact && item.user_interact.is_digg),
     is_followed: Boolean(item.user_interact && item.user_interact.is_follow),
     author: {
@@ -212,6 +286,7 @@ function normalizeTheme(raw) {
     cover: normalizeImageUrl(theme.cover || '', 700),
     brief: theme.brief || '',
     hot: formatCount(theme.hot),
+    view_count: String(theme.hot || theme.view_cnt || 0),
     user_count: formatCount(theme.user_cnt),
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
@@ -350,7 +425,7 @@ function normalizeComment(raw) {
   const replies = (item.reply_infos || []).map(normalizeReply).filter((reply) => reply.id)
     .sort((left, right) => left.ctime_value - right.ctime_value)
   return {
-    id: item.comment_id || info.comment_id || '',
+    id: String(item.comment_id || info.comment_id || ''),
     content: info.comment_content || '',
     time: formatTime(info.ctime),
     ctime_value: Number(info.ctime) || 0,
@@ -361,6 +436,7 @@ function normalizeComment(raw) {
     user: user.user_name || '掘友',
     user_id: user.user_id || '',
     is_author: Boolean(item.is_author),
+    is_hot: Boolean(item.is_hot),
     is_digg: Boolean(info.is_digg || (item.user_interact && item.user_interact.is_digg)),
     replies,
     reply_cursor: '0',

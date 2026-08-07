@@ -33,7 +33,7 @@ Page({
     commentCursor: '0',
     commentsHasMore: false,
     commentsLoading: false,
-    commentSort: 'latest',
+    commentSort: 'hot',
     catalog: [],
     loading: true,
     isLiked: false,

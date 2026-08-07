@@ -1,18 +1,25 @@
-<view class="pin-card {{compact ? 'compact' : ''}}" bindtap="open">
+<view class="pin-card {{compact ? 'compact' : ''}} {{showActions ? '' : 'without-actions'}}" bindtap="open">
   <view class="pin-head">
     <image class="avatar" src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
     <view class="identity">
       <view class="name ellipsis">{{item.author.user_name}}</view>
-      <view class="caption ellipsis">
-        <text wx:if="{{item.author.job_title}}">{{item.author.job_title}}</text>
-        <text wx:if="{{item.author.company}}"> @ {{item.author.company}}</text>
-        <text wx:if="{{item.ctime}}"> · {{item.ctime}}</text>
+      <view class="caption">
+        <text wx:if="{{item.author.job_title || item.author.company}}" class="caption-role ellipsis">{{item.author.job_title}}{{item.author.job_title && item.author.company ? ' @ ' : ''}}{{item.author.company}}</text>
+        <text wx:if="{{item.ctime}}" class="publish-time">{{item.author.job_title || item.author.company ? ' · ' : ''}}{{item.ctime}}</text>
       </view>
     </view>
     <view wx:if="{{showFollow}}" class="card-follow {{followed ? 'followed' : ''}}" catchtap="follow">{{followed ? '已关注' : '关注'}}</view>
     <image wx:else class="more" src="/assets/app/pins/ic_pin_more.png" mode="aspectFit" catchtap="more"></image>
   </view>
-  <view class="pin-content">{{item.content}}</view>
+  <view class="pin-content">
+    <block wx:if="{{item.content_segments.length}}">
+      <block wx:for="{{item.content_segments}}" wx:key="key">
+        <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-id="{{item.theme_id}}" data-name="{{item.text}}" catchtap="openTheme">#{{item.text}}#</text>
+        <text wx:else>{{item.text}}</text>
+      </block>
+    </block>
+    <text wx:else>{{item.content}}</text>
+  </view>
   <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
     <image wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture" src="{{item}}" data-src="{{item}}" mode="aspectFill" catchtap="previewImage"></image>
   </view>
@@ -23,10 +30,23 @@
       <view class="link-host ellipsis">{{item.link}}</view>
     </view>
   </view>
-  <view wx:if="{{item.topic}}" class="topic"># {{item.topic}}</view>
+  <view wx:if="{{item.topic && item.topic_id}}" class="topic" catchtap="openTopic"># {{item.topic}} ></view>
+  <view wx:if="{{item.hot_comment}}" class="hot-comment">
+    <view class="hot-comment-head">
+      <image class="hot-comment-label" src="/assets/app/pins/ic_pins_hot_comment.png" mode="aspectFit"></image>
+      <text wx:if="{{item.hot_comment.digg_count_value > 0}}" class="hot-comment-digg">{{item.hot_comment.digg_count}}人赞</text>
+    </view>
+    <view class="hot-comment-content">{{item.hot_comment.content}}</view>
+  </view>
+  <view wx:if="{{item.digg_count_value > 0}}" class="pin-digg-users">
+    <view wx:if="{{item.digg_users.length}}" class="pin-digg-avatars">
+      <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+    </view>
+    <text>等人赞过</text>
+  </view>
   <view wx:if="{{showActions}}" class="pin-actions">
-    <button class="pin-action" open-type="share" data-item="{{item}}" catchtap="noop"><image src="/assets/app/pins/fd_share.png" mode="aspectFit"></image><text>分享</text></button>
-    <view class="pin-action"><image src="/assets/app/pins/fd_reply.png" mode="aspectFit"></image><text>评论 {{item.comment_count}}</text></view>
-    <view class="pin-action {{item.is_digg ? 'liked' : ''}}" catchtap="like"><image src="{{item.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image><text>点赞 {{item.digg_count}}</text></view>
+    <button class="pin-action" open-type="share" data-item="{{item}}" catchtap="noop"><image class="pin-action-icon" src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image><text>分享</text></button>
+    <view class="pin-action"><image class="pin-action-icon" src="/assets/app/pins/ic_pins_comment.png" mode="aspectFit"></image><text>{{item.comment_count_value > 0 ? item.comment_count : '评论'}}</text></view>
+    <view class="pin-action {{item.is_digg ? 'liked' : ''}}" catchtap="like"><image class="pin-action-icon" src="{{item.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image><text>{{item.digg_count_value > 0 ? item.digg_count : '点赞'}}</text></view>
   </view>
 </view>

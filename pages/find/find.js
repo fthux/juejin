@@ -114,8 +114,10 @@ Page({
       wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=guide&title=掘金使用指南' })
       return
     }
-    wx.setStorageSync('jj:discover-theme-current', item)
-    wx.navigateTo({ url: `/pages/discoverChannel/discoverChannel?type=activity&title=${encodeURIComponent(item.name)}` })
+    const cache = wx.getStorageSync('jj:theme-cache') || {}
+    cache[String(item.theme_id)] = item
+    wx.setStorageSync('jj:theme-cache', cache)
+    wx.navigateTo({ url: `/pages/theme/theme?id=${item.theme_id}` })
   },
 
   openDaily() {

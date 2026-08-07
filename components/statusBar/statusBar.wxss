@@ -8,3 +8,8 @@
   box-sizing: border-box;
   background: var(--jj-surface);
 }
+
+.status-bar.transparent,
+.navigation-row.transparent {
+  background: transparent;
+}

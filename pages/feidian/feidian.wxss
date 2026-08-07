@@ -2,6 +2,17 @@
   padding-bottom: 26rpx;
 }
 
+.pin-page.following-mode {
+  --jj-surface: #ffffff;
+  --jj-bg: #ffffff;
+  --jj-text: #252933;
+  --jj-text-2: #515767;
+  --jj-text-3: #8a919f;
+  --jj-line: #e5e6eb;
+  padding-bottom: 0;
+  background: #ffffff;
+}
+
 .pin-sticky {
   position: sticky;
   top: 0;
@@ -245,16 +256,17 @@
 }
 
 .following-login {
-  min-height: 720rpx;
-  padding: 100rpx 40rpx 180rpx;
+  min-height: calc(100vh - 128rpx);
+  padding: 0 40rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  background: #ffffff;
 }
 
-.following-login image {
+.following-illustration {
   width: 230rpx;
   height: 230rpx;
 }

@@ -1,0 +1,41 @@
+<view class="page theme-page">
+  <view class="theme-hero">
+    <image wx:if="{{theme.cover}}" class="theme-background" src="{{theme.cover}}" mode="aspectFill"></image>
+    <view class="theme-shade"></view>
+    <status-bar transparent="{{true}}"></status-bar>
+    <view class="theme-nav"><text bindtap="back">‹</text><text>•••</text></view>
+    <view class="theme-summary">
+      <image wx:if="{{theme.cover}}" class="theme-cover" src="{{theme.cover}}" mode="aspectFill"></image>
+      <view wx:else class="theme-cover theme-cover-fallback">#</view>
+      <view class="theme-copy">
+        <view class="theme-name">#{{theme.name}}#</view>
+        <view class="theme-count">阅读{{theme.view_count}} · 参与{{theme.user_count}}</view>
+      </view>
+    </view>
+    <view class="theme-guide">导语：</view>
+    <view class="theme-brief three-lines" bindtap="showDetails">{{theme.brief || '暂无活动说明'}}</view>
+  </view>
+
+  <view class="theme-toolbar surface">
+    <view class="theme-tabs">
+      <view class="theme-tab {{activeTab === 'article' ? 'active' : ''}}" data-id="article" bindtap="switchTab">文章</view>
+      <view class="theme-tab {{activeTab === 'pin' ? 'active' : ''}}" data-id="pin" bindtap="switchTab">沸点</view>
+    </view>
+    <view wx:if="{{activeTab === 'pin'}}" class="theme-sort">
+      <text class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="changeSort">热门</text>
+      <text> | </text>
+      <text class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="changeSort">最新</text>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'article'}}" class="theme-content surface">
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    <empty-state wx:if="{{!contentLoading && !articles.length}}" text="暂无相关文章"></empty-state>
+  </view>
+  <view wx:else class="theme-content">
+    <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin" bind:like="requireAccount" bind:follow="requireAccount" bind:more="pinMore"></pin-card>
+    <empty-state wx:if="{{!contentLoading && !pins.length}}" text="暂无相关沸点"></empty-state>
+  </view>
+  <view wx:if="{{loading || contentLoading}}" class="loading-line">正在加载...</view>
+  <view class="theme-publish" bindtap="requireAccount">✎</view>
+</view>

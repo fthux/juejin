@@ -131,9 +131,32 @@ if (!fixedImage.includes('object-fit:cover')) fail('图片响应式处理不应�
 if (!fixedImage.includes('src="https://p3.example.com/a.webp?x=1&y=2"')) fail('图片响应式处理破坏了签名参数')
 
 const utils = require(path.join(root, 'utils/utils.js'))
+const recentTimestamp = String(Math.floor(Date.now() / 1000) - 3600)
+if (!utils.formatTime(recentTimestamp)) fail('相对时间必须支持接口返回的数字字符串时间戳')
+const normalizedThemePin = utils.normalizePin({
+  msg_Info: {
+    msg_id: 'theme-pin',
+    topic_id: '0',
+    theme_id: '7668498957522452490',
+    content: '[7668498957522452490#TRAE Work 实战帮#]\n正文'
+  },
+  topic: { topic_id: '0', title: '' },
+  theme: { theme_id: '7668498957522452490', name: 'TRAE Work 实战帮' }
+})
+if (normalizedThemePin.content !== '#TRAE Work 实战帮#\n正文') fail('沸点正文活动标签未转换为可读文本')
+if (!normalizedThemePin.theme || normalizedThemePin.theme.theme_id !== '7668498957522452490') fail('沸点正文活动标签缺少活动 ID')
+if (normalizedThemePin.topic) fail('活动标签不得显示为卡片底部圈子标签')
+if (!normalizedThemePin.content_segments.some((item) => item.type === 'theme')) fail('沸点正文活动标签未生成可点击片段')
+
+const normalizedTopicPin = utils.normalizePin({
+  msg_Info: { msg_id: 'topic-pin', topic_id: '7273343075660300349', content: '圈子正文' },
+  topic: { topic_id: '7273343075660300349', title: '大模型生态圈' }
+})
+if (normalizedTopicPin.topic !== '大模型生态圈' || normalizedTopicPin.topic_id !== '7273343075660300349') fail('普通圈子标签缺少名称或 ID')
 const normalizedComment = utils.normalizeComment({
   comment_id: 'comment-1',
   comment_info: { comment_content: '一级评论', reply_count: 2 },
+  is_hot: true,
   reply_infos: [{
     reply_id: 9007199254740992,
     reply_info: { reply_id: 'reply-1', reply_content: '回复内容', reply_to_user_id: 'user-2' },
@@ -146,5 +169,28 @@ if (normalizedComment.replies.length !== 1) fail('评论归一化丢失接口返
 if (normalizedComment.replies[0].id !== 'reply-1') fail('评论回复应优先使用精确的字符串 ID')
 if (normalizedComment.replies[0].reply_user !== '被回复者') fail('评论回复缺少被回复用户')
 if (!normalizedComment.reply_has_more) fail('评论回复数量不完整时应显示查看更多入口')
+if (!normalizedComment.is_hot) fail('评论归一化丢失热评标识')
+
+const postSource = read('pages/post/post.js')
+if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
+
+const pinDetailSource = read('pages/feidianDetail/feidianDetail.js')
+const pinDetailTemplate = read('pages/feidianDetail/feidianDetail.wxml')
+const pinDetailConfig = JSON.parse(read('pages/feidianDetail/feidianDetail.json'))
+const pinCardSource = read('components/pinCard/pinCard.js')
+const pinCardTemplate = read('components/pinCard/pinCard.wxml')
+const pinCardStyles = read('components/pinCard/pinCard.wxss')
+const profileSource = read('pages/profile/profile.js')
+if (!/commentSort:\s*['"]hot['"]/.test(pinDetailSource)) fail('沸点评论列表默认排序必须为最热')
+if (!pinDetailTemplate.includes('loadCommentReplies')) fail('沸点评论列表缺少回复加载入口')
+if (!pinDetailTemplate.includes('ic_pins_hot_comment.png')) fail('沸点热评缺少 App 热评图标')
+if (pinDetailConfig.navigationStyle === 'custom') fail('沸点详情必须使用系统导航栏')
+if (!pinCardTemplate.includes('ic_pins_share.png') || !pinCardTemplate.includes('ic_pins_comment.png')) fail('沸点卡片必须使用 App 的分享和评论图标')
+if (!pinCardTemplate.includes('class="publish-time"')) fail('沸点卡片缺少发布时间')
+if (!pinCardTemplate.includes('catchtap="openTheme"')) fail('沸点正文活动标签缺少独立点击处理')
+if (!pinCardTemplate.includes('class="topic" catchtap="openTopic"')) fail('沸点底部圈子标签缺少独立点击处理')
+if (!/\.pin-content\s*\{[^}]*white-space:\s*pre-wrap/s.test(pinCardStyles)) fail('沸点正文必须保留接口换行')
+if (!pinCardSource.includes("wx.setStorageSync('jj:user-current', author)")) fail('沸点头像跳转前必须缓存当前作者资料')
+if (profileSource.includes('|| mock.authors[0]')) fail('用户主页不得回退到固定的官方账号')
 
 console.log(`Validated ${app.pages.length} pages, ${componentRoots.length} components, navigation, local assets and API boundaries.`)

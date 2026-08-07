@@ -7,6 +7,10 @@ Component({
     navigation: {
       type: Boolean,
       value: false
+    },
+    transparent: {
+      type: Boolean,
+      value: false
     }
   },
 

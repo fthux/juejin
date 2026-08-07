@@ -61,17 +61,23 @@ Page({
 
   loadHeaderData() {
     Promise.all([api.topics('0', 10), api.selectedPins('0')]).then(([topicResponse, pinResponse]) => {
+      const topicCache = wx.getStorageSync('jj:topic-cache') || {}
       const topics = (topicResponse.result.data || []).slice(0, 10).map((item) => {
         const topic = item.topic || item
+        const topicId = String(item.topic_id || topic.topic_id || '')
         const icon = utils.normalizeImageUrl(topic.icon || topic.icon_url || topic.topic_pic || '', 160)
+        const msgCount = Number(topic.msg_count || item.msg_count) || 0
+        const serverNewCount = Number(item.new_short_msg_count || topic.new_short_msg_count) || 0
+        const cachedMsgCount = Number(topicCache[topicId] && topicCache[topicId].msg_count) || 0
+        const localNewCount = cachedMsgCount ? Math.max(0, msgCount - cachedMsgCount) : 0
         return Object.assign({}, topic, {
-          topic_id: String(item.topic_id || topic.topic_id || ''),
+          topic_id: topicId,
           title: String(topic.title || '圈子').trim(),
           iconUrl: /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : '',
           iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : (topic.title || '#').slice(0, 2),
           follower_count: Number(topic.follower_count) || 0,
-          msg_count: Number(topic.msg_count) || 0,
-          newCount: Number(item.new_short_msg_count) || 0
+          msg_count: msgCount,
+          newCount: serverNewCount || localNewCount
         })
       })
       const pinRows = pinResponse.result.data || []
@@ -119,11 +125,13 @@ Page({
   },
 
   openTopic(event) {
-    const topic = this.data.topics[Number(event.currentTarget.dataset.index)]
+    const index = Number(event.currentTarget.dataset.index)
+    const topic = this.data.topics[index]
     if (!topic || !topic.topic_id) return
     const cache = wx.getStorageSync('jj:topic-cache') || {}
     cache[topic.topic_id] = topic
     wx.setStorageSync('jj:topic-cache', cache)
+    this.setData({ [`topics[${index}].newCount`]: 0 })
     wx.navigateTo({ url: `/pages/topic/topic?id=${topic.topic_id}` })
   },
 

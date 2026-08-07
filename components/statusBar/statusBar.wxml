@@ -1,4 +1,4 @@
-<view class="status-bar" style="height: {{statusHeight}}px;"></view>
-<view wx:if="{{navigation}}" class="navigation-row" style="height: {{navigationHeight}}px; padding-right: {{menuInset}}px;">
+<view class="status-bar {{transparent ? 'transparent' : ''}}" style="height: {{statusHeight}}px;"></view>
+<view wx:if="{{navigation}}" class="navigation-row {{transparent ? 'transparent' : ''}}" style="height: {{navigationHeight}}px; padding-right: {{menuInset}}px;">
   <slot></slot>
 </view>

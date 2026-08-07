@@ -111,6 +111,22 @@ function recommendedThemes(cursor, limit) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
+function themeDetail(themeId) {
+  return withFallback(request('/tag_api/v1/theme/detail', {
+    theme_id: themeId
+  }), { data: null })
+}
+
+function themePins(themeId, cursor, options) {
+  const config = options || {}
+  return withFallback(request('/recommend_api/v1/short_msg/theme', {
+    theme_id: themeId,
+    cursor: cursor || '0',
+    limit: config.limit || 20,
+    sort_type: config.sortType || 500
+  }), { data: [], cursor: '0', has_more: false })
+}
+
 function recommendedCollectionSets(cursor, limit, options) {
   const config = options || {}
   const data = {
@@ -266,12 +282,25 @@ function pinRecommendations(msgId, cursor) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
-function pinComments(msgId, cursor) {
+function pinComments(msgId, cursor, sort) {
   return withFallback(request('/interact_api/v1/comment/list', {
     item_id: msgId,
     item_type: 4,
+    sort: sort === 'latest' ? 0 : 1,
     cursor: cursor || '0',
-    limit: 20
+    limit: 20,
+    client_type: 2608
+  }), { data: [], cursor: '0', count: 0, has_more: false })
+}
+
+function pinCommentReplies(msgId, commentId, cursor) {
+  return withFallback(request('/interact_api/v1/reply/list', {
+    item_id: msgId,
+    item_type: 4,
+    comment_id: commentId,
+    cursor: cursor || '0',
+    limit: 5,
+    client_type: 2608
   }), { data: [], cursor: '0', has_more: false })
 }
 
@@ -383,6 +412,8 @@ module.exports = {
   topicPins,
   selectedPins,
   recommendedThemes,
+  themeDetail,
+  themePins,
   recommendedCollectionSets,
   collectionSetDetail,
   recommendedAuthors,
@@ -401,6 +432,7 @@ module.exports = {
   pinDetail,
   pinRecommendations,
   pinComments,
+  pinCommentReplies,
   daily,
   recommendationRanks,
   hotArticles,

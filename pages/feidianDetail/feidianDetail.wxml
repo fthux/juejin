@@ -1,12 +1,4 @@
 <view class="page pin-detail-page">
-  <status-bar navigation="{{true}}">
-    <view class="detail-navigation">
-      <view class="detail-back" bindtap="back">‹</view>
-      <view class="detail-title">沸点详情</view>
-      <view class="detail-more" bindtap="showMore">•••</view>
-    </view>
-  </status-bar>
-
   <pin-card wx:if="{{item}}" item="{{item}}" show-follow="{{true}}" show-actions="{{false}}" bind:follow="requireAccount" bind:author="openAuthor"></pin-card>
 
   <view wx:if="{{recommendations.length}}" class="recommend-section surface">
@@ -22,16 +14,62 @@
 
   <view class="comments surface">
     <view class="section-header">
-      <view class="section-title">全部评论 <text wx:if="{{item}}">{{item.comment_count}}</text></view>
+      <view class="section-title">评论 <text>{{commentTotal}}</text></view>
+      <view class="comment-sort">
+        <view class="sort-item {{commentSort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchCommentSort">最新</view>
+        <view class="sort-item {{commentSort === 'hot' ? 'active' : ''}}" data-sort="hot" bindtap="switchCommentSort">最热</view>
+      </view>
     </view>
     <view wx:for="{{comments}}" wx:for-item="comment" wx:key="id" class="comment-row">
       <image class="avatar" src="{{comment.avatar}}" mode="aspectFill"></image>
       <view class="comment-body">
-        <view class="comment-user">{{comment.user}}</view>
+        <view class="comment-user-row">
+          <view class="comment-user-wrap">
+            <text class="comment-user ellipsis">{{comment.user}}</text>
+            <text wx:if="{{comment.is_author}}" class="author-mark">作者</text>
+          </view>
+          <image wx:if="{{comment.is_hot}}" class="hot-comment-icon" src="/assets/app/pins/ic_pins_hot_comment.png" mode="aspectFit"></image>
+        </view>
         <view class="comment-content">{{comment.content}}</view>
         <view class="comment-foot">
-          <text>{{comment.time}} · 回复{{comment.reply_count ? ' ' + comment.reply_count : ''}}</text>
-          <text>♡ {{comment.digg_count}}</text>
+          <text>{{comment.time}}</text>
+          <view class="comment-actions">
+            <text class="more-action">···</text>
+            <view class="comment-action" bindtap="requireAccount">
+              <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
+              <text wx:if="{{comment.reply_count}}">{{comment.reply_count}}</text>
+            </view>
+            <view class="comment-action" bindtap="requireAccount">
+              <image src="{{comment.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image>
+              <text wx:if="{{comment.digg_count_value}}">{{comment.digg_count}}</text>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{comment.replies.length || comment.reply_has_more}}" class="comment-replies">
+          <view wx:for="{{comment.replies}}" wx:for-item="reply" wx:key="id" class="reply-row">
+            <image class="reply-avatar" src="{{reply.avatar}}" mode="aspectFill"></image>
+            <view class="reply-body">
+              <view class="reply-copy">
+                <text class="reply-user">{{reply.user}}</text>
+                <text wx:if="{{reply.is_author}}" class="reply-author-mark">作者</text>
+                <text wx:if="{{reply.reply_user}}" class="reply-target"> 回复 @{{reply.reply_user}}</text>
+                <text>：{{reply.content}}</text>
+              </view>
+              <view class="reply-foot">
+                <text>{{reply.time}}</text>
+                <view class="reply-actions">
+                  <text>···</text>
+                  <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
+                  <image src="{{reply.is_digg ? '/assets/app/find/find_page_ic_digg.svg' : '/assets/app/find/find_page_ic_undigg.svg'}}" mode="aspectFit"></image>
+                  <text wx:if="{{reply.digg_count_value}}">{{reply.digg_count}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view wx:if="{{comment.reply_loading}}" class="reply-more">正在加载回复...</view>
+          <view wx:elif="{{comment.reply_has_more}}" class="reply-more" data-id="{{comment.id}}" bindtap="loadCommentReplies">
+            查看全部 {{comment.reply_count}} 条回复
+          </view>
         </view>
       </view>
     </view>

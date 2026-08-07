@@ -1,0 +1,27 @@
+.theme-page { min-height: 100vh; background: var(--jj-bg); }
+.theme-hero { position: relative; min-height: 438rpx; overflow: hidden; padding: 0 32rpx 30rpx; box-sizing: border-box; color: #fff; background: #343638; }
+.theme-background { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .42; }
+.theme-shade { position: absolute; inset: 0; background: rgba(16, 18, 20, .48); }
+.theme-nav { position: relative; height: 88rpx; display: flex; align-items: center; justify-content: space-between; font-size: 48rpx; }
+.theme-nav text:last-child { font-size: 30rpx; }
+.theme-summary { position: relative; display: flex; align-items: center; }
+.theme-cover { width: 120rpx; height: 120rpx; flex: 0 0 auto; border-radius: 5rpx; background: var(--jj-fill); }
+.theme-cover-fallback { display: flex; align-items: center; justify-content: center; color: var(--jj-blue); background: #fff; font-size: 48rpx; }
+.theme-copy { min-width: 0; margin-left: 24rpx; flex: 1; }
+.theme-name { font-size: 37rpx; line-height: 1.35; }
+.theme-count { margin-top: 16rpx; font-size: 25rpx; }
+.theme-guide { position: relative; margin-top: 25rpx; font-size: 25rpx; }
+.theme-brief { position: relative; margin-top: 9rpx; font-size: 26rpx; line-height: 1.48; }
+.theme-toolbar { height: 90rpx; padding: 0 30rpx; display: flex; align-items: stretch; justify-content: space-between; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
+.theme-tabs { display: flex; align-items: stretch; }
+.theme-tab { min-width: 100rpx; margin-right: 28rpx; display: flex; position: relative; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 29rpx; }
+.theme-tab.active { color: var(--jj-text); font-weight: 600; }
+.theme-tab.active::after { content: ''; position: absolute; left: 50%; bottom: 0; width: 40rpx; height: 5rpx; border-radius: 3rpx; background: var(--jj-blue); transform: translateX(-50%); }
+.theme-sort { display: flex; align-items: center; color: var(--jj-text-4); font-size: 25rpx; }
+.theme-sort text { padding: 0 8rpx; }
+.theme-sort text.active { color: var(--jj-text); }
+.theme-content { min-height: 300rpx; }
+.loading-line { padding: 28rpx; color: var(--jj-text-3); text-align: center; }
+.theme-publish { position: fixed; right: 32rpx; bottom: 48rpx; width: 104rpx; height: 104rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff; background: var(--jj-blue); box-shadow: 0 10rpx 26rpx rgba(30, 128, 255, .3); font-size: 42rpx; }
+.three-lines { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+@media (prefers-color-scheme: dark) { .theme-hero { background: #242527; } }

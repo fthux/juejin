@@ -1,21 +1,5 @@
 .pin-detail-page { padding-bottom: 112rpx; background: var(--jj-bg); }
 
-.detail-navigation {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1rpx solid var(--jj-line);
-  box-sizing: border-box;
-}
-
-.detail-title { color: var(--jj-text); font-size: 30rpx; font-weight: 600; }
-.detail-back, .detail-more { position: absolute; top: 0; height: 100%; display: flex; align-items: center; color: var(--jj-text); }
-.detail-back { left: 22rpx; width: 64rpx; font-size: 62rpx; font-weight: 200; }
-.detail-more { right: 16rpx; padding: 0 18rpx; color: var(--jj-text-2); font-size: 24rpx; }
-
 .recommend-section { margin-top: 14rpx; padding: 26rpx 0 24rpx; }
 .recommend-title { padding: 0 28rpx; color: var(--jj-text); font-size: 28rpx; font-weight: 600; }
 .recommend-scroll { width: 100%; margin-top: 20rpx; white-space: nowrap; }
@@ -26,13 +10,37 @@
 .recommend-meta { margin-top: 12rpx; color: var(--jj-text-3); font-size: 19rpx; }
 
 .comments { margin-top: 14rpx; }
+.comments .section-header { min-height: 104rpx; padding-top: 12rpx; }
 .section-title text { margin-left: 10rpx; color: var(--jj-text-3); font-size: 23rpx; font-weight: 400; }
+.comment-sort { width: 144rpx; height: 48rpx; padding: 2rpx; display: flex; border: 1rpx solid var(--jj-line); border-radius: 24rpx; box-sizing: border-box; background: var(--jj-fill); }
+.sort-item { width: 0; display: flex; align-items: center; justify-content: center; flex: 1; border-radius: 22rpx; color: var(--jj-text-3); font-size: 20rpx; }
+.sort-item.active { color: var(--jj-text); background: var(--jj-surface); box-shadow: 0 1rpx 5rpx rgba(0, 0, 0, 0.08); }
 .comment-row { padding: 26rpx 30rpx; display: flex; border-top: 1rpx solid var(--jj-line); }
 .comment-row .avatar { width: 64rpx; height: 64rpx; }
 .comment-body { min-width: 0; margin-left: 18rpx; flex: 1; }
-.comment-user { color: var(--jj-text-2); font-size: 24rpx; }
+.comment-user-row { min-height: 40rpx; display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.comment-user-wrap { min-width: 0; display: flex; align-items: center; gap: 8rpx; }
+.comment-user { max-width: 340rpx; color: var(--jj-text-2); font-size: 24rpx; }
+.author-mark, .reply-author-mark { padding: 1rpx 6rpx; border-radius: 4rpx; color: var(--jj-blue); background: var(--jj-blue-soft); font-size: 18rpx; white-space: nowrap; }
+.hot-comment-icon { width: 86rpx; height: 40rpx; flex: none; }
 .comment-content { margin-top: 10rpx; color: var(--jj-text); font-size: 27rpx; line-height: 1.55; word-break: break-all; }
 .comment-foot { margin-top: 13rpx; display: flex; align-items: center; justify-content: space-between; color: var(--jj-text-3); font-size: 21rpx; }
+.comment-actions { display: flex; align-items: center; gap: 28rpx; }
+.more-action { color: var(--jj-text-3); font-size: 26rpx; line-height: 1; }
+.comment-action { min-width: 54rpx; display: flex; align-items: center; justify-content: flex-end; gap: 7rpx; }
+.comment-action image { width: 30rpx; height: 30rpx; opacity: 0.68; }
+.comment-replies { margin-top: 18rpx; }
+.reply-row { padding-top: 18rpx; display: flex; }
+.reply-avatar { width: 44rpx; height: 44rpx; flex: none; border-radius: 50%; background: var(--jj-fill); }
+.reply-body { min-width: 0; margin-left: 14rpx; flex: 1; }
+.reply-copy { color: var(--jj-text); font-size: 24rpx; line-height: 1.55; word-break: break-all; }
+.reply-user { color: var(--jj-text-2); }
+.reply-author-mark { margin-left: 7rpx; }
+.reply-target { color: var(--jj-text-2); }
+.reply-foot { margin-top: 10rpx; display: flex; align-items: center; justify-content: space-between; color: var(--jj-text-3); font-size: 20rpx; }
+.reply-actions { display: flex; align-items: center; gap: 20rpx; }
+.reply-actions image { width: 27rpx; height: 27rpx; opacity: 0.62; }
+.reply-more { margin: 18rpx 0 0 58rpx; color: var(--jj-blue); font-size: 22rpx; }
 .comment-empty { padding: 70rpx 20rpx; color: var(--jj-text-3); text-align: center; font-size: 24rpx; }
 
 .comment-bar { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; min-height: 100rpx; padding: 14rpx 22rpx; display: flex; align-items: center; gap: 22rpx; box-sizing: border-box; background: var(--jj-surface); border-top: 1rpx solid var(--jj-line); }

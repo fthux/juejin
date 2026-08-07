@@ -1,4 +1,4 @@
-<view class="page pin-page">
+<view class="page pin-page {{topTab === 'following' ? 'following-mode' : ''}}">
   <view class="pin-sticky">
     <status-bar navigation="{{true}}">
       <view class="pin-navigation">
@@ -24,7 +24,7 @@
           <text wx:else>{{item.iconText}}</text>
         </view>
         <view class="topic-name ellipsis">{{item.title}}</view>
-        <view wx:if="{{item.newCount || index < 4}}" class="topic-badge">{{item.newCount > 99 || (!item.newCount && index < 4) ? '99+' : item.newCount}}</view>
+        <view wx:if="{{item.newCount > 0}}" class="topic-badge">{{item.newCount > 99 ? '99+' : item.newCount}}</view>
       </view>
     </scroll-view>
   </view>
@@ -38,7 +38,7 @@
   </view>
 
   <view wx:if="{{topTab === 'following'}}" class="following-login surface">
-    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <image class="following-illustration" src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
     <view class="following-title">立刻登录，围观掘友精彩沸点吧</view>
     <view class="following-button" bindtap="requireAccount">登录</view>
   </view>
@@ -77,5 +77,5 @@
   <view wx:if="{{topTab === 'discover' && loading}}" class="loading-line">正在加载...</view>
   <view wx:elif="{{topTab === 'discover' && list.length && !hasMore}}" class="loading-line">没有更多了</view>
   <view wx:if="{{topTab === 'discover' && fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
-  <view class="publish-fab" bindtap="openPublish"><text>✎</text></view>
+  <view wx:if="{{topTab === 'discover'}}" class="publish-fab" bindtap="openPublish"><text>✎</text></view>
 </view>

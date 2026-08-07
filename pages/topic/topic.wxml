@@ -53,7 +53,7 @@
   <view class="topic-hero">
     <image class="topic-bg" src="/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
     <view class="topic-shade"></view>
-    <status-bar></status-bar>
+    <status-bar transparent="{{true}}"></status-bar>
     <view class="topic-nav"><text bindtap="back">‹</text><text>•••</text></view>
     <view class="topic-summary">
       <view class="topic-icon">

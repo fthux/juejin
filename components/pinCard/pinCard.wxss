@@ -4,6 +4,10 @@
   border-bottom: 16rpx solid var(--jj-bg);
 }
 
+.pin-card.without-actions {
+  padding-bottom: 38rpx;
+}
+
 .pin-head {
   display: flex;
   align-items: center;
@@ -30,13 +34,25 @@
 
 .caption {
   margin-top: 6rpx;
+  min-width: 0;
+  display: flex;
+  align-items: center;
   color: var(--jj-text-3);
   font-size: 23rpx;
 }
 
+.caption-role {
+  min-width: 0;
+}
+
+.publish-time {
+  flex: none;
+  white-space: nowrap;
+}
+
 .more {
-  width: 46rpx;
-  height: 46rpx;
+  width: 23rpx;
+  height: 23rpx;
   padding: 8rpx;
 }
 
@@ -61,7 +77,12 @@
   color: var(--jj-text);
   font-size: 30rpx;
   line-height: 1.65;
+  white-space: pre-wrap;
   word-break: break-all;
+}
+
+.pin-theme-link {
+  color: var(--jj-blue);
 }
 
 .pin-pictures {
@@ -119,10 +140,70 @@
   width: fit-content;
   margin-top: 18rpx;
   padding: 6rpx 12rpx;
-  border-radius: 4rpx;
+  border-radius: 20rpx;
   color: #1e80ff;
   background: var(--jj-blue-soft);
   font-size: 25rpx;
+}
+
+.hot-comment {
+  margin-top: 18rpx;
+  padding: 18rpx 22rpx 20rpx;
+  color: var(--jj-text-2);
+  background: var(--jj-fill);
+}
+
+.hot-comment-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hot-comment-label {
+  width: 86rpx;
+  height: 40rpx;
+  flex: none;
+}
+
+.hot-comment-digg {
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.hot-comment-content {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.pin-digg-users {
+  min-height: 64rpx;
+  padding-top: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--jj-text-3);
+  font-size: 22rpx;
+}
+
+.pin-digg-avatars {
+  margin-right: 12rpx;
+  display: flex;
+}
+
+.pin-digg-avatar {
+  width: 42rpx;
+  height: 42rpx;
+  margin-left: -10rpx;
+  border: 3rpx solid var(--jj-surface);
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: var(--jj-fill);
+}
+
+.pin-digg-avatar:first-child {
+  margin-left: 0;
 }
 
 .pin-actions {
@@ -162,7 +243,7 @@
   justify-content: center;
 }
 
-.pin-action image {
+.pin-action-icon {
   width: 30rpx;
   height: 30rpx;
   opacity: 0.78;
