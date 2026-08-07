@@ -91,7 +91,7 @@ function topicPins(topicId, cursor, options) {
     sort_type: config.sortType || 500,
     topic_id: topicId || '',
     cursor: cursor || '0',
-    limit: 20
+    limit: config.limit || 20
   }), () => ({ data: mock.pins, cursor: 'mock-end', has_more: false }))
 }
 

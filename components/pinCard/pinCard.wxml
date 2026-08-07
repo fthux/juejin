@@ -38,11 +38,11 @@
     </view>
     <view class="hot-comment-content">{{item.hot_comment.content}}</view>
   </view>
-  <view wx:if="{{item.digg_count_value > 0}}" class="pin-digg-users">
-    <view wx:if="{{item.digg_users.length}}" class="pin-digg-avatars">
+  <view wx:if="{{item.digg_count_value > 0 && item.digg_users.length}}" class="pin-digg-users">
+    <view class="pin-digg-avatars">
       <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
     </view>
-    <text>等人赞过</text>
+    <text>{{item.digg_users.length <= 10 ? "赞过" :"等人赞过"}}</text>
   </view>
   <view wx:if="{{showActions}}" class="pin-actions">
     <button class="pin-action" open-type="share" data-item="{{item}}" catchtap="noop"><image class="pin-action-icon" src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image><text>分享</text></button>

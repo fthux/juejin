@@ -14,7 +14,8 @@ const pageSet = new Set(app.pages)
 const componentRoots = Object.values(app.usingComponents || {}).map((value) => value.replace(/^\//, ''))
 const roots = app.pages.concat(componentRoots)
 
-if (app.pages[0] !== 'pages/index/index') fail('首页必须是首个注册页面')
+if (app.pages[0] !== 'pages/launch/launch') fail('启动页必须是首个注册页面')
+if (app.pages[1] !== 'pages/index/index') fail('启动页之后必须是首页')
 if (app.pages.length !== pageSet.size) fail('app.json 中存在重复页面')
 
 const ignoredFolders = new Set((project.packOptions && project.packOptions.ignore || [])
