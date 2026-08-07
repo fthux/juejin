@@ -56,7 +56,15 @@
           <view class="selected-identity"><view class="selected-name ellipsis">{{item.author.user_name}}</view><view class="selected-caption ellipsis">{{item.author.job_title || item.ctime}}</view></view>
           <view class="outline-action" catchtap="openAccountInfo">关注</view>
         </view>
-        <view class="selected-content four-lines">{{item.content}}</view>
+        <view class="selected-content four-lines">
+          <block wx:if="{{item.content_segments.length}}">
+            <block wx:for="{{item.content_segments}}" wx:for-item="segment" wx:for-index="segmentIndex" wx:key="key">
+              <text wx:if="{{segment.type === 'theme'}}" class="selected-theme-link" data-pin-index="{{index}}" data-segment-index="{{segmentIndex}}" catchtap="openSelectedTheme">#{{segment.text}}#</text>
+              <text wx:else>{{segment.text}}</text>
+            </block>
+          </block>
+          <text wx:else>{{item.content}}</text>
+        </view>
         <view class="selected-actions"><text>赞 {{item.digg_count}}</text><text>评论 {{item.comment_count}}</text></view>
       </view>
     </scroll-view>

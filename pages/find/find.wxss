@@ -41,6 +41,7 @@
 .outline-action { border: 1rpx solid var(--jj-blue); color: var(--jj-blue); }
 .fill-action { color: #fff; background: var(--jj-blue); }
 .selected-content { margin-top: 20rpx; flex: 1; color: var(--jj-text-2); font-size: 26rpx; line-height: 1.58; }
+.selected-theme-link { color: var(--jj-blue); }
 .four-lines { display: -webkit-box; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
 .selected-actions { margin-top: 20rpx; display: flex; gap: 34rpx; color: var(--jj-text-3); font-size: 21rpx; }
 .topic-card { width: 300rpx; min-height: 314rpx; align-items: center; text-align: center; }

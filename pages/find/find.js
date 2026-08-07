@@ -11,6 +11,15 @@ function isDarkMode() {
   return system.theme === 'dark'
 }
 
+function cacheThemeAndOpen(theme) {
+  if (!theme || !theme.theme_id) return
+  const themeId = String(theme.theme_id)
+  const cache = wx.getStorageSync('jj:theme-cache') || {}
+  cache[themeId] = theme
+  wx.setStorageSync('jj:theme-cache', cache)
+  wx.navigateTo({ url: `/pages/theme/theme?id=${themeId}` })
+}
+
 Page({
   data: {
     greeting: '每天读一点，保持技术好奇心',
@@ -114,10 +123,7 @@ Page({
       wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=guide&title=掘金使用指南' })
       return
     }
-    const cache = wx.getStorageSync('jj:theme-cache') || {}
-    cache[String(item.theme_id)] = item
-    wx.setStorageSync('jj:theme-cache', cache)
-    wx.navigateTo({ url: `/pages/theme/theme?id=${item.theme_id}` })
+    cacheThemeAndOpen(item)
   },
 
   openDaily() {
@@ -135,6 +141,17 @@ Page({
 
   openPin(event) {
     wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${event.currentTarget.dataset.id}` })
+  },
+
+  openSelectedTheme(event) {
+    const pin = this.data.selectedPins[Number(event.currentTarget.dataset.pinIndex)]
+    const segments = pin && pin.content_segments || []
+    const segment = segments[Number(event.currentTarget.dataset.segmentIndex)]
+    if (!segment || segment.type !== 'theme' || !segment.theme_id) return
+    const theme = pin.theme && String(pin.theme.theme_id) === String(segment.theme_id)
+      ? pin.theme
+      : { theme_id: String(segment.theme_id), name: segment.text || '活动标签' }
+    cacheThemeAndOpen(theme)
   },
 
   openAuthor(event) {

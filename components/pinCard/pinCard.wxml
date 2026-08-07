@@ -14,7 +14,7 @@
   <view class="pin-content">
     <block wx:if="{{item.content_segments.length}}">
       <block wx:for="{{item.content_segments}}" wx:key="key">
-        <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-id="{{item.theme_id}}" data-name="{{item.text}}" catchtap="openTheme">#{{item.text}}#</text>
+        <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-index="{{index}}" catchtap="openTheme">#{{item.text}}#</text>
         <text wx:else>{{item.text}}</text>
       </block>
     </block>

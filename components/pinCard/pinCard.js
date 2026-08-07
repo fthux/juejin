@@ -36,12 +36,14 @@ Component({
       this.triggerEvent('author', { author })
     },
     openTheme(event) {
-      const themeId = String(event.currentTarget.dataset.id || '')
+      const segments = this.data.item && this.data.item.content_segments || []
+      const segment = segments[Number(event.currentTarget.dataset.index)]
+      const themeId = segment && String(segment.theme_id || '')
       if (!themeId) return
       const current = this.data.item && this.data.item.theme
       const theme = current && String(current.theme_id) === themeId
         ? current
-        : { theme_id: themeId, name: event.currentTarget.dataset.name || '活动标签' }
+        : { theme_id: themeId, name: segment.text || '活动标签' }
       const cache = wx.getStorageSync('jj:theme-cache') || {}
       cache[themeId] = theme
       wx.setStorageSync('jj:theme-cache', cache)
