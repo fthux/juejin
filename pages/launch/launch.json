@@ -1,1 +1,6 @@
-{}
+{
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "backgroundColor": "@backgroundColor",
+  "backgroundTextStyle": "@backgroundTextStyle"
+}

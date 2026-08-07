@@ -1,12 +1,8 @@
-<view class='container'>
-  <image mode='widthFix' class='bcg' src='/img/launch_bcg.png'></image>
-  <view class='top'>
-    <view class='wrapper'>
-      <image mode='widthFix' src='/img/launch_diamond.png'></image>
-      <view>相信科技 传递价值</view>
-    </view>
-  </view>
-  <view class='bottom'>
-    <image mode='widthFix' src='/img/launch_bottom.png'></image>
-  </view>
+<view class="splash theme-{{theme}}" aria-label="稀土掘金启动页">
+  <image class="splash-background splash-light" src="/assets/app/splash/splash_bg.webp" mode="scaleToFill"></image>
+  <image class="splash-background splash-dark" src="/assets/app/splash/splash_bg_dark.webp" mode="scaleToFill"></image>
+  <image class="splash-slogan splash-light" src="/assets/app/splash/splash_slogan.webp" mode="scaleToFill"></image>
+  <image class="splash-slogan splash-dark" src="/assets/app/splash/splash_slogan_dark.webp" mode="scaleToFill"></image>
+  <image class="splash-logo splash-light" src="/assets/app/splash/splash_logo.webp" mode="scaleToFill"></image>
+  <image class="splash-logo splash-dark" src="/assets/app/splash/splash_logo_dark.webp" mode="scaleToFill"></image>
 </view>

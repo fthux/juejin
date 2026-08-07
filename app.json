@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/launch/launch",
     "pages/index/index",
     "pages/homeChannels/homeChannels",
     "pages/headlineDetail/headlineDetail",

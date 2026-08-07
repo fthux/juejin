@@ -1,45 +1,85 @@
-.container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+page {
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
 }
-.bcg {
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-}
-.top,
-.bottom {
+
+.splash {
   position: relative;
-  z-index: 2;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
 }
-.top {
-  flex: 1;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 52rpx;
-  color: #000;
-  font-weight: 300;
+
+.splash-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
-.top .wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+
+.splash-slogan,
+.splash-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.top image {
-  width: 200rpx;
-  margin-bottom: 40rpx;
+
+.splash-slogan {
+  top: 210px;
+  width: 257px;
+  height: 26px;
 }
-.bottom {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: 70rpx;
-  background-color: #fff;
+
+.splash-logo {
+  bottom: 62px;
+  width: 133px;
+  height: 28px;
 }
-.bottom image {
-  width: 580rpx;
+
+.splash-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  page,
+  .splash {
+    background: #222222;
+  }
+
+  .splash-light {
+    display: none;
+  }
+
+  .splash-dark {
+    display: block;
+  }
+}
+
+.splash.theme-light {
+  background: #ffffff;
+}
+
+.splash.theme-light .splash-light {
+  display: block;
+}
+
+.splash.theme-light .splash-dark {
+  display: none;
+}
+
+.splash.theme-dark {
+  background: #222222;
+}
+
+.splash.theme-dark .splash-light {
+  display: none;
+}
+
+.splash.theme-dark .splash-dark {
+  display: block;
 }

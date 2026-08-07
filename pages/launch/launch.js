@@ -1,19 +1,25 @@
-const utils = require('../../utils/utils.js')
+const SPLASH_DURATION = 3000
+
 Page({
-  onLoad () {
-    let timer = setTimeout(() => {
-      clearTimeout(timer)
-      this.direct()
-    }, 2000)
+  data: {
+    theme: ''
   },
-  direct () {
-    let auth = utils.ifLogined()
-    let url = '/pages/feidian/feidian'
-    if (auth) {
-      url = '/pages/index/index'
-    }
+
+  onLoad() {
+    const app = getApp()
+    const theme = app.globalData.theme === 'dark' ? 'dark' : 'light'
+    this.setData({ theme })
+    this.splashTimer = setTimeout(() => this.openHome(), SPLASH_DURATION)
+  },
+
+  onUnload() {
+    if (this.splashTimer) clearTimeout(this.splashTimer)
+  },
+
+  openHome() {
+    this.splashTimer = null
     wx.switchTab({
-      url,
+      url: '/pages/index/index'
     })
-  },
+  }
 })
