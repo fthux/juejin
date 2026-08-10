@@ -1,8 +1,0 @@
-<view class="rank-rules-page">
-  <image
-    class="rank-rules-document"
-    src="/assets/app/rank/rank_rules.webp"
-    mode="widthFix"
-    show-menu-by-longpress
-  ></image>
-</view>

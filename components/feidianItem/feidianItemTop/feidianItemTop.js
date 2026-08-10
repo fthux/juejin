@@ -27,7 +27,7 @@ Component({
     toFeidianDetail (e) {
       let id = e.currentTarget.dataset.id
       // wx.navigateTo({
-      //   url: `/pages/feidianDetail/feidianDetail?msgId=${id}`,
+      //   url: `/features/feidianDetail/feidianDetail?msgId=${id}`,
       // })
     },
   },

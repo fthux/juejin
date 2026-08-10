@@ -1,0 +1,28 @@
+<view class="page collection-square-page">
+  <block wx:if="{{mode === 'list'}}">
+    <status-bar navigation="{{true}}"><view class="plain-nav"><view class="nav-back" bindtap="goBack">‹</view><text>收藏集</text><view class="nav-placeholder"></view></view></status-bar>
+    <view class="sort-bar surface"><text>排序</text><view class="sort-control"><view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="switchSort">最新</view><view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="switchSort">最热</view></view></view>
+    <view class="collection-list surface"><view wx:for="{{sets}}" wx:key="collection_id" class="collection-row" data-index="{{index}}" bindtap="openCollection"><view class="collection-copy"><view class="collection-name ellipsis"><text wx:if="{{item.badge}}" class="collection-badge">{{item.badge}}</text>{{item.name}}</view><view class="collection-meta">{{item.creator.user_name}} · {{item.article_count}}文章 · {{item.follower_count}}订阅</view></view><view class="subscribe" catchtap="subscribe">订阅</view></view></view>
+    <empty-state wx:if="{{!loading && !sets.length}}" text="暂时没有公开收藏集"></empty-state>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{current}}" class="collection-detail">
+      <view class="detail-hero">
+        <image class="detail-bg" src="/features/assets/app/collection/collection_detail_bg.webp" mode="aspectFill"></image>
+        <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><view class="nav-more" bindtap="showMore">•••</view></view></status-bar>
+        <view class="hero-copy"><view class="detail-title">{{current.name}}</view><view class="detail-description">{{current.description || '暂无描述'}}</view><view class="owner-row" bindtap="openCreator"><image src="{{current.creator.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{current.creator.user_name}}</text><text wx:if="{{current.creator.level}}" class="level-badge">LV.{{current.creator.level}}</text><text class="more-sets">更多收藏集 ›</text></view><view class="subscribe filled {{followed ? 'followed' : ''}}" bindtap="subscribe">{{followed ? '已订阅' : '订阅'}}</view></view>
+      </view>
+      <view class="detail-sheet surface">
+        <view class="article-count">{{current.article_count || current.articles.length}}篇文章 · {{current.follower_count}}订阅</view>
+        <view class="detail-articles"><view wx:for="{{current.articles}}" wx:key="article_id" class="article-row" data-index="{{index}}" bindtap="openArticle"><view class="article-title two-lines">{{item.title}}</view><view class="article-author"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{item.author.user_name}}</text><text class="divider"></text><text>{{item.ctime}}</text></view><view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view><view class="article-bottom"><view class="article-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view><text wx:if="{{item.tags.length}}" class="article-tag">{{item.tags[0]}}</text></view></view></view>
+      </view>
+      <empty-state wx:if="{{!loading && !current.articles.length}}" text="该收藏集暂未返回公开文章"></empty-state>
+    </view>
+    <empty-state wx:elif="{{!loading}}" text="未找到这个收藏集"></empty-state>
+  </block>
+  <view wx:if="{{loading}}" class="loading-line">正在加载收藏集...</view>
+  <view wx:if="{{mode === 'list' && !loading && !hasMore && sets.length}}" class="list-end">已加载全部收藏集</view>
+  <view wx:if="{{mode === 'detail' && !loading && !detailHasMore && current.articles.length}}" class="list-end">已加载全部文章</view>
+  <view wx:if="{{fromCache && !loading}}" class="cache-tip">当前网络内容暂不可用</view>
+</view>

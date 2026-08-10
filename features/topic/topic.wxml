@@ -1,0 +1,84 @@
+<view wx:if="{{mode === 'square'}}" class="page topic-square surface">
+  <status-bar navigation="{{true}}">
+    <view class="square-navigation">
+      <view class="square-back" bindtap="back">‹</view>
+      <view class="square-tabs">
+        <view class="{{squareTab === 'joined' ? 'active' : ''}}" data-id="joined" bindtap="switchSquareTab">我的圈子</view>
+        <view class="{{squareTab === 'square' ? 'active' : ''}}" data-id="square" bindtap="switchSquareTab">圈子广场</view>
+      </view>
+    </view>
+  </status-bar>
+
+  <block wx:if="{{squareTab === 'square'}}">
+    <view class="topic-search-wrap">
+      <view class="topic-search">
+        <text class="search-icon"></text>
+        <input value="{{searchKeyword}}" placeholder="搜索圈子..." confirm-type="search" bindinput="onSearchInput" bindconfirm="submitSearch"></input>
+        <text wx:if="{{searchKeyword}}" class="search-clear" bindtap="clearSearch">×</text>
+      </view>
+    </view>
+    <view class="square-body">
+      <scroll-view class="category-list" scroll-y show-scrollbar="{{false}}">
+        <view wx:for="{{categories}}" wx:key="id" class="category-row {{activeCategory === item.id && !searchKeyword ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+      <scroll-view class="topic-result-list" scroll-y show-scrollbar="{{false}}" lower-threshold="160" bindscrolltolower="loadMoreTopics">
+        <view wx:for="{{topics}}" wx:key="topic_id" class="square-row" data-index="{{index}}" bindtap="openTopic">
+          <view class="square-icon">
+            <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onTopicIconError"></image>
+            <text wx:else>{{item.iconText}}</text>
+          </view>
+          <view class="square-copy">
+            <view class="square-name ellipsis">{{item.title}}</view>
+            <view class="square-count ellipsis">{{item.followerLabel}}掘友·{{item.msgLabel}}沸点</view>
+          </view>
+          <view class="square-join" catchtap="openLogin">加入</view>
+        </view>
+        <view wx:if="{{squareLoading}}" class="loading-line">正在加载圈子...</view>
+        <view wx:elif="{{!topics.length}}" class="square-empty">没有找到相关圈子</view>
+      </scroll-view>
+    </view>
+  </block>
+
+  <view wx:else class="joined-login">
+    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <view class="joined-title">登录后查看我的圈子</view>
+    <view class="joined-caption">加入感兴趣的圈子，随时发现新的讨论</view>
+    <view class="joined-button" bindtap="openLogin">登录</view>
+  </view>
+</view>
+
+<view wx:else class="page topic-page">
+  <view class="topic-hero">
+    <image class="topic-bg" src="/features/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <view class="topic-shade"></view>
+    <status-bar transparent="{{true}}"></status-bar>
+    <view class="topic-nav"><text bindtap="back">‹</text><text>•••</text></view>
+    <view class="topic-summary">
+      <view class="topic-icon">
+        <image wx:if="{{current.iconUrl}}" src="{{current.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onDetailIconError"></image>
+        <text wx:else>{{current.iconText || '#'}}</text>
+      </view>
+      <view class="topic-copy">
+        <view class="topic-name ellipsis">{{current.title}}</view>
+        <view class="topic-count">沸点{{current.msg_count}} · 掘友{{current.follower_count}}</view>
+      </view>
+      <view class="join-button" bindtap="toggleFollow">加入</view>
+    </view>
+    <view class="topic-description two-lines">{{current.description}}</view>
+    <view class="topic-detail" bindtap="showDetails">更多详细信息 ›</view>
+  </view>
+
+  <view class="sort-row surface">
+    <text>排序</text>
+    <view class="sort-switch">
+      <view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="changeSort">热门</view>
+      <view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="changeSort">最新</view>
+    </view>
+  </view>
+  <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin" bind:like="toggleLike" bind:more="pinMore"></pin-card>
+  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
+  <view wx:elif="{{!pins.length}}" class="loading-line">暂无沸点</view>
+  <view class="publish-fab" bindtap="publish">✎</view>
+</view>

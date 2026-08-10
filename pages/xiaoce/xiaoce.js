@@ -135,19 +135,19 @@ Page({
   },
 
   openCourse(event) {
-    wx.navigateTo({ url: `/pages/courseDetail/courseDetail?id=${event.detail.item.id}` })
+    wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${event.detail.item.id}` })
   },
 
   openSearch() {
-    wx.navigateTo({ url: '/pages/search/search?type=course' })
+    wx.navigateTo({ url: '/features/search/search?type=course' })
   },
 
   openVip() {
-    wx.navigateTo({ url: '/pages/vip/vip' })
+    wx.navigateTo({ url: '/features/vip/vip' })
   },
 
   openCourseCenter() {
     if (!session.requireLogin()) return
-    wx.navigateTo({ url: '/pages/courseCenter/courseCenter' })
+    wx.navigateTo({ url: '/features/courseCenter/courseCenter' })
   }
 })

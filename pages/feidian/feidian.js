@@ -113,12 +113,12 @@ Page({
   openDetail(event) {
     const item = event.detail ? event.detail.item : null
     const msgId = item ? item.msg_id : event.currentTarget.dataset.id
-    if (msgId) wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${msgId}` })
+    if (msgId) wx.navigateTo({ url: `/features/feidianDetail/feidianDetail?msgId=${msgId}` })
   },
 
   openAuthor(event) {
     const author = event.detail && event.detail.author
-    if (author && author.user_id) wx.navigateTo({ url: `/pages/profile/profile?id=${author.user_id}` })
+    if (author && author.user_id) wx.navigateTo({ url: `/features/profile/profile?id=${author.user_id}` })
   },
 
   openTopic(event) {
@@ -129,11 +129,11 @@ Page({
     cache[topic.topic_id] = topic
     wx.setStorageSync('jj:topic-cache', cache)
     this.setData({ [`topics[${index}].newCount`]: 0 })
-    wx.navigateTo({ url: `/pages/topic/topic?id=${topic.topic_id}` })
+    wx.navigateTo({ url: `/features/topic/topic?id=${topic.topic_id}` })
   },
 
   openTopicSquare() {
-    wx.navigateTo({ url: '/pages/topic/topic' })
+    wx.navigateTo({ url: '/features/topic/topic' })
   },
 
   requireAccount() {
@@ -154,7 +154,7 @@ Page({
         else if (tapIndex === 1) {
           this.setData({ list: this.data.list.filter((pin) => pin.msg_id !== item.msg_id) })
           utils.toast('将减少此类内容推荐')
-        } else wx.navigateTo({ url: '/pages/feedback/feedback' })
+        } else wx.navigateTo({ url: '/features/feedback/feedback' })
       }
     })
   },
@@ -162,7 +162,7 @@ Page({
   onShareAppMessage(result) {
     const item = result.from === 'button' ? result.target.dataset.item : null
     if (item && item.msg_id) {
-      return { title: item.content || '稀土掘金沸点', path: `/pages/feidianDetail/feidianDetail?msgId=${item.msg_id}` }
+      return { title: item.content || '稀土掘金沸点', path: `/features/feidianDetail/feidianDetail?msgId=${item.msg_id}` }
     }
     return { title: '稀土掘金沸点', path: '/pages/feidian/feidian' }
   }

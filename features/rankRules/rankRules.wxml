@@ -1,0 +1,10 @@
+<view class="rank-rules-page">
+  <image
+    wx:for="{{ruleImages}}"
+    wx:key="*this"
+    class="rank-rules-document"
+    src="{{item}}"
+    mode="widthFix"
+    show-menu-by-longpress
+  ></image>
+</view>

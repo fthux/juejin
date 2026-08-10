@@ -190,7 +190,7 @@ Page({
   },
 
   openSearch() {
-    wx.navigateTo({ url: '/pages/search/search' })
+    wx.navigateTo({ url: '/features/search/search' })
   },
 
   openSign() {
@@ -198,27 +198,27 @@ Page({
   },
 
   openAccountInfo() {
-    wx.navigateTo({ url: '/pages/login/login' })
+    wx.navigateTo({ url: '/features/login/login' })
   },
 
   openCategoryMenu() {
-    wx.navigateTo({ url: '/pages/homeChannels/homeChannels' })
+    wx.navigateTo({ url: '/features/homeChannels/homeChannels' })
   },
 
   openRank(event) {
-    wx.navigateTo({ url: `/pages/rank/rank?type=${event.currentTarget.dataset.type}` })
+    wx.navigateTo({ url: `/features/rank/rank?type=${event.currentTarget.dataset.type}` })
   },
 
   openArticle(event) {
     const item = event.detail ? event.detail.item : null
     const articleId = item ? item.article_id : event.currentTarget.dataset.id
-    if (articleId) wx.navigateTo({ url: `/pages/post/post?id=${articleId}` })
+    if (articleId) wx.navigateTo({ url: `/features/post/post?id=${articleId}` })
   },
 
   openAuthor(event) {
     const author = event.detail ? event.detail.author : null
     const userId = author ? author.user_id : event.currentTarget.dataset.id
-    if (userId) wx.navigateTo({ url: `/pages/profile/profile?id=${userId}` })
+    if (userId) wx.navigateTo({ url: `/features/profile/profile?id=${userId}` })
   },
 
   dislikeArticle(event) {
@@ -232,7 +232,7 @@ Page({
     const item = this.data.headlineList[event.currentTarget.dataset.index]
     if (!item) return
     wx.setStorageSync('jj:headline-current', item)
-    wx.navigateTo({ url: '/pages/headlineDetail/headlineDetail' })
+    wx.navigateTo({ url: '/features/headlineDetail/headlineDetail' })
   },
 
   onShareAppMessage() {

@@ -45,7 +45,15 @@
   "packOptions": {
     "ignore": [
       {
+        "value": ".git",
+        "type": "folder"
+      },
+      {
         "value": ".codegraph",
+        "type": "folder"
+      },
+      {
+        "value": "artifacts",
         "type": "folder"
       },
       {
@@ -143,6 +151,34 @@
       {
         "value": "scripts",
         "type": "folder"
+      },
+      {
+        "value": "{{HOMEBREW_PREFIX}}",
+        "type": "folder"
+      },
+      {
+        "value": ".DS_Store",
+        "type": "file"
+      },
+      {
+        "value": "pages/.DS_Store",
+        "type": "file"
+      },
+      {
+        "value": "base.apk",
+        "type": "file"
+      },
+      {
+        "value": "LICENSE",
+        "type": "file"
+      },
+      {
+        "value": "README.md",
+        "type": "file"
+      },
+      {
+        "value": "THIRD_PARTY_NOTICES.md",
+        "type": "file"
       },
       {
         "value": "package.json",

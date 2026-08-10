@@ -7,21 +7,36 @@ const exists = (file) => fs.existsSync(path.join(root, file))
 const fail = (message) => {
   throw new Error(message)
 }
+const collectFiles = (directory) => {
+  const absolute = path.join(root, directory)
+  if (!fs.existsSync(absolute)) return []
+  return fs.readdirSync(absolute, { withFileTypes: true }).flatMap((entry) => {
+    const relative = path.join(directory, entry.name)
+    return entry.isDirectory() ? collectFiles(relative) : [relative]
+  })
+}
 
 const app = JSON.parse(read('app.json'))
 const project = JSON.parse(read('project.config.json'))
-const pageSet = new Set(app.pages)
+const subPackagePages = (app.subPackages || []).flatMap((pack) =>
+  pack.pages.map((page) => `${pack.root.replace(/\/$/, '')}/${page}`)
+)
+const allPages = app.pages.concat(subPackagePages)
+const pageSet = new Set(allPages)
+const mainPageSet = new Set(app.pages)
 const componentRoots = Object.values(app.usingComponents || {}).map((value) => value.replace(/^\//, ''))
-const roots = app.pages.concat(componentRoots)
+const roots = allPages.concat(componentRoots)
 
 if (app.pages[0] !== 'pages/launch/launch') fail('启动页必须是首个注册页面')
 if (app.pages[1] !== 'pages/index/index') fail('启动页之后必须是首页')
-if (app.pages.length !== pageSet.size) fail('app.json 中存在重复页面')
+if (allPages.length !== pageSet.size) fail('app.json 中存在重复页面')
+if (!(app.subPackages || []).some((pack) => pack.root === 'features')) fail('功能页面必须放入 features 分包')
+if (app.lazyCodeLoading !== 'requiredComponents') fail('组件按需注入未启用')
 
 const ignoredFolders = new Set((project.packOptions && project.packOptions.ignore || [])
   .filter((item) => item.type === 'folder')
   .map((item) => item.value.replace(/\/$/, '')))
-for (const page of app.pages) {
+for (const page of allPages) {
   const folder = page.replace(/\/[^/]+$/, '')
   if (ignoredFolders.has(folder)) fail(`注册页面被项目配置排除: ${page}`)
 }
@@ -42,8 +57,8 @@ for (const base of roots) {
   }
 }
 
-const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'utils/chart.js', 'utils/markdown.js', 'utils/utils.js', 'data/mockData.js']
-  .concat(app.pages.map((page) => `${page}.js`))
+const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'features/utils/chart.js', 'features/utils/markdown.js', 'features/utils/showdown.js', 'utils/utils.js', 'data/mockData.js']
+  .concat(allPages.map((page) => `${page}.js`))
   .concat(componentRoots.map((component) => `${component}.js`))
 
 const unsupportedApis = /wx\.(?:requestPayment|requestSubscribeMessage|login|getUserProfile|downloadFile|saveFile|chooseImage|chooseMedia|chooseVideo|startRecord|authorize)\b/
@@ -55,34 +70,34 @@ for (const file of runtimeFiles) {
   if (/requestPayment|pay_api|payRequest/i.test(source)) fail(`注册代码包含支付调用: ${file}`)
   if (unsupportedApis.test(source)) fail(`注册代码包含需求范围外的小程序能力: ${file}`)
 
-  for (const match of source.matchAll(/["'`]\/((?:pages)\/[^?"'`$]+)(?:\?[^"'`]*)?["'`]/g)) {
+  for (const match of source.matchAll(/["'`]\/((?:pages|features)\/(?!assets\/)[^?"'`$]+)(?:\?[^"'`]*)?["'`]/g)) {
     const target = match[1]
     if (!pageSet.has(target)) fail(`${file} 跳转到未注册页面: ${target}`)
   }
 }
 
 const privatePages = [
-  'pages/chat/chat',
-  'pages/collectionSet/collectionSet',
-  'pages/courseCenter/courseCenter',
-  'pages/creator/creator',
-  'pages/creatorActivities/creatorActivities',
-  'pages/creatorData/creatorData',
-  'pages/creatorFans/creatorFans',
-  'pages/drafts/drafts',
-  'pages/dislike/dislike',
-  'pages/level/level',
-  'pages/notes/notes',
-  'pages/notifications/notifications',
-  'pages/lottery/lottery',
-  'pages/welfare/welfare',
-  'pages/popularize/popularize',
-  'pages/coupon/coupon',
-  'pages/personalInfo/personalInfo',
-  'pages/publish/publish',
-  'pages/readHistory/readHistory',
-  'pages/registrations/registrations',
-  'pages/sign/sign'
+  'features/chat/chat',
+  'features/collectionSet/collectionSet',
+  'features/courseCenter/courseCenter',
+  'features/creator/creator',
+  'features/creatorActivities/creatorActivities',
+  'features/creatorData/creatorData',
+  'features/creatorFans/creatorFans',
+  'features/drafts/drafts',
+  'features/dislike/dislike',
+  'features/level/level',
+  'features/notes/notes',
+  'features/notifications/notifications',
+  'features/lottery/lottery',
+  'features/welfare/welfare',
+  'features/popularize/popularize',
+  'features/coupon/coupon',
+  'features/personalInfo/personalInfo',
+  'features/publish/publish',
+  'features/readHistory/readHistory',
+  'features/registrations/registrations',
+  'features/sign/sign'
 ]
 
 for (const page of privatePages) {
@@ -90,8 +105,8 @@ for (const page of privatePages) {
   if (!read(`${page}.js`).includes('session.requirePage(')) fail(`账号页面缺少深链登录保护: ${page}`)
 }
 
-const loginSource = read('pages/login/login.js')
-const loginTemplate = read('pages/login/login.wxml')
+const loginSource = read('features/login/login.js')
+const loginTemplate = read('features/login/login.wxml')
 if (pageSet.has('pages/loginCode/loginCode')) fail('小程序不得注册验证码登录页')
 if (exists('services/passport.js')) fail('小程序不得包含 Passport 登录实现')
 if (/<input|password=|sendCode|loginWith/.test(loginTemplate)) fail('账号说明页不得包含登录表单')
@@ -101,7 +116,7 @@ if (!loginSource.includes('https://juejin.cn/')) fail('账号说明页必须提�
 for (const base of roots) {
   const sources = [read(`${base}.js`), read(`${base}.wxml`), read(`${base}.wxss`)]
   for (const source of sources) {
-    for (const match of source.matchAll(/\/assets\/[A-Za-z0-9_./-]+/g)) {
+    for (const match of source.matchAll(/\/(?:features\/)?assets\/[A-Za-z0-9_./-]+/g)) {
       const asset = match[0].replace(/^\//, '')
       if (!exists(asset)) fail(`${base} 引用了不存在的本地资源: ${asset}`)
     }
@@ -109,7 +124,7 @@ for (const base of roots) {
 }
 
 for (const item of app.tabBar.list) {
-  if (!pageSet.has(item.pagePath)) fail(`TabBar 页面未注册: ${item.pagePath}`)
+  if (!mainPageSet.has(item.pagePath)) fail(`TabBar 页面必须注册在主包: ${item.pagePath}`)
   for (const key of ['iconPath', 'selectedIconPath']) {
     const file = item[key]
     if (!file.endsWith('.png')) fail(`TabBar 图标必须使用 PNG: ${file}`)
@@ -118,7 +133,56 @@ for (const item of app.tabBar.list) {
   }
 }
 
-const markdown = require(path.join(root, 'utils/markdown.js'))
+const ignoredEntries = project.packOptions && project.packOptions.ignore || []
+const isPackIgnored = (file) => ignoredEntries.some((item) => {
+  const value = item.value.replace(/\/$/, '')
+  return item.type === 'folder' ? file === value || file.startsWith(`${value}/`) : file === value
+})
+const activeJavaScript = new Set(runtimeFiles.concat(['custom-tab-bar/index.js']))
+const packagedJavaScript = ['pages', 'features', 'components', 'custom-tab-bar', 'data', 'services', 'utils']
+  .flatMap(collectFiles)
+  .filter((file) => file.endsWith('.js') && !isPackIgnored(file))
+const unusedJavaScript = packagedJavaScript.filter((file) => !activeJavaScript.has(file))
+if (unusedJavaScript.length) fail(`存在无依赖代码文件: ${unusedJavaScript.join(', ')}`)
+
+const activeTextFiles = new Set(['app.json', 'app.wxss', 'theme.json', 'sitemap.json', 'custom-tab-bar/index.js', 'custom-tab-bar/index.json', 'custom-tab-bar/index.wxml', 'custom-tab-bar/index.wxss'].concat(runtimeFiles))
+for (const base of roots) {
+  for (const extension of ['js', 'json', 'wxml', 'wxss']) activeTextFiles.add(`${base}.${extension}`)
+}
+const assetReferences = new Set()
+for (const file of activeTextFiles) {
+  if (!exists(file)) continue
+  for (const match of read(file).matchAll(/\/?(?:features\/)?assets\/[A-Za-z0-9_./-]+/g)) {
+    assetReferences.add(match[0].replace(/^\//, ''))
+  }
+}
+for (const item of app.tabBar.list) {
+  assetReferences.add(item.iconPath)
+  assetReferences.add(item.selectedIconPath)
+}
+
+const packageAssets = collectFiles('assets').concat(collectFiles('features/assets'))
+const unusedAssets = packageAssets.filter((file) => !assetReferences.has(file))
+if (unusedAssets.length) fail(`存在无依赖本地资源: ${unusedAssets.join(', ')}`)
+for (const file of packageAssets) {
+  if (!/\.(?:avif|gif|jpe?g|png|svg|webp|aac|m4a|mp3|ogg|wav)$/i.test(file)) continue
+  const bytes = fs.statSync(path.join(root, file)).size
+  if (bytes > 200 * 1024) fail(`图片或音频资源超过 200KB: ${file} (${bytes} bytes)`)
+}
+
+const mainPackageFiles = new Set(['app.js', 'app.json', 'app.wxss', 'theme.json', 'sitemap.json'])
+for (const base of app.pages.concat(componentRoots)) {
+  for (const extension of ['js', 'json', 'wxml', 'wxss']) mainPackageFiles.add(`${base}.${extension}`)
+}
+for (const file of ['services/api.js', 'services/session.js', 'utils/utils.js', 'data/mockData.js']) mainPackageFiles.add(file)
+for (const file of collectFiles('custom-tab-bar').concat(collectFiles('assets'))) mainPackageFiles.add(file)
+const mainPackageBytes = [...mainPackageFiles].reduce((total, file) => total + fs.statSync(path.join(root, file)).size, 0)
+if (mainPackageBytes >= 1.5 * 1024 * 1024) fail(`主包原始文件超过 1.5MiB: ${mainPackageBytes} bytes`)
+
+const featurePackageBytes = collectFiles('features').reduce((total, file) => total + fs.statSync(path.join(root, file)).size, 0)
+if (featurePackageBytes >= 2 * 1024 * 1024) fail(`features 分包原始文件超过 2MiB: ${featurePackageBytes} bytes`)
+
+const markdown = require(path.join(root, 'features/utils/markdown.js'))
 const signedImage = 'https://p3.example.com/image.webp?rk3s=test&x-expires=1&x-signature=test'
 const renderedImage = markdown.toHtml(`![](${signedImage})`)
 if (!renderedImage.includes(`src="${signedImage}"`)) fail('Markdown 图片签名参数被 HTML 实体破坏')
@@ -177,31 +241,31 @@ if (normalizedComment.replies[0].reply_user !== '被回复者') fail('评论回�
 if (!normalizedComment.reply_has_more) fail('评论回复数量不完整时应显示查看更多入口')
 if (!normalizedComment.is_hot) fail('评论归一化丢失热评标识')
 
-const postSource = read('pages/post/post.js')
+const postSource = read('features/post/post.js')
 if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
 
-const pinDetailSource = read('pages/feidianDetail/feidianDetail.js')
-const pinDetailTemplate = read('pages/feidianDetail/feidianDetail.wxml')
-const pinDetailConfig = JSON.parse(read('pages/feidianDetail/feidianDetail.json'))
+const pinDetailSource = read('features/feidianDetail/feidianDetail.js')
+const pinDetailTemplate = read('features/feidianDetail/feidianDetail.wxml')
+const pinDetailConfig = JSON.parse(read('features/feidianDetail/feidianDetail.json'))
 const pinCardSource = read('components/pinCard/pinCard.js')
 const pinCardTemplate = read('components/pinCard/pinCard.wxml')
 const pinCardStyles = read('components/pinCard/pinCard.wxss')
 const findTemplate = read('pages/find/find.wxml')
 const findStyles = read('pages/find/find.wxss')
 const findSource = read('pages/find/find.js')
-const collectionSquareSource = read('pages/collectionSquare/collectionSquare.js')
-const collectionSquareTemplate = read('pages/collectionSquare/collectionSquare.wxml')
-const profileSource = read('pages/profile/profile.js')
-const dailySource = read('pages/daily/daily.js')
-const dailyTemplate = read('pages/daily/daily.wxml')
-const columnSource = read('pages/column/column.js')
-const columnTemplate = read('pages/column/column.wxml')
-const collectionConfig = JSON.parse(read('pages/collectionSquare/collectionSquare.json'))
-const rankSource = read('pages/rank/rank.js')
-const rankTemplate = read('pages/rank/rank.wxml')
-const rankRulesSource = read('pages/rankRules/rankRules.js')
-const rankRulesTemplate = read('pages/rankRules/rankRules.wxml')
-const rankRulesConfig = JSON.parse(read('pages/rankRules/rankRules.json'))
+const collectionSquareSource = read('features/collectionSquare/collectionSquare.js')
+const collectionSquareTemplate = read('features/collectionSquare/collectionSquare.wxml')
+const profileSource = read('features/profile/profile.js')
+const dailySource = read('features/daily/daily.js')
+const dailyTemplate = read('features/daily/daily.wxml')
+const columnSource = read('features/column/column.js')
+const columnTemplate = read('features/column/column.wxml')
+const collectionConfig = JSON.parse(read('features/collectionSquare/collectionSquare.json'))
+const rankSource = read('features/rank/rank.js')
+const rankTemplate = read('features/rank/rank.wxml')
+const rankRulesSource = read('features/rankRules/rankRules.js')
+const rankRulesTemplate = read('features/rankRules/rankRules.wxml')
+const rankRulesConfig = JSON.parse(read('features/rankRules/rankRules.json'))
 const utilsSource = read('utils/utils.js')
 const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(pinDetailSource)) fail('沸点评论列表默认排序必须为最热')
@@ -220,8 +284,8 @@ if (!findTemplate.includes('referrer-policy="no-referrer"')) fail('发现页远�
 if (!findTemplate.includes('class="find-sticky"') || !findTemplate.includes('transparent="{{true}}"')) fail('发现页搜索栏必须吸顶并使用透明状态栏')
 if (/<swiper[^>]*class="quick-swiper"|<swiper-item><view class="quick-grid"><\/view><\/swiper-item>/.test(findTemplate)) fail('发现页功能入口不得包含空白轮播页')
 if (!findTemplate.includes('class="banner-art"') || !/\.banner-art\s*\{[^}]*width:\s*198rpx;[^}]*height:\s*198rpx/s.test(findStyles)) fail('发现页活动 Banner 必须按正方形比例展示封面')
-if (!pageSet.has('pages/daily/daily') || !findSource.includes("'/pages/daily/daily'")) fail('每日掘金往日精彩缺少独立页面')
-if (!pageSet.has('pages/selectedPins/selectedPins') || !findSource.includes("'/pages/selectedPins/selectedPins'")) fail('精选沸点缺少独立页面')
+if (!pageSet.has('features/daily/daily') || !findSource.includes("'/features/daily/daily'")) fail('每日掘金往日精彩缺少独立页面')
+if (!pageSet.has('features/selectedPins/selectedPins') || !findSource.includes("'/features/selectedPins/selectedPins'")) fail('精选沸点缺少独立页面')
 if (!findTemplate.includes('class="selected-content two-lines"') || !findTemplate.includes('等人赞过') || !findTemplate.includes('class="pin-comment-box"')) fail('发现页精选沸点卡片缺少两行摘要、点赞人或评论框')
 if (!/<swiper[^>]*class="rank-swiper"[^>]*bindchange="changeRankCategory"/.test(findTemplate)) fail('发现页文章榜必须支持左右滑动切换')
 if (findTemplate.includes('type=news') || findTemplate.includes('行业速递</text><view')) fail('行业速递不得保留查看更多入口')
@@ -245,12 +309,12 @@ if (!findTemplate.includes('bindtap="openRankCategory"') || !findSource.includes
 if (!rankTemplate.includes('item.digg_label') || !rankTemplate.includes('find_page_ic_comment.svg') || !rankTemplate.includes('data-index="{{index}}" bindtap="openArticle"')) fail('文章榜必须使用标准文章卡片并通过索引打开文章')
 if (!rankSource.includes('onReachBottom()') || !rankSource.includes('loadMoreArticles()') || !rankSource.includes('previous.concat(additions)') || !rankTemplate.includes('loadingMore')) fail('文章榜缺少去重上拉加载')
 if (!rankSource.includes('onPageScroll(event)') || !rankTemplate.includes('rank-fixed-nav') || !rankTemplate.includes('navOpacity')) fail('文章榜缺少滚动渐显导航栏')
-if (!pageSet.has('pages/rankRules/rankRules') || !rankSource.includes("'/pages/rankRules/rankRules'")) fail('文章榜排名规则缺少独立页面跳转')
+if (!pageSet.has('features/rankRules/rankRules') || !rankSource.includes("'/features/rankRules/rankRules'")) fail('文章榜排名规则缺少独立页面跳转')
 if (rankRulesConfig.navigationStyle === 'custom' || rankRulesConfig.navigationBarTitleText !== '排名规则') fail('排名规则页必须使用标题为排名规则的系统导航栏')
 if (!rankRulesSource.includes("bookletId: '6843715467522080775'") || !rankRulesSource.includes("sectionId: '6843715630860861453'")) fail('排名规则页缺少 APK 中对应的小册章节标识')
-if (!rankRulesTemplate.includes('rank_rules.webp') || !rankRulesTemplate.includes('mode="widthFix"')) fail('排名规则页缺少可滚动的完整规则正文')
+if ((rankRulesSource.match(/rank_rules_\d{2}\.webp/g) || []).length !== 6 || !rankRulesTemplate.includes('wx:for="{{ruleImages}}"') || !rankRulesTemplate.includes('mode="widthFix"')) fail('排名规则页缺少完整的分段规则正文')
 if (!/\.pin-content\s*\{[^}]*white-space:\s*pre-wrap/s.test(pinCardStyles)) fail('沸点正文必须保留接口换行')
 if (!pinCardSource.includes("wx.setStorageSync('jj:user-current', author)")) fail('沸点头像跳转前必须缓存当前作者资料')
 if (profileSource.includes('|| mock.authors[0]')) fail('用户主页不得回退到固定的官方账号')
 
-console.log(`Validated ${app.pages.length} pages, ${componentRoots.length} components, navigation, local assets and API boundaries.`)
+console.log(`Validated ${allPages.length} pages, ${componentRoots.length} components, main package ${Math.ceil(mainPackageBytes / 1024)}KB, feature package ${Math.ceil(featurePackageBytes / 1024)}KB, navigation, dependencies, local assets and API boundaries.`)

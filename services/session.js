@@ -24,12 +24,12 @@ function getSession() {
 }
 
 function requireLogin() {
-  wx.navigateTo({ url: '/pages/login/login' })
+  wx.navigateTo({ url: '/features/login/login' })
   return false
 }
 
 function requirePage() {
-  wx.redirectTo({ url: '/pages/login/login' })
+  wx.redirectTo({ url: '/features/login/login' })
   return false
 }
 

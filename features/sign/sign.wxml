@@ -1,0 +1,57 @@
+<view class="page sign-page">
+  <view class="sign-summary">
+    <image src="/features/assets/app/sign/bg_sign_in_home.webp" mode="aspectFill"></image>
+    <view class="summary-top"><view><image src="/features/assets/app/sign/ic_check_in_card.webp" mode="aspectFit"></image>补签卡: 0</view><text bindtap="showRules">签到规则</text></view>
+    <view class="summary-stats">
+      <view><text>连续签到天数</text><text class="stat-number">{{continuousDays}}</text></view>
+      <view class="summary-divider"></view>
+      <view><text>当前矿石数</text><text class="stat-number">{{mineral}}</text></view>
+    </view>
+    <view class="summary-actions">
+      <view data-type="draw" bindtap="openReward">去抽奖 ▶</view>
+      <view data-type="exchange" bindtap="openReward">去兑换 ▶</view>
+    </view>
+  </view>
+
+  <view class="calendar-card surface">
+    <view class="calendar-head">
+      <view class="month-title">{{year}}年 {{month}}月</view>
+      <view class="reminder">10点签到提醒 <switch checked="{{reminder}}" color="#1e80ff" bindchange="toggleReminder"></switch></view>
+    </view>
+    <view class="week-labels"><text>日</text><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text></view>
+    <view class="calendar-grid">
+      <view wx:for="{{calendar}}" wx:key="key" class="calendar-day {{item.currentMonth ? '' : 'outside'}} {{item.today ? 'today' : ''}} {{item.signed ? 'signed' : ''}}">
+        <image wx:if="{{item.signed}}" src="/features/assets/app/sign/ic_checked.webp" mode="aspectFit"></image>
+        <image wx:elif="{{item.canReissue}}" src="/features/assets/app/sign/ic_reissue_sign_unselect.webp" mode="aspectFit"></image>
+        <text wx:else>{{item.day}}</text>
+      </view>
+    </view>
+    <view class="calendar-sign {{signed ? 'signed' : ''}}" bindtap="signIn">{{signed ? '已连续签到 ' + continuousDays + ' 天' : '立即签到'}}</view>
+    <view class="fortune-link" bindtap="showFortune">▣ 点击查看 <text>今日运势</text></view>
+  </view>
+
+  <view class="welfare-section section">
+    <view class="welfare-copy"><view>公益计划</view><view class="outline-button" bindtap="showDonation">捐赠详情 ›</view></view>
+    <image src="/features/assets/app/sign/sign_banner2.webp" mode="aspectFill"></image>
+  </view>
+
+  <view class="task-section section">
+    <view class="task-title">我的任务</view>
+    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <text>程序员正在快马加鞭开发中，敬请期待</text>
+  </view>
+
+  <view class="sign-footer">用户协议 · 法律声明 © 2022 稀土掘金</view>
+
+  <view wx:if="{{signed}}" class="share-entry" bindtap="openShare">分享签到</view>
+  <view wx:if="{{showShare}}" class="share-mask" catchtap="closeShare">
+    <view class="share-panel" catchtap="noop">
+      <image class="share-photo" src="/features/assets/app/sign/sign_banner1.webp" mode="aspectFit"></image>
+      <view class="share-date"><text class="share-month">{{month}}</text><text>{{year}}</text></view>
+      <view class="share-copy"><text class="share-fortune">{{fortune}}</text><text>{{fortuneNote}}</text></view>
+      <view class="share-brand"><text>稀土掘金</text><view class="qr-grid"><view wx:for="{{[1,2,3,4,5,6,7,8,9]}}" wx:key="*this"></view></view></view>
+      <button open-type="share">分享给好友</button>
+      <view class="share-cancel" bindtap="closeShare">取消</view>
+    </view>
+  </view>
+</view>

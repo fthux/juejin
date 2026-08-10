@@ -1,0 +1,55 @@
+<view class="page profile-page">
+  <view wx:if="{{user}}" class="profile-head surface">
+    <image class="profile-bg" src="/features/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <view class="profile-main">
+      <image class="profile-avatar" src="{{user.avatar_large}}" mode="aspectFill"></image>
+      <view class="profile-copy">
+        <view class="profile-name-row">
+          <view class="profile-name ellipsis">{{user.user_name}}</view>
+          <text class="level-badge">LV.{{user.level || 1}}</text>
+          <text class="jy-badge">JY.{{user.level || 1}}</text>
+        </view>
+      </view>
+      <view wx:if="{{isCurrentUser}}" class="outline-button" bindtap="editProfile">编辑</view>
+      <view wx:else class="profile-actions">
+        <view class="secondary-button" bindtap="openChat">私信</view>
+        <view class="primary-button" bindtap="toggleFollow">{{followed ? '已关注' : '关注'}}</view>
+      </view>
+    </view>
+    <view class="profile-description">{{user.description || user.job_title || '暂无个人介绍'}}</view>
+    <view wx:if="{{user.blog_address}}" class="profile-link ellipsis">{{user.blog_address}}</view>
+    <view class="profile-stats">
+      <view><text>{{user.followee_count || 0}}</text><text>关注</text></view>
+      <view><text>{{user.follower_count || 0}}</text><text>关注者</text></view>
+      <view><text>{{power}}</text><text>掘力值</text></view>
+    </view>
+  </view>
+
+  <view class="badge-strip surface" bindtap="openBadges">
+    <view class="badge-copy"><text class="badge-medal">●</text><text>获得的徽章 {{badgeCount}}</text></view>
+    <view class="badge-preview"><text>2021</text><text>2023</text><text>2024</text><text class="badge-arrow">›</text></view>
+  </view>
+
+  <view class="profile-tabs surface">
+    <view wx:for="{{tabs}}" wx:key="id" class="profile-tab {{activeTab === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchTab">{{item.name}}</view>
+    <text class="profile-search">⌕</text>
+  </view>
+  <view wx:if="{{activeTab === 'dynamic'}}">
+    <block wx:for="{{dynamics}}" wx:key="index">
+      <article-card wx:if="{{item.kind === 'article'}}" item="{{item}}" bind:open="openArticle"></article-card>
+      <pin-card wx:else item="{{item}}" bind:open="openPin"></pin-card>
+    </block>
+    <empty-state wx:if="{{!dynamics.length}}" text="还没有发布动态"></empty-state>
+  </view>
+  <view wx:elif="{{activeTab === 'article'}}">
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    <empty-state wx:if="{{!articles.length}}" text="还没有发布文章"></empty-state>
+  </view>
+  <view wx:elif="{{activeTab === 'pin'}}">
+    <pin-card wx:for="{{pins}}" wx:key="msg_id" item="{{item}}" bind:open="openPin"></pin-card>
+    <empty-state wx:if="{{!pins.length}}" text="还没有发布沸点"></empty-state>
+  </view>
+  <empty-state wx:else text="这里还没有内容"></empty-state>
+  <view wx:if="{{articleLoading}}" class="profile-loading">正在加载更多文章...</view>
+  <view wx:if="{{!articleLoading && !articleHasMore && articles.length && (activeTab === 'dynamic' || activeTab === 'article')}}" class="profile-loading">已加载全部文章</view>
+</view>

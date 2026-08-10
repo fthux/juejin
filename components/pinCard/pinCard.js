@@ -47,7 +47,7 @@ Component({
       const cache = wx.getStorageSync('jj:theme-cache') || {}
       cache[themeId] = theme
       wx.setStorageSync('jj:theme-cache', cache)
-      wx.navigateTo({ url: `/pages/theme/theme?id=${themeId}` })
+      wx.navigateTo({ url: `/features/theme/theme?id=${themeId}` })
     },
     openTopic() {
       const topic = this.data.item && this.data.item.topic_info
@@ -55,7 +55,7 @@ Component({
       const cache = wx.getStorageSync('jj:topic-cache') || {}
       cache[String(topic.topic_id)] = topic
       wx.setStorageSync('jj:topic-cache', cache)
-      wx.navigateTo({ url: `/pages/topic/topic?id=${topic.topic_id}` })
+      wx.navigateTo({ url: `/features/topic/topic?id=${topic.topic_id}` })
     },
     follow() {
       this.triggerEvent('follow', { author: this.data.item.author })

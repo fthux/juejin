@@ -13,26 +13,26 @@ Page({
       history: 0
     },
     featureEntries: [
-      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/pages/sign/sign', auth: true },
-      { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.webp', url: '/pages/lottery/lottery', auth: true },
+      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/features/sign/sign', auth: true },
+      { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.webp', url: '/features/lottery/lottery', auth: true },
       { name: 'Bug 挑战赛', icon: '/assets/app/user/ic_user_bug.webp', message: '当前暂无进行中的挑战赛' },
-      { name: '福利兑换', icon: '/assets/app/user/ic_user_change.webp', url: '/pages/welfare/welfare', auth: true }
+      { name: '福利兑换', icon: '/assets/app/user/ic_user_change.webp', url: '/features/welfare/welfare', auth: true }
     ],
     creatorEntries: [
-      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/pages/creatorData/creatorData', auth: true },
-      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/pages/creatorFans/creatorFans', auth: true },
-      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/pages/creatorActivities/creatorActivities', auth: true },
-      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/pages/drafts/drafts', auth: true }
+      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/features/creatorData/creatorData', auth: true },
+      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/features/creatorFans/creatorFans', auth: true },
+      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/features/creatorActivities/creatorActivities', auth: true },
+      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/features/drafts/drafts', auth: true }
     ],
     moreEntries: [
-      { name: '课程中心', icon: '/assets/app/user/ic_user_course.svg', url: '/pages/courseCenter/courseCenter', auth: true },
-      { name: '推广中心', icon: '/assets/app/user/ic_user_popularize.svg', url: '/pages/popularize/popularize', auth: true },
-      { name: '我的优惠券', icon: '/assets/app/user/ic_user_coupon.svg', url: '/pages/coupon/coupon', auth: true },
-      { name: '我的圈子', icon: '/assets/app/user/ic_user_pins.svg', url: '/pages/topic/topic', auth: true },
-      { name: '阅读记录', icon: '/assets/app/user/ic_user_history.svg', url: '/pages/readHistory/readHistory', auth: true },
-      { name: '标签管理', icon: '/assets/app/user/ic_user_tag.svg', url: '/pages/tags/tags', auth: true },
-      { name: '我的报名', icon: '/assets/app/user/ic_user_apply.svg', url: '/pages/registrations/registrations', auth: true },
-      { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.svg', url: '/pages/feedback/feedback' }
+      { name: '课程中心', icon: '/assets/app/user/ic_user_course.svg', url: '/features/courseCenter/courseCenter', auth: true },
+      { name: '推广中心', icon: '/assets/app/user/ic_user_popularize.svg', url: '/features/popularize/popularize', auth: true },
+      { name: '我的优惠券', icon: '/assets/app/user/ic_user_coupon.svg', url: '/features/coupon/coupon', auth: true },
+      { name: '我的圈子', icon: '/assets/app/user/ic_user_pins.svg', url: '/features/topic/topic', auth: true },
+      { name: '阅读记录', icon: '/assets/app/user/ic_user_history.svg', url: '/features/readHistory/readHistory', auth: true },
+      { name: '标签管理', icon: '/assets/app/user/ic_user_tag.svg', url: '/features/tags/tags', auth: true },
+      { name: '我的报名', icon: '/assets/app/user/ic_user_apply.svg', url: '/features/registrations/registrations', auth: true },
+      { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.svg', url: '/features/feedback/feedback' }
     ]
   },
 
@@ -55,7 +55,7 @@ Page({
   },
 
   openLogin() {
-    wx.navigateTo({ url: '/pages/login/login' })
+    wx.navigateTo({ url: '/features/login/login' })
   },
 
   openProfile() {
@@ -63,7 +63,7 @@ Page({
       this.openLogin()
       return
     }
-    wx.navigateTo({ url: `/pages/profile/profile?id=${this.data.user.user_id}` })
+    wx.navigateTo({ url: `/features/profile/profile?id=${this.data.user.user_id}` })
   },
 
   openEntry(event) {
@@ -79,11 +79,11 @@ Page({
 
   openNotifications() {
     if (!session.requireLogin()) return
-    wx.navigateTo({ url: '/pages/notifications/notifications' })
+    wx.navigateTo({ url: '/features/notifications/notifications' })
   },
 
   openSettings() {
-    wx.navigateTo({ url: '/pages/setting/setting' })
+    wx.navigateTo({ url: '/features/setting/setting' })
   },
 
   openScan() {
@@ -96,20 +96,20 @@ Page({
 
   openCreator() {
     if (!session.requireLogin()) return
-    wx.navigateTo({ url: '/pages/creator/creator' })
+    wx.navigateTo({ url: '/features/creator/creator' })
   },
 
   openActivity() {
     if (!session.requireLogin()) return
-    wx.navigateTo({ url: '/pages/creatorActivities/creatorActivities' })
+    wx.navigateTo({ url: '/features/creatorActivities/creatorActivities' })
   },
 
   openCollections() {
     if (!session.requireLogin()) return
-    wx.navigateTo({ url: '/pages/collectionSet/collectionSet' })
+    wx.navigateTo({ url: '/features/collectionSet/collectionSet' })
   },
 
   openVip() {
-    wx.navigateTo({ url: '/pages/vip/vip' })
+    wx.navigateTo({ url: '/features/vip/vip' })
   }
 })

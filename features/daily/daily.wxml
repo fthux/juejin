@@ -1,0 +1,27 @@
+<view class="page daily-page">
+  <view class="daily-hero">
+    <image class="hero-bg" src="/features/assets/app/daily/daily_column_cover.jpg" mode="aspectFill"></image>
+    <status-bar navigation="{{true}}" transparent="{{true}}">
+      <view class="hero-nav"><view class="back" bindtap="goBack">‹</view><view class="hero-more">•••</view></view>
+    </status-bar>
+  </view>
+
+  <view wx:if="{{author}}" class="daily-profile">
+    <view class="profile-title">酱酱们的每日掘金</view>
+    <view class="profile-row"><image src="{{author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" bindtap="openAuthor"></image><view class="profile-copy"><view class="profile-name-row"><text>{{author.user_name}}</text><text class="level-badge">LV.{{author.level}}</text></view><text>创建于{{author.create_time}}</text></view><view class="subscribe {{followed ? 'followed' : ''}}" bindtap="toggleFollow">{{followed ? '已订阅' : '订阅专栏'}}</view></view>
+    <view class="profile-description">{{author.description}}</view>
+    <view class="profile-stats"><view class="subscriber-avatars"><image wx:for="{{author.subscriber_avatars}}" wx:key="user_id" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><image wx:if="{{!author.subscriber_avatars.length}}" src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image></view><text>等{{author.follower_count}}人订阅</text><text>{{author.article_count}}篇文章</text></view>
+  </view>
+
+  <view class="article-bar"><text>收录文章</text><view bindtap="switchSort">{{sort === 'default' ? '默认排序' : '最新发布'}} ▴▾</view></view>
+  <view class="daily-list">
+    <view wx:for="{{articles}}" wx:key="article_id" class="daily-article" data-index="{{index}}" bindtap="openArticle">
+      <view class="article-title two-lines">{{item.title}}</view>
+      <view class="article-author"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{item.author.user_name}}</text><text class="divider"></text><text>{{item.ctime}}</text></view>
+      <view class="article-brief two-lines">{{item.brief_content}}</view>
+      <view class="article-bottom"><view class="article-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view><text wx:if="{{item.tags.length}}" class="article-tag">{{item.tags[0]}}</text></view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="loading-line">正在加载文章...</view>
+  <view wx:if="{{!hasMore && articles.length}}" class="list-end">已加载全部文章</view>
+</view>

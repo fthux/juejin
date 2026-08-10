@@ -8,7 +8,7 @@ Component({
   methods: {
     toTagDetail(e) {
       wx.navigateTo({
-        url: `/pages/post/post?id=${e.currentTarget.dataset.id}`,
+        url: `/features/post/post?id=${e.currentTarget.dataset.id}`,
       })
     },
   },

@@ -60,7 +60,7 @@ Component({
         })
       } else {
         wx.navigateTo({
-          url: `/pages/post/post?id=${e.currentTarget.dataset.article_id}`,
+          url: `/features/post/post?id=${e.currentTarget.dataset.article_id}`,
         })
       }
     },

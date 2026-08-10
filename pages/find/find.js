@@ -17,7 +17,7 @@ function cacheThemeAndOpen(theme) {
   const cache = wx.getStorageSync('jj:theme-cache') || {}
   cache[themeId] = theme
   wx.setStorageSync('jj:theme-cache', cache)
-  wx.navigateTo({ url: `/pages/theme/theme?id=${themeId}` })
+  wx.navigateTo({ url: `/features/theme/theme?id=${themeId}` })
 }
 
 Page({
@@ -45,17 +45,17 @@ Page({
     loadError: false,
     darkMode: false,
     channelEntries: [
-      { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', darkIcon: '/assets/app/find/dark/find_page_ic_interview_kit.svg', url: '/pages/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
+      { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', darkIcon: '/assets/app/find/dark/find_page_ic_interview_kit.svg', url: '/features/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
       { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', darkIcon: '/assets/app/find/dark/find_page_ic_industry_express.svg', anchor: 'industry' },
-      { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/pages/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
-      { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', darkIcon: '/assets/app/find/dark/find_page_ic_undergraduate_reading.svg', url: '/pages/discoverChannel/discoverChannel?type=student&title=高校精选' }
+      { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/features/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
+      { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', darkIcon: '/assets/app/find/dark/find_page_ic_undergraduate_reading.svg', url: '/features/discoverChannel/discoverChannel?type=student&title=高校精选' }
     ],
     quickEntries: [
-      { name: '技术团队', icon: '/assets/app/find/find_page_ic_tech_team.svg', url: '/pages/discoverChannel/discoverChannel?type=team&title=技术团队' },
-      { name: '圈子广场', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/pages/topic/topic' },
-      { name: '话题广场', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/pages/theme/theme' },
-      { name: '活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '/pages/discoverChannel/discoverChannel?type=activity&title=活动' },
-      { name: '竞赛', icon: '/assets/app/find/find_page_ic_game.svg', url: '/pages/discoverChannel/discoverChannel?type=game&title=竞赛' }
+      { name: '技术团队', icon: '/assets/app/find/find_page_ic_tech_team.svg', url: '/features/discoverChannel/discoverChannel?type=team&title=技术团队' },
+      { name: '圈子广场', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/features/topic/topic' },
+      { name: '话题广场', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/features/theme/theme' },
+      { name: '活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '/features/discoverChannel/discoverChannel?type=activity&title=活动' },
+      { name: '竞赛', icon: '/assets/app/find/find_page_ic_game.svg', url: '/features/discoverChannel/discoverChannel?type=game&title=竞赛' }
     ]
   },
 
@@ -157,7 +157,7 @@ Page({
     }).catch(() => this.setData({ headlineLoading: false, headlineHasMore: false }))
   },
 
-  openSearch() { wx.navigateTo({ url: '/pages/search/search' }) },
+  openSearch() { wx.navigateTo({ url: '/features/search/search' }) },
 
   openFeature(event) {
     const item = event.currentTarget.dataset
@@ -174,15 +174,15 @@ Page({
   },
 
   openDaily() {
-    if (this.data.dailyArticle) wx.navigateTo({ url: `/pages/post/post?id=${this.data.dailyArticle.article_id}` })
+    if (this.data.dailyArticle) wx.navigateTo({ url: `/features/post/post?id=${this.data.dailyArticle.article_id}` })
   },
 
-  openDailyHistory() { wx.navigateTo({ url: '/pages/daily/daily' }) },
-  openSelectedPins() { wx.navigateTo({ url: '/pages/selectedPins/selectedPins' }) },
+  openDailyHistory() { wx.navigateTo({ url: '/features/daily/daily' }) },
+  openSelectedPins() { wx.navigateTo({ url: '/features/selectedPins/selectedPins' }) },
 
   openPin(event) {
     const item = this.data.selectedPins[Number(event.currentTarget.dataset.index)]
-    if (item) wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${item.msg_id}` })
+    if (item) wx.navigateTo({ url: `/features/feidianDetail/feidianDetail?msgId=${item.msg_id}` })
   },
 
   openSelectedTheme(event) {
@@ -200,7 +200,7 @@ Page({
     if (!id) return
     const author = this.data.authors.find((item) => item.user_id === id)
     if (author) wx.setStorageSync('jj:user-current', author)
-    wx.navigateTo({ url: `/pages/profile/profile?id=${id}` })
+    wx.navigateTo({ url: `/features/profile/profile?id=${id}` })
   },
 
   openAccountInfo() { session.requireLogin() },
@@ -221,7 +221,7 @@ Page({
     this.setData({ [`${fallback[0]}[${index}].${fallback[1]}`]: fallback[2] })
   },
 
-  openCircleSquare() { wx.navigateTo({ url: '/pages/topic/topic' }) },
+  openCircleSquare() { wx.navigateTo({ url: '/features/topic/topic' }) },
 
   openTopic(event) {
     const topic = this.data.topics[Number(event.currentTarget.dataset.index)]
@@ -232,33 +232,33 @@ Page({
       cache[id] = topic
       wx.setStorageSync('jj:topic-cache', cache)
     }
-    wx.navigateTo({ url: `/pages/topic/topic?id=${id}` })
+    wx.navigateTo({ url: `/features/topic/topic?id=${id}` })
   },
 
-  openColumnList() { wx.navigateTo({ url: '/pages/column/column' }) },
+  openColumnList() { wx.navigateTo({ url: '/features/column/column' }) },
 
   openColumn(event) {
     const item = this.data.columns[Number(event.currentTarget.dataset.index)]
     if (!item) return
     wx.setStorageSync('jj:column-current', item)
-    wx.navigateTo({ url: `/pages/column/column?id=${item.column_id}` })
+    wx.navigateTo({ url: `/features/column/column?id=${item.column_id}` })
   },
 
-  openCollectionList() { wx.navigateTo({ url: '/pages/collectionSquare/collectionSquare' }) },
+  openCollectionList() { wx.navigateTo({ url: '/features/collectionSquare/collectionSquare' }) },
 
   openCollection(event) {
     const item = this.data.collectionSets[Number(event.currentTarget.dataset.index)]
     if (!item) return
     wx.setStorageSync('jj:collection-current', item)
-    wx.navigateTo({ url: `/pages/collectionSquare/collectionSquare?id=${item.collection_id}` })
+    wx.navigateTo({ url: `/features/collectionSquare/collectionSquare?id=${item.collection_id}` })
   },
 
-  openRank(event) { wx.navigateTo({ url: `/pages/rank/rank?type=${event.currentTarget.dataset.type}` }) },
+  openRank(event) { wx.navigateTo({ url: `/features/rank/rank?type=${event.currentTarget.dataset.type}` }) },
 
   openRankCategory(event) {
     const category = this.data.rankCategories[Number(event.currentTarget.dataset.index)]
     if (!category || !category.id) return
-    wx.navigateTo({ url: `/pages/rank/rank?type=article&categoryId=${encodeURIComponent(String(category.id))}` })
+    wx.navigateTo({ url: `/features/rank/rank?type=article&categoryId=${encodeURIComponent(String(category.id))}` })
   },
 
   selectRankCategory(event) {
@@ -290,7 +290,7 @@ Page({
 
   openArticle(event) {
     const id = event.currentTarget.dataset.id
-    if (id) wx.navigateTo({ url: `/pages/post/post?id=${id}` })
+    if (id) wx.navigateTo({ url: `/features/post/post?id=${id}` })
   },
 
   openCardArticle(event) {
@@ -299,21 +299,21 @@ Page({
     const group = groups[data.section] || []
     const card = group[Number(data.cardIndex)]
     const article = card && card.articles[Number(data.articleIndex)]
-    if (article) wx.navigateTo({ url: `/pages/post/post?id=${article.article_id}` })
+    if (article) wx.navigateTo({ url: `/features/post/post?id=${article.article_id}` })
   },
 
   openRankArticle(event) {
     const data = event.currentTarget.dataset
     const list = this.data.rankLists[Number(data.pageIndex)] || []
     const article = list[Number(data.articleIndex)]
-    if (article) wx.navigateTo({ url: `/pages/post/post?id=${article.article_id}` })
+    if (article) wx.navigateTo({ url: `/features/post/post?id=${article.article_id}` })
   },
 
   openHeadline(event) {
     const item = this.data.headlines[Number(event.currentTarget.dataset.index)]
     if (!item) return
     wx.setStorageSync('jj:headline-current', item)
-    wx.navigateTo({ url: '/pages/headlineDetail/headlineDetail' })
+    wx.navigateTo({ url: '/features/headlineDetail/headlineDetail' })
   },
 
   onShareAppMessage() { return { title: '发现稀土掘金', path: '/pages/find/find' } }
