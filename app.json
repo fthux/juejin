@@ -6,6 +6,8 @@
     "pages/headlineDetail/headlineDetail",
     "pages/feidian/feidian",
     "pages/find/find",
+    "pages/daily/daily",
+    "pages/selectedPins/selectedPins",
     "pages/discoverChannel/discoverChannel",
     "pages/liveDetail/liveDetail",
     "pages/xiaoce/xiaoce",

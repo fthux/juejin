@@ -11,8 +11,8 @@
         <image wx:if="{{item.cover_image}}" class="article-cover home-cover" src="{{item.cover_image}}" mode="aspectFill"></image>
       </view>
       <view class="article-stats home-stats">
-        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text class="stat-label">{{item.digg_count > 0 ? item.digg_count : '赞'}}</text></view>
-        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text class="stat-label">{{item.comment_count > 0 ? item.comment_count : '评论'}}</text></view>
+        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text class="stat-label">{{item.digg_label || item.digg_count || '点赞'}}</text></view>
+        <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text class="stat-label">{{item.comment_label || item.comment_count || '评论'}}</text></view>
         <text wx:if="{{item.tags.length}}" class="home-tag">{{item.tags[0]}}</text>
         <view class="home-dislike" catchtap="dislike" aria-label="减少类似推荐"><text class="dislike-mark"></text></view>
       </view>
@@ -30,8 +30,8 @@
     <view class="article-title two-lines">{{item.title}}</view>
     <view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view>
     <view class="article-stats">
-      <text class="stat">△ {{item.digg_count}}</text>
-      <text class="stat">◯ {{item.comment_count}}</text>
+      <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label || item.digg_count || '点赞'}}</text></view>
+      <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label || item.comment_count || '评论'}}</text></view>
       <text class="stat">阅读 {{item.view_count}}</text>
     </view>
     </view>

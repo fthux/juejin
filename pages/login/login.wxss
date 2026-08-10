@@ -9,6 +9,6 @@
 .note-title { color: var(--jj-text); font-size: 29rpx; font-weight: 600; }
 .note-copy { margin-top: 14rpx; color: var(--jj-text-3); font-size: 24rpx; line-height: 1.65; }
 .website { margin-top: 20rpx; color: var(--jj-blue); font-size: 26rpx; font-weight: 600; }
-.copy-button, .back-button { width: 100%; height: 84rpx; margin-top: 32rpx; border-radius: 6rpx; font-size: 28rpx; line-height: 84rpx; }
+.copy-button, .back-button { padding: 0; width: 100%; height: 84rpx; margin-top: 32rpx; border-radius: 6rpx; font-size: 28rpx; line-height: 84rpx; }
 .back-button { margin-top: 18rpx; color: var(--jj-text-2); background: var(--jj-fill); }
 .privacy-note { margin-top: 30rpx; color: var(--jj-text-4); font-size: 22rpx; }

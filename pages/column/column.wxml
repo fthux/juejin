@@ -1,23 +1,30 @@
 <view class="page column-page">
   <block wx:if="{{mode === 'list'}}">
+    <status-bar navigation="{{true}}"><view class="plain-nav"><view class="nav-back" bindtap="goBack">‹</view><text>专栏</text><view class="nav-placeholder"></view></view></status-bar>
     <view class="sort-bar surface"><text>排序</text><view class="sort-control"><view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="switchSort">最新</view><view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="switchSort">最热</view></view></view>
-    <view class="column-list surface">
-      <view wx:for="{{columns}}" wx:key="column_id" class="column-row" data-index="{{index}}" bindtap="openColumn">
-        <view class="column-copy"><view class="column-title two-lines"><text wx:if="{{item.tag}}" class="tag">{{item.tag}}</text>{{item.title}}</view><view wx:if="{{item.description}}" class="column-description two-lines">{{item.description}}</view><view class="column-meta">{{item.creator.user_name}} · {{item.article_count}}文章 · {{item.follower_count}}订阅</view></view>
-        <view class="subscribe" catchtap="subscribe">订阅</view>
-      </view>
-    </view>
+    <view class="column-list surface"><view wx:for="{{columns}}" wx:key="column_id" class="column-row" data-index="{{index}}" bindtap="openColumn"><view class="column-copy"><view class="column-title two-lines"><text wx:if="{{item.tag}}" class="tag">{{item.tag}}</text>{{item.title}}</view><view wx:if="{{item.description}}" class="column-description two-lines">{{item.description}}</view><view class="column-meta">{{item.creator.user_name}} · {{item.article_count}}文章 · {{item.follower_count}}订阅</view></view><view class="subscribe" catchtap="subscribe">订阅</view></view></view>
     <empty-state wx:if="{{!loading && !columns.length}}" text="当前暂无公开推荐专栏"></empty-state>
   </block>
 
   <block wx:else>
     <view wx:if="{{current}}" class="column-detail">
-      <view class="detail-head surface"><view wx:if="{{current.tag}}" class="tag">{{current.tag}}</view><view class="detail-title">{{current.title}}</view><view class="detail-description">{{current.description || '系统整理优质技术内容'}}</view><view class="detail-owner" data-id="{{current.creator.user_id}}" bindtap="openCreator">{{current.creator.user_name}} · {{current.article_count}} 篇文章 · {{current.follower_count}} 订阅</view><view class="subscribe detail-subscribe" bindtap="subscribe">订阅</view></view>
-      <view class="detail-articles surface"><view wx:for="{{current.articles}}" wx:key="article_id" class="article-row" data-id="{{item.article_id}}" bindtap="openArticle"><view class="article-title two-lines">{{item.title}}</view><view class="article-meta">{{item.author.user_name}} · 点赞 {{item.digg_count}} · 评论 {{item.comment_count}}</view></view></view>
-      <empty-state wx:if="{{!current.articles.length}}" text="该专栏暂未返回公开文章"></empty-state>
+      <view class="detail-hero">
+        <image class="detail-cover" src="{{current.cover || '/assets/app/column/column_default_cover.webp'}}" mode="aspectFill" referrer-policy="no-referrer"></image>
+        <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><view class="nav-more" bindtap="showMore">•••</view></view></status-bar>
+      </view>
+      <view class="detail-profile surface">
+        <view class="detail-title">{{current.title}}</view>
+        <view class="detail-person-row"><image src="{{current.creator.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" bindtap="openCreator"></image><view class="detail-person"><view><text>{{current.creator.user_name}}</text><text wx:if="{{current.creator.level}}" class="level-badge">LV.{{current.creator.level}}</text></view><text wx:if="{{current.create_time}}">创建于{{current.create_time}}</text></view><view class="subscribe filled {{followed ? 'followed' : ''}}" bindtap="subscribe">{{followed ? '已订阅' : '订阅专栏'}}</view></view>
+        <view class="detail-description">{{current.description || '系统整理优质技术内容'}}</view>
+        <view class="detail-stats"><view class="subscriber-avatars"><image wx:for="{{current.recent_users}}" wx:key="user_id" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view><text>等{{current.follower_count}}人订阅</text><text>{{current.article_count || articles.length}}篇文章</text></view>
+      </view>
+      <view class="article-bar"><text>收录文章</text><view data-id="{{sort === 'latest' ? 'hot' : 'latest'}}" bindtap="switchSort">{{sort === 'latest' ? '默认排序' : '最新发布'}} ▴▾</view></view>
+      <view class="detail-articles surface"><view wx:for="{{articles}}" wx:key="article_id" class="article-row" data-index="{{index}}" bindtap="openArticle"><view class="article-copy"><view class="article-title two-lines">{{item.title}}</view><view class="article-author"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{item.author.user_name}}</text><text class="divider"></text><text>{{item.ctime}}</text></view><view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view><view class="article-bottom"><view class="article-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view><text wx:if="{{item.tags.length}}" class="article-tag">{{item.tags[0]}}</text></view></view><image wx:if="{{item.cover_image}}" class="article-cover" src="{{item.cover_image}}" mode="aspectFill" referrer-policy="no-referrer"></image></view></view>
+      <empty-state wx:if="{{!loading && !articles.length}}" text="该专栏暂未返回公开文章"></empty-state>
     </view>
     <empty-state wx:elif="{{!loading}}" text="未找到这个专栏"></empty-state>
   </block>
   <view wx:if="{{loading}}" class="loading-line">正在加载专栏...</view>
+  <view wx:if="{{mode === 'detail' && !loading && !detailHasMore && articles.length}}" class="list-end">已加载全部文章</view>
   <view wx:if="{{fromCache && !loading}}" class="cache-tip">当前网络内容暂不可用</view>
 </view>

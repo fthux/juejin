@@ -1,0 +1,16 @@
+<view class="page selected-page">
+  <view wx:for="{{pins}}" wx:key="msg_id" class="pin-item" data-index="{{index}}" bindtap="openPin">
+    <view class="pin-head"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" catchtap="openAuthor"></image><view><view class="pin-name">{{item.author.user_name}}</view><text>{{item.author.job_title || '掘金'}} · {{item.ctime}}</text></view></view>
+    <text class="pin-content" user-select="{{true}}">{{item.content}}</text>
+    <view wx:if="{{item.pic_list.length}}" class="pin-images image-count-{{item.pic_list.length}}"><image wx:for="{{item.pic_list}}" wx:key="*this" src="{{item}}" mode="aspectFill" referrer-policy="no-referrer"></image></view>
+    <view wx:if="{{item.digg_users.length}}" class="pin-liked"><view><image wx:for="{{item.digg_users}}" wx:for-item="user" wx:key="user_id" src="{{user.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view><text>{{item.digg_users[0].user_name}}等人赞过</text></view>
+    <view class="pin-actions">
+      <view catchtap="requireLogin"><image src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image><text>分享</text></view>
+      <view><image src="/assets/app/pins/ic_pins_comment.png" mode="aspectFit"></image><text>{{item.comment_count_value ? item.comment_count : '评论'}}</text></view>
+      <view catchtap="requireLogin"><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_count_value ? item.digg_count : '赞'}}</text></view>
+    </view>
+  </view>
+  <empty-state wx:if="{{!loading && !pins.length}}" text="暂时没有精选沸点"></empty-state>
+  <view wx:if="{{loading}}" class="loading-line">正在加载精选沸点...</view>
+  <view wx:if="{{!hasMore && pins.length}}" class="list-end">到底了，上滑去沸点模块探索更多~</view>
+</view>

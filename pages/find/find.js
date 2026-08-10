@@ -23,6 +23,8 @@ function cacheThemeAndOpen(theme) {
 Page({
   data: {
     greeting: '每天读一点，保持技术好奇心',
+    dailyDay: String(new Date().getDate()),
+    dailyMonth: `${new Date().getFullYear()}.${new Date().getMonth() + 1}`,
     dailyArticle: null,
     selectedPins: [],
     themes: [],
@@ -30,26 +32,30 @@ Page({
     columns: [],
     collectionSets: [],
     authors: [],
-    hotArticles: [],
     headlines: [],
-    rankCategories: [{ id: '', name: '综合' }].concat(mock.hotCategories),
-    activeRankCategory: '',
-    loading: true,
+    headlineCursor: '',
+    headlineHasMore: true,
+    headlineLoading: false,
+    rankCategories: mock.hotCategories,
+    rankLists: mock.hotCategories.map(() => []),
+    activeRankIndex: 0,
+    activeRankCategory: mock.hotCategories[0] ? mock.hotCategories[0].id : '',
     rankLoading: false,
+    loading: true,
     loadError: false,
     darkMode: false,
     channelEntries: [
       { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', darkIcon: '/assets/app/find/dark/find_page_ic_interview_kit.svg', url: '/pages/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
-      { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', darkIcon: '/assets/app/find/dark/find_page_ic_industry_express.svg', url: '/pages/discoverChannel/discoverChannel?type=news&title=行业速递' },
+      { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', darkIcon: '/assets/app/find/dark/find_page_ic_industry_express.svg', anchor: 'industry' },
       { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/pages/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
       { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', darkIcon: '/assets/app/find/dark/find_page_ic_undergraduate_reading.svg', url: '/pages/discoverChannel/discoverChannel?type=student&title=高校精选' }
     ],
     quickEntries: [
-      { name: '直播', icon: '/assets/app/find/find_page_ic_live.svg', url: '/pages/discoverChannel/discoverChannel?type=live&title=直播' },
-      { name: '专栏', icon: '/assets/app/find/find_page_ic_column.svg', url: '/pages/column/column' },
-      { name: '收藏集', icon: '/assets/app/find/find_page_ic_collection.svg', url: '/pages/collectionSquare/collectionSquare' },
-      { name: '文章榜', icon: '/assets/app/find/find_page_ic_rank_article.svg', url: '/pages/rank/rank?type=article' },
-      { name: '作者榜', icon: '/assets/app/find/find_page_ic_rank_author.svg', url: '/pages/rank/rank?type=author' }
+      { name: '技术团队', icon: '/assets/app/find/find_page_ic_tech_team.svg', url: '/pages/discoverChannel/discoverChannel?type=team&title=技术团队' },
+      { name: '圈子广场', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/pages/topic/topic' },
+      { name: '话题广场', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/pages/theme/theme' },
+      { name: '活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '/pages/discoverChannel/discoverChannel?type=activity&title=活动' },
+      { name: '竞赛', icon: '/assets/app/find/find_page_ic_game.svg', url: '/pages/discoverChannel/discoverChannel?type=game&title=竞赛' }
     ]
   },
 
@@ -68,85 +74,120 @@ Page({
     this.loadAll()
   },
 
+  onReachBottom() {
+    this.loadMoreHeadlines()
+  },
+
   loadAll() {
-    this.setData({ loading: true, loadError: false })
+    const firstCategory = this.data.rankCategories[0] || { id: '' }
+    this.setData({ loading: true, loadError: false, headlineCursor: '', headlineHasMore: true })
     Promise.all([
       api.daily(),
       api.selectedPins('0'),
       api.recommendedThemes('0', 6),
       api.topics('0', 8),
       api.recommendedColumns('0', 8),
-      api.recommendedCollectionSets('0', 8),
+      api.recommendedCollectionSets('0', 8, { moduleType: 1 }),
       api.recommendedAuthors('0', 8),
-      api.hotArticles({ type: 'hot', count: 8 }),
+      api.hotArticles({ type: 'hot', count: 3, categoryId: firstCategory.id }),
       api.headlineFeed('')
     ]).then((responses) => {
       const dailyData = responses[0].result.data || {}
       const dailyRows = Array.isArray(dailyData)
         ? dailyData
         : (dailyData.article_info ? [dailyData] : (dailyData.articles || dailyData.article_list || []))
-      const pins = (responses[1].result.data || []).map(utils.normalizePin).filter((item) => item.msg_id).slice(0, 8)
-      const hasFallback = responses.some((response) => response.fromCache)
       const authors = (responses[6].result.data || []).map(utils.normalizeRecommendedAuthor).filter((item) => item.user_id)
       const remoteColumns = (responses[4].result.data || []).map(utils.normalizeColumn).filter((item) => item.column_id)
+      const rankLists = this.data.rankCategories.map(() => [])
+      rankLists[0] = (responses[7].result.data || []).map(utils.normalizeHotRank).filter((item) => item.article_id).slice(0, 3)
       this.setData({
         greeting: dailyData.greeting || this.data.greeting,
         dailyArticle: dailyRows.length ? utils.normalizeArticle(dailyRows[0]) : null,
-        selectedPins: pins,
+        selectedPins: (responses[1].result.data || []).map(utils.normalizePin).filter((item) => item.msg_id).slice(0, 8),
         themes: (responses[2].result.data || []).map(utils.normalizeTheme).filter((item) => item.theme_id),
         topics: (responses[3].result.data || []).map(utils.normalizeTopic).filter((item) => item.topic_id),
         columns: remoteColumns.length ? remoteColumns : authors.map(utils.authorToColumn),
         collectionSets: (responses[5].result.data || []).map(utils.normalizeCollectionSet).filter((item) => item.collection_id),
         authors,
-        hotArticles: (responses[7].result.data || []).map(utils.normalizeHotRank).filter((item) => item.article_id).slice(0, 8),
-        headlines: (responses[8].result.data || []).map(utils.normalizeHeadline).filter((item) => item.content_id).slice(0, 12),
+        rankLists,
+        activeRankIndex: 0,
+        activeRankCategory: firstCategory.id,
+        headlines: (responses[8].result.data || []).map(utils.normalizeHeadline).filter((item) => item.content_id),
+        headlineCursor: String(responses[8].result.cursor || ''),
+        headlineHasMore: Boolean(responses[8].result.has_more),
         loading: false,
-        loadError: hasFallback
+        loadError: responses.some((response) => response.fromCache)
       })
+      this.loadTopicPreviews()
     }).catch(() => this.setData({ loading: false, loadError: true })).finally(() => {
       wx.stopPullDownRefresh()
     })
   },
 
-  openSearch() {
-    wx.navigateTo({ url: '/pages/search/search' })
+  loadTopicPreviews() {
+    const topics = this.data.topics
+    if (!topics.length) return
+    Promise.all(topics.map((topic) => api.topicPins(topic.topic_id, '0', { limit: 2 }))).then((responses) => {
+      const hydrated = topics.map((topic, index) => Object.assign({}, topic, {
+        shorts: (responses[index].result.data || []).map(utils.normalizePin).filter((item) => item.msg_id).slice(0, 2).map((pin) => ({
+          key: pin.msg_id,
+          msg_id: pin.msg_id,
+          content: pin.content,
+          avatar: pin.author.avatar_large
+        }))
+      }))
+      this.setData({ topics: hydrated })
+    }).catch(() => {})
   },
 
+  loadMoreHeadlines() {
+    if (this.data.loading || this.data.headlineLoading || !this.data.headlineHasMore) return
+    this.setData({ headlineLoading: true })
+    api.headlineFeed(this.data.headlineCursor).then(({ result, fromCache }) => {
+      const rows = (result.data || []).map(utils.normalizeHeadline).filter((item) => item.content_id)
+      const known = new Set(this.data.headlines.map((item) => String(item.content_id)))
+      const additions = rows.filter((item) => !known.has(String(item.content_id)))
+      this.setData({
+        headlines: this.data.headlines.concat(additions),
+        headlineCursor: String(result.cursor || this.data.headlineCursor),
+        headlineHasMore: Boolean(result.has_more) && additions.length > 0,
+        headlineLoading: false,
+        loadError: this.data.loadError || Boolean(fromCache)
+      })
+    }).catch(() => this.setData({ headlineLoading: false, headlineHasMore: false }))
+  },
+
+  openSearch() { wx.navigateTo({ url: '/pages/search/search' }) },
+
   openFeature(event) {
-    const url = event.currentTarget.dataset.url
-    if (url) wx.navigateTo({ url })
+    const item = event.currentTarget.dataset
+    if (item.anchor === 'industry') {
+      wx.pageScrollTo({ selector: '#industry-section', duration: 300 })
+      return
+    }
+    if (item.url) wx.navigateTo({ url: item.url })
   },
 
   openTheme(event) {
     const item = this.data.themes[Number(event.currentTarget.dataset.index)]
-    if (!item) {
-      wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=guide&title=掘金使用指南' })
-      return
-    }
-    cacheThemeAndOpen(item)
+    if (item) cacheThemeAndOpen(item)
   },
 
   openDaily() {
     if (this.data.dailyArticle) wx.navigateTo({ url: `/pages/post/post?id=${this.data.dailyArticle.article_id}` })
   },
 
-  openDailyHistory() {
-    wx.navigateTo({ url: '/pages/discoverChannel/discoverChannel?type=daily&title=每日掘金' })
-  },
-
-  openSelectedPins() {
-    getApp().globalData.openSelectedPins = true
-    wx.switchTab({ url: '/pages/feidian/feidian' })
-  },
+  openDailyHistory() { wx.navigateTo({ url: '/pages/daily/daily' }) },
+  openSelectedPins() { wx.navigateTo({ url: '/pages/selectedPins/selectedPins' }) },
 
   openPin(event) {
-    wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${event.currentTarget.dataset.id}` })
+    const item = this.data.selectedPins[Number(event.currentTarget.dataset.index)]
+    if (item) wx.navigateTo({ url: `/pages/feidianDetail/feidianDetail?msgId=${item.msg_id}` })
   },
 
   openSelectedTheme(event) {
     const pin = this.data.selectedPins[Number(event.currentTarget.dataset.pinIndex)]
-    const segments = pin && pin.content_segments || []
-    const segment = segments[Number(event.currentTarget.dataset.segmentIndex)]
+    const segment = pin && pin.content_segments[Number(event.currentTarget.dataset.segmentIndex)]
     if (!segment || segment.type !== 'theme' || !segment.theme_id) return
     const theme = pin.theme && String(pin.theme.theme_id) === String(segment.theme_id)
       ? pin.theme
@@ -155,21 +196,18 @@ Page({
   },
 
   openAuthor(event) {
-    const id = event.currentTarget.dataset.id
+    const id = String(event.currentTarget.dataset.id || '')
     if (!id) return
-    const author = this.data.authors.find((item) => item.user_id === String(id))
+    const author = this.data.authors.find((item) => item.user_id === id)
     if (author) wx.setStorageSync('jj:user-current', author)
     wx.navigateTo({ url: `/pages/profile/profile?id=${id}` })
   },
 
-  openAccountInfo() {
-    session.requireLogin()
-  },
+  openAccountInfo() { session.requireLogin() },
 
   onRemoteImageError(event) {
     const index = Number(event.currentTarget.dataset.index)
     const kind = event.currentTarget.dataset.kind
-    if (!Number.isInteger(index)) return
     const fallbackByKind = {
       theme: ['themes', 'cover', '/assets/app/find/find_page_ic_default_banner.webp'],
       'pin-avatar': ['selectedPins', 'author.avatar_large', '/assets/app/common/default_avatar.webp'],
@@ -179,29 +217,25 @@ Page({
       headline: ['headlines', 'thumbnail', '']
     }
     const fallback = fallbackByKind[kind]
-    if (!fallback || !this.data[fallback[0]] || !this.data[fallback[0]][index]) return
+    if (!Number.isInteger(index) || !fallback || !this.data[fallback[0]][index]) return
     this.setData({ [`${fallback[0]}[${index}].${fallback[1]}`]: fallback[2] })
   },
 
-  openCircleSquare() {
-    wx.navigateTo({ url: '/pages/topic/topic' })
-  },
+  openCircleSquare() { wx.navigateTo({ url: '/pages/topic/topic' }) },
 
   openTopic(event) {
-    const id = event.currentTarget.dataset.id
-    if (!id) return
-    const topic = this.data.topics.find((item) => item.topic_id === String(id))
+    const topic = this.data.topics[Number(event.currentTarget.dataset.index)]
+    if (!topic) return
+    const id = topic.topic_id
     if (topic) {
       const cache = wx.getStorageSync('jj:topic-cache') || {}
-      cache[String(id)] = topic
+      cache[id] = topic
       wx.setStorageSync('jj:topic-cache', cache)
     }
     wx.navigateTo({ url: `/pages/topic/topic?id=${id}` })
   },
 
-  openColumnList() {
-    wx.navigateTo({ url: '/pages/column/column' })
-  },
+  openColumnList() { wx.navigateTo({ url: '/pages/column/column' }) },
 
   openColumn(event) {
     const item = this.data.columns[Number(event.currentTarget.dataset.index)]
@@ -210,9 +244,7 @@ Page({
     wx.navigateTo({ url: `/pages/column/column?id=${item.column_id}` })
   },
 
-  openCollectionList() {
-    wx.navigateTo({ url: '/pages/collectionSquare/collectionSquare' })
-  },
+  openCollectionList() { wx.navigateTo({ url: '/pages/collectionSquare/collectionSquare' }) },
 
   openCollection(event) {
     const item = this.data.collectionSets[Number(event.currentTarget.dataset.index)]
@@ -221,25 +253,54 @@ Page({
     wx.navigateTo({ url: `/pages/collectionSquare/collectionSquare?id=${item.collection_id}` })
   },
 
-  openRank(event) {
-    wx.navigateTo({ url: `/pages/rank/rank?type=${event.currentTarget.dataset.type}` })
-  },
+  openRank(event) { wx.navigateTo({ url: `/pages/rank/rank?type=${event.currentTarget.dataset.type}` }) },
 
   selectRankCategory(event) {
-    const categoryId = event.currentTarget.dataset.id
-    if (categoryId === this.data.activeRankCategory || this.data.rankLoading) return
-    this.setData({ activeRankCategory: categoryId, rankLoading: true })
-    api.hotArticles({ type: 'hot', count: 8, categoryId }).then(({ result }) => {
+    const index = Number(event.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.rankCategories[index]) return
+    this.setData({ activeRankIndex: index, activeRankCategory: this.data.rankCategories[index].id })
+    this.loadRankAt(index)
+  },
+
+  changeRankCategory(event) {
+    const index = Number(event.detail.current)
+    if (!Number.isInteger(index) || !this.data.rankCategories[index]) return
+    this.setData({ activeRankIndex: index, activeRankCategory: this.data.rankCategories[index].id })
+    this.loadRankAt(index)
+  },
+
+  loadRankAt(index) {
+    if (this.data.rankLoading || (this.data.rankLists[index] || []).length) return
+    const category = this.data.rankCategories[index]
+    if (!category) return
+    this.setData({ rankLoading: true })
+    api.hotArticles({ type: 'hot', count: 3, categoryId: category.id }).then(({ result }) => {
       this.setData({
-        hotArticles: (result.data || []).map(utils.normalizeHotRank).filter((item) => item.article_id).slice(0, 8),
+        [`rankLists[${index}]`]: (result.data || []).map(utils.normalizeHotRank).filter((item) => item.article_id).slice(0, 3),
         rankLoading: false
       })
-    }).catch(() => this.setData({ hotArticles: [], rankLoading: false }))
+    }).catch(() => this.setData({ rankLoading: false }))
   },
 
   openArticle(event) {
     const id = event.currentTarget.dataset.id
     if (id) wx.navigateTo({ url: `/pages/post/post?id=${id}` })
+  },
+
+  openCardArticle(event) {
+    const data = event.currentTarget.dataset
+    const groups = { column: this.data.columns, collection: this.data.collectionSets, author: this.data.authors }
+    const group = groups[data.section] || []
+    const card = group[Number(data.cardIndex)]
+    const article = card && card.articles[Number(data.articleIndex)]
+    if (article) wx.navigateTo({ url: `/pages/post/post?id=${article.article_id}` })
+  },
+
+  openRankArticle(event) {
+    const data = event.currentTarget.dataset
+    const list = this.data.rankLists[Number(data.pageIndex)] || []
+    const article = list[Number(data.articleIndex)]
+    if (article) wx.navigateTo({ url: `/pages/post/post?id=${article.article_id}` })
   },
 
   openHeadline(event) {
@@ -249,7 +310,5 @@ Page({
     wx.navigateTo({ url: '/pages/headlineDetail/headlineDetail' })
   },
 
-  onShareAppMessage() {
-    return { title: '发现稀土掘金', path: '/pages/find/find' }
-  }
+  onShareAppMessage() { return { title: '发现稀土掘金', path: '/pages/find/find' } }
 })

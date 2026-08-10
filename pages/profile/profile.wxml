@@ -50,4 +50,6 @@
     <empty-state wx:if="{{!pins.length}}" text="还没有发布沸点"></empty-state>
   </view>
   <empty-state wx:else text="这里还没有内容"></empty-state>
+  <view wx:if="{{articleLoading}}" class="profile-loading">正在加载更多文章...</view>
+  <view wx:if="{{!articleLoading && !articleHasMore && articles.length && (activeTab === 'dynamic' || activeTab === 'article')}}" class="profile-loading">已加载全部文章</view>
 </view>

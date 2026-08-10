@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "收藏榜"
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "文章榜",
+  "enablePullDownRefresh": true
 }

@@ -8,6 +8,10 @@ Page({
     sort: 'latest',
     columns: [],
     current: null,
+    articles: [],
+    detailCursor: '0',
+    detailHasMore: true,
+    followed: false,
     loading: true,
     fromCache: false
   },
@@ -17,15 +21,23 @@ Page({
     this.targetId = id
     if (id) {
       const cached = wx.getStorageSync('jj:column-current')
-      this.setData({ mode: 'detail', current: cached && cached.column_id === id ? cached : null })
-      wx.setNavigationBarTitle({ title: cached && cached.title ? cached.title : '专栏详情' })
+      const current = cached && String(cached.column_id) === id ? cached : null
+      this.setData({ mode: 'detail', current, articles: current && current.articles || [] })
     }
     this.load()
   },
 
   onPullDownRefresh() {
-    this.load()
+    if (this.data.mode === 'detail') this.loadDetailArticles(true)
+    else this.load()
   },
+
+  onReachBottom() {
+    if (this.data.mode === 'detail' && this.data.detailHasMore) this.loadDetailArticles(false)
+  },
+
+  goBack() { wx.navigateBack() },
+  showMore() { wx.showActionSheet({ itemList: ['分享专栏', '举报'] }) },
 
   load() {
     this.setData({ loading: true })
@@ -37,12 +49,50 @@ Page({
       if (this.data.mode === 'detail') {
         const current = this.data.current || columns.find((item) => item.column_id === this.targetId) || null
         this.setData({ current, loading: false, fromCache: Boolean(fromCache) })
-        if (current) wx.setNavigationBarTitle({ title: current.title })
+        if (current) return this.loadDetailArticles(true)
         return
       }
       this.setData({ columns, loading: false, fromCache: Boolean(fromCache) })
       this.applySort()
     }).catch(() => this.setData({ columns: [], loading: false, fromCache: true })).finally(() => wx.stopPullDownRefresh())
+  },
+
+  loadDetailArticles(reload) {
+    const current = this.data.current
+    if (!current || (this.data.loading && !reload) || (!reload && !this.data.detailHasMore)) return Promise.resolve()
+    const cursor = reload ? '0' : this.data.detailCursor
+    const synthetic = String(current.column_id).indexOf('author-') === 0
+    const request = synthetic
+      ? api.userArticles(current.creator.user_id, cursor, this.data.sort === 'latest' ? 1 : 2)
+      : api.columnArticles(current.column_id, cursor, this.data.sort === 'latest' ? 1 : 2)
+    this.setData({ loading: true })
+    return request.then(({ result, fromCache }) => {
+      const rows = (result.data || []).map(utils.normalizeArticle).filter((item) => item.article_id)
+      const previous = reload && rows.length ? [] : this.data.articles
+      const known = new Set(previous.map((item) => String(item.article_id)))
+      const additions = rows.filter((item) => !known.has(String(item.article_id)))
+      const articles = previous.concat(additions)
+      const avatars = this.collectSubscriberAvatars(current, articles)
+      this.setData({
+        articles,
+        'current.recent_users': avatars,
+        detailCursor: String(result.cursor || cursor),
+        detailHasMore: Boolean(result.has_more) && additions.length > 0,
+        loading: false,
+        fromCache: this.data.fromCache || Boolean(fromCache)
+      })
+    }).catch(() => this.setData({ loading: false, detailHasMore: false, fromCache: true })).finally(() => wx.stopPullDownRefresh())
+  },
+
+  collectSubscriberAvatars(current, articles) {
+    const candidates = (current.recent_users || []).concat((articles || []).map((item) => item.author))
+    const seen = new Set()
+    return candidates.filter((item) => {
+      const key = String(item && (item.user_id || item.avatar_large) || '')
+      if (!key || seen.has(key)) return false
+      seen.add(key)
+      return Boolean(item.avatar_large)
+    }).slice(0, 4)
   },
 
   applySort() {
@@ -56,8 +106,9 @@ Page({
   switchSort(event) {
     const sort = event.currentTarget.dataset.id
     if (sort === this.data.sort) return
-    this.setData({ sort })
-    this.applySort()
+    this.setData({ sort, detailCursor: '0', detailHasMore: true })
+    if (this.data.mode === 'detail') this.loadDetailArticles(true)
+    else this.applySort()
   },
 
   openColumn(event) {
@@ -68,19 +119,19 @@ Page({
   },
 
   openArticle(event) {
-    const id = event.currentTarget.dataset.id
-    if (id) wx.navigateTo({ url: `/pages/post/post?id=${id}` })
+    const item = this.data.articles[Number(event.currentTarget.dataset.index)]
+    if (item) wx.navigateTo({ url: `/pages/post/post?id=${item.article_id}` })
   },
 
-  openCreator(event) {
-    const id = event.currentTarget.dataset.id
-    if (!id) return
+  openCreator() {
     const user = this.data.current && this.data.current.creator
-    if (user) wx.setStorageSync('jj:user-current', user)
-    wx.navigateTo({ url: `/pages/profile/profile?id=${id}` })
+    if (!user || !user.user_id) return
+    wx.setStorageSync('jj:user-current', user)
+    wx.navigateTo({ url: `/pages/profile/profile?id=${user.user_id}` })
   },
 
   subscribe() {
-    session.requireLogin()
+    if (!session.requireLogin()) return
+    this.setData({ followed: !this.data.followed })
   }
 })

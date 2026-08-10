@@ -1,4 +1,5 @@
 const mock = require('../../data/mockData.js')
+const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
@@ -19,7 +20,11 @@ Page({
     followed: false,
     isCurrentUser: false,
     badgeCount: 0,
-    power: 0
+    power: 0,
+    articleCursor: '0',
+    articleHasMore: true,
+    articleLoading: false,
+    articleFromCache: false
   },
 
   onLoad(query) {
@@ -58,10 +63,45 @@ Page({
       power: Number(user.power || user.jpower || user.got_digg_count) || 0
     })
     wx.setNavigationBarTitle({ title: user.user_name })
+    if (!isCurrentUser) this.loadArticles(true)
+  },
+
+  onPullDownRefresh() {
+    if (!this.data.isCurrentUser) this.loadArticles(true)
+    else wx.stopPullDownRefresh()
+  },
+
+  onReachBottom() {
+    if (!this.data.isCurrentUser && (this.data.activeTab === 'dynamic' || this.data.activeTab === 'article')) this.loadArticles(false)
   },
 
   switchTab(event) {
-    this.setData({ activeTab: event.currentTarget.dataset.id })
+    const activeTab = event.currentTarget.dataset.id
+    this.setData({ activeTab })
+    if (!this.data.isCurrentUser && activeTab === 'article' && !this.data.articles.length) this.loadArticles(true)
+  },
+
+  loadArticles(reload) {
+    if (!this.data.user || this.data.articleLoading || (!reload && !this.data.articleHasMore)) return
+    const cursor = reload ? '0' : this.data.articleCursor
+    this.setData({ articleLoading: true })
+    api.userArticles(this.data.user.user_id, cursor, 2).then(({ result, fromCache }) => {
+      const rows = (result.data || []).map(utils.normalizeArticle).filter((item) => item.article_id)
+      const seed = reload && rows.length ? [] : this.data.articles
+      const known = new Set(seed.map((item) => String(item.article_id)))
+      const additions = rows.filter((item) => !known.has(String(item.article_id)))
+      const articles = seed.concat(additions)
+      const articleDynamics = articles.map((item) => Object.assign({ kind: 'article' }, item))
+      const pinDynamics = this.data.pins.map((item) => Object.assign({ kind: 'pin' }, item))
+      this.setData({
+        articles,
+        dynamics: articleDynamics.concat(pinDynamics),
+        articleCursor: String(result.cursor || cursor),
+        articleHasMore: Boolean(result.has_more) && additions.length > 0,
+        articleLoading: false,
+        articleFromCache: Boolean(fromCache)
+      })
+    }).catch(() => this.setData({ articleLoading: false, articleHasMore: false, articleFromCache: true })).finally(() => wx.stopPullDownRefresh())
   },
 
   toggleFollow() {

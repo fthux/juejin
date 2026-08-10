@@ -162,6 +162,16 @@ function recommendedColumns(cursor, limit) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
+function columnArticles(columnId, cursor, sortType) {
+  if (!columnId) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
+  return withFallback(request('/content_api/v1/column/articles_cursor', {
+    column_id: String(columnId),
+    cursor: cursor || '0',
+    limit: 10,
+    sort_type: Number(sortType) || 2
+  }), () => ({ data: mock.articles, cursor: 'mock-end', has_more: false }))
+}
+
 function liveTypes() {
   return withFallback(request('/study_api/v1/live/get_activity_types', {}), { data: [] })
 }
@@ -308,6 +318,16 @@ function daily() {
   return withFallback(request('/content_api/v1/article/daily', {}), () => ({ data: mock.daily }))
 }
 
+function userArticles(userId, cursor, sortType) {
+  if (!userId) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
+  return withFallback(request('/content_api/v1/article/query_list', {
+    user_id: String(userId),
+    sort_type: Number(sortType) || 2,
+    cursor: cursor || '0',
+    limit: 10
+  }), { data: [], cursor: '0', has_more: false })
+}
+
 function recommendationRanks() {
   return withFallback(request('/content_api/v1/requests', {
     requests: [
@@ -325,12 +345,14 @@ function recommendationRanks() {
 
 function hotArticles(options) {
   const config = options || {}
-  return withFallback(request('/content_api/v1/content/list_by_hot', {
+  const data = {
     type: config.type || 'hot',
     count: config.count || 40,
     item_type: 2,
     category_id: config.categoryId || '0'
-  }, { method: 'GET' }), () => ({ data: mock.articles }))
+  }
+  if (config.period) data.period = config.period
+  return withFallback(request('/content_api/v1/content/list_by_hot', data, { method: 'GET' }), () => ({ data: mock.articles }))
 }
 
 function hotAuthors(count) {
@@ -418,6 +440,7 @@ module.exports = {
   collectionSetDetail,
   recommendedAuthors,
   recommendedColumns,
+  columnArticles,
   liveTypes,
   liveActivities,
   courses,
@@ -434,6 +457,7 @@ module.exports = {
   pinComments,
   pinCommentReplies,
   daily,
+  userArticles,
   recommendationRanks,
   hotArticles,
   hotAuthors,

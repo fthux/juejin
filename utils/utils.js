@@ -4,6 +4,13 @@ function formatCount(value) {
   return String(count)
 }
 
+function formatCompactCount(value) {
+  const count = Number(value) || 0
+  if (count >= 1000000) return `${Math.floor(count / 1000000)}M+`
+  if (count >= 1000) return `${Math.floor(count / 1000)}K+`
+  return String(count)
+}
+
 function formatTime(value) {
   if (!value) return ''
   const timestamp = Number(value)
@@ -17,6 +24,9 @@ function formatTime(value) {
   if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`
   if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`
   if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`
+  if (diff < 2592000000) return `${Math.floor(diff / 604800000)}周前`
+  if (diff < 31536000000) return `${Math.floor(diff / 2592000000)}个月前`
+  if (diff >= 31536000000) return `${Math.floor(diff / 31536000000)}年前`
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
@@ -75,18 +85,22 @@ function normalizeArticle(raw) {
   const mtime = Number(info.mtime || item.mtime || info.rtime || item.rtime) || ctime
   const contentCount = Number(info.content_count || item.content_count) || 0
   const estimatedMinutes = contentCount ? Math.max(1, Math.ceil(contentCount / 300)) : 0
+  const diggCount = Number(info.digg_count || item.digg_count) || 0
+  const commentCount = Number(info.comment_count || item.comment_count) || 0
   return {
     article_id: info.article_id || item.article_id || item.item_id || '',
     title: info.title || item.title || '无标题文章',
     brief_content: info.brief_content || item.brief || '',
     cover_image: info.cover_image || item.cover || '',
     ctime: formatTime(info.ctime || item.ctime),
-    digg_count: formatCount(info.digg_count || item.digg_count),
-    comment_count: formatCount(info.comment_count || item.comment_count),
+    digg_count: formatCount(diggCount),
+    comment_count: formatCount(commentCount),
+    digg_label: diggCount > 0 ? formatCount(diggCount) : '点赞',
+    comment_label: commentCount > 0 ? formatCount(commentCount) : '评论',
     view_count: formatCount(info.view_count || item.view_count),
     collect_count: formatCount(info.collect_count || item.collect_count),
-    digg_count_value: Number(info.digg_count || item.digg_count) || 0,
-    comment_count_value: Number(info.comment_count || item.comment_count) || 0,
+    digg_count_value: diggCount,
+    comment_count_value: commentCount,
     publish_date: formatDateTime(ctime, false),
     update_time: formatDateTime(mtime, true),
     read_time: info.read_time || item.read_time || (estimatedMinutes ? `${estimatedMinutes}分钟` : ''),
@@ -108,14 +122,19 @@ function normalizeHotRank(raw) {
   const content = item.content || item.article_info || item
   const counter = item.content_counter || item.counter || item
   const author = item.author || item.author_user_info || {}
+  const diggCount = Number(counter.like || item.digg_count) || 0
+  const commentCount = Number(counter.comment_count || item.comment_count) || 0
   return {
     article_id: content.content_id || content.article_id || item.article_id || '',
     title: content.title || item.title || '无标题文章',
     brief_content: content.brief || item.brief_content || '',
     cover_image: content.cover_image || item.cover_image || '',
-    ctime: '',
-    digg_count: formatCount(counter.like || item.digg_count),
-    tags: [],
+    ctime: formatTime(content.ctime || item.ctime),
+    digg_count: formatCount(diggCount),
+    comment_count: formatCount(commentCount),
+    digg_label: diggCount > 0 ? formatCount(diggCount) : '点赞',
+    comment_label: commentCount > 0 ? formatCount(commentCount) : '评论',
+    tags: [item.category && item.category.category_name].filter(Boolean),
     author: {
       user_id: author.user_id || content.author_id || '',
       user_name: author.name || author.user_name || item.author_name || '掘金用户',
@@ -123,7 +142,6 @@ function normalizeHotRank(raw) {
     },
     hot_rank: String(Math.round(Number(counter.hot_rank) || Number(item.hot_rank) || Number(item.view_count) || 0)),
     collect_count: formatCount(counter.collect || item.collect_count),
-    comment_count: formatCount(counter.comment_count || item.comment_count),
     view_count: formatCount(counter.view || item.view_count)
   }
 }
@@ -148,6 +166,8 @@ function normalizeHeadline(raw) {
   const item = raw || {}
   const info = item.content_info || item
   const author = item.author_user_info || item.author || {}
+  const diggCount = Number((item.content_counter && (item.content_counter.digg || item.content_counter.like)) || info.digg_count || item.digg_count) || 0
+  const commentCount = Number((item.content_counter && (item.content_counter.comment || item.content_counter.comment_count)) || info.comment_count || item.comment_count) || 0
   return {
     content_id: info.content_id || item.content_id || info.article_id || item.article_id || '',
     title: info.title || item.title || '无标题资讯',
@@ -155,8 +175,12 @@ function normalizeHeadline(raw) {
     thumbnail: info.thumbnail || info.cover_image || item.cover_image || '',
     url: info.content || info.link_url || item.link_url || '',
     source: author.user_name || author.name || item.author_name || '头条精选',
+    avatar: normalizeImageUrl(author.avatar_large || author.avatar || '/assets/app/common/default_avatar.webp', 80),
     publish_time: info.publish_time_string || formatTime(info.publish_time || info.ctime || item.ctime),
-    digg_count: formatCount((item.content_counter && item.content_counter.digg) || info.digg_count || item.digg_count)
+    digg_count: formatCount(diggCount),
+    comment_count: formatCount(commentCount),
+    digg_label: diggCount > 0 ? formatCount(diggCount) : '点赞',
+    comment_label: commentCount > 0 ? formatCount(commentCount) : '评论'
   }
 }
 
@@ -272,8 +296,17 @@ function normalizeTopic(raw) {
     description: topic.description || topic.notice || '',
     iconUrl: /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : '',
     iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : String(topic.title || '#').slice(0, 2),
-    follower_count: formatCount(topic.follower_count || item.follower_count),
-    msg_count: formatCount(topic.msg_count || item.msg_count || item.short_msg_count)
+    follower_count: formatCompactCount(topic.follower_count || item.follower_count),
+    msg_count: formatCompactCount(topic.msg_count || item.msg_count || item.short_msg_count),
+    shorts: (item.shorts || item.short_msgs || []).slice(0, 2).map((short, index) => {
+      const normalized = normalizePin(short)
+      return {
+        key: normalized.msg_id || `short-${index}`,
+        msg_id: normalized.msg_id,
+        content: normalized.content,
+        avatar: normalized.author.avatar_large
+      }
+    })
   }
 }
 
@@ -302,7 +335,8 @@ function normalizeCollectionSet(raw) {
   return {
     collection_id: String(info.collection_id || info.collection_set_id || ''),
     name: info.collection_name || info.name || '优质收藏集',
-    description: info.description || item.description || '',
+    description: info.description || '',
+    badge: String(item.description || '').trim(),
     update_time: Number(info.update_time || info.mtime) || 0,
     article_count: Number(info.post_article_count || info.article_count) || 0,
     follower_value: Number(info.concern_user_count || info.follow_count) || 0,
@@ -311,8 +345,13 @@ function normalizeCollectionSet(raw) {
     creator: {
       user_id: String(creator.user_id || info.creator_id || ''),
       user_name: creator.user_name || creator.name || '掘金用户',
-      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80),
+      level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
+    recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
+      user_id: String(user.user_id || ''),
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+    })),
     articles: (item.articles || item.article_list || []).map(normalizeArticle)
   }
 }
@@ -332,6 +371,7 @@ function normalizeRecommendedAuthor(raw) {
     follower_count: formatCount(item.follower_count || articleAuthor.follower_count),
     got_digg_count: formatCount(item.got_digg_count || articleAuthor.got_digg_count),
     got_view_count: formatCount(item.got_view_count || articleAuthor.got_view_count),
+    level: Number(item.level || (item.user_growth_info && item.user_growth_info.jpower_level) || articleAuthor.level) || 0,
     article_count: Number(item.post_article_count || articleAuthor.post_article_count) || 0,
     is_followed: Boolean(item.isfollowed),
     articles: (item.articles || []).slice(0, 3).map(normalizeArticle)
@@ -345,12 +385,18 @@ function authorToColumn(author) {
     column_id: `author-${item.user_id || ''}`,
     title: `${item.user_name || '掘金作者'} 的专栏`,
     description: item.description || '持续分享一线技术实践与思考',
-    cover: item.avatar_large || '',
+    cover: '/assets/app/column/column_default_cover.webp',
     tag: firstArticle && firstArticle.tags && firstArticle.tags.length ? firstArticle.tags[0] : '',
     article_count: item.article_count || (item.articles || []).length,
     follower_value: 0,
     follower_count: item.follower_count || '0',
-    creator: { user_id: String(item.user_id || ''), user_name: item.user_name || '掘金用户' },
+    create_time: '',
+    creator: {
+      user_id: String(item.user_id || ''),
+      user_name: item.user_name || '掘金用户',
+      avatar_large: item.avatar_large || '/assets/app/common/default_avatar.webp',
+      level: Number(item.level) || 0
+    },
     articles: item.articles || []
   }
 }
@@ -368,10 +414,17 @@ function normalizeColumn(raw) {
     article_count: Number(info.article_count || info.post_article_count) || 0,
     follower_value: Number(info.follow_count || info.concern_user_count) || 0,
     follower_count: formatCount(info.follow_count || info.concern_user_count),
+    create_time: formatDateTime(info.ctime || info.create_time, false),
     creator: {
       user_id: String(creator.user_id || info.user_id || ''),
-      user_name: creator.user_name || creator.name || '掘金用户'
+      user_name: creator.user_name || creator.name || '掘金用户',
+      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80),
+      level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
+    recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
+      user_id: String(user.user_id || ''),
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+    })),
     articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }
 }
@@ -530,6 +583,7 @@ function normalizeByteCourse(raw) {
 
 module.exports = {
   formatCount,
+  formatCompactCount,
   formatTime,
   formatDateTime,
   dateKey,

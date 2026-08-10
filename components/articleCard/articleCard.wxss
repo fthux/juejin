@@ -23,6 +23,18 @@
   font-size: 23rpx;
 }
 
+.article-stats .stat {
+  display: flex;
+  align-items: center;
+  gap: 7rpx;
+}
+
+.article-stats .stat-icon {
+  width: 28rpx;
+  height: 28rpx;
+  flex: 0 0 auto;
+}
+
 .author {
   max-width: 200rpx;
   overflow: hidden;

@@ -1,4 +1,6 @@
 {
+  "navigationStyle": "custom",
   "navigationBarTitleText": "收藏集",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 180
 }

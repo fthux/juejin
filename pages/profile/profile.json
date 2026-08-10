@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "用户主页"
+  "navigationBarTitleText": "用户主页",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 180
 }

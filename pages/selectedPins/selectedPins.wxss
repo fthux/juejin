@@ -1,0 +1,19 @@
+.selected-page { min-height: 100vh; background: var(--jj-bg); }
+.pin-item { padding: 30rpx 30rpx 0; border-bottom: 14rpx solid var(--jj-bg); background: var(--jj-surface); }
+.pin-head { display: flex; align-items: center; }
+.pin-head > image { width: 72rpx; height: 72rpx; margin-right: 16rpx; border-radius: 50%; }
+.pin-name { font-size: 29rpx; font-weight: 600; }
+.pin-head text { display: block; margin-top: 6rpx; color: var(--jj-text-3); font-size: 22rpx; }
+.pin-content { margin-top: 20rpx; display: block; color: var(--jj-text); font-size: 27rpx; line-height: 1.62; white-space: pre-wrap; }
+.pin-images { margin-top: 18rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6rpx; }
+.pin-images image { width: 100%; aspect-ratio: 1; background: var(--jj-fill); }
+.pin-images.image-count-1 { display: block; }
+.pin-images.image-count-1 image { width: 450rpx; aspect-ratio: 4 / 3; }
+.pin-images.image-count-2 { grid-template-columns: repeat(2, 250rpx); }
+.pin-liked { height: 64rpx; display: flex; align-items: center; justify-content: flex-end; color: var(--jj-text-3); font-size: 21rpx; }
+.pin-liked > view { display: flex; margin-right: 10rpx; }
+.pin-liked image { width: 42rpx; height: 42rpx; margin-left: -10rpx; border: 2rpx solid var(--jj-surface); border-radius: 50%; }
+.pin-actions { height: 82rpx; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1rpx solid var(--jj-line); }
+.pin-actions view { display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 23rpx; }
+.pin-actions image { width: 34rpx; height: 34rpx; margin-right: 9rpx; opacity: .72; }
+.loading-line, .list-end { padding: 30rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }

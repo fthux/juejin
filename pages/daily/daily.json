@@ -1,6 +1,5 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "专栏",
   "enablePullDownRefresh": true,
   "onReachBottomDistance": 180
 }

@@ -28,3 +28,4 @@
 .profile-tab.active { color: var(--jj-blue); }
 .profile-tab.active::after { content: ''; position: absolute; right: 28rpx; bottom: 0; left: 28rpx; height: 5rpx; border-radius: 3rpx; background: var(--jj-blue); }
 .profile-search { margin-left: auto; padding: 0 28rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 44rpx; }
+.profile-loading { padding: 26rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }

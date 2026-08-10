@@ -1,0 +1,39 @@
+.daily-page { min-height: 100vh; background: var(--jj-bg); }
+.daily-hero { position: relative; height: 382rpx; overflow: hidden; color: #fff; background: #c5ecf8; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-nav { position: relative; z-index: 2; width: 100%; height: 100%; padding: 0 30rpx; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+.back { width: 70rpx; font-size: 64rpx; line-height: 1; }
+.hero-more { font-size: 34rpx; letter-spacing: 0; }
+.daily-profile { padding: 30rpx; background: var(--jj-surface); border-bottom: 14rpx solid var(--jj-bg); }
+.profile-title { margin-bottom: 20rpx; font-size: 31rpx; font-weight: 600; }
+.profile-row { display: flex; align-items: center; }
+.profile-row image { width: 68rpx; height: 68rpx; border-radius: 50%; }
+.profile-copy { min-width: 0; margin-left: 14rpx; flex: 1; }
+.profile-copy view { font-size: 26rpx; }
+.profile-name-row { display: flex; align-items: center; gap: 10rpx; }
+.profile-name-row .level-badge { padding: 2rpx 8rpx; border-radius: 4rpx; color: #fff; background: #2f7de1; font-size: 17rpx; font-style: italic; font-weight: 700; }
+.profile-copy text { display: block; margin-top: 5rpx; color: var(--jj-text-3); font-size: 21rpx; }
+.subscribe { height: 58rpx; padding: 0 20rpx; display: flex; align-items: center; border-radius: 4rpx; color: #fff; background: var(--jj-blue); font-size: 23rpx; }
+.subscribe.followed { color: var(--jj-text-3); background: var(--jj-fill); }
+.profile-description { margin-top: 18rpx; color: var(--jj-text-2); font-size: 24rpx; line-height: 1.5; }
+.profile-stats { margin-top: 18rpx; display: flex; align-items: center; color: var(--jj-text-2); font-size: 23rpx; }
+.profile-stats > text:last-child { margin-left: 14rpx; }
+.subscriber-avatars { height: 44rpx; margin-right: 10rpx; display: flex; align-items: center; }
+.subscriber-avatars image { width: 42rpx; height: 42rpx; margin-left: -10rpx; border: 2rpx solid #fff; border-radius: 50%; background: var(--jj-fill); }
+.subscriber-avatars image:first-child { margin-left: 0; }
+.article-bar { height: 92rpx; padding: 0 30rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 1rpx solid var(--jj-line); background: var(--jj-surface); }
+.article-bar > text { font-size: 31rpx; font-weight: 600; }
+.article-bar > view { color: var(--jj-blue); font-size: 23rpx; }
+.daily-list { background: var(--jj-surface); }
+.daily-article { padding: 28rpx 30rpx; border-bottom: 12rpx solid var(--jj-bg); }
+.article-title { font-size: 30rpx; font-weight: 600; line-height: 1.45; }
+.article-author { margin-top: 16rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 22rpx; }
+.article-author image { width: 36rpx; height: 36rpx; margin-right: 10rpx; border-radius: 50%; }
+.divider { width: 1rpx; height: 24rpx; margin: 0 12rpx; background: var(--jj-line); }
+.article-brief { margin-top: 16rpx; color: var(--jj-text-2); font-size: 25rpx; line-height: 1.55; }
+.article-bottom { margin-top: 18rpx; display: flex; align-items: center; justify-content: space-between; color: var(--jj-text-3); font-size: 22rpx; }
+.article-actions { display: flex; align-items: center; gap: 34rpx; }
+.article-actions > view { display: flex; align-items: center; gap: 7rpx; }
+.article-actions image { width: 28rpx; height: 28rpx; }
+.article-tag { padding: 5rpx 12rpx; color: var(--jj-text-3); background: var(--jj-fill); }
+.loading-line, .list-end { padding: 28rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }
