@@ -8,9 +8,11 @@
 
   <block wx:else>
     <view wx:if="{{current}}" class="column-detail">
+      <view class="detail-fixed-nav {{navScrolled ? 'scrolled' : ''}}" style="background: rgba(255, 255, 255, {{navOpacity}});">
+        <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><text class="fixed-nav-title ellipsis" style="opacity: {{navOpacity}};">{{current.title}}</text><view class="nav-placeholder"></view></view></status-bar>
+      </view>
       <view class="detail-hero">
         <image class="detail-cover" src="{{current.cover || '/assets/app/column/column_default_cover.webp'}}" mode="aspectFill" referrer-policy="no-referrer"></image>
-        <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><view class="nav-more" bindtap="showMore">•••</view></view></status-bar>
       </view>
       <view class="detail-profile surface">
         <view class="detail-title">{{current.title}}</view>
@@ -18,7 +20,8 @@
         <view class="detail-description">{{current.description || '系统整理优质技术内容'}}</view>
         <view class="detail-stats"><view class="subscriber-avatars"><image wx:for="{{current.recent_users}}" wx:key="user_id" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view><text>等{{current.follower_count}}人订阅</text><text>{{current.article_count || articles.length}}篇文章</text></view>
       </view>
-      <view class="article-bar"><text>收录文章</text><view data-id="{{sort === 'latest' ? 'hot' : 'latest'}}" bindtap="switchSort">{{sort === 'latest' ? '默认排序' : '最新发布'}} ▴▾</view></view>
+      <view wx:if="{{sortMenuOpen}}" class="sort-mask" bindtap="closeSortMenu"></view>
+      <view class="article-bar"><text>收录文章</text><view class="detail-sort-trigger" bindtap="toggleSortMenu">{{detailSortLabel}} <text>▴▾</text></view><view wx:if="{{sortMenuOpen}}" class="detail-sort-menu"><view wx:for="{{sortOptions}}" wx:key="id" class="detail-sort-option {{detailSort === item.id ? 'active' : ''}}" data-id="{{item.id}}" catchtap="selectDetailSort"><text>{{item.label}}</text><text wx:if="{{detailSort === item.id}}">✓</text></view></view></view>
       <view class="detail-articles surface"><view wx:for="{{articles}}" wx:key="article_id" class="article-row" data-index="{{index}}" bindtap="openArticle"><view class="article-copy"><view class="article-title two-lines">{{item.title}}</view><view class="article-author"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{item.author.user_name}}</text><text class="divider"></text><text>{{item.ctime}}</text></view><view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view><view class="article-bottom"><view class="article-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view><text wx:if="{{item.tags.length}}" class="article-tag">{{item.tags[0]}}</text></view></view><image wx:if="{{item.cover_image}}" class="article-cover" src="{{item.cover_image}}" mode="aspectFill" referrer-policy="no-referrer"></image></view></view>
       <empty-state wx:if="{{!loading && !articles.length}}" text="该专栏暂未返回公开文章"></empty-state>
     </view>

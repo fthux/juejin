@@ -95,7 +95,7 @@
     <scroll-view wx:if="{{columns.length}}" class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{columns}}" wx:key="column_id" class="recommend-card horizontal-card tint-{{index % 4}}" data-index="{{index}}" bindtap="openColumn">
         <view wx:if="{{item.tag}}" class="recommend-ribbon">{{item.tag}}</view>
-        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.title}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.description || item.creator.user_name + ' 的专栏'}}</view></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
+        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.title}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.owner_label || item.creator.user_name + '的专栏'}}</view></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
         <view class="recommend-preview">
           <view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="column" data-card-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openCardArticle"><view class="ellipsis">{{article.title}}</view><text>点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view>
         </view>
@@ -137,9 +137,9 @@
     <scroll-view class="rank-chips" scroll-x enable-flex scroll-into-view="rank-chip-{{activeRankIndex}}"><view wx:for="{{rankCategories}}" wx:key="id" id="rank-chip-{{index}}" class="rank-chip {{activeRankIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectRankCategory">{{item.name}}</view></scroll-view>
     <swiper class="rank-swiper" current="{{activeRankIndex}}" bindchange="changeRankCategory">
       <swiper-item wx:for="{{rankCategories}}" wx:key="id">
-        <view class="rank-card">
+        <view class="rank-card" data-index="{{index}}" bindtap="openRankCategory">
           <view class="rank-card-title">{{item.name}}排行榜 <text>›</text></view>
-          <view wx:for="{{rankLists[index]}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="rank-row" data-page-index="{{index}}" data-article-index="{{articleIndex}}" bindtap="openRankArticle"><view class="rank-copy"><view class="rank-title ellipsis">{{article.title}}</view><view class="card-meta">{{article.author.user_name}} · 评论 {{article.comment_count}} · 点赞 {{article.digg_count}}</view></view></view>
+          <view wx:for="{{rankLists[index]}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="rank-row" data-page-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openRankArticle"><view class="rank-copy"><view class="rank-title ellipsis">{{article.title}}</view><view class="card-meta">{{article.author.user_name}} · 评论 {{article.comment_count}} · 点赞 {{article.digg_count}}</view></view></view>
           <view wx:if="{{rankLoading && activeRankIndex === index}}" class="loading-line">正在加载榜单...</view>
         </view>
       </swiper-item>

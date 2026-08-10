@@ -164,11 +164,12 @@ function recommendedColumns(cursor, limit) {
 
 function columnArticles(columnId, cursor, sortType) {
   if (!columnId) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
+  const normalizedSort = Number(sortType)
   return withFallback(request('/content_api/v1/column/articles_cursor', {
     column_id: String(columnId),
     cursor: cursor || '0',
     limit: 10,
-    sort_type: Number(sortType) || 2
+    sort: Number.isFinite(normalizedSort) ? normalizedSort : 2
   }), () => ({ data: mock.articles, cursor: 'mock-end', has_more: false }))
 }
 

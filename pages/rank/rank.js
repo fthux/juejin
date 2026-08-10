@@ -24,8 +24,15 @@ Page({
   onLoad(query) {
     const type = query.type === 'author' ? 'author' : (query.type === 'collect' ? 'collect' : 'article')
     const title = type === 'author' ? '作者榜' : (type === 'collect' ? '收藏榜' : '文章榜')
-    this.setData({ type, title })
-    this.load()
+    const categoryId = String(query.categoryId || '')
+    const categoryIndex = type === 'article' && categoryId
+      ? this.data.categories.findIndex((item) => String(item.id) === categoryId)
+      : -1
+    this.setData({
+      type,
+      title,
+      activeCategoryIndex: categoryIndex >= 0 ? categoryIndex : 0
+    }, () => this.load())
   },
 
   onPullDownRefresh() { this.load() },

@@ -93,6 +93,7 @@ function normalizeArticle(raw) {
     brief_content: info.brief_content || item.brief || '',
     cover_image: info.cover_image || item.cover || '',
     ctime: formatTime(info.ctime || item.ctime),
+    ctime_value: ctime,
     digg_count: formatCount(diggCount),
     comment_count: formatCount(commentCount),
     digg_label: diggCount > 0 ? formatCount(diggCount) : '点赞',
@@ -381,12 +382,16 @@ function normalizeRecommendedAuthor(raw) {
 function authorToColumn(author) {
   const item = author || {}
   const firstArticle = item.articles && item.articles[0]
+  const firstTag = firstArticle && firstArticle.tags && firstArticle.tags[0]
+  const tagName = typeof firstTag === 'string' ? firstTag : (firstTag && firstTag.tag_name || '')
+  const creatorName = item.user_name || '掘金作者'
   return {
     column_id: `author-${item.user_id || ''}`,
-    title: `${item.user_name || '掘金作者'} 的专栏`,
+    title: tagName ? `${tagName}精选` : '技术专栏',
+    owner_label: `${creatorName}的专栏`,
     description: item.description || '持续分享一线技术实践与思考',
     cover: '/assets/app/column/column_default_cover.webp',
-    tag: firstArticle && firstArticle.tags && firstArticle.tags.length ? firstArticle.tags[0] : '',
+    tag: tagName,
     article_count: item.article_count || (item.articles || []).length,
     follower_value: 0,
     follower_count: item.follower_count || '0',
@@ -405,9 +410,11 @@ function normalizeColumn(raw) {
   const item = raw || {}
   const info = item.column || item.column_info || item
   const creator = item.creator || item.author_user_info || item.user_info || {}
+  const creatorName = creator.user_name || creator.name || info.user_name || '掘金用户'
   return {
     column_id: String(info.column_id || info.id || ''),
     title: info.title || info.column_name || info.name || '技术专栏',
+    owner_label: `${creatorName}的专栏`,
     description: info.description || info.brief || '',
     cover: normalizeImageUrl(info.cover || info.cover_image || '', 240),
     tag: info.tag_name || info.category_name || '',
@@ -417,7 +424,7 @@ function normalizeColumn(raw) {
     create_time: formatDateTime(info.ctime || info.create_time, false),
     creator: {
       user_id: String(creator.user_id || info.user_id || ''),
-      user_name: creator.user_name || creator.name || '掘金用户',
+      user_name: creatorName,
       avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80),
       level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },

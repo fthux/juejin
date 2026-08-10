@@ -255,6 +255,12 @@ Page({
 
   openRank(event) { wx.navigateTo({ url: `/pages/rank/rank?type=${event.currentTarget.dataset.type}` }) },
 
+  openRankCategory(event) {
+    const category = this.data.rankCategories[Number(event.currentTarget.dataset.index)]
+    if (!category || !category.id) return
+    wx.navigateTo({ url: `/pages/rank/rank?type=article&categoryId=${encodeURIComponent(String(category.id))}` })
+  },
+
   selectRankCategory(event) {
     const index = Number(event.currentTarget.dataset.index)
     if (!Number.isInteger(index) || !this.data.rankCategories[index]) return
