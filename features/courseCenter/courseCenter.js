@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -25,7 +26,7 @@ const GUIDE_COURSES = [
   }
 ]
 
-Page({
+Page(theme.withTheme({
   data: {
     topTab: 'mine',
     filter: 'all',
@@ -92,4 +93,4 @@ Page({
   openCourse(event) {
     wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${event.currentTarget.dataset.id}` })
   }
-})
+}))

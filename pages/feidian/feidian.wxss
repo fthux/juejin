@@ -3,14 +3,8 @@
 }
 
 .pin-page.following-mode {
-  --jj-surface: #ffffff;
-  --jj-bg: #ffffff;
-  --jj-text: #252933;
-  --jj-text-2: #515767;
-  --jj-text-3: #8a919f;
-  --jj-line: #e5e6eb;
   padding-bottom: 0;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .pin-sticky {
@@ -263,7 +257,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .following-illustration {

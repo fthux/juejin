@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="popularize-page">
   <view class="popularize-head"><text>推广中心</text><text class="help">规则&amp;帮助</text></view>
   <view class="withdraw-card"><view>可提现金额　?</view><view class="withdraw-value">¥ 0.00</view><view class="withdraw-button">提现</view></view>

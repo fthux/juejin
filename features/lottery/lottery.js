@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     ore: 2506,
     prizes: [
@@ -24,4 +25,4 @@ Page({
   blocked() {
     utils.toast('抽奖操作仅在掘金 App 内执行')
   }
-})
+}))

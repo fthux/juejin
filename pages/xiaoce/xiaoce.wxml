@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page course-page">
   <status-bar navigation="{{true}}">
     <view class="course-header surface">
@@ -7,7 +8,6 @@
         </view>
       </view>
       <view class="course-actions">
-        <image wx:if="{{activeCourseType === 'booklet'}}" class="course-action" src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" bindtap="openSearch"></image>
         <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
       </view>
     </view>

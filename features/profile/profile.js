@@ -1,9 +1,10 @@
+const theme = require("../../utils/theme.js")
 const mock = require('../../data/mockData.js')
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     user: null,
     activeTab: 'dynamic',
@@ -130,4 +131,4 @@ Page({
   openPin(event) {
     wx.navigateTo({ url: `/features/feidianDetail/feidianDetail?msgId=${event.detail.item.msg_id}` })
   }
-})
+}))

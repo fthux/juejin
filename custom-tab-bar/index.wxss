@@ -65,3 +65,33 @@
     border-color: #ffffff;
   }
 }
+
+.app-tab-bar.light-mode {
+  border-top-color: rgba(134, 144, 156, 0.18);
+  background: #ffffff;
+}
+
+.app-tab-bar.light-mode .tab-item {
+  color: #8a919f;
+}
+
+.app-tab-bar.light-mode .tab-icon.profile-normal {
+  border-color: #252933;
+}
+
+.app-tab-bar.dark-mode {
+  border-top-color: #2c2d30;
+  background: #17181a;
+}
+
+.app-tab-bar.dark-mode .tab-item {
+  color: #c9cdd4;
+}
+
+.app-tab-bar.dark-mode .tab-item.active {
+  color: #1e80ff;
+}
+
+.app-tab-bar.dark-mode .tab-icon.profile-normal {
+  border-color: #ffffff;
+}

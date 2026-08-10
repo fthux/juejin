@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page level-page">
   <view class="level-card">
     <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>

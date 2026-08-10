@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
-const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
+const markdown = require('../utils/markdown.js')
 
 const GUIDE_DETAILS = {
   'free-writing-guide': {
@@ -51,20 +52,47 @@ const GUIDE_DETAILS = {
   }
 }
 
-Page({
+function formatSectionDuration(value) {
+  let seconds = Math.max(0, Math.floor(Number(value) || 0))
+  if (!seconds) return ''
+  const hours = Math.floor(seconds / 3600)
+  seconds %= 3600
+  const minutes = Math.floor(seconds / 60)
+  seconds %= 60
+  return `${hours ? `${hours}小时` : ''}${minutes ? `${minutes}分` : ''}${seconds ? `${seconds}秒` : ''}`
+}
+
+function formatCourseDuration(value) {
+  const seconds = Number(value) || 0
+  if (!seconds) return ''
+  const totalMinutes = Math.max(1, Math.round(seconds / 60))
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  return `${hours ? `${hours} 小时` : ''}${hours && minutes ? ' ' : ''}${minutes ? `${minutes} 分钟` : ''}`
+}
+
+Page(theme.withTheme({
   data: {
     course: null,
     chapters: [],
     introduction: '',
-    readingTitle: '',
-    readingContent: '',
-    inBookshelf: false,
+    recommendations: [],
+    activeTab: 'intro',
+    navTotalHeight: 64,
+    navCollapsed: false,
     loading: true,
     loadError: false
   },
 
   onLoad(query) {
     this.bookletId = query.id || ''
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    const statusHeight = Number(info.statusBarHeight) || 20
+    const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
+    const navigationHeight = menu && Number(menu.height) > 0
+      ? Number(menu.height) + (Number(menu.top) - statusHeight) * 2
+      : 44
+    this.setData({ navTotalHeight: statusHeight + navigationHeight })
     if (!this.bookletId) {
       this.setData({ loading: false, loadError: true })
       return
@@ -72,9 +100,13 @@ Page({
     this.loadDetail()
   },
 
+  onPageScroll(event) {
+    const navCollapsed = Number(event.scrollTop) > 150
+    if (navCollapsed !== this.data.navCollapsed) this.setData({ navCollapsed })
+  },
+
   loadDetail() {
     this.setData({ loading: true, loadError: false })
-    const bookshelf = wx.getStorageSync('jj:bookshelf') || []
     const localDetail = GUIDE_DETAILS[this.bookletId]
     const task = localDetail ? Promise.resolve({ data: localDetail }) : api.courseDetail(this.bookletId)
     task.then((result) => {
@@ -83,70 +115,85 @@ Page({
       const course = utils.normalizeCourse(raw)
       const chapters = (detail.sections || []).map((section, index) => ({
         id: String(section.section_id || ''),
-        title: `${index + 1}. ${section.title}`,
-        duration: section.read_time ? `${Math.max(1, Math.round(Number(section.read_time) / 60))} 分钟` : '',
-        unlocked: Boolean(course.owned || section.is_free),
-        isFree: Boolean(section.is_free),
+        number: index + 1,
+        title: section.title || section.draft_title || `第 ${index + 1} 节`,
+        duration: formatSectionDuration(section.read_time),
+        unlocked: Boolean(course.owned || Number(section.is_free) === 1 || section.is_free === true),
+        isFree: Boolean(Number(section.is_free) === 1 || section.is_free === true),
         content: section.local_content || ''
       }))
       if (!course.id) throw new Error('课程详情不存在')
+      course.durationText = formatCourseDuration(course.read_time)
       const history = (wx.getStorageSync('jj:course-history') || []).filter((item) => String(item.id) !== String(course.id))
       history.unshift(Object.assign({}, course, { viewedAt: Date.now() }))
       wx.setStorageSync('jj:course-history', history.slice(0, 50))
+      wx.setStorageSync(`jj:course-reader:${course.id}`, { course, chapters })
       this.setData({
         course,
         chapters,
-        introduction: (detail.introduction && detail.introduction.content) || course.summary,
-        inBookshelf: bookshelf.map(String).indexOf(String(course.id)) !== -1,
+        introduction: markdown.normalizeImageSources((detail.introduction && detail.introduction.content) || course.summary),
         loading: false
       })
-      wx.setNavigationBarTitle({ title: course.title })
+      this.loadRecommendations()
     }).catch(() => this.setData({ loading: false, loadError: true }))
   },
 
-  toggleBookshelf() {
-    if (!session.requireLogin()) return
-    const list = wx.getStorageSync('jj:bookshelf') || []
-    const index = list.map(String).indexOf(String(this.data.course.id))
-    if (index === -1) list.unshift(this.data.course.id)
-    else list.splice(index, 1)
-    wx.setStorageSync('jj:bookshelf', list)
-    this.setData({ inBookshelf: index === -1 })
+  loadRecommendations() {
+    api.courseRecommendations('0', 20).then(({ result }) => {
+      const recommendations = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
+      this.setData({ recommendations })
+    }).catch(() => this.setData({ recommendations: [] }))
   },
 
   openChapter(event) {
     const chapterId = String(event.currentTarget.dataset.id || '')
     const chapter = this.data.chapters.find((item) => String(item.id) === chapterId)
     if (!chapter) return
-    this.loadChapter(chapter)
+    wx.navigateTo({
+      url: `/features/courseReader/courseReader?bookletId=${this.data.course.id}&sectionId=${chapter.id}`
+    })
   },
 
-  loadChapter(chapter) {
-    if (!chapter.unlocked) {
-      utils.toast('请在掘金 App 或官网购买后阅读')
-      return
-    }
-    if (chapter.content) {
-      this.setData({ readingTitle: chapter.title.replace(/^\d+\.\s*/, ''), readingContent: chapter.content })
-      wx.pageScrollTo({ selector: '#course-reading', duration: 250 })
-      return
-    }
-    wx.showLoading({ title: '加载中' })
-    api.courseSection(chapter.id).then((result) => {
-      const section = result.data && result.data.section
-      const content = section && (section.content || section.app_html_content)
-      if (!section || !content) throw new Error('章节内容为空')
-      this.setData({ readingTitle: section.title, readingContent: content })
-      wx.pageScrollTo({ selector: '#course-reading', duration: 250 })
-    }).catch((error) => utils.toast(error.message || '章节加载失败')).finally(() => wx.hideLoading())
+  switchTab(event) {
+    this.setData({ activeTab: event.currentTarget.dataset.id })
   },
 
-  startCourse() {
-    const chapter = this.data.chapters.find((item) => item.unlocked)
+  startTrial() {
+    const chapter = this.data.chapters.find((item) => item.isFree) || this.data.chapters.find((item) => item.unlocked)
     if (!chapter) {
-      utils.toast('当前课程没有可试读章节')
+      utils.toast('当前小册没有可试读章节')
       return
     }
-    this.loadChapter(chapter)
+    this.openChapter({ currentTarget: { dataset: { id: chapter.id } } })
+  },
+
+  openRecommendation(event) {
+    const id = String(event.detail && event.detail.item && event.detail.item.id || '')
+    if (id) wx.redirectTo({ url: `/features/courseDetail/courseDetail?id=${id}` })
+  },
+
+  goBack() {
+    const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : []
+    if (pages.length > 1) wx.navigateBack()
+    else wx.switchTab({ url: '/pages/xiaoce/xiaoce' })
+  },
+
+  showMore() {
+    wx.showActionSheet({ itemList: ['分享小册', '举报'] })
+  },
+
+  buyCourse() {
+    if (this.data.course && this.data.course.owned) {
+      this.startTrial()
+      return
+    }
+    utils.toast('请在掘金 App 或官网购买')
+  },
+
+  onShareAppMessage() {
+    return {
+      title: this.data.course ? this.data.course.title : '掘金小册',
+      path: `/features/courseDetail/courseDetail?id=${this.bookletId}`
+    }
   }
-})
+}))

@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page about-page">
   <view class="about-list surface">
     <view wx:for="{{items}}" wx:key="*this" class="about-row">

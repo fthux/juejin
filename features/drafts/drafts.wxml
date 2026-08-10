@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page drafts-page">
   <view class="draft-head surface">
     <text>{{drafts.length ? '共 ' + drafts.length + ' 篇草稿' : '文章草稿'}}</text>

@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page channel-page">
   <block wx:if="{{mode === 'live'}}">
     <scroll-view class="live-type-tabs surface" scroll-x enable-flex><view wx:for="{{liveTypes}}" wx:key="type" class="live-type {{activeLiveType === item.type ? 'active' : ''}}" data-id="{{item.type}}" bindtap="selectLiveType">{{item.name}}</view></scroll-view>

@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const STORAGE_KEY = 'jj:full-version-enabled'
 
-Page({
+Page(theme.withTheme({
   data: {
     enabled: true
   },
@@ -14,4 +15,4 @@ Page({
     wx.setStorageSync(STORAGE_KEY, enabled)
     this.setData({ enabled })
   }
-})
+}))

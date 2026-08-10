@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page rank-page">
   <view class="rank-fixed-nav {{navVisible ? 'visible' : ''}}" style="opacity: {{navOpacity}};"><status-bar navigation="{{true}}"><view class="rank-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="rank-rules" bindtap="showRules">{{type === 'article' ? '排名规则' : ''}}</view></view></status-bar></view>
   <status-bar navigation="{{true}}"><view class="rank-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="rank-rules" bindtap="showRules">{{type === 'article' ? '排名规则' : ''}}</view></view></status-bar>

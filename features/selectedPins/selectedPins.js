@@ -1,8 +1,9 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: { pins: [], cursor: '0', hasMore: true, loading: false, fromCache: false },
   onLoad() { this.load(true) },
   onPullDownRefresh() { this.load(true) },
@@ -31,4 +32,4 @@ Page({
   },
 
   requireLogin() { session.requireLogin() }
-})
+}))

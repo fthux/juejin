@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="coupon-page">
   <view class="coupon-tabs">
     <view wx:for="{{tabs}}" wx:key="*this" class="coupon-tab {{activeTab === item ? 'active' : ''}}" data-tab="{{item}}" bindtap="selectTab">{{item}}</view>

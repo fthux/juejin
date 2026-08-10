@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
@@ -6,7 +7,7 @@ function findChannel(id) {
   return mock.homeChannels.find((item) => item.id === id)
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     navTabs: mock.homeChannels,
     activeNav: 'recommend',
@@ -238,4 +239,4 @@ Page({
   onShareAppMessage() {
     return { title: '稀土掘金 · 帮助开发者成长的社区', path: '/pages/index/index' }
   }
-})
+}))

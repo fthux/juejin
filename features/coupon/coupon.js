@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: { activeTab: '未使用', tabs: ['未使用', '已使用', '已过期'] },
 
   onLoad() {
@@ -10,4 +11,4 @@ Page({
   selectTab(event) {
     this.setData({ activeTab: event.currentTarget.dataset.tab })
   }
-})
+}))

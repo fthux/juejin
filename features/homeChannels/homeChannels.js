@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const mock = require('../../data/mockData.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     channels: mock.homeChannels,
     editMode: false
@@ -15,4 +16,4 @@ Page({
     wx.setStorageSync('jj:home-channel', event.currentTarget.dataset.id)
     wx.navigateBack()
   }
-})
+}))

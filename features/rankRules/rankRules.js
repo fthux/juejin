@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   data: {
     bookletId: '6843715467522080775',
     sectionId: '6843715630860861453',
@@ -11,4 +12,4 @@ Page({
       '/features/assets/app/rank/rank_rules_05.webp'
     ]
   }
-})
+}))

@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const chart = require('../utils/chart.js')
 
@@ -22,7 +23,7 @@ const SERIES = {
   ]
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     activeTab: 'article',
     stats: [],
@@ -101,4 +102,4 @@ Page({
       trendSeries: metrics.filter((item) => item.selected).map((item) => ({ id: item.id, segments: chart.lineSegments(item.values, item.color, { max: 180 }) }))
     })
   }
-})
+}))

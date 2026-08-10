@@ -1,7 +1,8 @@
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
+const theme = require('../../utils/theme.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     darkMode: false,
     personalized: true,
@@ -10,10 +11,8 @@ Page({
   },
 
   onShow() {
-    const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
-    const storedDark = wx.getStorageSync('jj:dark-mode')
     this.setData({
-      darkMode: storedDark === '' ? windowInfo.theme === 'dark' : Boolean(storedDark),
+      darkMode: theme.getResolvedTheme() === 'dark',
       personalized: wx.getStorageSync('jj:personalized') !== false,
       pushEnabled: wx.getStorageSync('jj:push-enabled') !== false
     })
@@ -67,8 +66,8 @@ Page({
 
   toggleDark() {
     const darkMode = !this.data.darkMode
-    wx.setStorageSync('jj:dark-mode', darkMode)
+    theme.setPreference({ followSystem: false, selected: darkMode ? 'dark' : 'light' })
     this.setData({ darkMode })
     utils.toast(darkMode ? '已开启深色模式' : '已关闭深色模式')
   }
-})
+}))

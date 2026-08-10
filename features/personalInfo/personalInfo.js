@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     items: [
       '账号信息',
@@ -17,4 +18,4 @@ Page({
   onLoad(query) {
     session.requirePage(`/features/personalInfo/personalInfo${query && query.from ? `?from=${query.from}` : ''}`)
   }
-})
+}))

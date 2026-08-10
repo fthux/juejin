@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     activeTab: 'article',
     status: 'active',
@@ -82,4 +83,4 @@ Page({
     wx.showToast({ title: active ? '报名成功' : '已取消报名', icon: 'none' })
     this.applyFilters()
   }
-})
+}))

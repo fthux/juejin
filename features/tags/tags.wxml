@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page tags-page">
   <view class="tags-tabs">
     <view class="{{activeTab === 'all' ? 'active' : ''}}" data-id="all" bindtap="switchTab">全部标签</view>

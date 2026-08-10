@@ -1,4 +1,4 @@
-<view class="app-tab-bar safe-bottom">
+<view class="app-tab-bar safe-bottom {{darkMode ? 'dark-mode' : 'light-mode'}}">
   <view wx:for="{{tabs}}" wx:key="pagePath" class="tab-item {{selected === index ? 'active' : ''}}" data-index="{{index}}" bindtap="switchTab">
     <view class="tab-icon-box">
       <image class="tab-icon {{index === 4 && selected !== index ? 'profile-normal' : ''}}" src="{{darkMode ? (selected === index ? item.darkSelectedIcon : item.darkIcon) : (selected === index ? item.selectedIcon : item.icon)}}" mode="aspectFit"></image>

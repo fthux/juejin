@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -21,7 +22,7 @@ function buildCatalog(source) {
   return headings.slice(0, 6)
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     articleId: '',
     article: null,
@@ -250,4 +251,4 @@ Page({
     const article = this.data.article || {}
     return { title: article.title || '稀土掘金文章', path: `/features/post/post?id=${this.data.articleId}` }
   }
-})
+}))

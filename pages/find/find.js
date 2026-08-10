@@ -2,14 +2,7 @@ const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 const mock = require('../../data/mockData.js')
-
-function isDarkMode() {
-  const preference = wx.getStorageSync('jj:dark-mode-v2') || {}
-  const system = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {}
-  if (preference.followSystem) return system.theme === 'dark'
-  if (preference.selected) return preference.selected === 'dark'
-  return system.theme === 'dark'
-}
+const theme = require('../../utils/theme.js')
 
 function cacheThemeAndOpen(theme) {
   if (!theme || !theme.theme_id) return
@@ -20,7 +13,7 @@ function cacheThemeAndOpen(theme) {
   wx.navigateTo({ url: `/features/theme/theme?id=${themeId}` })
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     greeting: '每天读一点，保持技术好奇心',
     dailyDay: String(new Date().getDate()),
@@ -60,14 +53,12 @@ Page({
   },
 
   onLoad() {
-    this.setData({ darkMode: isDarkMode() })
     this.loadAll()
   },
 
   onShow() {
     const tabBar = this.getTabBar && this.getTabBar()
     if (tabBar) tabBar.setData({ selected: 2 })
-    this.setData({ darkMode: isDarkMode() })
   },
 
   onPullDownRefresh() {
@@ -317,4 +308,4 @@ Page({
   },
 
   onShareAppMessage() { return { title: '发现稀土掘金', path: '/pages/find/find' } }
-})
+}))

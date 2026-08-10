@@ -1,7 +1,7 @@
 page,
 .rank-rules-page {
   min-height: 100%;
-  background: #ffffff;
+  background: var(--jj-surface);
 }
 
 .rank-rules-document {

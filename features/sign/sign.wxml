@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page sign-page">
   <view class="sign-summary">
     <image src="/features/assets/app/sign/bg_sign_in_home.webp" mode="aspectFill"></image>

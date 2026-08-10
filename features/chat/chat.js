@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     conversationId: '',
     input: '',
@@ -31,4 +32,4 @@ Page({
     wx.setStorageSync(`jj:chat:${this.data.conversationId}`, messages)
     this.setData({ messages, input: '' })
   }
-})
+}))

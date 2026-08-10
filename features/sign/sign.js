@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     signed: false,
     continuousDays: 0,
@@ -119,4 +120,4 @@ Page({
     this.setData({ showShare: false })
     return { title: `我已连续签到 ${this.data.continuousDays} 天`, path: '/features/sign/sign' }
   }
-})
+}))

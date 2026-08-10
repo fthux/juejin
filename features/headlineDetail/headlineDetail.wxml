@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page headline-detail-page">
   <view wx:if="{{item}}" class="headline-detail surface">
     <view class="detail-title">{{item.title}}</view>

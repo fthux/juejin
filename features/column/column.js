@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -17,7 +18,7 @@ function sortArticlesByTime(articles, sort) {
   })
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     mode: 'list',
     sort: 'latest',
@@ -191,4 +192,4 @@ Page({
     if (!session.requireLogin()) return
     this.setData({ followed: !this.data.followed })
   }
-})
+}))

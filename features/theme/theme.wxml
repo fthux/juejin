@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page theme-page">
   <view class="theme-hero">
     <image wx:if="{{theme.cover}}" class="theme-background" src="{{theme.cover}}" mode="aspectFill"></image>

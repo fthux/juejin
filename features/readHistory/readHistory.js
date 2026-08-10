@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     list: [],
     groups: [],
@@ -76,4 +77,4 @@ Page({
   openArticle(event) {
     wx.navigateTo({ url: `/features/post/post?id=${event.currentTarget.dataset.id}` })
   }
-})
+}))

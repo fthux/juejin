@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: { list: [] },
   onLoad() {
     this.authorized = session.requirePage('/features/registrations/registrations')
@@ -16,4 +17,4 @@ Page({
     this.setData({ list: session.getList('registrations') })
     wx.showToast({ title: '已取消报名', icon: 'none' })
   }
-})
+}))

@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     level: 1,
     current: 0,
@@ -37,4 +38,4 @@ Page({
       progress: next > current ? Math.round(current / next * 100) : 0
     })
   }
-})
+}))

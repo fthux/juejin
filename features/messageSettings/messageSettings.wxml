@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="message-settings-page">
   <view class="settings-label">私信设置</view>
   <view class="message-row surface"><text>允许谁给我发私信</text><text class="arrow">›</text></view>

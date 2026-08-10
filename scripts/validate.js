@@ -11,6 +11,7 @@ const collectFiles = (directory) => {
   const absolute = path.join(root, directory)
   if (!fs.existsSync(absolute)) return []
   return fs.readdirSync(absolute, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.name === '.DS_Store') return []
     const relative = path.join(directory, entry.name)
     return entry.isDirectory() ? collectFiles(relative) : [relative]
   })
@@ -32,6 +33,7 @@ if (app.pages[1] !== 'pages/index/index') fail('启动页之后必须是首页')
 if (allPages.length !== pageSet.size) fail('app.json 中存在重复页面')
 if (!(app.subPackages || []).some((pack) => pack.root === 'features')) fail('功能页面必须放入 features 分包')
 if (app.lazyCodeLoading !== 'requiredComponents') fail('组件按需注入未启用')
+if (!app.darkmode || app.themeLocation !== 'theme.json') fail('小程序必须启用系统深浅色主题配置')
 
 const ignoredFolders = new Set((project.packOptions && project.packOptions.ignore || [])
   .filter((item) => item.type === 'folder')
@@ -51,13 +53,15 @@ for (const base of roots) {
 
   const source = read(`${base}.js`)
   const template = read(`${base}.wxml`)
+  if (pageSet.has(base) && !source.includes('theme.withTheme(')) fail(`${base}.js 未接入统一主题状态`)
+  if (pageSet.has(base) && !template.includes('page-style="{{themePageStyle}}"')) fail(`${base}.wxml 未接入动态页面主题`)
   const bindings = [...template.matchAll(/(?:bind|catch)(?::|tap|input|confirm|change|submit|longpress|touchstart|touchend|scrolltolower|scroll)(?:[a-z:]*)="([A-Za-z_$][\w$]*)"/g)]
   for (const name of new Set(bindings.map((match) => match[1]))) {
     if (!new RegExp(`\\b${name}\\s*\\(`).test(source)) fail(`${base}.wxml 绑定了不存在的处理函数: ${name}`)
   }
 }
 
-const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'features/utils/chart.js', 'features/utils/markdown.js', 'features/utils/showdown.js', 'utils/utils.js', 'data/mockData.js']
+const runtimeFiles = ['app.js', 'services/api.js', 'services/session.js', 'features/utils/chart.js', 'features/utils/markdown.js', 'features/utils/showdown.js', 'utils/utils.js', 'utils/theme.js', 'data/mockData.js']
   .concat(allPages.map((page) => `${page}.js`))
   .concat(componentRoots.map((component) => `${component}.js`))
 
@@ -174,7 +178,7 @@ const mainPackageFiles = new Set(['app.js', 'app.json', 'app.wxss', 'theme.json'
 for (const base of app.pages.concat(componentRoots)) {
   for (const extension of ['js', 'json', 'wxml', 'wxss']) mainPackageFiles.add(`${base}.${extension}`)
 }
-for (const file of ['services/api.js', 'services/session.js', 'utils/utils.js', 'data/mockData.js']) mainPackageFiles.add(file)
+for (const file of ['services/api.js', 'services/session.js', 'utils/utils.js', 'utils/theme.js', 'data/mockData.js']) mainPackageFiles.add(file)
 for (const file of collectFiles('custom-tab-bar').concat(collectFiles('assets'))) mainPackageFiles.add(file)
 const mainPackageBytes = [...mainPackageFiles].reduce((total, file) => total + fs.statSync(path.join(root, file)).size, 0)
 if (mainPackageBytes >= 1.5 * 1024 * 1024) fail(`主包原始文件超过 1.5MiB: ${mainPackageBytes} bytes`)
@@ -196,6 +200,13 @@ if (!fixedImage.includes('object-fit:cover')) fail('图片响应式处理不应�
 if (!fixedImage.includes('src="https://p3.example.com/a.webp?x=1&y=2"')) fail('图片响应式处理破坏了签名参数')
 
 const utils = require(path.join(root, 'utils/utils.js'))
+const themeUtils = require(path.join(root, 'utils/theme.js'))
+if (themeUtils.resolveTheme({ followSystem: false, selected: 'dark' }, 'light') !== 'dark') fail('手动深色模式未覆盖系统浅色模式')
+if (themeUtils.resolveTheme({ followSystem: false, selected: 'light' }, 'dark') !== 'light') fail('手动浅色模式未覆盖系统深色模式')
+if (themeUtils.resolveTheme({ followSystem: true, selected: 'light' }, 'dark') !== 'dark') fail('跟随系统模式未响应系统深色模式')
+const darkThemeData = themeUtils.createThemeData('dark', { darkMode: false })
+if (!darkThemeData.darkMode || !darkThemeData.themePageStyle.includes('--jj-bg:#111214')) fail('深色主题未生成页面样式变量')
+if (Object.prototype.hasOwnProperty.call(themeUtils.createThemeData('dark', { theme: {} }), 'theme')) fail('外观主题不得覆盖页面业务 theme 数据')
 const recentTimestamp = String(Math.floor(Date.now() / 1000) - 3600)
 if (!utils.formatTime(recentTimestamp)) fail('相对时间必须支持接口返回的数字字符串时间戳')
 const yearAgoTimestamp = String(Math.floor(Date.now() / 1000) - 370 * 86400)

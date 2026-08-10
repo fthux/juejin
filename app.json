@@ -30,6 +30,7 @@
         "chat/chat",
         "profile/profile",
         "courseDetail/courseDetail",
+        "courseReader/courseReader",
         "courseCenter/courseCenter",
         "sign/sign",
         "creator/creator",

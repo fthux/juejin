@@ -1,10 +1,11 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 const DAILY_COLUMN_ID = '7107151273765371941'
 const DAILY_DESCRIPTION = '最近鉴于掘友们的热情召唤，我们终于把做了几百期的社群下午茶搬到站内了，酱酱们会一直陪伴，认证创作的掘友们，站内下午茶新增优质作者介绍和码上掘金板块，专注于发掘站内优质创作者和优质内容，欢迎大家多提宝贵意见！'
 
-Page({
+Page(theme.withTheme({
   data: {
     daily: null,
     author: null,
@@ -108,4 +109,4 @@ Page({
     wx.setStorageSync('jj:user-current', author)
     wx.navigateTo({ url: `/features/profile/profile?id=${author.user_id}` })
   }
-})
+}))

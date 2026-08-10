@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const STORAGE_KEY = 'jj:push-settings-v1'
 
 const defaultSettings = {
@@ -12,7 +13,7 @@ const defaultSettings = {
   collectionContent: true
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     settings: defaultSettings,
     interactionItems: [
@@ -39,4 +40,4 @@ Page({
     wx.setStorageSync(STORAGE_KEY, settings)
     this.setData({ settings })
   }
-})
+}))

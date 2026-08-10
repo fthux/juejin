@@ -1,8 +1,9 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     topTab: 'discover',
     sort: 'latest',
@@ -166,4 +167,4 @@ Page({
     }
     return { title: '稀土掘金沸点', path: '/pages/feidian/feidian' }
   }
-})
+}))

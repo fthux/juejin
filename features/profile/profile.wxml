@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page profile-page">
   <view wx:if="{{user}}" class="profile-head surface">
     <image class="profile-bg" src="/features/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>

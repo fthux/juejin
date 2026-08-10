@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="personal-info-page">
   <view class="personal-info-list">
     <view wx:for="{{items}}" wx:key="*this" class="personal-info-row">

@@ -516,11 +516,16 @@ function normalizeCourse(raw) {
   const info = item.base_info || item.booklet_info || item
   const user = item.user_info || info.user_info || {}
   const event = item.event_discount || {}
+  const maxDiscount = item.max_discount || {}
   const originalPrice = Number(info.price) || 0
   const discountRate = Number(event.discount_rate) || 0
-  const salePrice = discountRate > 0 && discountRate < 10
+  const eventPrice = discountRate > 0 && discountRate < 10
     ? Math.round(originalPrice * discountRate / 10)
     : originalPrice
+  const maxDiscountPrice = Number(maxDiscount.pay_money)
+  const salePrice = maxDiscountPrice > 0 && maxDiscountPrice < originalPrice
+    ? maxDiscountPrice
+    : eventPrice
   const updatedCount = Number(item.section_updated_count) || Number(info.section_count) || 0
   const progressSource = item.reading_progress || info.reading_progress || 0
   const progress = typeof progressSource === 'object'
@@ -536,14 +541,18 @@ function normalizeCourse(raw) {
     priceValue: salePrice,
     price: formatPrice(salePrice),
     originalPrice: salePrice < originalPrice ? formatPrice(originalPrice) : '',
-    section_count: Number(info.section_count) || 0,
+    section_count: updatedCount,
+    detail_section_count: Number(info.section_count) || Math.max(0, updatedCount - 1),
     buy_count: formatCount(info.buy_count),
+    buy_count_value: Number(info.buy_count) || 0,
+    read_time: Number(info.read_time) || 0,
     statusText: Number(info.is_finished) === 1 ? '已完结' : `已更新${updatedCount}小节`,
     author: user.user_name || info.author_name || '稀土掘金',
+    authorAvatar: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80),
     authorLevel: Number(user.level || (user.user_growth_info && user.user_growth_info.jpower_level)) || 0,
     vip: Boolean(info.can_vip_borrow),
     isNew: Boolean(item.is_new),
-    discountLabel: event.show_label || event.desc || '',
+    discountLabel: maxDiscount.desc || maxDiscount.name || event.show_label || event.desc || '',
     owned: Boolean(item.is_buy),
     progress: progress > 0 && progress <= 1 ? Math.round(progress * 100) : Math.min(100, Math.round(progress))
   }

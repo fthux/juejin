@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="splash theme-{{theme}}" aria-label="稀土掘金启动页">
   <image class="splash-background splash-light" src="/assets/app/splash/splash_bg.webp" mode="scaleToFill"></image>
   <image class="splash-background splash-dark" src="/assets/app/splash/splash_bg_dark.webp" mode="scaleToFill"></image>

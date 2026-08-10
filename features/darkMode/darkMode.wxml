@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="dark-mode-page">
   <view class="system-section surface">
     <view class="system-head"><text>跟随系统</text><switch checked="{{followSystem}}" color="#1e80ff" bindchange="toggleSystem"></switch></view>

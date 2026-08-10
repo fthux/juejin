@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     entries: [
       { type: 'digg', title: '赞和收藏', color: '#ff7d00', mark: '赞' },
@@ -52,4 +53,4 @@ Page({
     const activeType = this.data.activeType
     this.setData({ visibleNotices: activeType ? this.data.notices.filter((item) => item.type === activeType) : this.data.notices })
   }
-})
+}))

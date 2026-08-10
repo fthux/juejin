@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
 const mock = require('../../data/mockData.js')
@@ -5,7 +6,7 @@ const medals = ['/features/assets/app/rank/ic_rank_1.webp', '/features/assets/ap
 const INITIAL_ARTICLE_COUNT = 40
 const ARTICLE_PAGE_SIZE = 20
 
-Page({
+Page(theme.withTheme({
   data: {
     type: 'article',
     title: '文章榜',
@@ -133,4 +134,4 @@ Page({
     wx.setStorageSync('jj:user-current', user)
     wx.navigateTo({ url: `/features/profile/profile?id=${user.user_id}` })
   }
-})
+}))

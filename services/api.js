@@ -207,19 +207,20 @@ function courses(cursor, options) {
     }))
   }
 
-  const isRecommended = !config.categoryId && (!config.sort || config.sort === 'all')
-  const path = isRecommended
-    ? '/booklet_api/v1/booklet/recommend'
-    : '/booklet_api/v1/booklet/listbycategory'
   const data = {
     cursor: cursor || '0',
-    limit: 20
+    limit: 20,
+    category_id: config.categoryId || '0',
+    sort: config.sort === 'latest' ? 1 : (config.sort === 'hot' ? 2 : 0)
   }
-  if (!isRecommended) {
-    data.category_id = config.categoryId || '0'
-    data.sort = config.sort === 'latest' ? 1 : (config.sort === 'hot' ? 2 : 0)
-  }
-  return withFallback(request(path, data), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+  return withFallback(request('/booklet_api/v1/booklet/listbycategory', data), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+}
+
+function courseRecommendations(cursor, limit) {
+  return withFallback(request('/booklet_api/v1/booklet/recommend', {
+    cursor: cursor || '0',
+    limit: limit || 20
+  }), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
 }
 
 function courseDetail(bookletId) {
@@ -445,6 +446,7 @@ module.exports = {
   liveTypes,
   liveActivities,
   courses,
+  courseRecommendations,
   courseDetail,
   courseSection,
   courseShelf,

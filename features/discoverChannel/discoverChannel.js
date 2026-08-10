@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -12,7 +13,7 @@ const keywords = {
   team: '技术团队'
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     title: '发现',
     mode: 'article',
@@ -164,4 +165,4 @@ Page({
   subscribe() {
     session.requireLogin()
   }
-})
+}))

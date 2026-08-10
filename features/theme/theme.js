@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -12,7 +13,7 @@ const DEFAULT_THEME = {
   user_count: '0'
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     themeId: '',
     theme: DEFAULT_THEME,
@@ -142,4 +143,4 @@ Page({
   back() {
     wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/feidian/feidian' }) })
   }
-})
+}))

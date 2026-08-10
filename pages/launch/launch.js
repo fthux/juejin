@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const SPLASH_DURATION = 3000
 
-Page({
+Page(theme.withTheme({
   data: {
     theme: ''
   },
@@ -22,4 +23,4 @@ Page({
       url: '/pages/index/index'
     })
   }
-})
+}))

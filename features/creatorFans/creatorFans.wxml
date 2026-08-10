@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page fans-page">
   <view class="fans-tabs"><text class="{{activeTab === 'data' ? 'active' : ''}}" data-id="data" bindtap="switchTab">粉丝数据</text><text class="{{activeTab === 'list' ? 'active' : ''}}" data-id="list" bindtap="switchTab">粉丝列表</text></view>
   <block wx:if="{{activeTab === 'data'}}">

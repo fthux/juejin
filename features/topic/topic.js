@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
@@ -66,7 +67,7 @@ function cacheTopic(topic) {
   wx.setStorageSync(TOPIC_CACHE_KEY, cache)
 }
 
-Page({
+Page(theme.withTheme({
   data: {
     mode: 'square',
     squareTab: 'square',
@@ -282,4 +283,4 @@ Page({
       }
     })
   }
-})
+}))

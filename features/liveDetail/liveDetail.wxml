@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <web-view wx:if="{{showWeb && item}}" src="{{item.view_url}}"></web-view>
 <view wx:else class="page live-detail-page">
   <view wx:if="{{item}}" class="live-detail surface">

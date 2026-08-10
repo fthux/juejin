@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   data: {
     benefits: [
       { mark: '课', title: '精选课程', description: '会员课程与专属试读内容' },
@@ -9,4 +10,4 @@ Page({
       { mark: '群', title: '会员社群', description: '开发者交流与活动' }
     ]
   }
-})
+}))

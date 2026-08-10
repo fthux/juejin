@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="lottery-page">
   <view class="lottery-head">
     <view class="lottery-title">掘金福利限量抽</view>

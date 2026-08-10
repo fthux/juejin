@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page notice-page">
   <view class="notice-grid surface">
     <view wx:for="{{entries}}" wx:key="type" class="notice-entry {{activeType === item.type ? 'active' : ''}}" data-type="{{item.type}}" bindtap="selectType">

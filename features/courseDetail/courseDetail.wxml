@@ -1,38 +1,88 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page course-detail-page">
-  <view wx:if="{{loading}}" class="loading-line">正在加载课程...</view>
-  <empty-state wx:elif="{{loadError}}" text="课程详情加载失败"></empty-state>
-  <view wx:if="{{course}}" class="course-hero surface">
-    <image class="course-cover" src="{{course.cover}}" mode="aspectFill"></image>
-    <view class="course-copy">
-      <view class="course-title">{{course.title}}</view>
-      <view class="course-summary two-lines">{{course.summary}}</view>
-      <view class="course-author">{{course.author}} · {{course.section_count}} 小节 · {{course.buy_count}} 人已购买</view>
-      <view class="course-state">{{course.owned ? '已购课程' : '含免费试读章节'}}</view>
-    </view>
-  </view>
-  <view class="section course-intro">
-    <view class="section-header"><view class="section-title">课程介绍</view></view>
-    <rich-text class="intro-copy" nodes="{{introduction}}"></rich-text>
-  </view>
-  <view wx:if="{{readingContent}}" id="course-reading" class="section course-reading">
-    <view class="section-header"><view class="section-title">{{readingTitle}}</view></view>
-    <rich-text class="reading-content" nodes="{{readingContent}}"></rich-text>
-  </view>
-  <view class="section chapters">
-    <view class="section-header">
-      <view class="section-title">课程目录</view>
-      <view class="section-more">{{chapters.length}} 节</view>
-    </view>
-    <view wx:for="{{chapters}}" wx:key="id" class="chapter-row" data-id="{{item.id}}" bindtap="openChapter">
-      <view class="chapter-copy">
-        <view class="chapter-title">{{item.title}}</view>
-        <view class="chapter-duration">{{item.duration}}</view>
+  <view wx:if="{{navCollapsed}}" class="collapsed-navigation">
+    <status-bar navigation="{{true}}">
+      <view class="collapsed-navigation-row">
+        <view class="nav-back dark" bindtap="goBack"></view>
+        <view class="collapsed-title">课程详情</view>
+        <view class="nav-more dark" bindtap="showMore"><text></text><text></text><text></text></view>
       </view>
-      <view class="chapter-state">{{item.isFree ? '免费试读' : (item.unlocked ? '阅读' : '锁定')}}</view>
+    </status-bar>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-line loading-page">正在加载小册...</view>
+  <empty-state wx:elif="{{loadError}}" text="小册详情加载失败"></empty-state>
+
+  <block wx:if="{{course}}">
+    <view class="course-hero">
+      <status-bar navigation="{{true}}" transparent="{{true}}">
+        <view class="hero-navigation-row">
+          <view class="nav-back" bindtap="goBack"></view>
+          <view class="nav-more" bindtap="showMore"><text></text><text></text><text></text></view>
+        </view>
+      </status-bar>
+      <view class="hero-copy">
+        <view class="hero-title">{{course.title}}</view>
+        <view class="hero-summary">{{course.summary}}</view>
+        <view class="hero-author">
+          <image src="{{course.authorAvatar}}" mode="aspectFill"></image>
+          <text>{{course.author}}</text>
+          <text wx:if="{{course.authorLevel}}" class="author-level">LV.{{course.authorLevel}}</text>
+        </view>
+      </view>
     </view>
-  </view>
-  <view class="course-bottom safe-bottom">
-    <view class="secondary-button" bindtap="toggleBookshelf">{{inBookshelf ? '移出书架' : '加入书架'}}</view>
-    <view class="primary-button" bindtap="startCourse">{{course.owned ? '继续学习' : '开始试读'}}</view>
-  </view>
+
+    <view class="course-stats">
+      <view class="stat-block">
+        <view class="stat-value">{{course.detail_section_count}} 小节</view>
+        <view class="stat-label">约 {{course.durationText}}</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-block">
+        <view class="stat-value">{{course.buy_count}} 人</view>
+        <view class="stat-label">已加入学习</view>
+      </view>
+    </view>
+
+    <view class="detail-tabs" style="top: {{navTotalHeight}}px;">
+      <view class="detail-tab {{activeTab === 'intro' ? 'active' : ''}}" data-id="intro" bindtap="switchTab">介绍</view>
+      <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">目录</view>
+      <view class="detail-tab {{activeTab === 'recommendations' ? 'active' : ''}}" data-id="recommendations" bindtap="switchTab">相关推荐</view>
+    </view>
+
+    <view wx:if="{{activeTab === 'intro'}}" class="tab-panel intro-panel">
+      <rich-text class="intro-content" nodes="{{introduction}}" user-select></rich-text>
+    </view>
+
+    <view wx:elif="{{activeTab === 'contents'}}" class="tab-panel contents-panel">
+      <view class="contents-heading"><text>小册内容</text><text>{{course.statusText}}</text></view>
+      <view wx:for="{{chapters}}" wx:key="id" class="chapter-row" data-id="{{item.id}}" bindtap="openChapter">
+        <view class="chapter-number">{{item.number}}</view>
+        <view class="chapter-copy">
+          <view class="chapter-title">{{item.title}}</view>
+          <view class="chapter-duration">{{item.duration ? '学习时长：' + item.duration : '写作中...'}}</view>
+        </view>
+        <view wx:if="{{item.isFree}}" class="trial-label">试学</view>
+        <view wx:elif="{{!item.unlocked}}" class="lock-icon"><view></view></view>
+        <view wx:else class="read-label">阅读</view>
+      </view>
+    </view>
+
+    <view wx:else class="tab-panel recommendation-panel">
+      <course-card wx:for="{{recommendations}}" wx:key="id" item="{{item}}" bind:open="openRecommendation"></course-card>
+      <empty-state wx:if="{{!recommendations.length}}" text="暂无相关推荐"></empty-state>
+    </view>
+
+    <view class="course-bottom safe-bottom">
+      <view class="trial-action" bindtap="startTrial">
+        <view class="book-icon"><view></view></view>
+        <text>免费试学</text>
+      </view>
+      <view class="purchase-action" bindtap="buyCourse">
+        <text wx:if="{{course.discountLabel}}" class="purchase-label">{{course.discountLabel}}</text>
+        <view class="purchase-main">{{course.owned ? '继续学习' : '¥' + course.price + ' 立即购买'}}</view>
+        <view wx:if="{{!course.owned && course.originalPrice}}" class="purchase-original">原价 ¥{{course.originalPrice}}</view>
+      </view>
+    </view>
+  </block>
 </view>

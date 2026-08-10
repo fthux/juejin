@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page course-center-page">
   <view class="center-switch surface">
     <view class="{{topTab === 'mine' ? 'active' : ''}}" data-id="mine" bindtap="switchTop">我的小册</view>

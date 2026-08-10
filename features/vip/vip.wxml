@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page vip-page">
   <view class="vip-hero">
     <view class="vip-brand">稀土掘金 VIP</view>

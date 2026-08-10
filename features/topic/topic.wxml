@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view wx:if="{{mode === 'square'}}" class="page topic-square surface">
   <status-bar navigation="{{true}}">
     <view class="square-navigation">

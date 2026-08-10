@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page chat-page">
   <scroll-view class="message-list" scroll-y scroll-into-view="last-message">
     <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.side}}" id="{{index === messages.length - 1 ? 'last-message' : ''}}">

@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page collection-square-page">
   <block wx:if="{{mode === 'list'}}">
     <status-bar navigation="{{true}}"><view class="plain-nav"><view class="nav-back" bindtap="goBack">‹</view><text>收藏集</text><view class="nav-placeholder"></view></view></status-bar>

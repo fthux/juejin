@@ -1,8 +1,9 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     msgId: '',
     item: null,
@@ -137,4 +138,4 @@ Page({
       path: `/features/feidianDetail/feidianDetail?msgId=${this.data.msgId}`
     }
   }
-})
+}))

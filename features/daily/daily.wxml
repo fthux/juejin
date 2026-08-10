@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page daily-page">
   <view class="daily-hero">
     <image class="hero-bg" src="/features/assets/app/daily/daily_column_cover.jpg" mode="aspectFill"></image>

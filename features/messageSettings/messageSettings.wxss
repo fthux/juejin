@@ -1,4 +1,4 @@
-.message-settings-page { min-height: 100vh; background: #000; color: var(--jj-text); }
+.message-settings-page { min-height: 100vh; background: var(--jj-bg); color: var(--jj-text); }
 .settings-label { height: 92rpx; padding: 0 38rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 26rpx; }
 .message-row { min-height: 112rpx; padding: 0 38rpx; display: flex; align-items: center; justify-content: space-between; font-size: 28rpx; }
 .arrow { color: var(--jj-text-3); font-size: 42rpx; font-weight: 200; }

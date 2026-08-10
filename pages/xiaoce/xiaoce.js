@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const mock = require('../../data/mockData.js')
 const utils = require('../../utils/utils.js')
@@ -13,7 +14,7 @@ const byteCourseCategories = [
   { id: '6809637776263217160', name: '代码人生' }
 ]
 
-Page({
+Page(theme.withTheme({
   data: {
     courseTypes: [
       { id: 'booklet', name: '掘金小册' },
@@ -138,10 +139,6 @@ Page({
     wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${event.detail.item.id}` })
   },
 
-  openSearch() {
-    wx.navigateTo({ url: '/features/search/search?type=course' })
-  },
-
   openVip() {
     wx.navigateTo({ url: '/features/vip/vip' })
   },
@@ -150,4 +147,4 @@ Page({
     if (!session.requireLogin()) return
     wx.navigateTo({ url: '/features/courseCenter/courseCenter' })
   }
-})
+}))

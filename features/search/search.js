@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     keyword: '',
     type: 'article',
@@ -98,4 +99,4 @@ Page({
   openCourse(event) {
     wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${event.detail.item.id}` })
   }
-})
+}))

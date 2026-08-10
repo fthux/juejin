@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const api = require('../../services/api.js')
 const chart = require('../utils/chart.js')
@@ -10,7 +11,7 @@ const BASE_METRICS = [
   { id: 'net', label: '净增关注', color: '#00b578', selected: false, values: [1, 0, 1, 1, 1, 1, 0] }
 ]
 
-Page({
+Page(theme.withTheme({
   data: {
     activeTab: 'data',
     stats: [],
@@ -91,4 +92,4 @@ Page({
   openFollower(event) {
     wx.navigateTo({ url: `/features/profile/profile?id=${event.currentTarget.dataset.id}` })
   }
-})
+}))

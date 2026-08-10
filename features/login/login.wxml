@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page login-page">
   <view class="login-main">
     <image class="login-logo" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>

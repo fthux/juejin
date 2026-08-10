@@ -1,3 +1,4 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
 const TAGS = [
@@ -12,7 +13,7 @@ const TAGS = [
   { id: 'algorithm', name: '算法', followers: '43.6w', articles: '10.4w', logo: 'A', tone: 'portrait' }
 ]
 
-Page({
+Page(theme.withTheme({
   data: { activeTab: 'all', allTags: [], tags: [], followed: [] },
 
   onLoad() {
@@ -55,4 +56,4 @@ Page({
     this.setData({ followed, allTags })
     this.refresh()
   }
-})
+}))

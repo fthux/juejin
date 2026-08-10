@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   copyWebsite() {
     wx.setClipboardData({
       data: 'https://juejin.cn/',
@@ -11,4 +12,4 @@ Page({
   back() {
     wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/index/index' }) })
   }
-})
+}))

@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page find-page">
   <view class="find-sticky">
     <image class="find-sticky-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.webp' : '/assets/app/find/find_page_bg_top.webp'}}" mode="aspectFill"></image>

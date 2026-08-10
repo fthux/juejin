@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   data: {
     item: null,
     showWeb: false
@@ -18,4 +19,4 @@ Page({
     if (!this.data.item || !this.data.item.view_url) return
     wx.setClipboardData({ data: this.data.item.view_url })
   }
-})
+}))

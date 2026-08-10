@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   data: {
     enabled: true
   },
@@ -12,4 +13,4 @@ Page({
     wx.setStorageSync('jj:personalized', enabled)
     this.setData({ enabled })
   }
-})
+}))

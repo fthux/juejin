@@ -3,15 +3,6 @@
   background: var(--jj-bg);
 }
 
-.setting-page.dark-preview {
-  --jj-text: #f2f3f5;
-  --jj-text-3: #9b9fa8;
-  --jj-line: #303136;
-  --jj-surface: #191a1c;
-  --jj-bg: #0d0e10;
-  min-height: 100vh;
-}
-
 .setting-group {
   margin-top: 16rpx;
 }

@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page creator-data-page">
   <view class="data-tabs">
     <view class="data-tab {{activeTab === 'article' ? 'active' : ''}}" data-id="article" bindtap="switchTab">文章数据</view>

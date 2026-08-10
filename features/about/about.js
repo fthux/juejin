@@ -1,4 +1,5 @@
-Page({
+const theme = require("../../utils/theme.js")
+Page(theme.withTheme({
   data: {
     items: [
       '用户协议',
@@ -10,4 +11,4 @@ Page({
       '京ICP备18012699号-11A'
     ]
   }
-})
+}))

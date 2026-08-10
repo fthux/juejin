@@ -1,3 +1,4 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page selected-page">
   <view wx:for="{{pins}}" wx:key="msg_id" class="pin-item" data-index="{{index}}" bindtap="openPin">
     <view class="pin-head"><image src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" catchtap="openAuthor"></image><view><view class="pin-name">{{item.author.user_name}}</view><text>{{item.author.job_title || '掘金'}} · {{item.ctime}}</text></view></view>

@@ -1,3 +1,5 @@
+const theme = require('../utils/theme.js')
+
 const tabs = [
   { pagePath: '/pages/index/index', text: '首页', icon: '/assets/app/tabs/tab_home_normal.png', selectedIcon: '/assets/app/tabs/tab_home.png', darkIcon: '/assets/app/tabs/tab_home_normal_dark.png', darkSelectedIcon: '/assets/app/tabs/tab_home_dark.png' },
   { pagePath: '/pages/feidian/feidian', text: '沸点', icon: '/assets/app/tabs/tab_activity.png', selectedIcon: '/assets/app/tabs/tab_activity_press.png', darkIcon: '/assets/app/tabs/tab_activity_dark.png', darkSelectedIcon: '/assets/app/tabs/tab_activity_press_dark.png' },
@@ -7,11 +9,7 @@ const tabs = [
 ]
 
 function isDarkMode() {
-  const preference = wx.getStorageSync('jj:dark-mode-v2') || {}
-  const system = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {}
-  if (preference.followSystem) return system.theme === 'dark'
-  if (preference.selected) return preference.selected === 'dark'
-  return system.theme === 'dark'
+  return theme.getResolvedTheme() === 'dark'
 }
 
 Component({

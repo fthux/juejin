@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     drafts: []
   },
@@ -30,4 +31,4 @@ Page({
     session.setList('drafts', drafts)
     this.setData({ drafts })
   }
-})
+}))

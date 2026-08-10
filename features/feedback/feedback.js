@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     types: ['功能问题', '内容问题', '体验建议', '其他'],
     activeType: '功能问题',
@@ -38,4 +39,4 @@ Page({
     this.setData({ content: '', contact: '' })
     utils.toast('反馈已保存在本机')
   }
-})
+}))

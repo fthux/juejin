@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     activeTab: 'authors',
     tabs: [
@@ -39,4 +40,4 @@ Page({
   goHome() {
     wx.switchTab({ url: '/pages/index/index' })
   }
-})
+}))

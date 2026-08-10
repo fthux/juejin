@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     tabs: ['全部', '后端', '前端', 'Android', 'iOS', '人工智能'],
     activeTab: '全部',
@@ -19,4 +20,4 @@ Page({
   selectTab(event) {
     this.setData({ activeTab: event.currentTarget.dataset.tab })
   }
-})
+}))

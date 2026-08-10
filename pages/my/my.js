@@ -1,7 +1,8 @@
+const theme = require("../../utils/theme.js")
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
-Page({
+Page(theme.withTheme({
   data: {
     session: null,
     user: null,
@@ -112,4 +113,4 @@ Page({
   openVip() {
     wx.navigateTo({ url: '/features/vip/vip' })
   }
-})
+}))

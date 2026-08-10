@@ -1,0 +1,65 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
+<view class="page course-reader-page">
+  <view wx:if="{{loading}}" class="loading-line reader-loading">正在加载章节...</view>
+  <view wx:elif="{{loadError}}" class="reader-error">
+    <text>章节加载失败，请检查网络后重试</text>
+    <view class="text-button" bindtap="retry">重新加载</view>
+  </view>
+
+  <view wx:elif="{{chapter && !chapter.unlocked}}" class="locked-reader">
+    <image class="locked-cover" src="{{course.cover}}" mode="aspectFill"></image>
+    <view class="locked-title">此章节为付费章节</view>
+    <view class="locked-subtitle">现在购买立即解锁全部内容</view>
+  </view>
+
+  <view wx:elif="{{content}}" class="reader-content">
+    <rich-text nodes="{{content}}" user-select></rich-text>
+  </view>
+
+  <view wx:if="{{course && !course.owned}}" class="reader-purchase" bindtap="buyCourse">
+    <text wx:if="{{course.discountLabel}}">{{course.discountLabel}}</text>
+    <view>¥{{course.price}} 购买</view>
+  </view>
+
+  <view wx:if="{{catalogOpen}}" class="catalog-backdrop" bindtap="closeCatalog"></view>
+  <view class="reader-catalog {{catalogOpen ? 'open' : ''}}">
+    <view class="catalog-heading">
+      <view>
+        <view class="catalog-title">小册目录</view>
+        <view class="catalog-subtitle">{{chapterIndex + 1}} / {{chapters.length}}</view>
+      </view>
+      <view class="catalog-close" bindtap="closeCatalog">×</view>
+    </view>
+    <scroll-view class="catalog-list" scroll-y>
+      <view wx:for="{{chapters}}" wx:key="id" class="catalog-row {{index === chapterIndex ? 'active' : ''}}" data-index="{{index}}" bindtap="openCatalogChapter">
+        <text class="catalog-number">{{index + 1}}</text>
+        <text class="catalog-name">{{item.title}}</text>
+        <text wx:if="{{item.isFree}}" class="catalog-trial">试学</text>
+        <text wx:elif="{{!item.unlocked}}" class="catalog-lock">锁</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{chapter}}" class="reader-toolbar safe-bottom">
+    <view class="toolbar-item" bindtap="toggleCatalog">
+      <view class="toolbar-menu"><text></text><text></text><text></text></view>
+      <text>目录</text>
+    </view>
+    <view class="toolbar-item {{hasPrevious ? '' : 'disabled'}}" bindtap="previousChapter">
+      <view class="toolbar-arrow previous"></view>
+      <text>上一节</text>
+    </view>
+    <view class="toolbar-item {{hasNext ? '' : 'disabled'}}" bindtap="nextChapter">
+      <view class="toolbar-arrow next"></view>
+      <text>下一节</text>
+    </view>
+    <view class="toolbar-item" bindtap="toggleCatalog">
+      <view class="toolbar-list"><text></text><text></text><text></text></view>
+      <text>章节</text>
+    </view>
+    <view class="toolbar-item" bindtap="showComments">
+      <view class="toolbar-comment"></view>
+      <text>评论</text>
+    </view>
+  </view>
+</view>

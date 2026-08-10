@@ -1,4 +1,4 @@
-.dark-mode-page { min-height: 100vh; background: #000; color: var(--jj-text); }
+.dark-mode-page { min-height: 100vh; background: var(--jj-bg); color: var(--jj-text); }
 .system-section { padding: 34rpx 38rpx 40rpx; }
 .system-head { display: flex; align-items: center; justify-content: space-between; font-size: 30rpx; }
 .system-head switch { transform: scale(.82); transform-origin: right center; }

@@ -1,6 +1,7 @@
+const theme = require("../../utils/theme.js")
 const STORAGE_KEY = 'jj:message-settings-v1'
 
-Page({
+Page(theme.withTheme({
   data: { allow: true },
 
   onShow() {
@@ -11,4 +12,4 @@ Page({
     wx.setStorageSync(STORAGE_KEY, event.detail.value)
     this.setData({ allow: event.detail.value })
   }
-})
+}))
