@@ -15,6 +15,7 @@
     "pages/search/search",
     "pages/post/post",
     "pages/rank/rank",
+    "pages/rankRules/rankRules",
     "pages/column/column",
     "pages/topic/topic",
     "pages/theme/theme",

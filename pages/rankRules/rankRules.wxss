@@ -1,0 +1,10 @@
+page,
+.rank-rules-page {
+  min-height: 100%;
+  background: #ffffff;
+}
+
+.rank-rules-document {
+  width: 100%;
+  display: block;
+}

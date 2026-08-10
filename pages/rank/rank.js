@@ -2,6 +2,8 @@ const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
 const mock = require('../../data/mockData.js')
 const medals = ['/assets/app/rank/ic_rank_1.webp', '/assets/app/rank/ic_rank_2.webp', '/assets/app/rank/ic_rank_3.webp']
+const INITIAL_ARTICLE_COUNT = 40
+const ARTICLE_PAGE_SIZE = 20
 
 Page({
   data: {
@@ -18,7 +20,12 @@ Page({
     activePeriod: '3',
     articles: [],
     authors: [],
-    loading: true
+    loading: true,
+    loadingMore: false,
+    articleRequestCount: INITIAL_ARTICLE_COUNT,
+    articleHasMore: true,
+    navOpacity: 0,
+    navVisible: false
   },
 
   onLoad(query) {
@@ -36,11 +43,24 @@ Page({
   },
 
   onPullDownRefresh() { this.load() },
+  onReachBottom() {
+    if (this.data.type === 'article') this.loadMoreArticles()
+  },
+  onPageScroll(event) {
+    const opacity = Math.max(0, Math.min(1, Number(event.scrollTop) / 100))
+    if (Math.abs(opacity - Number(this.data.navOpacity)) < 0.02) return
+    this.setData({ navOpacity: opacity.toFixed(2), navVisible: opacity > 0.05 })
+  },
   goBack() { wx.navigateBack() },
-  showRules() { wx.showToast({ title: '榜单按近期文章热度综合排序', icon: 'none' }) },
+  showRules() { wx.navigateTo({ url: '/pages/rankRules/rankRules' }) },
 
   load() {
-    this.setData({ loading: true })
+    this.setData({
+      loading: true,
+      loadingMore: false,
+      articleRequestCount: INITIAL_ARTICLE_COUNT,
+      articleHasMore: true
+    })
     if (this.data.type === 'author') {
       api.hotAuthors(30).then(({ result }) => {
         const authors = (result.data || []).map((item, index) => Object.assign(utils.normalizeHotAuthor(item), { medal: medals[index] || '' }))
@@ -48,16 +68,42 @@ Page({
       }).catch(() => this.setData({ loading: false })).finally(() => wx.stopPullDownRefresh())
       return
     }
+    this.loadArticles(true)
+  },
+
+  loadArticles(reload) {
     const category = this.data.categories[this.data.activeCategoryIndex] || { id: '0' }
+    const requestCount = reload
+      ? INITIAL_ARTICLE_COUNT
+      : this.data.articleRequestCount + ARTICLE_PAGE_SIZE
     api.hotArticles({
       type: this.data.type === 'collect' ? 'collect' : 'hot',
-      count: 40,
+      count: requestCount,
       categoryId: category.id,
       period: this.data.activePeriod
     }).then(({ result }) => {
-      const articles = (result.data || []).map((item, index) => Object.assign(utils.normalizeHotRank(item), { medal: medals[index] || '' }))
-      this.setData({ articles, loading: false })
-    }).catch(() => this.setData({ loading: false })).finally(() => wx.stopPullDownRefresh())
+      const rows = (result.data || []).map((item, index) => Object.assign(utils.normalizeHotRank(item), { medal: medals[index] || '' }))
+      const previous = reload ? [] : this.data.articles
+      const known = new Set(previous.map((item) => String(item.article_id)))
+      const additions = rows.filter((item) => item.article_id && !known.has(String(item.article_id)))
+      this.setData({
+        articles: previous.concat(additions),
+        articleRequestCount: requestCount,
+        articleHasMore: rows.length >= requestCount && additions.length > 0,
+        loading: false,
+        loadingMore: false
+      })
+    }).catch(() => this.setData({
+      loading: false,
+      loadingMore: false,
+      articleHasMore: reload ? this.data.articleHasMore : false
+    })).finally(() => wx.stopPullDownRefresh())
+  },
+
+  loadMoreArticles() {
+    if (this.data.loading || this.data.loadingMore || !this.data.articleHasMore) return
+    this.setData({ loadingMore: true })
+    this.loadArticles(false)
   },
 
   selectCategory(event) {

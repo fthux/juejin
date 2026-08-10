@@ -1,4 +1,5 @@
 <view class="page rank-page">
+  <view class="rank-fixed-nav {{navVisible ? 'visible' : ''}}" style="opacity: {{navOpacity}};"><status-bar navigation="{{true}}"><view class="rank-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="rank-rules" bindtap="showRules">{{type === 'article' ? '排名规则' : ''}}</view></view></status-bar></view>
   <status-bar navigation="{{true}}"><view class="rank-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="rank-rules" bindtap="showRules">{{type === 'article' ? '排名规则' : ''}}</view></view></status-bar>
 
   <block wx:if="{{type === 'article'}}">
@@ -17,4 +18,6 @@
     <view class="surface rank-content author-content"><view class="author-podium"><view wx:for="{{authors}}" wx:key="user_id" wx:if="{{index < 3}}" class="podium-item podium-{{index + 1}}" data-index="{{index}}" bindtap="openAuthor"><view class="podium-avatar"><image src="{{item.avatar_large}}" mode="aspectFill"></image><image class="podium-medal" src="{{item.medal}}" mode="aspectFit"></image></view><view class="podium-name ellipsis">{{item.user_name}}</view><view class="podium-count">{{item.follower_count}} 关注者</view></view></view><view class="list-title author-list-title"><text>作者排行</text><text>每周更新</text></view><view wx:for="{{authors}}" wx:key="user_id" wx:if="{{index > 2}}" class="author-row" data-index="{{index}}" bindtap="openAuthor"><view class="author-rank">{{index + 1}}</view><image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image><view class="author-copy"><view class="author-name">{{item.user_name}}</view><view class="author-caption ellipsis">{{item.job_title}}<text wx:if="{{item.company}}"> @ {{item.company}}</text></view><view class="author-stats">{{item.follower_count}} 关注者 · 获赞 {{item.got_digg_count}}</view></view><view class="follow-button" catchtap="openAccountInfo">关注</view></view></view>
   </block>
   <view wx:if="{{loading}}" class="loading-line">正在加载榜单...</view>
+  <view wx:if="{{loadingMore}}" class="loading-line">正在加载更多文章...</view>
+  <view wx:if="{{type === 'article' && !loading && !loadingMore && !articleHasMore && articles.length}}" class="list-end">已加载全部文章</view>
 </view>

@@ -1,5 +1,6 @@
 {
   "navigationStyle": "custom",
   "navigationBarTitleText": "文章榜",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 180
 }
