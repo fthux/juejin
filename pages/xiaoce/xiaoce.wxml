@@ -8,7 +8,7 @@
         </view>
       </view>
       <view class="course-actions">
-        <image class="course-action" src="/assets/app/user/ic_user_course.svg" mode="aspectFit" bindtap="openCourseCenter"></image>
+        <image class="course-action" src="/assets/app/user/ic_user_course.png" mode="aspectFit" bindtap="openCourseCenter"></image>
       </view>
     </view>
   </status-bar>

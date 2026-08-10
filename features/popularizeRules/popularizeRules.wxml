@@ -1,0 +1,45 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
+<view class="page rules-page">
+  <status-bar navigation="{{true}}">
+    <view class="rules-nav">
+      <view class="nav-back" bindtap="goBack"><view class="back-icon"></view></view>
+      <view class="nav-title">课程分销「规则&amp;帮助」</view>
+      <view class="nav-more" bindtap="showMore"><text></text><text></text><text></text></view>
+    </view>
+  </status-bar>
+
+  <view class="rules-content">
+    <view class="rules-heading">课程推广规则&amp;帮助</view>
+
+    <view class="rule-block first">
+      <view class="question">问题一：如何找到并推广课程？</view>
+      <view class="answer">答：网页版掘金、App 版掘金均有分销入口，详细位置见下图。</view>
+      <image class="rule-image entry-image" src="/features/assets/app/popularize/rules-entry.png" mode="widthFix"></image>
+    </view>
+
+    <view class="rule-block">
+      <view class="question">问题二：「推广」佣金的规则是什么？</view>
+      <view class="answer">答：将支持「推广」的课程分享给好友，好友通过你分享的链接访问并购买该内容后，你将得到如下规则的返现：</view>
+      <view class="answer">如果好友的实际支付金额大于等于 60% 的课程原价，则可获得等于课程原价 20% 的推广佣金；</view>
+      <view class="answer">如果好友的实际支付金额低于 60% 的课程原价，则可获得等于实际支付金额 30% 的推广佣金；</view>
+      <view class="answer">推广入口处展示的金额是按照课程原价 20% 的推广佣金来计算的，实际收到的推广佣金以推广中心 - 账单明细为准。</view>
+    </view>
+
+    <view class="rule-block">
+      <view class="question">问题三：如何查看推广收益？</view>
+      <view class="answer">答：在稀土掘金 App - 我 - 推广中心，可查看推广佣金收入。</view>
+      <image class="rule-image narrow-image" src="/features/assets/app/popularize/rules-income.png" mode="widthFix"></image>
+    </view>
+
+    <view class="rule-block">
+      <view class="question">问题四：如何提现？</view>
+      <view class="answer">答：提现请前往稀土掘金 App - 我的 - 推广中心页面。提现金额将发放至你当前登录的微信账号零钱账户中；如果提现遇到问题，请联系客服 010-83461079。</view>
+      <image class="rule-image withdraw-image" src="/features/assets/app/popularize/rules-withdraw.png" mode="widthFix"></image>
+    </view>
+
+    <view class="rule-block final-block">
+      <view class="question minor">Q：为什么别人通过我的分享购买后，我没有获得返现？</view>
+      <view class="answer">A：常见原因有两种，一种为该课程不支持推广；第二种为被邀请人可能在点开链接后跳转至其他页面，并不是直接通过你分享的链接或海报完成的购买。</view>
+    </view>
+  </view>
+</view>

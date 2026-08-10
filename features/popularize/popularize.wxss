@@ -1,16 +1,231 @@
-.popularize-page { min-height: 100vh; padding: 0 38rpx 80rpx; box-sizing: border-box; background: var(--jj-bg); color: var(--jj-text); }
-.popularize-head { height: 112rpx; display: flex; align-items: center; justify-content: space-between; font-size: 34rpx; font-weight: 700; border-bottom: 1rpx solid var(--jj-line); }
-.help { color: #1e80ff; font-size: 28rpx; font-weight: 400; }
-.withdraw-card { position: relative; margin-top: 44rpx; padding: 44rpx 38rpx; border-radius: 22rpx; background: #4e82f7 url('/features/assets/app/popularize/ic_popularize_bg.webp') right center / cover no-repeat; color: #fff; font-size: 26rpx; }
-.withdraw-value { margin-top: 28rpx; font-size: 60rpx; }
-.withdraw-button { position: absolute; right: 38rpx; top: 112rpx; padding: 18rpx 46rpx; border-radius: 12rpx; background: #fff; color: #8eb9fb; font-size: 28rpx; }
-.section-title { margin: 52rpx 0 22rpx; font-size: 34rpx; font-weight: 700; }
-.category-tabs { white-space: nowrap; margin-bottom: 12rpx; }
-.category-tab { display: inline-block; margin-right: 44rpx; padding: 10rpx 20rpx; color: var(--jj-text-3); font-size: 28rpx; }
-.category-tab.active { border-radius: 38rpx; background: rgba(30,128,255,.2); color: #1e80ff; }
-.course-row { padding: 30rpx 0; border-bottom: 1rpx solid var(--jj-line); }
-.course-title { font-size: 30rpx; }
-.course-author { margin-top: 22rpx; color: var(--jj-text-3); font-size: 26rpx; }
-.course-price { margin-top: 24rpx; color: #1e80ff; font-size: 28rpx; }
-.old-price { margin-left: 14rpx; color: var(--jj-text-3); text-decoration: line-through; }
-.reward { float: right; padding: 12rpx 24rpx; border-radius: 36rpx; background: rgba(255,132,54,.2); color: #ff853b; font-size: 25rpx; }
+.popularize-page {
+  background: var(--jj-surface);
+  color: var(--jj-text);
+}
+
+.popularize-nav {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid var(--jj-line);
+  box-sizing: border-box;
+}
+
+.nav-back {
+  width: 88rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  width: 24rpx;
+  height: 24rpx;
+  border-left: 4rpx solid var(--jj-text);
+  border-bottom: 4rpx solid var(--jj-text);
+  transform: rotate(45deg);
+}
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 34rpx;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nav-help {
+  padding: 0 22rpx;
+  color: var(--jj-blue);
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+
+.popularize-content {
+  padding: 30rpx 30rpx calc(60rpx + env(safe-area-inset-bottom));
+}
+
+.withdraw-card {
+  position: relative;
+  min-height: 210rpx;
+  padding: 38rpx 30rpx;
+  overflow: hidden;
+  border-radius: 14rpx;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #4e82f7 url('/features/assets/app/popularize/ic_popularize_bg.webp') right center / cover no-repeat;
+}
+
+.withdraw-label {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 26rpx;
+}
+
+.help-dot {
+  width: 28rpx;
+  height: 28rpx;
+  margin-left: 8rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 20rpx;
+}
+
+.withdraw-value {
+  margin-top: 28rpx;
+  font-size: 58rpx;
+  line-height: 1;
+}
+
+.withdraw-value text {
+  margin-right: 6rpx;
+  font-size: 39rpx;
+}
+
+.withdraw-button {
+  position: absolute;
+  right: 30rpx;
+  top: 104rpx;
+  min-width: 126rpx;
+  height: 60rpx;
+  margin: 0;
+  padding: 0 30rpx;
+  border-radius: 8rpx;
+  color: #3181dd;
+  background: #ffffff;
+  font-size: 28rpx;
+  line-height: 60rpx;
+}
+
+.section-title {
+  margin: 42rpx 0 24rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.category-tabs {
+  width: calc(100% + 30rpx);
+  margin-right: -30rpx;
+  white-space: nowrap;
+}
+
+.category-track {
+  display: inline-flex;
+  padding-right: 30rpx;
+  align-items: center;
+}
+
+.category-tab {
+  height: 52rpx;
+  margin-right: 24rpx;
+  padding: 0 16rpx;
+  border-radius: 26rpx;
+  display: flex;
+  align-items: center;
+  color: var(--jj-text-3);
+  font-size: 27rpx;
+  white-space: nowrap;
+}
+
+.category-tab.active {
+  color: var(--jj-blue);
+  background: var(--jj-blue-soft);
+}
+
+.course-row {
+  min-height: 236rpx;
+  padding: 26rpx 0;
+  display: flex;
+  border-bottom: 1rpx solid var(--jj-line);
+  box-sizing: border-box;
+}
+
+.course-cover {
+  width: 144rpx;
+  height: 192rpx;
+  flex: 0 0 auto;
+  border-radius: 4rpx;
+  background: var(--jj-fill);
+}
+
+.course-info {
+  min-width: 0;
+  margin-left: 28rpx;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-title {
+  min-height: 76rpx;
+  color: var(--jj-text);
+  font-size: 31rpx;
+  line-height: 1.35;
+}
+
+.course-author {
+  margin-top: 10rpx;
+  color: var(--jj-text-3);
+  font-size: 25rpx;
+}
+
+.course-bottom {
+  min-width: 0;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+}
+
+.course-price {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.current-price {
+  color: var(--jj-blue);
+  font-size: 27rpx;
+}
+
+.old-price {
+  margin-left: 12rpx;
+  color: var(--jj-text-4);
+  font-size: 23rpx;
+  text-decoration: line-through;
+}
+
+.reward-button {
+  height: 56rpx;
+  margin: 0;
+  padding: 0 20rpx;
+  flex: 0 0 auto;
+  border-radius: 28rpx;
+  color: #ff7d00;
+  background: #fff2e5;
+  font-size: 23rpx;
+  line-height: 56rpx;
+}
+
+@media (prefers-color-scheme: dark) {
+  .reward-button {
+    background: #4a2d1d;
+  }
+}
+
+.end-line {
+  padding: 34rpx;
+  color: var(--jj-text-3);
+  text-align: center;
+  font-size: 24rpx;
+}

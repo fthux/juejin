@@ -95,7 +95,6 @@ const privatePages = [
   'features/notifications/notifications',
   'features/lottery/lottery',
   'features/welfare/welfare',
-  'features/popularize/popularize',
   'features/coupon/coupon',
   'features/personalInfo/personalInfo',
   'features/publish/publish',

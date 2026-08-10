@@ -27,31 +27,21 @@
   box-sizing: border-box;
 }
 
+.mine-page.dark image.head-icon,
+.mine-page.dark .notice-icon {
+  filter: brightness(0) invert(1);
+  opacity: 0.78;
+}
+
 .notice-button {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.bell-icon {
-  position: relative;
-  width: 28rpx;
-  height: 30rpx;
-  border: 4rpx solid var(--jj-text-3);
-  border-bottom: 0;
-  border-radius: 18rpx 18rpx 6rpx 6rpx;
-  box-sizing: border-box;
-}
-
-.bell-icon::after {
-  content: '';
-  position: absolute;
-  left: 5rpx;
-  bottom: -10rpx;
-  width: 12rpx;
-  height: 4rpx;
-  border-radius: 4rpx;
-  background: var(--jj-text-3);
+.notice-icon {
+  width: 56rpx;
+  height: 56rpx;
 }
 
 .head-badge {
@@ -235,24 +225,39 @@
 .activity-ticker {
   height: 64rpx;
   margin: 0 22rpx 22rpx;
-  padding: 0 18rpx;
+  padding: 0;
   border-radius: 6rpx;
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
   box-sizing: border-box;
   color: var(--jj-text-2);
   background: var(--jj-fill);
   font-size: 22rpx;
 }
 
-.activity-ticker text:first-child {
+.activity-swiper {
+  width: 100%;
+  height: 64rpx;
+}
+
+.activity-slide {
+  padding: 0 18rpx;
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  box-sizing: border-box;
+}
+
+.activity-type {
   color: #ff7d00;
 }
 
-.activity-ticker view {
+.activity-title {
   min-width: 0;
   flex: 1;
+}
+
+.activity-arrow {
+  color: var(--jj-text-3);
+  font-size: 32rpx;
 }
 
 .more-grid {

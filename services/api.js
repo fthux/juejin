@@ -190,6 +190,17 @@ function liveActivities(cursor, options) {
   })
 }
 
+function creatorActivities(cursor, options) {
+  const config = options || {}
+  return withFallback(request('/study_api/v1/events/get_by_cursor', {
+    cursor: cursor || '0',
+    limit: config.limit || 20,
+    type: Number(config.type) || 1,
+    status: Number(config.status) || 1,
+    cate_id: config.categoryId || '0'
+  }), { data: [], cursor: '0', has_more: false })
+}
+
 function courses(cursor, options) {
   const config = options || {}
   if (config.courseType === 'byte') {
@@ -221,6 +232,18 @@ function courseRecommendations(cursor, limit) {
     cursor: cursor || '0',
     limit: limit || 20
   }), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+}
+
+function popularizeCourses(cursor, options) {
+  return courses(cursor, options).then(({ result, fromCache }) => ({
+    result: Object.assign({}, result, {
+      data: (result.data || []).filter((item) => {
+        const info = item.base_info || item.booklet_info || item
+        return Number(info.is_distribution) === 1 || info.is_distribution === true
+      })
+    }),
+    fromCache
+  }))
 }
 
 function courseDetail(bookletId) {
@@ -445,8 +468,10 @@ module.exports = {
   columnArticles,
   liveTypes,
   liveActivities,
+  creatorActivities,
   courses,
   courseRecommendations,
+  popularizeCourses,
   courseDetail,
   courseSection,
   courseShelf,

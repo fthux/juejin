@@ -558,6 +558,31 @@ function normalizeCourse(raw) {
   }
 }
 
+function normalizePopularizeCourse(raw) {
+  const item = raw || {}
+  const info = item.base_info || item.booklet_info || item
+  const user = item.user_info || info.user_info || {}
+  const event = item.event_discount || {}
+  const originalPrice = Number(info.price) || 0
+  const discountRate = Number(event.discount_rate) || 0
+  const currentPrice = discountRate > 0 && discountRate < 10
+    ? Math.round(originalPrice * discountRate / 10)
+    : originalPrice
+  const commission = Number(info.commission || item.commission) || 0
+
+  return {
+    id: item.booklet_id || info.booklet_id || '',
+    title: info.title || '掘金小册',
+    author: user.user_name || info.author_name || '稀土掘金',
+    cover: normalizeImageUrl(info.cover_img || '/assets/app/common/default_booklet_cover_image.webp', 240),
+    category_id: String(info.category_id || ''),
+    price: formatPrice(currentPrice),
+    originalPrice: currentPrice < originalPrice ? formatPrice(originalPrice) : '',
+    commission: formatPrice(commission),
+    distributionImage: normalizeImageUrl(info.distribution_img || info.cover_img || '', 720)
+  }
+}
+
 function formatCourseDuration(value) {
   const totalMinutes = Math.ceil(Math.max(0, Number(value) || 0) / 60000)
   if (!totalMinutes) return ''
@@ -622,6 +647,7 @@ module.exports = {
   normalizeReply,
   normalizeComment,
   normalizeCourse,
+  normalizePopularizeCourse,
   normalizeByteCourse,
   formatPrice
 }

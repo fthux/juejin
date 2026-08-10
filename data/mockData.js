@@ -142,10 +142,10 @@ const pins = [
 ]
 
 const courses = [
-  { booklet_id: 'course-1', base_info: { title: '深入浅出 TypeScript', summary: '从类型系统到工程实践', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, section_count: 36, is_finished: true }, user_info: authors[1] },
-  { booklet_id: 'course-2', base_info: { title: '高并发系统设计 40 问', summary: '建立可靠的服务端架构知识体系', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 3990, section_count: 40, is_finished: true }, user_info: authors[2] },
-  { booklet_id: 'course-3', base_info: { title: '大模型应用开发实战', summary: 'RAG、Agent 与评测完整路径', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 4990, section_count: 28, is_finished: false }, user_info: authors[3] },
-  { booklet_id: 'course-4', base_info: { title: '前端性能优化原理与实践', summary: '从指标到工具，再到落地方案', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, section_count: 31, is_finished: true }, user_info: authors[1] }
+  { booklet_id: 'course-1', base_info: { title: '深入浅出 TypeScript', summary: '从类型系统到工程实践', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, category_id: categories[2].id, section_count: 36, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] },
+  { booklet_id: 'course-2', base_info: { title: '高并发系统设计 40 问', summary: '建立可靠的服务端架构知识体系', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 3990, category_id: categories[1].id, section_count: 40, is_finished: true, is_distribution: 1, commission: 798 }, event_discount: { discount_rate: 6 }, user_info: authors[2] },
+  { booklet_id: 'course-3', base_info: { title: '大模型应用开发实战', summary: 'RAG、Agent 与评测完整路径', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 4990, category_id: categories[5].id, section_count: 28, is_finished: false, is_distribution: 1, commission: 998 }, event_discount: { discount_rate: 6 }, user_info: authors[3] },
+  { booklet_id: 'course-4', base_info: { title: '前端性能优化原理与实践', summary: '从指标到工具，再到落地方案', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, category_id: categories[2].id, section_count: 31, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] }
 ]
 
 const byteCourses = [

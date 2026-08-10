@@ -1,15 +1,15 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
-<view class="page mine-page">
+<view class="page mine-page {{themeName}}">
   <status-bar navigation="{{true}}">
     <view class="mine-header surface">
-      <image class="head-icon" src="/assets/app/user/ic_user_scan.svg" mode="aspectFit" bindtap="openScan"></image>
+      <image class="head-icon" src="/assets/app/user/ic_user_scan.png" mode="aspectFit" bindtap="openScan"></image>
       <view class="mine-head-actions">
-        <image class="head-icon" src="/assets/app/user/ic_user_theme.svg" mode="aspectFit" bindtap="openTheme"></image>
+        <image class="head-icon" src="{{themeName === 'dark' ? '/assets/app/user/ic_user_theme.png' : '/assets/app/user/ic_theme_normal.png'}}" mode="aspectFit" bindtap="openTheme"></image>
         <view class="head-icon notice-button" bindtap="openNotifications">
-          <view class="bell-icon"></view>
+          <image class="notice-icon" src="/assets/app/user/ic_user_notice.png" mode="aspectFit"></image>
           <text wx:if="{{unread}}" class="head-badge">{{unread}}</text>
         </view>
-        <image class="head-icon" src="/assets/app/user/ic_user_settings.svg" mode="aspectFit" bindtap="openSettings"></image>
+        <image class="head-icon" src="/assets/app/user/ic_user_settings.png" mode="aspectFit" bindtap="openSettings"></image>
       </view>
     </view>
   </status-bar>
@@ -18,10 +18,10 @@
     <view class="user-panel" bindtap="openProfile">
       <image class="user-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
       <view class="user-copy">
-        <view class="user-name">{{user ? user.user_name : '登录稀土掘金'}}</view>
-        <view class="user-badges">
+        <view class="user-name">{{user ? user.user_name : '登录/注册'}}</view>
+        <view wx:if="{{user}}" class="user-badges">
           <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>
-          <text>{{user ? '个人主页' : '登录后同步账号数据'}} ›</text>
+          <text>个人主页 ›</text>
         </view>
       </view>
     </view>
@@ -56,10 +56,14 @@
         <text>{{item.name}}</text>
       </view>
     </view>
-    <view class="activity-ticker" bindtap="openActivity">
-      <text>活动</text>
-      <view class="ellipsis">「TRAE Work 实战帮」征文启动！你的经验值得被看见</view>
-      <text>›</text>
+    <view wx:if="{{activityNotices.length}}" class="activity-ticker" bindtap="openActivityNotice">
+      <swiper class="activity-swiper" vertical="{{true}}" autoplay="{{activityNotices.length > 1}}" interval="3500" duration="350" circular="{{activityNotices.length > 1}}" disable-touch="{{true}}">
+        <swiper-item wx:for="{{activityNotices}}" wx:key="id" class="activity-slide">
+          <text class="activity-type">{{item.type}}</text>
+          <view class="activity-title ellipsis">{{item.title}}</view>
+          <text class="activity-arrow">›</text>
+        </swiper-item>
+      </swiper>
     </view>
   </view>
 

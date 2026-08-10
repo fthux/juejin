@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "推广中心"
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "enableShareAppMessage": true
 }

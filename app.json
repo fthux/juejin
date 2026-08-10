@@ -51,6 +51,7 @@
         "lottery/lottery",
         "welfare/welfare",
         "popularize/popularize",
+        "popularizeRules/popularizeRules",
         "coupon/coupon",
         "personalInfo/personalInfo",
         "basicVersion/basicVersion",

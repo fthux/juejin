@@ -1,14 +1,44 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
-<view class="popularize-page">
-  <view class="popularize-head"><text>推广中心</text><text class="help">规则&amp;帮助</text></view>
-  <view class="withdraw-card"><view>可提现金额　?</view><view class="withdraw-value">¥ 0.00</view><view class="withdraw-button">提现</view></view>
-  <view class="section-title">推广课程列表</view>
-  <scroll-view class="category-tabs" scroll-x>
-    <view wx:for="{{tabs}}" wx:key="*this" class="category-tab {{activeTab === item ? 'active' : ''}}" data-tab="{{item}}" bindtap="selectTab">{{item}}</view>
-  </scroll-view>
-  <view wx:for="{{courses}}" wx:key="title" class="course-row">
-    <view class="course-title">{{item.title}}</view>
-    <view class="course-author">{{item.author}}</view>
-    <view class="course-price"><text>{{item.price}}</text> <text class="old-price">{{item.oldPrice}}</text><text class="reward">{{item.reward}}</text></view>
+<view class="page popularize-page">
+  <status-bar navigation="{{true}}">
+    <view class="popularize-nav">
+      <view class="nav-back" bindtap="goBack"><view class="back-icon"></view></view>
+      <view class="nav-title">推广中心</view>
+      <view class="nav-help" bindtap="openRules">规则&amp;帮助</view>
+    </view>
+  </status-bar>
+
+  <view class="popularize-content">
+    <view class="withdraw-card">
+      <view class="withdraw-label" bindtap="showBalanceHelp">可提现金额 <text class="help-dot">?</text></view>
+      <view class="withdraw-value"><text>¥</text> {{balance}}</view>
+      <button class="withdraw-button" bindtap="handleBalanceAction">{{session ? '提现' : '登录'}}</button>
+    </view>
+
+    <view class="section-title">推广课程列表</view>
+    <scroll-view class="category-tabs" scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+      <view class="category-track">
+        <view wx:for="{{categories}}" wx:key="id" class="category-tab {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="course-list">
+      <view wx:for="{{courses}}" wx:key="id" class="course-row" data-index="{{index}}" bindtap="openCourse">
+        <image class="course-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"></image>
+        <view class="course-info">
+          <view class="course-title two-lines">{{item.title}}</view>
+          <view class="course-author ellipsis">{{item.author}}</view>
+          <view class="course-bottom">
+            <view class="course-price"><text class="current-price">¥ {{item.price}}</text><text wx:if="{{item.originalPrice}}" class="old-price">¥ {{item.originalPrice}}</text></view>
+            <button wx:if="{{session}}" class="reward-button" open-type="share" data-index="{{index}}" catchtap="prepareShare">推广赚 ¥{{item.commission}}</button>
+            <button wx:else class="reward-button" catchtap="openLogin">推广赚 ¥{{item.commission}}</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading-line">加载中...</view>
+    <empty-state wx:elif="{{!courses.length}}" text="暂无可推广课程"></empty-state>
+    <view wx:elif="{{!hasMore}}" class="end-line">没有更多了</view>
   </view>
 </view>
