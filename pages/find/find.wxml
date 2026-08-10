@@ -1,39 +1,45 @@
 <view class="page find-page">
-  <view class="find-top">
-    <status-bar></status-bar>
-    <view class="search-bar" bindtap="openSearch">
-      <image src="{{darkMode ? '/assets/app/find/dark/find_page_ic_search.svg' : '/assets/app/find/find_page_ic_search.svg'}}" mode="aspectFit"></image>
-      <text>探索稀土掘金</text>
-    </view>
-
-    <view class="channel-grid">
-      <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" bindtap="openFeature">
-        <image src="{{darkMode ? item.darkIcon : item.icon}}" mode="aspectFit"></image>
-        <text>{{item.title}}</text>
-      </view>
-    </view>
-
-    <swiper class="quick-swiper" indicator-dots circular="{{false}}" duration="240">
-      <swiper-item>
-        <view class="quick-grid">
-          <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
-            <image src="{{item.icon}}" mode="aspectFit"></image>
-            <text>{{item.name}}</text>
+  <view class="find-sticky">
+    <image class="find-sticky-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.webp' : '/assets/app/find/find_page_bg_top.webp'}}" mode="aspectFill"></image>
+    <view class="find-sticky-content">
+      <status-bar navigation="{{true}}" transparent="{{true}}">
+        <view class="find-search-head">
+          <view class="search-bar" bindtap="openSearch">
+            <image src="{{darkMode ? '/assets/app/find/dark/find_page_ic_search.svg' : '/assets/app/find/find_page_ic_search.svg'}}" mode="aspectFit"></image>
+            <text>探索稀土掘金</text>
           </view>
         </view>
-      </swiper-item>
-      <swiper-item><view class="quick-grid"></view></swiper-item>
-    </swiper>
+      </status-bar>
+    </view>
+  </view>
+
+  <view class="find-top">
+    <image class="find-top-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.webp' : '/assets/app/find/find_page_bg_top.webp'}}" mode="aspectFill"></image>
+    <view class="find-top-content">
+      <view class="channel-grid">
+        <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" bindtap="openFeature">
+          <image src="{{darkMode ? item.darkIcon : item.icon}}" mode="aspectFit"></image>
+          <text>{{item.title}}</text>
+        </view>
+      </view>
+
+      <view class="quick-grid">
+        <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
+          <image src="{{item.icon}}" mode="aspectFit"></image>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
   </view>
 
   <swiper wx:if="{{themes.length}}" class="find-banner" indicator-dots circular autoplay interval="5000">
     <swiper-item wx:for="{{themes}}" wx:key="theme_id" data-index="{{index}}" bindtap="openTheme">
-      <image src="{{item.cover}}" mode="aspectFill"></image>
+      <image class="banner-art" src="{{item.cover || '/assets/app/find/find_page_ic_default_banner.webp'}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="theme" data-index="{{index}}" binderror="onRemoteImageError"></image>
       <view class="banner-shade"></view>
-      <view class="banner-copy"><view class="ellipsis">{{item.name}}</view><text class="two-lines">{{item.brief}}</text></view>
+      <view class="banner-copy"><view class="ellipsis">{{item.name}}</view><text class="two-lines" user-select="{{true}}">{{item.brief}}</text></view>
     </swiper-item>
   </swiper>
-  <view wx:else class="find-banner default-banner" bindtap="openTheme"><image src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image></view>
+  <view wx:else class="find-banner default-banner" bindtap="openTheme"><image class="default-banner-image" src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image></view>
 
   <view class="daily-card" bindtap="openDaily">
     <view class="daily-heading">
@@ -52,18 +58,18 @@
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin horizontal-card" data-id="{{item.msg_id}}" bindtap="openPin">
         <view class="selected-pin-head">
-          <image class="selected-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" data-id="{{item.author.user_id}}" catchtap="openAuthor"></image>
+          <image class="selected-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="pin-avatar" data-index="{{index}}" data-id="{{item.author.user_id}}" binderror="onRemoteImageError" catchtap="openAuthor"></image>
           <view class="selected-identity"><view class="selected-name ellipsis">{{item.author.user_name}}</view><view class="selected-caption ellipsis">{{item.author.job_title || item.ctime}}</view></view>
           <view class="outline-action" catchtap="openAccountInfo">关注</view>
         </view>
         <view class="selected-content four-lines">
           <block wx:if="{{item.content_segments.length}}">
             <block wx:for="{{item.content_segments}}" wx:for-item="segment" wx:for-index="segmentIndex" wx:key="key">
-              <text wx:if="{{segment.type === 'theme'}}" class="selected-theme-link" data-pin-index="{{index}}" data-segment-index="{{segmentIndex}}" catchtap="openSelectedTheme">#{{segment.text}}#</text>
-              <text wx:else>{{segment.text}}</text>
+              <text wx:if="{{segment.type === 'theme'}}" class="selected-theme-link" user-select="{{true}}" data-pin-index="{{index}}" data-segment-index="{{segmentIndex}}" catchtap="openSelectedTheme">#{{segment.text}}#</text>
+              <text wx:else user-select="{{true}}">{{segment.text}}</text>
             </block>
           </block>
-          <text wx:else>{{item.content}}</text>
+          <text wx:else user-select="{{true}}">{{item.content}}</text>
         </view>
         <view class="selected-actions"><text>赞 {{item.digg_count}}</text><text>评论 {{item.comment_count}}</text></view>
       </view>
@@ -75,7 +81,7 @@
     <view class="discover-heading"><text>推荐圈子</text><view bindtap="openCircleSquare">圈子广场 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{topics}}" wx:key="topic_id" class="topic-card horizontal-card" data-id="{{item.topic_id}}" bindtap="openTopic">
-        <view class="topic-icon"><image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill"></image><text wx:else>{{item.iconText}}</text></view>
+        <view class="topic-icon"><image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="topic" data-index="{{index}}" binderror="onRemoteImageError"></image><text wx:else>{{item.iconText}}</text></view>
         <view class="topic-name ellipsis">{{item.title}}</view>
         <view class="topic-stats">{{item.follower_count}} 掘友 · {{item.msg_count}} 沸点</view>
         <view class="fill-action" catchtap="openAccountInfo">加入</view>
@@ -88,7 +94,7 @@
     <view class="discover-heading"><text>推荐专栏</text><view bindtap="openColumnList">查看更多 ›</view></view>
     <scroll-view wx:if="{{columns.length}}" class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{columns}}" wx:key="column_id" class="column-card horizontal-card" data-index="{{index}}" bindtap="openColumn">
-        <view class="recommend-card-head"><view class="column-cover"><image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill"></image><text wx:else>{{item.tag || '专栏'}}</text></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
+        <view class="recommend-card-head"><view class="column-cover"><image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="column" data-index="{{index}}" binderror="onRemoteImageError"></image><text wx:else>{{item.tag || '专栏'}}</text></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
         <view class="card-title two-lines">{{item.title}}</view><view class="card-meta">{{item.follower_count}} 订阅 · {{item.article_count}} 篇文章</view><view class="card-meta">{{item.creator.user_name}} 的专栏</view>
         <view class="recommend-preview"><view wx:for="{{item.articles}}" wx:for-item="article" wx:key="article_id" class="preview-row" data-id="{{article.article_id}}" catchtap="openArticle"><view class="ellipsis">{{article.title}}</view><text>点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view>
         <view class="recommend-footer">查看专栏 · {{item.article_count}}篇文章</view>
@@ -115,7 +121,7 @@
     <view class="discover-heading"><text>作者榜</text><view data-type="author" bindtap="openRank">完整榜单 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{authors}}" wx:key="user_id" class="author-card horizontal-card" data-id="{{item.user_id}}" bindtap="openAuthor">
-        <image class="author-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+        <image class="author-avatar" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="author" data-index="{{index}}" binderror="onRemoteImageError"></image>
         <view class="card-title ellipsis">{{item.user_name}}</view><view class="card-meta ellipsis">{{item.job_title || item.company || '优秀创作者'}}</view>
         <view class="author-stats">获赞 {{item.got_digg_count}} · 阅读 {{item.got_view_count}}</view>
         <view class="fill-action" catchtap="openAccountInfo">关注</view>
@@ -133,7 +139,7 @@
 
   <view class="discover-section industry-section">
     <view class="discover-heading"><text>行业速递</text><view data-url="/pages/discoverChannel/discoverChannel?type=news&title=行业速递" bindtap="openFeature">查看更多 ›</view></view>
-    <view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" bindtap="openHeadline"><view class="headline-copy"><view class="rank-title two-lines">{{item.title}}</view><view class="card-meta">{{item.source}} · {{item.publish_time}}</view><view class="headline-brief two-lines">{{item.brief}}</view></view><image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill"></image></view>
+    <view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" bindtap="openHeadline"><view class="headline-copy"><view class="rank-title two-lines">{{item.title}}</view><view class="card-meta">{{item.source}} · {{item.publish_time}}</view><view class="headline-brief two-lines">{{item.brief}}</view></view><image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="headline" data-index="{{index}}" binderror="onRemoteImageError"></image></view>
     <empty-state wx:if="{{!loading && !headlines.length}}" text="暂时没有行业资讯"></empty-state>
   </view>
 

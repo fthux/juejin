@@ -61,16 +61,12 @@ Page({
 
   loadHeaderData() {
     Promise.all([api.topics('0', 10), api.selectedPins('0')]).then(([topicResponse, pinResponse]) => {
-      const topicCache = wx.getStorageSync('jj:topic-cache') || {}
       const topics = (topicResponse.result.data || []).slice(0, 10).map((item) => {
         const topic = item.topic || item
         const topicId = String(item.topic_id || topic.topic_id || '')
         const icon = utils.normalizeImageUrl(topic.icon || topic.icon_url || topic.topic_pic || '', 160)
         const msgCount = Number(topic.msg_count || item.msg_count) || 0
         const serverNewCount = Number(item.new_short_msg_count || topic.new_short_msg_count) || 0
-        const hasSeenBaseline = Boolean(topicCache[topicId] && topicCache[topicId].msg_count !== undefined)
-        const cachedMsgCount = Number(hasSeenBaseline && topicCache[topicId].msg_count) || 0
-        const localNewCount = hasSeenBaseline ? Math.max(0, msgCount - cachedMsgCount) : 0
         return Object.assign({}, topic, {
           topic_id: topicId,
           title: String(topic.title || '圈子').trim(),
@@ -78,54 +74,13 @@ Page({
           iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : (topic.title || '#').slice(0, 2),
           follower_count: Number(topic.follower_count) || 0,
           msg_count: msgCount,
-          hasSeenBaseline,
-          newCount: serverNewCount || localNewCount
+          newCount: serverNewCount
         })
       })
       const pinRows = pinResponse.result.data || []
       const selectedPins = pinRows.map(utils.normalizePin).slice(0, 8)
       this.setData({ topics, selectedPins })
-      this.loadTopicCounts(topics)
     }).finally(() => wx.stopPullDownRefresh())
-  },
-
-  loadTopicCounts(topics) {
-    const requestId = (this.topicCountRequestId || 0) + 1
-    const since = Date.now() - 24 * 60 * 60 * 1000
-    this.topicCountRequestId = requestId
-    Promise.all(topics.map((topic) => this.loadTopicCount(topic, since))).then((counts) => {
-      if (requestId !== this.topicCountRequestId) return
-      this.setData({
-        topics: this.data.topics.map((topic, index) => Object.assign({}, topic, {
-          newCount: Math.max(topic.newCount || 0, counts[index] || 0)
-        }))
-      })
-    })
-  },
-
-  loadTopicCount(topic, since) {
-    if (!topic || !topic.topic_id || topic.newCount > 0 || topic.hasSeenBaseline) return Promise.resolve(topic ? topic.newCount : 0)
-    return api.topicPins(topic.topic_id, '0', { sortType: 500, limit: 20 }).then(({ result, fromCache }) => {
-      if (fromCache) return 0
-      const rows = result.data || []
-      const firstCount = this.countRecentPins(rows, since)
-      if (!rows.length || firstCount < rows.length || !result.has_more) return firstCount
-      return api.topicPins(topic.topic_id, result.cursor || '0', { sortType: 500, limit: 80 }).then((response) => {
-        if (response.fromCache) return firstCount
-        const nextRows = response.result.data || []
-        const total = firstCount + this.countRecentPins(nextRows, since)
-        return total >= 100 && response.result.has_more ? 100 : total
-      })
-    }).catch(() => 0)
-  },
-
-  countRecentPins(rows, since) {
-    return rows.reduce((count, raw) => {
-      const info = raw.msg_Info || raw.msg_info || raw
-      const timestamp = Number(info.ctime) || 0
-      const milliseconds = timestamp && timestamp < 1000000000000 ? timestamp * 1000 : timestamp
-      return milliseconds >= since ? count + 1 : count
-    }, 0)
   },
 
   onTopicIconError(event) {
@@ -173,11 +128,7 @@ Page({
     const cache = wx.getStorageSync('jj:topic-cache') || {}
     cache[topic.topic_id] = topic
     wx.setStorageSync('jj:topic-cache', cache)
-    this.topicCountRequestId = (this.topicCountRequestId || 0) + 1
-    this.setData({
-      [`topics[${index}].hasSeenBaseline`]: true,
-      [`topics[${index}].newCount`]: 0
-    })
+    this.setData({ [`topics[${index}].newCount`]: 0 })
     wx.navigateTo({ url: `/pages/topic/topic?id=${topic.topic_id}` })
   },
 

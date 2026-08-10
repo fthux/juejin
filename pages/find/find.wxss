@@ -1,21 +1,25 @@
 .find-page { padding-bottom: 30rpx; }
-.find-top { padding: 0 24rpx 14rpx; background: var(--jj-surface) url('/assets/app/find/find_page_bg_top.webp') center top / 100% auto no-repeat; }
-.search-bar { height: 76rpx; margin: 12rpx 0 28rpx; padding: 0 22rpx; display: flex; align-items: center; box-sizing: border-box; border: 1rpx solid var(--jj-line); border-radius: 6rpx; color: var(--jj-text-3); background: var(--jj-surface); }
+.find-sticky { position: sticky; top: 0; z-index: 20; width: 100%; overflow: hidden; background: #eef8fc; }
+.find-sticky-bg, .find-top-bg { position: absolute; left: 0; top: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+.find-sticky-content, .find-top-content { position: relative; z-index: 1; }
+.find-search-head { width: 100%; height: 100%; padding: 0 24rpx; display: flex; align-items: center; box-sizing: border-box; }
+.find-top { position: relative; padding: 12rpx 24rpx 14rpx; overflow: hidden; background: var(--jj-surface); }
+.search-bar { width: 100%; height: 66rpx; padding: 0 22rpx; display: flex; align-items: center; box-sizing: border-box; border: 1rpx solid var(--jj-line); border-radius: 6rpx; color: var(--jj-text-3); background: var(--jj-surface); }
 .search-bar image { width: 34rpx; height: 34rpx; margin-right: 16rpx; }
 .channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14rpx; }
 .channel-item { min-width: 0; height: 118rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1rpx solid var(--jj-line); border-radius: 6rpx; box-sizing: border-box; background: var(--jj-surface); color: var(--jj-text-2); font-size: 22rpx; }
 .channel-item image { width: 48rpx; height: 48rpx; margin-bottom: 10rpx; }
-.quick-swiper { height: 164rpx; margin-top: 12rpx; }
-.quick-grid { height: 132rpx; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; }
+.quick-grid { height: 132rpx; margin-top: 12rpx; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; }
 .quick-item { min-width: 0; display: flex; flex-direction: column; align-items: center; color: var(--jj-text-2); font-size: 23rpx; }
 .quick-item image { width: 72rpx; height: 72rpx; margin-bottom: 8rpx; }
 .find-banner { position: relative; height: 198rpx; margin: 16rpx 24rpx 0; overflow: hidden; border-radius: 8rpx; background: var(--jj-surface); }
-.find-banner image { width: 100%; height: 100%; }
-.find-banner swiper-item { position: relative; }
-.banner-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .58), rgba(0, 0, 0, .08)); }
-.banner-copy { position: absolute; left: 28rpx; top: 28rpx; width: 58%; color: #fff; }
+.find-banner swiper-item { position: relative; overflow: hidden; background: var(--jj-surface); }
+.banner-art { position: absolute; top: 0; right: 0; width: 198rpx; height: 198rpx; }
+.banner-shade { position: absolute; top: 0; right: 150rpx; bottom: 0; z-index: 1; width: 96rpx; background: linear-gradient(90deg, var(--jj-surface), rgba(255, 255, 255, 0)); }
+.banner-copy { position: absolute; left: 28rpx; top: 28rpx; z-index: 2; width: calc(100% - 250rpx); color: var(--jj-text); }
 .banner-copy view { font-size: 31rpx; font-weight: 700; }
-.banner-copy text { margin-top: 12rpx; font-size: 21rpx; line-height: 1.5; }
+.banner-copy text { margin-top: 12rpx; color: var(--jj-text-2); font-size: 21rpx; line-height: 1.5; }
+.default-banner-image { width: 100%; height: 100%; }
 .daily-card { margin: 16rpx 24rpx 0; border-radius: 8rpx; background: var(--jj-surface); }
 .daily-card { min-height: 284rpx; padding: 24rpx; box-sizing: border-box; }
 .daily-heading, .discover-heading { display: flex; align-items: center; justify-content: space-between; }
@@ -84,4 +88,7 @@
 .headline-brief { margin-top: 12rpx; color: var(--jj-text-2); font-size: 22rpx; line-height: 1.45; }
 .headline-row image { width: 172rpx; height: 128rpx; margin-left: 20rpx; flex: 0 0 auto; border-radius: 4rpx; background: var(--jj-fill); }
 .cache-note { padding: 22rpx 0 0; color: var(--jj-text-3); font-size: 21rpx; text-align: center; }
-@media (prefers-color-scheme: dark) { .find-top { background-image: url('/assets/app/find/dark/find_page_bg_top.webp'); } }
+@media (prefers-color-scheme: dark) {
+  .find-sticky { background: #111820; }
+  .banner-shade { background: linear-gradient(90deg, var(--jj-surface), rgba(23, 24, 26, 0)); }
+}

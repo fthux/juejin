@@ -166,6 +166,23 @@ Page({
     session.requireLogin()
   },
 
+  onRemoteImageError(event) {
+    const index = Number(event.currentTarget.dataset.index)
+    const kind = event.currentTarget.dataset.kind
+    if (!Number.isInteger(index)) return
+    const fallbackByKind = {
+      theme: ['themes', 'cover', '/assets/app/find/find_page_ic_default_banner.webp'],
+      'pin-avatar': ['selectedPins', 'author.avatar_large', '/assets/app/common/default_avatar.webp'],
+      topic: ['topics', 'iconUrl', ''],
+      column: ['columns', 'cover', ''],
+      author: ['authors', 'avatar_large', '/assets/app/common/default_avatar.webp'],
+      headline: ['headlines', 'thumbnail', '']
+    }
+    const fallback = fallbackByKind[kind]
+    if (!fallback || !this.data[fallback[0]] || !this.data[fallback[0]][index]) return
+    this.setData({ [`${fallback[0]}[${index}].${fallback[1]}`]: fallback[2] })
+  },
+
   openCircleSquare() {
     wx.navigateTo({ url: '/pages/topic/topic' })
   },
