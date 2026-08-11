@@ -79,4 +79,10 @@
       </view>
     </view>
   </view>
+
+  <view class="open-source-entry" bindtap="openOpenSource">
+    <text>本项目由 fthux 开源维护</text>
+    <text class="open-source-separator">·</text>
+    <text class="open-source-link">开源作品 ›</text>
+  </view>
 </view>

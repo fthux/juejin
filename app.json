@@ -58,6 +58,7 @@
         "personalInfo/personalInfo",
         "basicVersion/basicVersion",
         "about/about",
+        "openSource/openSource",
         "feidianDetail/feidianDetail",
         "readHistory/readHistory",
         "collectionSet/collectionSet",

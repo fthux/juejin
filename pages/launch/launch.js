@@ -1,5 +1,5 @@
 const theme = require("../../utils/theme.js")
-const SPLASH_DURATION = 3000
+const SPLASH_DURATION = 2000
 const TAB_PATHS = [
   'pages/index/index',
   'pages/feidian/feidian',

@@ -1,0 +1,46 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
+<view class="page open-source-page">
+  <view class="maker-intro">
+    <view class="maker-name">fthux 的开源作品</view>
+    <view class="maker-description">这个小程序由 fthux 开源维护，也在持续开发一些解决实际问题的开源工具。</view>
+  </view>
+
+  <view class="section-title">项目</view>
+  <view class="project-list surface">
+    <view wx:for="{{projects}}" wx:key="name" class="project-row">
+      <view class="project-main">
+        <view class="project-icon">
+          <image class="project-icon-image" src="{{item.icon}}" mode="aspectFit"></image>
+        </view>
+        <view class="project-copy">
+          <view class="project-name">{{item.name}}</view>
+          <view class="project-address ellipsis" data-index="{{index}}" bindtap="copyPrimaryLink" hover-class="interactive-pressed" aria-role="button" aria-label="复制{{item.name}}主要地址">{{item.displayAddress}}</view>
+          <view class="project-description">{{item.description}}</view>
+        </view>
+      </view>
+      <view class="project-actions">
+        <view wx:if="{{item.website}}" class="copy-action" data-index="{{index}}" data-type="website" bindtap="copyProjectLink" hover-class="interactive-pressed" aria-role="button" aria-label="复制{{item.name}}官网地址">复制官网</view>
+        <view class="copy-action" data-index="{{index}}" data-type="github" bindtap="copyProjectLink" hover-class="interactive-pressed" aria-role="button" aria-label="复制{{item.name}} GitHub 地址">复制 GitHub</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="support-section">
+    <view class="support-title">感谢关注</view>
+    <view class="support-description">如果这些项目对你有帮助，欢迎在 GitHub 点个 Star、提交建议，或分享给需要的人。你的每一次反馈，都是我持续维护和完善它们的动力。</view>
+    <view class="support-links">
+      <view class="support-contact">
+        <text class="contact-label">GitHub</text>
+        <view class="contact-value" bindtap="copyProfileLink" hover-class="interactive-pressed" aria-role="button" aria-label="复制 GitHub 主页地址">{{profileAddress}}</view>
+      </view>
+      <view class="support-contact">
+        <text class="contact-label">联系邮箱</text>
+        <view class="contact-value" bindtap="copyEmail" hover-class="interactive-pressed" aria-role="button" aria-label="复制联系邮箱">{{contactEmail}}</view>
+      </view>
+    </view>
+    <button class="support-share" open-type="share" hover-class="interactive-pressed" aria-label="分享 fthux 的开源作品">
+      <image src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image>
+      <text>分享开源项目</text>
+    </button>
+  </view>
+</view>

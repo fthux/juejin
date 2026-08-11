@@ -112,6 +112,10 @@ Page(theme.withTheme({
     wx.navigateTo({ url: '/features/setting/setting' })
   },
 
+  openOpenSource() {
+    wx.navigateTo({ url: '/features/openSource/openSource' })
+  },
+
   openTheme() {
     const currentTheme = theme.getResolvedTheme()
     theme.setPreference({
