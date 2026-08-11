@@ -3,7 +3,7 @@
   "projectname": "juejin",
   "setting": {
     "compileHotReLoad": true,
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,
