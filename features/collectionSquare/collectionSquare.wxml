@@ -10,7 +10,7 @@
   <block wx:else>
     <view wx:if="{{current}}" class="collection-detail">
       <view class="detail-hero">
-        <image class="detail-bg" src="/features/assets/app/collection/collection_detail_bg.webp" mode="aspectFill"></image>
+        <image class="detail-bg" src="/features/assets/app/collection/collection_detail_bg.png" mode="aspectFill"></image>
         <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><view class="nav-more" bindtap="showMore">•••</view></view></status-bar>
         <view class="hero-copy"><view class="detail-title">{{current.name}}</view><view class="detail-description">{{current.description || '暂无描述'}}</view><view class="owner-row" bindtap="openCreator"><image src="{{current.creator.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image><text>{{current.creator.user_name}}</text><text wx:if="{{current.creator.level}}" class="level-badge">LV.{{current.creator.level}}</text><text class="more-sets">更多收藏集 ›</text></view><view class="subscribe filled {{followed ? 'followed' : ''}}" bindtap="subscribe">{{followed ? '已订阅' : '订阅'}}</view></view>
       </view>

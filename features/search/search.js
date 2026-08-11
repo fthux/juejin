@@ -79,7 +79,7 @@ Page(theme.withTheme({
       const results = this.data.type === 'article' ? raw.map(utils.normalizeArticle) : raw.map((item) => ({
         user_id: item.user_id || '',
         user_name: item.user_name || '掘金用户',
-        avatar_large: item.avatar_large || '/assets/app/common/default_avatar.webp',
+        avatar_large: item.avatar_large || '/assets/app/common/default_avatar.png',
         job_title: item.job_title || '',
         company: item.company || '',
         follower_count: utils.formatCount(item.follower_count)

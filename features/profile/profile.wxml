@@ -1,7 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page profile-page">
   <view wx:if="{{user}}" class="profile-head surface">
-    <image class="profile-bg" src="/features/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <image class="profile-bg" src="/features/assets/app/user/user_profile_header.png" mode="aspectFill"></image>
     <view class="profile-main">
       <image class="profile-avatar" src="{{user.avatar_large}}" mode="aspectFill"></image>
       <view class="profile-copy">

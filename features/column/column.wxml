@@ -13,7 +13,7 @@
         <status-bar navigation="{{true}}" transparent="{{true}}"><view class="hero-nav"><view class="nav-back" bindtap="goBack">‹</view><text class="fixed-nav-title ellipsis" style="opacity: {{navOpacity}};">{{current.title}}</text><view class="nav-placeholder"></view></view></status-bar>
       </view>
       <view class="detail-hero">
-        <image class="detail-cover" src="{{current.cover || '/assets/app/column/column_default_cover.webp'}}" mode="aspectFill" referrer-policy="no-referrer"></image>
+        <image class="detail-cover" src="{{current.cover || '/assets/app/column/column_default_cover.png'}}" mode="aspectFill" referrer-policy="no-referrer"></image>
       </view>
       <view class="detail-profile surface">
         <view class="detail-title">{{current.title}}</view>

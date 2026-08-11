@@ -39,7 +39,7 @@
   </view>
 
   <view wx:if="{{topTab === 'following'}}" class="following-login surface">
-    <image class="following-illustration" src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <image class="following-illustration" src="/assets/app/common/ic_yoyo_empty.png" mode="aspectFit"></image>
     <view class="following-title">立刻登录，围观掘友精彩沸点吧</view>
     <view class="following-button" bindtap="requireAccount">登录</view>
   </view>

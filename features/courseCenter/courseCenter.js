@@ -7,7 +7,7 @@ const GUIDE_COURSES = [
   {
     id: 'free-writing-guide',
     title: '如何写一本掘金小册',
-    cover: '/features/assets/app/course/bg_book_free.webp',
+    cover: '/features/assets/app/course/bg_book_free.png',
     owned: true,
     vip: false,
     priceValue: 0,
@@ -17,7 +17,7 @@ const GUIDE_COURSES = [
   {
     id: 'free-community-guide',
     title: '如何使用掘金社区',
-    cover: '/features/assets/app/course/bg_book_free.webp',
+    cover: '/features/assets/app/course/bg_book_free.png',
     owned: true,
     vip: false,
     priceValue: 0,

@@ -1,5 +1,5 @@
 .channel-page { min-height: 100vh; background: var(--jj-surface); }
-.channel-head { min-height: 172rpx; padding: 38rpx 32rpx; box-sizing: border-box; background: var(--jj-surface) url('/assets/app/find/find_page_bg_top.webp') center / cover no-repeat; }
+.channel-head { min-height: 172rpx; padding: 38rpx 32rpx; box-sizing: border-box; background: var(--jj-surface) url('/assets/app/find/find_page_bg_top.png') center / cover no-repeat; }
 .channel-page-title { font-size: 38rpx; font-weight: 700; }
 .channel-page-caption { margin-top: 14rpx; color: var(--jj-text-3); font-size: 23rpx; }
 .live-type-tabs, .live-status-tabs { width: 100%; padding: 0 12rpx; box-sizing: border-box; white-space: nowrap; }
@@ -38,4 +38,4 @@
 .collection-article text { display: block; margin-top: 10rpx; color: var(--jj-text-3); font-size: 21rpx; }
 .collection-more { height: 80rpx; margin: 22rpx 30rpx 28rpx; display: flex; align-items: center; justify-content: center; border-radius: 5rpx; color: var(--jj-text-2); background: var(--jj-fill); }
 .cache-tip { padding: 22rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }
-@media (prefers-color-scheme: dark) { .channel-head { background-image: url('/assets/app/find/dark/find_page_bg_top.webp'); } }
+@media (prefers-color-scheme: dark) { .channel-head { background-image: url('/assets/app/find/dark/find_page_bg_top.png'); } }

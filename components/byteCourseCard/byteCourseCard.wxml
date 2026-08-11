@@ -1,10 +1,10 @@
 <view class="byte-course-card" bindtap="open">
   <view class="byte-course-content">
-    <image class="byte-course-cover" src="{{coverFailed ? '/assets/app/course/byte/default.webp' : (item.cover || '/assets/app/course/byte/default.webp')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
+    <image class="byte-course-cover" src="{{coverFailed ? '/assets/app/course/byte/default.png' : (item.cover || '/assets/app/course/byte/default.png')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
     <view class="byte-course-body">
       <view class="byte-course-title"><text class="vip-free">VIP免费</text><text>{{item.title}}</text></view>
       <view class="byte-course-meta">
-        <image class="bytetech-logo" src="/assets/app/course/byte/ic_bytetech.webp" mode="aspectFit"></image>
+        <image class="bytetech-logo" src="/assets/app/course/byte/ic_bytetech.png" mode="aspectFit"></image>
         <text>ByteTech</text>
       </view>
       <view wx:if="{{item.videoCount}}" class="byte-course-meta video-meta">

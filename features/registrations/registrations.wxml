@@ -10,7 +10,7 @@
     <button class="cancel-button" data-id="{{item.id}}" bindtap="cancel">取消</button>
   </view>
   <view wx:if="{{!list.length}}" class="empty-registration">
-    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <image src="/assets/app/common/ic_yoyo_empty.png" mode="aspectFit"></image>
     <text>你还没有任何报名哦~</text>
   </view>
 </view>

@@ -58,7 +58,7 @@
   border-radius: 14rpx;
   box-sizing: border-box;
   color: #ffffff;
-  background: #4e82f7 url('/features/assets/app/popularize/ic_popularize_bg.webp') right center / cover no-repeat;
+  background: #4e82f7 url('/features/assets/app/popularize/ic_popularize_bg.png') right center / cover no-repeat;
 }
 
 .withdraw-label {

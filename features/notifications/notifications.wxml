@@ -15,7 +15,7 @@
       <view class="section-more" bindtap="markAllRead">全部已读</view>
     </view>
     <view class="conversation" bindtap="openChat">
-      <image class="avatar" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+      <image class="avatar" src="/assets/app/common/ic_juejin_logo.png" mode="aspectFit"></image>
       <view class="conversation-copy">
         <view class="conversation-title">掘金小助手</view>
         <view class="conversation-preview ellipsis">欢迎体验稀土掘金小程序</view>

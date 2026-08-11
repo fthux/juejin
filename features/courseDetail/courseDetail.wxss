@@ -44,28 +44,8 @@
   transform: rotate(45deg);
 }
 
-.nav-more {
-  width: 56rpx;
-  height: 52rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7rpx;
-}
-
-.nav-more text {
-  width: 6rpx;
-  height: 6rpx;
-  border-radius: 50%;
-  background: #ffffff;
-}
-
 .nav-back.dark::before {
   border-color: var(--jj-text);
-}
-
-.nav-more.dark text {
-  background: var(--jj-text);
 }
 
 .hero-copy {

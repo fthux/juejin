@@ -103,10 +103,10 @@ const hotCategories = [
 ]
 
 const authors = [
-  { user_id: 'user-1', user_name: '稀土掘金技术团队', avatar_large: '/assets/app/common/ic_juejin_logo.webp', job_title: '官方账号', company: '稀土掘金', follower_count: 128000 },
-  { user_id: 'user-2', user_name: '前端森林', avatar_large: '/assets/app/common/default_avatar.webp', job_title: '前端工程师', company: '字节跳动', follower_count: 32640 },
-  { user_id: 'user-3', user_name: '代码与远方', avatar_large: '/assets/app/common/default_avatar.webp', job_title: '后端架构师', company: '科技公司', follower_count: 18900 },
-  { user_id: 'user-4', user_name: 'AI 工程札记', avatar_large: '/assets/app/common/default_avatar.webp', job_title: '算法工程师', company: 'AI Lab', follower_count: 12360 }
+  { user_id: 'user-1', user_name: '稀土掘金技术团队', avatar_large: '/assets/app/common/ic_juejin_logo.png', job_title: '官方账号', company: '稀土掘金', follower_count: 128000 },
+  { user_id: 'user-2', user_name: '前端森林', avatar_large: '/assets/app/common/default_avatar.png', job_title: '前端工程师', company: '字节跳动', follower_count: 32640 },
+  { user_id: 'user-3', user_name: '代码与远方', avatar_large: '/assets/app/common/default_avatar.png', job_title: '后端架构师', company: '科技公司', follower_count: 18900 },
+  { user_id: 'user-4', user_name: 'AI 工程札记', avatar_large: '/assets/app/common/default_avatar.png', job_title: '算法工程师', company: 'AI Lab', follower_count: 12360 }
 ]
 
 const articleSeeds = [
@@ -142,10 +142,10 @@ const pins = [
 ]
 
 const courses = [
-  { booklet_id: 'course-1', base_info: { title: '深入浅出 TypeScript', summary: '从类型系统到工程实践', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, category_id: categories[2].id, section_count: 36, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] },
-  { booklet_id: 'course-2', base_info: { title: '高并发系统设计 40 问', summary: '建立可靠的服务端架构知识体系', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 3990, category_id: categories[1].id, section_count: 40, is_finished: true, is_distribution: 1, commission: 798 }, event_discount: { discount_rate: 6 }, user_info: authors[2] },
-  { booklet_id: 'course-3', base_info: { title: '大模型应用开发实战', summary: 'RAG、Agent 与评测完整路径', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 4990, category_id: categories[5].id, section_count: 28, is_finished: false, is_distribution: 1, commission: 998 }, event_discount: { discount_rate: 6 }, user_info: authors[3] },
-  { booklet_id: 'course-4', base_info: { title: '前端性能优化原理与实践', summary: '从指标到工具，再到落地方案', cover_img: '/assets/app/common/default_booklet_cover_image.webp', price: 2990, category_id: categories[2].id, section_count: 31, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] }
+  { booklet_id: 'course-1', base_info: { title: '深入浅出 TypeScript', summary: '从类型系统到工程实践', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 2990, category_id: categories[2].id, section_count: 36, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] },
+  { booklet_id: 'course-2', base_info: { title: '高并发系统设计 40 问', summary: '建立可靠的服务端架构知识体系', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 3990, category_id: categories[1].id, section_count: 40, is_finished: true, is_distribution: 1, commission: 798 }, event_discount: { discount_rate: 6 }, user_info: authors[2] },
+  { booklet_id: 'course-3', base_info: { title: '大模型应用开发实战', summary: 'RAG、Agent 与评测完整路径', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 4990, category_id: categories[5].id, section_count: 28, is_finished: false, is_distribution: 1, commission: 998 }, event_discount: { discount_rate: 6 }, user_info: authors[3] },
+  { booklet_id: 'course-4', base_info: { title: '前端性能优化原理与实践', summary: '从指标到工具，再到落地方案', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 2990, category_id: categories[2].id, section_count: 31, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] }
 ]
 
 const byteCourses = [

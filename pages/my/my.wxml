@@ -16,11 +16,11 @@
 
   <view class="user-zone surface">
     <view class="user-panel" bindtap="openProfile">
-      <image class="user-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
+      <image class="user-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.png'}}" mode="aspectFill"></image>
       <view class="user-copy">
         <view class="user-name">{{user ? user.user_name : '登录/注册'}}</view>
         <view wx:if="{{user}}" class="user-badges">
-          <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>
+          <image src="/assets/app/user/ic_user_lv1.png" mode="aspectFit"></image>
           <text>个人主页 ›</text>
         </view>
       </view>

@@ -1,9 +1,9 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="splash theme-{{theme}}" aria-label="稀土掘金启动页">
-  <image class="splash-background splash-light" src="/assets/app/splash/splash_bg.webp" mode="scaleToFill"></image>
-  <image class="splash-background splash-dark" src="/assets/app/splash/splash_bg_dark.webp" mode="scaleToFill"></image>
-  <image class="splash-slogan splash-light" src="/assets/app/splash/splash_slogan.webp" mode="scaleToFill"></image>
-  <image class="splash-slogan splash-dark" src="/assets/app/splash/splash_slogan_dark.webp" mode="scaleToFill"></image>
-  <image class="splash-logo splash-light" src="/assets/app/splash/splash_logo.webp" mode="scaleToFill"></image>
-  <image class="splash-logo splash-dark" src="/assets/app/splash/splash_logo_dark.webp" mode="scaleToFill"></image>
+  <image class="splash-background splash-light" src="/assets/app/splash/splash_bg.png" mode="scaleToFill"></image>
+  <image class="splash-background splash-dark" src="/assets/app/splash/splash_bg_dark.png" mode="scaleToFill"></image>
+  <image class="splash-slogan splash-light" src="/assets/app/splash/splash_slogan.png" mode="scaleToFill"></image>
+  <image class="splash-slogan splash-dark" src="/assets/app/splash/splash_slogan_dark.png" mode="scaleToFill"></image>
+  <image class="splash-logo splash-light" src="/assets/app/splash/splash_logo.png" mode="scaleToFill"></image>
+  <image class="splash-logo splash-dark" src="/assets/app/splash/splash_logo_dark.png" mode="scaleToFill"></image>
 </view>

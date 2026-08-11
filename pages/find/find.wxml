@@ -1,7 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page find-page">
   <view class="find-sticky">
-    <image class="find-sticky-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.webp' : '/assets/app/find/find_page_bg_top.webp'}}" mode="aspectFill"></image>
+    <image class="find-sticky-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.png' : '/assets/app/find/find_page_bg_top.png'}}" mode="aspectFill"></image>
     <view class="find-sticky-content">
       <status-bar navigation="{{true}}" transparent="{{true}}">
         <view class="find-search-head">
@@ -15,7 +15,7 @@
   </view>
 
   <view class="find-top">
-    <image class="find-top-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.webp' : '/assets/app/find/find_page_bg_top.webp'}}" mode="aspectFill"></image>
+    <image class="find-top-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.png' : '/assets/app/find/find_page_bg_top.png'}}" mode="aspectFill"></image>
     <view class="find-top-content">
       <view class="channel-grid">
         <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" data-anchor="{{item.anchor}}" bindtap="openFeature">
@@ -32,11 +32,11 @@
 
   <swiper wx:if="{{themes.length}}" class="find-banner" indicator-dots circular autoplay interval="5000">
     <swiper-item wx:for="{{themes}}" wx:key="theme_id" data-index="{{index}}" bindtap="openTheme">
-      <view class="banner-copy"><view class="ellipsis">{{item.name}}</view><text class="two-lines" user-select="{{true}}">{{item.brief}}</text></view>
-      <image class="banner-art" src="{{item.cover || '/assets/app/find/find_page_ic_default_banner.webp'}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="theme" data-index="{{index}}" binderror="onRemoteImageError"></image>
+      <view class="banner-copy"><view class="ellipsis">{{item.name}}</view><text class="banner-brief two-lines" user-select="{{true}}">{{item.brief}}</text></view>
+      <image class="banner-art" src="{{item.cover || '/assets/app/find/find_page_ic_default_banner.png'}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="theme" data-index="{{index}}" binderror="onRemoteImageError"></image>
     </swiper-item>
   </swiper>
-  <view wx:else class="find-banner default-banner"><image class="default-banner-image" src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image></view>
+  <view wx:else class="find-banner default-banner"><image class="default-banner-image" src="/assets/app/find/find_page_ic_default_banner.png" mode="aspectFill"></image></view>
 
   <view class="daily-card" bindtap="openDaily">
     <view class="daily-heading">
@@ -44,7 +44,7 @@
       <view catchtap="openDailyHistory">往日精彩 <text>›</text></view>
     </view>
     <view wx:if="{{dailyArticle}}" class="daily-content">
-      <view class="calendar-wrap"><image class="calendar" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_calendar.webp' : '/assets/app/find/find_page_bg_calendar.webp'}}" mode="aspectFit"></image><text class="calendar-day">{{dailyDay}}</text><text class="calendar-month">{{dailyMonth}}</text></view>
+      <view class="calendar-wrap"><image class="calendar" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_calendar.png' : '/assets/app/find/find_page_bg_calendar.png'}}" mode="aspectFit"></image><text class="calendar-day">{{dailyDay}}</text><text class="calendar-month">{{dailyMonth}}</text></view>
       <view class="daily-copy"><view class="daily-title two-lines">{{dailyArticle.title}}</view><view class="daily-brief two-lines">{{dailyArticle.brief_content || greeting}}</view></view>
     </view>
   </view>
@@ -68,7 +68,7 @@
           <view class="liked-avatars"><image wx:for="{{item.digg_users}}" wx:for-item="user" wx:key="user_id" src="{{user.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view>
           <text>等人赞过</text>
         </view>
-        <view class="pin-comment-box" catchtap="openAccountInfo"><image src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image><text>评论沸点...</text></view>
+        <view class="pin-comment-box" catchtap="openAccountInfo"><image src="/assets/app/common/default_avatar.png" mode="aspectFill"></image><text>评论沸点...</text></view>
       </view>
     </scroll-view>
     <empty-state wx:if="{{!loading && !selectedPins.length}}" text="暂时没有精选沸点"></empty-state>
@@ -123,9 +123,9 @@
     <view class="discover-heading"><text>作者榜</text><view data-type="author" bindtap="openRank">查看更多 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
       <view wx:for="{{authors}}" wx:key="user_id" class="author-card horizontal-card" data-id="{{item.user_id}}" bindtap="openAuthor">
-        <image wx:if="{{index === 0}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_1.webp" mode="aspectFill"></image>
-        <image wx:elif="{{index === 1}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_2.webp" mode="aspectFill"></image>
-        <image wx:elif="{{index === 2}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_3.webp" mode="aspectFill"></image>
+        <image wx:if="{{index === 0}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_1.png" mode="aspectFill"></image>
+        <image wx:elif="{{index === 1}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_2.png" mode="aspectFill"></image>
+        <image wx:elif="{{index === 2}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_3.png" mode="aspectFill"></image>
         <view class="author-head"><image class="author-avatar" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="author" data-index="{{index}}" binderror="onRemoteImageError"></image><view class="author-copy"><view class="author-name ellipsis">{{item.user_name}} <text wx:if="{{item.level}}">LV.{{item.level}}</text></view><view class="author-stats">获赞 {{item.got_digg_count}} · 阅读 {{item.got_view_count}}</view></view><view class="outline-action" catchtap="openAccountInfo">关注</view></view>
         <view class="recommend-preview author-preview"><view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="author" data-card-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openCardArticle"><view class="ellipsis">{{article.title}}</view><text>{{item.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view>
         <view class="recommend-footer">查看更多文章</view>

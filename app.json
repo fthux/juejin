@@ -96,7 +96,7 @@
         "pagePath": "pages/find/find",
         "text": "发现",
         "iconPath": "assets/app/tabs/tab_find_normal.png",
-        "selectedIconPath": "assets/app/tabs/tab_find.png"
+        "selectedIconPath": "assets/app/tabs/tab_find_dark.png"
       },
       {
         "pagePath": "pages/xiaoce/xiaoce",

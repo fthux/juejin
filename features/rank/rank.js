@@ -2,7 +2,7 @@ const theme = require("../../utils/theme.js")
 const api = require('../../services/api.js')
 const utils = require('../../utils/utils.js')
 const mock = require('../../data/mockData.js')
-const medals = ['/features/assets/app/rank/ic_rank_1.webp', '/features/assets/app/rank/ic_rank_2.webp', '/features/assets/app/rank/ic_rank_3.webp']
+const medals = ['/features/assets/app/rank/ic_rank_1.png', '/features/assets/app/rank/ic_rank_2.png', '/features/assets/app/rank/ic_rank_3.png']
 const INITIAL_ARTICLE_COUNT = 40
 const ARTICLE_PAGE_SIZE = 20
 

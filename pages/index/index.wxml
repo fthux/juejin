@@ -38,7 +38,7 @@
   </scroll-view>
 
   <view wx:if="{{activeNav === 'following'}}" class="following-empty surface">
-    <image src="/assets/app/common/business_common_v3_ic_standard_empty.webp" mode="aspectFit"></image>
+    <image src="/assets/app/common/business_common_v3_ic_standard_empty.png" mode="aspectFit"></image>
     <view class="following-title">小程序版不提供关注动态同步</view>
     <view class="following-caption">关注内容请在稀土掘金官方 App 或网站登录后查看</view>
     <button class="primary-button account-button" bindtap="openAccountInfo">查看账号说明</button>

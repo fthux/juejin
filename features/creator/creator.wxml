@@ -9,7 +9,7 @@
   </status-bar>
   <view class="level-card" bindtap="openLevel">
     <view class="identity-row">
-      <image class="creator-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.webp'}}" mode="aspectFill"></image>
+      <image class="creator-avatar" src="{{user ? user.avatar_large : '/assets/app/common/default_avatar.png'}}" mode="aspectFill"></image>
       <view class="identity-copy">
         <view class="creator-name ellipsis">{{user ? user.user_name : '掘金创作者'}}</view>
         <view class="creator-badges">掘金创作者 · LV.{{level}}</view>
@@ -50,7 +50,7 @@
   <view class="creator-section activity-section">
     <view class="creator-section-head" bindtap="openActivities"><view>创作活动</view><text>更多内容 ›</text></view>
     <view class="activity-card" bindtap="openActivities">
-      <image src="/assets/app/find/find_page_ic_default_banner.webp" mode="aspectFill"></image>
+      <image src="/assets/app/find/find_page_ic_default_banner.png" mode="aspectFill"></image>
       <view class="activity-copy"><view>{{activity.title}}</view><text>{{activity.description}}</text></view>
     </view>
   </view>

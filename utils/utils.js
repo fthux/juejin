@@ -108,7 +108,7 @@ function normalizeArticle(raw) {
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',
-      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.webp',
+      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.png',
       job_title: author.job_title || '',
       company: author.company || '',
       level: Number(author.level || authorGrowth.jpower_level) || 0
@@ -139,7 +139,7 @@ function normalizeHotRank(raw) {
     author: {
       user_id: author.user_id || content.author_id || '',
       user_name: author.name || author.user_name || item.author_name || '掘金用户',
-      avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.webp'
+      avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.png'
     },
     hot_rank: String(Math.round(Number(counter.hot_rank) || Number(item.hot_rank) || Number(item.view_count) || 0)),
     collect_count: formatCount(counter.collect || item.collect_count),
@@ -154,7 +154,7 @@ function normalizeHotAuthor(raw) {
   return {
     user_id: author.user_id || '',
     user_name: author.name || author.user_name || '掘金用户',
-    avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.webp',
+    avatar_large: author.avatar || author.avatar_large || '/assets/app/common/default_avatar.png',
     job_title: author.job_title || '',
     company: author.company || '',
     follower_count: formatCount(counter.follower || author.follower_count),
@@ -176,7 +176,7 @@ function normalizeHeadline(raw) {
     thumbnail: info.thumbnail || info.cover_image || item.cover_image || '',
     url: info.content || info.link_url || item.link_url || '',
     source: author.user_name || author.name || item.author_name || '头条精选',
-    avatar: normalizeImageUrl(author.avatar_large || author.avatar || '/assets/app/common/default_avatar.webp', 80),
+    avatar: normalizeImageUrl(author.avatar_large || author.avatar || '/assets/app/common/default_avatar.png', 80),
     publish_time: info.publish_time_string || formatTime(info.publish_time || info.ctime || item.ctime),
     digg_count: formatCount(diggCount),
     comment_count: formatCount(commentCount),
@@ -273,14 +273,14 @@ function normalizePin(raw) {
     digg_users: Array.isArray(diggUsers) ? diggUsers.slice(0, 3).map((user) => ({
       user_id: String(user.user_id || ''),
       user_name: user.user_name || '掘友',
-      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80)
     })) : [],
     is_digg: Boolean(item.user_interact && item.user_interact.is_digg),
     is_followed: Boolean(item.user_interact && item.user_interact.is_follow),
     author: {
       user_id: author.user_id || '',
       user_name: author.user_name || '掘友',
-      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.webp',
+      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.png',
       job_title: author.job_title || '',
       company: author.company || ''
     }
@@ -324,7 +324,7 @@ function normalizeTheme(raw) {
     user_count: formatCount(theme.user_cnt),
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80)
     }))
   }
 }
@@ -346,14 +346,14 @@ function normalizeCollectionSet(raw) {
     creator: {
       user_id: String(creator.user_id || info.creator_id || ''),
       user_name: creator.user_name || creator.name || '掘金用户',
-      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80),
+      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.png', 80),
       level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80)
     })),
-    articles: (item.articles || item.article_list || []).map(normalizeArticle)
+    articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }
 }
 
@@ -365,7 +365,7 @@ function normalizeRecommendedAuthor(raw) {
   return {
     user_id: String(item.user_id || articleAuthor.user_id || ''),
     user_name: item.user_name || articleAuthor.user_name || '掘金用户',
-    avatar_large: normalizeImageUrl(item.avatar_large || articleAuthor.avatar_large || '/assets/app/common/default_avatar.webp', 160),
+    avatar_large: normalizeImageUrl(item.avatar_large || articleAuthor.avatar_large || '/assets/app/common/default_avatar.png', 160),
     job_title: item.job_title || articleAuthor.job_title || '',
     company: item.company || articleAuthor.company || '',
     description: item.author_desc || item.description || articleAuthor.description || '',
@@ -390,7 +390,7 @@ function authorToColumn(author) {
     title: tagName ? `${tagName}精选` : '技术专栏',
     owner_label: `${creatorName}的专栏`,
     description: item.description || '持续分享一线技术实践与思考',
-    cover: '/assets/app/column/column_default_cover.webp',
+    cover: '/assets/app/column/column_default_cover.png',
     tag: tagName,
     article_count: item.article_count || (item.articles || []).length,
     follower_value: 0,
@@ -399,7 +399,7 @@ function authorToColumn(author) {
     creator: {
       user_id: String(item.user_id || ''),
       user_name: item.user_name || '掘金用户',
-      avatar_large: item.avatar_large || '/assets/app/common/default_avatar.webp',
+      avatar_large: item.avatar_large || '/assets/app/common/default_avatar.png',
       level: Number(item.level) || 0
     },
     articles: item.articles || []
@@ -425,12 +425,12 @@ function normalizeColumn(raw) {
     creator: {
       user_id: String(creator.user_id || info.user_id || ''),
       user_name: creatorName,
-      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.webp', 80),
+      avatar_large: normalizeImageUrl(creator.avatar_large || '/assets/app/common/default_avatar.png', 80),
       level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80)
     })),
     articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }
@@ -469,7 +469,7 @@ function normalizeReply(raw) {
     ctime_value: Number(info.ctime) || 0,
     digg_count: formatCount(info.digg_count),
     digg_count_value: Number(info.digg_count) || 0,
-    avatar: user.avatar_large || '/assets/app/common/default_avatar.webp',
+    avatar: user.avatar_large || '/assets/app/common/default_avatar.png',
     user: user.user_name || '掘友',
     user_id: String(user.user_id || ''),
     reply_user: replyToUserId && replyToUserId !== '0' ? (replyUser.user_name || '') : '',
@@ -492,7 +492,7 @@ function normalizeComment(raw) {
     digg_count: formatCount(info.digg_count),
     digg_count_value: Number(info.digg_count) || 0,
     reply_count: Number(info.reply_count) || 0,
-    avatar: user.avatar_large || '/assets/app/common/default_avatar.webp',
+    avatar: user.avatar_large || '/assets/app/common/default_avatar.png',
     user: user.user_name || '掘友',
     user_id: user.user_id || '',
     is_author: Boolean(item.is_author),
@@ -536,7 +536,7 @@ function normalizeCourse(raw) {
     id: item.booklet_id || info.booklet_id || '',
     title: info.title || '掘金小册',
     summary: info.summary || info.introduction || '',
-    cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.webp',
+    cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.png',
     category_id: info.category_id || '',
     priceValue: salePrice,
     price: formatPrice(salePrice),
@@ -548,7 +548,7 @@ function normalizeCourse(raw) {
     read_time: Number(info.read_time) || 0,
     statusText: Number(info.is_finished) === 1 ? '已完结' : `已更新${updatedCount}小节`,
     author: user.user_name || info.author_name || '稀土掘金',
-    authorAvatar: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.webp', 80),
+    authorAvatar: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80),
     authorLevel: Number(user.level || (user.user_growth_info && user.user_growth_info.jpower_level)) || 0,
     vip: Boolean(info.can_vip_borrow),
     isNew: Boolean(item.is_new),
@@ -574,7 +574,7 @@ function normalizePopularizeCourse(raw) {
     id: item.booklet_id || info.booklet_id || '',
     title: info.title || '掘金小册',
     author: user.user_name || info.author_name || '稀土掘金',
-    cover: normalizeImageUrl(info.cover_img || '/assets/app/common/default_booklet_cover_image.webp', 240),
+    cover: normalizeImageUrl(info.cover_img || '/assets/app/common/default_booklet_cover_image.png', 240),
     category_id: String(info.category_id || ''),
     price: formatPrice(currentPrice),
     originalPrice: currentPrice < originalPrice ? formatPrice(originalPrice) : '',

@@ -200,11 +200,11 @@ Page(theme.withTheme({
     const index = Number(event.currentTarget.dataset.index)
     const kind = event.currentTarget.dataset.kind
     const fallbackByKind = {
-      theme: ['themes', 'cover', '/assets/app/find/find_page_ic_default_banner.webp'],
-      'pin-avatar': ['selectedPins', 'author.avatar_large', '/assets/app/common/default_avatar.webp'],
+      theme: ['themes', 'cover', '/assets/app/find/find_page_ic_default_banner.png'],
+      'pin-avatar': ['selectedPins', 'author.avatar_large', '/assets/app/common/default_avatar.png'],
       topic: ['topics', 'iconUrl', ''],
       column: ['columns', 'cover', ''],
-      author: ['authors', 'avatar_large', '/assets/app/common/default_avatar.webp'],
+      author: ['authors', 'avatar_large', '/assets/app/common/default_avatar.png'],
       headline: ['headlines', 'thumbnail', '']
     }
     const fallback = fallbackByKind[kind]

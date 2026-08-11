@@ -2,9 +2,9 @@
 <view class="page chat-page">
   <scroll-view class="message-list" scroll-y scroll-into-view="last-message">
     <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.side}}" id="{{index === messages.length - 1 ? 'last-message' : ''}}">
-      <image wx:if="{{item.side === 'left'}}" class="avatar" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+      <image wx:if="{{item.side === 'left'}}" class="avatar" src="/assets/app/common/ic_juejin_logo.png" mode="aspectFit"></image>
       <view class="message-bubble">{{item.content}}</view>
-      <image wx:if="{{item.side === 'right'}}" class="avatar" src="/assets/app/common/default_avatar.webp" mode="aspectFill"></image>
+      <image wx:if="{{item.side === 'right'}}" class="avatar" src="/assets/app/common/default_avatar.png" mode="aspectFill"></image>
     </view>
   </scroll-view>
   <view class="chat-input safe-bottom">

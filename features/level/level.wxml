@@ -1,7 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page level-page">
   <view class="level-card">
-    <image src="/assets/app/user/ic_user_lv1.webp" mode="aspectFit"></image>
+    <image src="/assets/app/user/ic_user_lv1.png" mode="aspectFit"></image>
     <view class="level-name">掘友等级 Lv.{{level}}</view>
     <view class="level-value">当前成长值 {{current}}</view>
     <view class="level-progress"><view style="width: {{progress}}%"></view></view>

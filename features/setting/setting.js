@@ -30,10 +30,12 @@ Page(theme.withTheme({
       return
     }
     if (id === 'messages') {
+      if (!this.requireAccount()) return
       wx.navigateTo({ url: '/features/messageSettings/messageSettings' })
       return
     }
     if (id === 'blocking') {
+      if (!this.requireAccount()) return
       wx.navigateTo({ url: '/features/dislike/dislike' })
       return
     }
@@ -50,6 +52,7 @@ Page(theme.withTheme({
       return
     }
     if (id === 'privacy') {
+      if (!this.requireAccount()) return
       wx.navigateTo({ url: '/features/personalInfo/personalInfo' })
       return
     }

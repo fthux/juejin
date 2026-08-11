@@ -5,7 +5,6 @@
       <view class="collapsed-navigation-row">
         <view class="nav-back dark" bindtap="goBack"></view>
         <view class="collapsed-title">课程详情</view>
-        <view class="nav-more dark" bindtap="showMore"><text></text><text></text><text></text></view>
       </view>
     </status-bar>
   </view>
@@ -18,7 +17,6 @@
       <status-bar navigation="{{true}}" transparent="{{true}}">
         <view class="hero-navigation-row">
           <view class="nav-back" bindtap="goBack"></view>
-          <view class="nav-more" bindtap="showMore"><text></text><text></text><text></text></view>
         </view>
       </status-bar>
       <view class="hero-copy">

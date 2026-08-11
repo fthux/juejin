@@ -1,7 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page login-page">
   <view class="login-main">
-    <image class="login-logo" src="/assets/app/common/ic_juejin_logo.webp" mode="aspectFit"></image>
+    <image class="login-logo" src="/assets/app/common/ic_juejin_logo.png" mode="aspectFit"></image>
     <view class="security-mark"><view class="security-check">✓</view></view>
     <view class="login-title">小程序版不提供账号登录</view>
     <view class="login-caption">为保护你的账号与个人信息，本项目不会接入或模拟稀土掘金账号登录，也不会尝试绕过第三方账号系统的验证和安全策略。</view>

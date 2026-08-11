@@ -11,7 +11,7 @@ const GUIDE_DETAILS = {
         booklet_id: 'free-writing-guide',
         title: '如何写一本掘金小册',
         summary: '从选题、组织目录到持续更新，了解掘金小册的创作流程。',
-        cover_img: '/features/assets/app/course/bg_book_free.webp',
+        cover_img: '/features/assets/app/course/bg_book_free.png',
         section_count: 3,
         is_finished: 1,
         price: 0
@@ -34,7 +34,7 @@ const GUIDE_DETAILS = {
         booklet_id: 'free-community-guide',
         title: '如何使用掘金社区',
         summary: '快速了解文章、沸点、课程与互动功能。',
-        cover_img: '/features/assets/app/course/bg_book_free.webp',
+        cover_img: '/features/assets/app/course/bg_book_free.png',
         section_count: 3,
         is_finished: 1,
         price: 0
@@ -176,10 +176,6 @@ Page(theme.withTheme({
     const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : []
     if (pages.length > 1) wx.navigateBack()
     else wx.switchTab({ url: '/pages/xiaoce/xiaoce' })
-  },
-
-  showMore() {
-    wx.showActionSheet({ itemList: ['分享小册', '举报'] })
   },
 
   buyCourse() {

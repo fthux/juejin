@@ -6,7 +6,7 @@
   </view>
   <view class="draft-list surface">
     <view wx:for="{{drafts}}" wx:key="id" class="draft-row">
-      <image src="{{item.type === 'pin' ? '/features/assets/app/creator/ic_publish_pin.webp' : '/features/assets/app/creator/ic_publish_article.webp'}}" mode="aspectFit"></image>
+      <image src="{{item.type === 'pin' ? '/features/assets/app/creator/ic_publish_pin.png' : '/features/assets/app/creator/ic_publish_article.png'}}" mode="aspectFit"></image>
       <view class="draft-copy">
         <view class="draft-title ellipsis">{{item.title}}</view>
         <view class="draft-content ellipsis">{{item.content}}</view>
@@ -16,7 +16,7 @@
     </view>
   </view>
   <view wx:if="{{!drafts.length}}" class="draft-empty surface">
-    <image src="/features/assets/app/common/draft_empty.webp" mode="aspectFit"></image>
+    <image src="/features/assets/app/common/draft_empty.png" mode="aspectFit"></image>
     <text>还没有任何草稿哦～</text>
   </view>
 </view>

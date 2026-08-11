@@ -15,7 +15,7 @@ Page(theme.withTheme({
         title: '「TRAE Work 实战帮」征文启动！你的经验，值得被看见！',
         description: '征集开发者解决日常工作难题的可复用经验',
         time: '2026-08-03 ~ 2026-08-23',
-        image: '/features/assets/app/creator/activity_trae_work.webp'
+        image: '/features/assets/app/creator/activity_trae_work.png'
       },
       {
         id: 'juejin-daily-share',
@@ -25,7 +25,7 @@ Page(theme.withTheme({
         title: '今日开发记录',
         description: '用一条沸点记录今天解决的技术问题',
         time: '长期活动',
-        image: '/assets/app/find/find_page_bg_top.webp'
+        image: '/assets/app/find/find_page_bg_top.png'
       },
       {
         id: 'open-source-stories',
@@ -35,7 +35,7 @@ Page(theme.withTheme({
         title: '开源项目成长记',
         description: '分享一个开源项目从想法到发布的过程',
         time: '已结束',
-        image: '/features/assets/app/find/find_page_bg_article_recommend_card_selected.webp'
+        image: '/features/assets/app/find/find_page_bg_article_recommend_card_selected.png'
       }
     ],
     list: []

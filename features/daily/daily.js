@@ -36,7 +36,7 @@ Page(theme.withTheme({
       const author = {
         user_id: String(authorInfo.user_id || (daily && daily.author.user_id) || ''),
         user_name: authorInfo.user_name || (daily && daily.author.user_name) || '酱酱们的AI编程淘金',
-        avatar_large: authorInfo.avatar_large || '/assets/app/common/default_avatar.webp',
+        avatar_large: authorInfo.avatar_large || '/assets/app/common/default_avatar.png',
         level: Number(authorInfo.level || (authorInfo.user_growth_info && authorInfo.user_growth_info.jpower_level)) || 6,
         description: DAILY_DESCRIPTION,
         create_time: '2022-06-09',

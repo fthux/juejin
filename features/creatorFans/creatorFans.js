@@ -82,7 +82,7 @@ Page(theme.withTheme({
       const rows = Array.isArray(payload) ? payload : (payload.list || payload.data || [])
       const followers = rows.map((item) => item.user_info || item).filter((item) => item.user_id).map((item) => ({
         user_id: String(item.user_id), user_name: item.user_name || '掘金用户',
-        avatar_large: item.avatar_large || '/assets/app/common/default_avatar.webp',
+        avatar_large: item.avatar_large || '/assets/app/common/default_avatar.png',
         description: item.job_title || item.description || '掘金用户'
       }))
       this.setData({ followers })

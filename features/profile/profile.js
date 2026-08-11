@@ -38,7 +38,7 @@ Page(theme.withTheme({
     const user = isCurrentUser ? currentSession.user : (matchedDiscoverUser || mock.authors.find((item) => item.user_id === query.id) || cachedUser || {
       user_id: query.id,
       user_name: '掘金用户',
-      avatar_large: '/assets/app/common/default_avatar.webp'
+      avatar_large: '/assets/app/common/default_avatar.png'
     })
     const sourceArticles = isCurrentUser ? session.getList('articles') : (matchedDiscoverUser && matchedDiscoverUser.articles || []).concat(cachedArticles, mock.articles)
     const sourcePins = isCurrentUser ? session.getList('pins') : mock.pins

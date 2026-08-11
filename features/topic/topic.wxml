@@ -43,7 +43,7 @@
   </block>
 
   <view wx:else class="joined-login">
-    <image src="/assets/app/common/ic_yoyo_empty.webp" mode="aspectFit"></image>
+    <image src="/assets/app/common/ic_yoyo_empty.png" mode="aspectFit"></image>
     <view class="joined-title">登录后查看我的圈子</view>
     <view class="joined-caption">加入感兴趣的圈子，随时发现新的讨论</view>
     <view class="joined-button" bindtap="openLogin">登录</view>
@@ -52,7 +52,7 @@
 
 <view wx:else class="page topic-page">
   <view class="topic-hero">
-    <image class="topic-bg" src="/features/assets/app/user/user_profile_header.webp" mode="aspectFill"></image>
+    <image class="topic-bg" src="/features/assets/app/user/user_profile_header.png" mode="aspectFill"></image>
     <view class="topic-shade"></view>
     <status-bar transparent="{{true}}"></status-bar>
     <view class="topic-nav"><text bindtap="back">‹</text><text>•••</text></view>

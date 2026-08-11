@@ -25,16 +25,16 @@ Page(theme.withTheme({
     },
     activityNotices: [],
     featureEntries: [
-      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.webp', url: '/features/sign/sign', auth: true },
-      { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.webp', url: '/features/lottery/lottery', auth: true },
-      { name: 'Bug挑战赛', icon: '/assets/app/user/ic_user_bug.webp', message: '当前暂无进行中的挑战赛', auth: true },
-      { name: '福利兑换', icon: '/assets/app/user/ic_user_change.webp', url: '/features/welfare/welfare', auth: true }
+      { name: '每日签到', icon: '/assets/app/user/ic_user_sign.png', url: '/features/sign/sign', auth: true },
+      { name: '幸运转盘', icon: '/assets/app/user/ic_user_luck.png', url: '/features/lottery/lottery', auth: true },
+      { name: 'Bug挑战赛', icon: '/assets/app/user/ic_user_bug.png', message: '当前暂无进行中的挑战赛', auth: true },
+      { name: '福利兑换', icon: '/assets/app/user/ic_user_change.png', url: '/features/welfare/welfare', auth: true }
     ],
     creatorEntries: [
-      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.webp', url: '/features/creatorData/creatorData', auth: true },
-      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.webp', url: '/features/creatorFans/creatorFans', auth: true },
-      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.webp', url: '/features/creatorActivities/creatorActivities', auth: true },
-      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.webp', url: '/features/drafts/drafts', auth: true }
+      { name: '内容数据', icon: '/assets/app/creator/ic_creator_data_center.png', url: '/features/creatorData/creatorData', auth: true },
+      { name: '粉丝数据', icon: '/assets/app/creator/ic_creator_follow_data_center.png', url: '/features/creatorFans/creatorFans', auth: true },
+      { name: '创作活动', icon: '/assets/app/creator/ic_creator_activity.png', url: '/features/creatorActivities/creatorActivities', auth: true },
+      { name: '草稿箱', icon: '/assets/app/creator/ic_creator_draft_list.png', url: '/features/drafts/drafts', auth: true }
     ],
     moreEntries: [
       { name: '课程中心', icon: '/assets/app/user/ic_user_course.png', url: '/features/courseCenter/courseCenter', auth: true },
