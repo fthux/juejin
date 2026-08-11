@@ -511,6 +511,14 @@ function formatPrice(value) {
   return text.replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
 }
 
+function normalizeCourseCover(value) {
+  const url = normalizeImageUrl(value, 240)
+  if (!url || /^https?:\/\/[^/]*passport\.byteacctimg\.com\/img\/user-avatar\//i.test(url)) {
+    return '/assets/app/common/default_booklet_cover_image.png'
+  }
+  return url
+}
+
 function normalizeCourse(raw) {
   const item = raw || {}
   const info = item.base_info || item.booklet_info || item
@@ -536,7 +544,7 @@ function normalizeCourse(raw) {
     id: item.booklet_id || info.booklet_id || '',
     title: info.title || '掘金小册',
     summary: info.summary || info.introduction || '',
-    cover: info.cover_img || '/assets/app/common/default_booklet_cover_image.png',
+    cover: normalizeCourseCover(info.cover_img),
     category_id: info.category_id || '',
     priceValue: salePrice,
     price: formatPrice(salePrice),
