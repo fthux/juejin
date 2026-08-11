@@ -52,7 +52,7 @@ Page(theme.withTheme({
     const tabBar = this.getTabBar && this.getTabBar()
     if (tabBar) tabBar.setData({ selected: 4 })
     const currentSession = session.getSession()
-    const notices = session.getList('notifications')
+    const notices = currentSession ? session.getList('notifications') : []
     this.setData({
       session: currentSession,
       user: currentSession ? currentSession.user : null,
@@ -112,12 +112,12 @@ Page(theme.withTheme({
     wx.navigateTo({ url: '/features/setting/setting' })
   },
 
-  openScan() {
-    utils.toast('扫码需要设备权限，小程序版本不提供')
-  },
-
   openTheme() {
-    utils.toast('外观跟随微信系统设置')
+    const currentTheme = theme.getResolvedTheme()
+    theme.setPreference({
+      followSystem: false,
+      selected: currentTheme === 'dark' ? 'light' : 'dark'
+    })
   },
 
   openCreator() {

@@ -1,0 +1,146 @@
+page {
+  height: 100%;
+  overflow: hidden;
+  background: var(--jj-bg);
+  color: var(--jj-text);
+}
+
+.disclaimer-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--jj-bg);
+}
+
+.disclaimer-scroll {
+  flex: 1;
+  width: 100%;
+  height: 0;
+  min-height: 0;
+}
+
+.disclaimer-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 28px 22px 36px;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0 28px;
+  border-bottom: 1px solid var(--jj-line);
+}
+
+.identity-label {
+  color: #d54941;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.identity-title {
+  margin-top: 10px;
+  color: var(--jj-text);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 34px;
+}
+
+.identity-summary {
+  margin-top: 10px;
+  color: var(--jj-text-3);
+  font-size: 14px;
+  line-height: 23px;
+}
+
+.statement-section {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--jj-line);
+}
+
+.statement-section:last-child {
+  border-bottom: 0;
+}
+
+.statement-title {
+  margin-bottom: 10px;
+  color: var(--jj-text);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 25px;
+}
+
+.statement-copy {
+  color: var(--jj-text-2);
+  font-size: 15px;
+  line-height: 25px;
+}
+
+.statement-copy + .statement-copy {
+  margin-top: 10px;
+}
+
+.disclaimer-end {
+  width: 100%;
+  height: 1px;
+}
+
+.disclaimer-footer {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px calc(14px + constant(safe-area-inset-bottom));
+  padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--jj-line);
+  background: var(--jj-surface);
+}
+
+.acknowledgement {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--jj-text-3);
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.continue-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 46px;
+  margin: 0;
+  padding: 0 16px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #1e80ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 46px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.continue-button::after {
+  border: 0;
+}
+
+.continue-button[disabled] {
+  background: #8dbdff;
+  color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .identity-label {
+    color: #ff7b72;
+  }
+}

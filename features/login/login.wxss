@@ -1,8 +1,6 @@
 .login-page { min-height: 100vh; background: var(--jj-surface); }
 .login-main { padding: 96rpx 56rpx calc(42rpx + env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
 .login-logo { width: 98rpx; height: 98rpx; }
-.security-mark { width: 116rpx; height: 128rpx; margin-top: 46rpx; display: flex; align-items: center; justify-content: center; border: 8rpx solid var(--jj-blue); border-radius: 58rpx 58rpx 48rpx 48rpx; box-sizing: border-box; background: var(--jj-blue-soft); }
-.security-check { width: 54rpx; height: 54rpx; border-radius: 50%; color: #ffffff; background: var(--jj-blue); font-size: 34rpx; line-height: 54rpx; text-align: center; }
 .login-title { margin-top: 42rpx; color: var(--jj-text); font-size: 38rpx; font-weight: 700; text-align: center; }
 .login-caption { margin-top: 22rpx; color: var(--jj-text-2); font-size: 26rpx; line-height: 1.72; text-align: center; }
 .official-note { width: 100%; margin-top: 46rpx; padding: 30rpx; border-radius: 8rpx; box-sizing: border-box; background: var(--jj-fill-2); }

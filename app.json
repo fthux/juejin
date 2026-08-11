@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/disclaimer/disclaimer",
     "pages/launch/launch",
     "pages/index/index",
     "pages/feidian/feidian",

@@ -1,0 +1,39 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
+<view class="disclaimer-page">
+  <scroll-view class="disclaimer-scroll" scroll-y enhanced show-scrollbar="{{false}}" lower-threshold="48" bindscroll="trackReadProgress" bindscrolltolower="markAsRead">
+    <view class="disclaimer-content">
+      <view class="identity">
+        <text class="identity-label">非官方学习项目</text>
+        <text class="identity-title">请在继续体验前阅读以下说明</text>
+        <text class="identity-summary">本页面用于明确项目身份、使用范围及第三方权利边界。</text>
+      </view>
+
+      <view class="statement-section">
+        <text class="statement-title">项目性质</text>
+        <text class="statement-copy">本小程序是基于稀土掘金 App 界面与部分功能制作的非官方复刻，仅用于个人学习、技术研究和非商业展示。</text>
+        <text class="statement-copy">本项目未获得稀土掘金及其运营主体的授权、合作、赞助或认可，与其不存在隶属关系，也不是稀土掘金官方 App 或官方微信小程序。</text>
+      </view>
+
+      <view class="statement-section">
+        <text class="statement-title">权利归属</text>
+        <text class="statement-copy">小程序中涉及的“稀土掘金”名称、Logo、图标、图片、文章、用户内容及其他第三方材料，其相关权利归各自合法权利人所有。本项目不主张对这些材料享有权利，也不授予任何商业使用、复制传播或再许可权利。</text>
+      </view>
+
+      <view class="statement-section">
+        <text class="statement-title">使用限制</text>
+        <text class="statement-copy">禁止将本项目用于商业经营、收费服务、营销推广、批量采集、镜像分发，或用于冒充、暗示官方身份及合作关系。使用者应遵守适用法律法规、微信平台规则、稀土掘金服务条款及第三方权利要求。</text>
+      </view>
+
+      <view class="statement-section">
+        <text class="statement-title">功能与责任</text>
+        <text class="statement-copy">本项目不保证内容、接口和功能的准确性、完整性、稳定性或持续可用性。涉及账号登录、付费、内容发布和个人数据等操作，请以稀土掘金官方 App 或官方网站为准。</text>
+      </view>
+      <view class="disclaimer-end" aria-hidden="true"></view>
+    </view>
+  </scroll-view>
+
+  <view class="disclaimer-footer">
+    <text class="acknowledgement">{{hasReadAll ? '已阅读完整声明，可以继续体验。' : '请阅读至声明末尾。'}}</text>
+    <button class="continue-button" type="primary" disabled="{{!hasReadAll || continuing}}" bindtap="acknowledgeDisclaimer">我已知悉，继续体验</button>
+  </view>
+</view>

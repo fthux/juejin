@@ -6,10 +6,9 @@
 .mine-header {
   width: 100%;
   height: 100%;
-  padding-left: 30rpx;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   box-sizing: border-box;
 }
 
@@ -19,29 +18,25 @@
   gap: 8rpx;
 }
 
-.head-icon {
+.head-action {
   position: relative;
   width: 56rpx;
   height: 56rpx;
   flex: 0 0 auto;
-  box-sizing: border-box;
-}
-
-.mine-page.dark image.head-icon,
-.mine-page.dark .notice-icon {
-  filter: brightness(0) invert(1);
-  opacity: 0.78;
-}
-
-.notice-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
-.notice-icon {
-  width: 56rpx;
-  height: 56rpx;
+.head-action-icon {
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.mine-page.dark .head-action-icon {
+  filter: brightness(0) invert(1);
+  opacity: 0.78;
 }
 
 .head-badge {
@@ -213,6 +208,10 @@
   padding: 10rpx 10rpx 24rpx;
 }
 
+.creator-section.has-activity {
+  padding-bottom: 22rpx;
+}
+
 .creator-item {
   gap: 12rpx;
 }
@@ -224,7 +223,7 @@
 
 .activity-ticker {
   height: 64rpx;
-  margin: 0 22rpx 22rpx;
+  margin: 0 22rpx;
   padding: 0;
   border-radius: 6rpx;
   box-sizing: border-box;

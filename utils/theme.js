@@ -151,11 +151,25 @@ function initialize(app, systemInfo) {
   }
 }
 
-function withTheme(options) {
+function withTheme(options, settings) {
   const config = Object.assign({}, options)
   config.data = Object.assign({}, options.data, createThemeData(getResolvedTheme(), options.data))
+  const onLoad = options.onLoad
   const onShow = options.onShow
+  config.onLoad = function themedOnLoad(query) {
+    const app = typeof getApp === 'function' ? getApp() : null
+    if (!(settings && settings.skipDisclaimer) && app && app.requireDisclaimer && !app.requireDisclaimer(this.route, query)) {
+      this.__disclaimerBlocked = true
+      return
+    }
+    if (onLoad) return onLoad.apply(this, arguments)
+  }
   config.onShow = function themedOnShow() {
+    if (this.__disclaimerBlocked) {
+      const app = typeof getApp === 'function' ? getApp() : null
+      if (app && app.requireDisclaimer) app.requireDisclaimer(this.route)
+      return
+    }
     const theme = getResolvedTheme()
     syncPage(this, theme)
     applyNativeTheme(theme)

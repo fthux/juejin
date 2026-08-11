@@ -2,14 +2,17 @@
 <view class="page mine-page {{themeName}}">
   <status-bar navigation="{{true}}">
     <view class="mine-header surface">
-      <image class="head-icon" src="/assets/app/user/ic_user_scan.png" mode="aspectFit" bindtap="openScan"></image>
       <view class="mine-head-actions">
-        <image class="head-icon" src="{{themeName === 'dark' ? '/assets/app/user/ic_user_theme.png' : '/assets/app/user/ic_theme_normal.png'}}" mode="aspectFit" bindtap="openTheme"></image>
-        <view class="head-icon notice-button" bindtap="openNotifications">
-          <image class="notice-icon" src="/assets/app/user/ic_user_notice.png" mode="aspectFit"></image>
+        <view class="head-action" bindtap="openTheme">
+          <image class="head-action-icon" src="{{themeName === 'dark' ? '/assets/app/user/ic_user_theme.png' : '/assets/app/user/ic_theme_normal.png'}}" mode="aspectFit"></image>
+        </view>
+        <view class="head-action" bindtap="openNotifications">
+          <image class="head-action-icon" src="/assets/app/user/ic_user_notice.png" mode="aspectFit"></image>
           <text wx:if="{{unread}}" class="head-badge">{{unread}}</text>
         </view>
-        <image class="head-icon" src="/assets/app/user/ic_user_settings.png" mode="aspectFit" bindtap="openSettings"></image>
+        <view class="head-action" bindtap="openSettings">
+          <image class="head-action-icon" src="/assets/app/user/ic_user_settings.png" mode="aspectFit"></image>
+        </view>
       </view>
     </view>
   </status-bar>
@@ -45,7 +48,7 @@
     </view>
   </view>
 
-  <view class="creator-section mine-section">
+  <view class="creator-section mine-section {{activityNotices.length ? 'has-activity' : ''}}">
     <view class="mine-section-head" bindtap="openCreator">
       <view>创作者中心</view>
       <text>进入首页 ›</text>

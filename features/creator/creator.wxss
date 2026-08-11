@@ -188,13 +188,17 @@
 }
 
 .activity-card {
-  margin: 0 24rpx 24rpx;
+  margin: 0 24rpx;
   padding: 18rpx;
   border-radius: 6rpx;
   display: flex;
   align-items: center;
   box-sizing: border-box;
   background: var(--jj-fill-2);
+}
+
+.activity-section {
+  padding-bottom: 24rpx;
 }
 
 .activity-card image {
