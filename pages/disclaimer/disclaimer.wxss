@@ -120,8 +120,9 @@ page {
   margin: 0;
   padding: 0 16px;
   overflow: hidden;
+  border: 0;
   border-radius: 6px;
-  background: #1e80ff;
+  background-color: #1e80ff;
   color: #ffffff;
   font-size: 16px;
   font-weight: 500;
@@ -134,9 +135,15 @@ page {
   border: 0;
 }
 
-.continue-button[disabled] {
-  background: #8dbdff;
+.continue-button-hover {
+  background-color: #0068e8;
+}
+
+.continue-button.is-disabled {
+  visibility: visible;
+  background-color: #8dbdff;
   color: #ffffff;
+  opacity: 1;
 }
 
 @media (prefers-color-scheme: dark) {

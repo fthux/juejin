@@ -34,6 +34,6 @@
 
   <view class="disclaimer-footer">
     <text class="acknowledgement">{{hasReadAll ? '已阅读完整声明，可以继续体验。' : '请阅读至声明末尾。'}}</text>
-    <button class="continue-button" type="primary" disabled="{{!hasReadAll || continuing}}" bindtap="acknowledgeDisclaimer">我已知悉，继续体验</button>
+    <button class="continue-button {{!hasReadAll || continuing ? 'is-disabled' : ''}}" aria-disabled="{{!hasReadAll || continuing}}" hover-class="{{hasReadAll && !continuing ? 'continue-button-hover' : 'none'}}" bindtap="acknowledgeDisclaimer">我已知悉，继续体验</button>
   </view>
 </view>
