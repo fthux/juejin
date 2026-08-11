@@ -3,6 +3,10 @@ const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
+const RECOMMENDED_TOPICS_CACHE_KEY = 'jj:recommended-topics'
+const HEADER_RETRY_LIMIT = 2
+const ICON_RETRY_LIMIT = 2
+
 Page(theme.withTheme({
   data: {
     topTab: 'discover',
@@ -19,8 +23,17 @@ Page(theme.withTheme({
 
   onLoad() {
     this.feedRequestId = 0
+    this.headerRequestId = 0
+    this.headerRetryCount = 0
+    this.topicIconRetryTimers = {}
     this.loadHeaderData()
     this.loadFeed(true)
+  },
+
+  onUnload() {
+    this.headerRequestId += 1
+    if (this.headerRetryTimer) clearTimeout(this.headerRetryTimer)
+    this.clearTopicIconRetryTimers()
   },
 
   onShow() {
@@ -38,6 +51,8 @@ Page(theme.withTheme({
       wx.stopPullDownRefresh()
       return
     }
+    this.headerRetryCount = 0
+    if (this.headerRetryTimer) clearTimeout(this.headerRetryTimer)
     this.loadHeaderData()
     this.loadFeed(true)
   },
@@ -63,17 +78,32 @@ Page(theme.withTheme({
   },
 
   loadHeaderData() {
+    const requestId = ++this.headerRequestId
     Promise.all([api.topics('0', 10), api.selectedPins('0')]).then(([topicResponse, pinResponse]) => {
-      const topics = (topicResponse.result.data || []).slice(0, 10).map((item) => {
+      if (requestId !== this.headerRequestId) return
+      const networkRows = (topicResponse.result.data || []).slice(0, 10)
+      const storedRows = wx.getStorageSync(RECOMMENDED_TOPICS_CACHE_KEY)
+      const cachedRows = Array.isArray(storedRows) ? storedRows.slice(0, 10) : []
+      if (topicResponse.fromCache && !cachedRows.length && this.scheduleHeaderRetry()) return
+
+      const topicRows = topicResponse.fromCache && cachedRows.length ? cachedRows : networkRows
+      if (!topicResponse.fromCache && networkRows.length) {
+        this.headerRetryCount = 0
+        wx.setStorageSync(RECOMMENDED_TOPICS_CACHE_KEY, networkRows)
+      }
+      const topics = topicRows.map((item) => {
         const topic = item.topic || item
         const topicId = String(item.topic_id || topic.topic_id || '')
         const icon = utils.normalizeImageUrl(topic.icon || topic.icon_url || topic.topic_pic || '', 160)
+        const iconUrl = /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : ''
         const msgCount = Number(topic.msg_count || item.msg_count) || 0
         const serverNewCount = Number(item.new_short_msg_count || topic.new_short_msg_count) || 0
         return Object.assign({}, topic, {
           topic_id: topicId,
           title: String(topic.title || '圈子').trim(),
-          iconUrl: /^https?:\/\//.test(icon) || /^\//.test(icon) ? icon : '',
+          iconSource: iconUrl,
+          iconUrl,
+          iconRetryCount: 0,
           iconText: icon && !/^https?:\/\//.test(icon) && !/^\//.test(icon) ? icon : (topic.title || '#').slice(0, 2),
           follower_count: Number(topic.follower_count) || 0,
           msg_count: msgCount,
@@ -82,14 +112,58 @@ Page(theme.withTheme({
       })
       const pinRows = pinResponse.result.data || []
       const selectedPins = pinRows.map(utils.normalizePin).slice(0, 8)
+      this.clearTopicIconRetryTimers()
       this.setData({ topics, selectedPins })
     }).finally(() => wx.stopPullDownRefresh())
+  },
+
+  scheduleHeaderRetry() {
+    if (this.headerRetryCount >= HEADER_RETRY_LIMIT) return false
+    this.headerRetryCount += 1
+    if (this.headerRetryTimer) clearTimeout(this.headerRetryTimer)
+    this.headerRetryTimer = setTimeout(() => this.loadHeaderData(), this.headerRetryCount * 600)
+    return true
+  },
+
+  clearTopicIconRetryTimers() {
+    Object.keys(this.topicIconRetryTimers || {}).forEach((index) => {
+      clearTimeout(this.topicIconRetryTimers[index])
+    })
+    this.topicIconRetryTimers = {}
   },
 
   onTopicIconError(event) {
     const index = Number(event.currentTarget.dataset.index)
     if (!Number.isInteger(index) || !this.data.topics[index]) return
-    this.setData({ [`topics[${index}].iconUrl`]: '' })
+    const topic = this.data.topics[index]
+    const retryCount = Number(topic.iconRetryCount) || 0
+    const iconSource = topic.iconSource || topic.iconUrl
+    if (!iconSource || retryCount >= ICON_RETRY_LIMIT) {
+      this.setData({ [`topics[${index}].iconUrl`]: '' })
+      return
+    }
+
+    this.setData({
+      [`topics[${index}].iconUrl`]: '',
+      [`topics[${index}].iconRetryCount`]: retryCount + 1
+    })
+    if (this.topicIconRetryTimers[index]) clearTimeout(this.topicIconRetryTimers[index])
+    this.topicIconRetryTimers[index] = setTimeout(() => {
+      delete this.topicIconRetryTimers[index]
+      const current = this.data.topics[index]
+      if (!current || current.topic_id !== topic.topic_id || current.iconUrl) return
+      this.setData({ [`topics[${index}].iconUrl`]: iconSource })
+    }, (retryCount + 1) * 500)
+  },
+
+  onTopicIconLoad(event) {
+    const index = Number(event.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.topics[index]) return
+    if (this.topicIconRetryTimers[index]) clearTimeout(this.topicIconRetryTimers[index])
+    delete this.topicIconRetryTimers[index]
+    if (this.data.topics[index].iconRetryCount) {
+      this.setData({ [`topics[${index}].iconRetryCount`]: 0 })
+    }
   },
 
   loadFeed(reload) {

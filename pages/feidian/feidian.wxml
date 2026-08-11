@@ -21,7 +21,7 @@
       </view>
       <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openTopic" aria-role="button" aria-label="打开{{item.title}}圈子">
         <view class="topic-icon">
-          <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onTopicIconError"></image>
+          <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" bindload="onTopicIconLoad" binderror="onTopicIconError"></image>
           <text wx:else>{{item.iconText}}</text>
         </view>
         <view class="topic-name ellipsis">{{item.title}}</view>
