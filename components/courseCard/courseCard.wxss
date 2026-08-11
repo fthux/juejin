@@ -80,7 +80,7 @@
   font-weight: 600;
 }
 
-.price text {
+.price-symbol {
   margin-right: 4rpx;
   font-size: 22rpx;
 }

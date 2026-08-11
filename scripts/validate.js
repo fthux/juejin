@@ -302,6 +302,7 @@ if (/url\(\s*['"]?\/assets\//.test(findStyles)) fail('发现页 WXSS 不得直�
 if (!findTemplate.includes('class="find-top-bg"')) fail('发现页顶部缺少 image 背景')
 if (!findTemplate.includes('referrer-policy="no-referrer"')) fail('发现页远程图片缺少防盗链策略')
 if (!findTemplate.includes('class="find-sticky"') || !findTemplate.includes('transparent="{{true}}"')) fail('发现页搜索栏必须吸顶并使用透明状态栏')
+if (!findTemplate.includes('class="page find-page {{themeName}}"') || !findStyles.includes('.find-page.dark .search-bar') || !findStyles.includes('.find-page.dark .daily-card') || !findStyles.includes('.find-page.dark .recommend-card')) fail('发现页顶部、每日掘金和推荐卡片必须跟随应用主题')
 if (/<swiper[^>]*class="quick-swiper"|<swiper-item><view class="quick-grid"><\/view><\/swiper-item>/.test(findTemplate)) fail('发现页功能入口不得包含空白轮播页')
 if (!findTemplate.includes('class="banner-art"') || !/\.banner-art\s*\{[^}]*width:\s*198rpx;[^}]*height:\s*198rpx/s.test(findStyles)) fail('发现页活动 Banner 必须按正方形比例展示封面')
 if (!findTemplate.includes('class="banner-brief two-lines"') || !/\.banner-brief\s*\{[^}]*max-height:\s*66rpx/s.test(findStyles)) fail('发现页顶部轮播简介必须限制为最多两行')

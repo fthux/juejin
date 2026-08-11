@@ -1,5 +1,5 @@
 <view class="course-card" bindtap="open">
-  <image class="course-cover" src="{{item.cover}}" mode="aspectFill"></image>
+  <image class="course-cover" src="{{coverFailed ? '/assets/app/common/default_booklet_cover_image.png' : (item.cover || '/assets/app/common/default_booklet_cover_image.png')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
   <view class="course-body">
     <view class="course-title two-lines"><text wx:if="{{item.isNew}}" class="new-label">新品</text>{{item.title}}</view>
     <view class="course-author ellipsis">{{item.author}} <text wx:if="{{item.authorLevel}}" class="author-level">LV.{{item.authorLevel}}</text></view>
@@ -7,7 +7,7 @@
     <view class="course-footer">
       <text wx:if="{{item.owned}}" class="owned">已购</text>
       <view wx:else class="price-row">
-        <text class="price"><text>¥</text>{{item.price}}</text>
+        <text class="price"><text class="price-symbol">¥</text>{{item.price}}</text>
         <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
         <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
       </view>

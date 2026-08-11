@@ -115,8 +115,30 @@
 .headline-actions image { width: 28rpx; height: 28rpx; }
 .headline-image { width: 164rpx; height: 128rpx; margin-left: 22rpx; flex: 0 0 auto; border-radius: 3rpx; background: var(--jj-fill); }
 .loading-line, .list-end, .cache-note { padding: 24rpx; color: var(--jj-text-3); font-size: 21rpx; text-align: center; }
-@media (prefers-color-scheme: dark) {
-  .find-sticky, .find-top { background: #111820; }
-  .daily-card, .rank-card-title { background: var(--jj-fill-2); }
-  .tint-0, .tint-1, .tint-2, .tint-3 { background-image: none; }
+.find-page.dark .find-sticky,
+.find-page.dark .find-top { background: #111820; }
+.find-page.dark .search-bar {
+  border: 1rpx solid rgba(255, 255, 255, .04);
+  background: var(--jj-fill);
+  box-shadow: none;
 }
+.find-page.dark .channel-item {
+  border-color: #2c333b;
+  background: #1a2026;
+  box-shadow: none;
+}
+.find-page.dark .daily-card {
+  border-color: #343b44;
+  background: linear-gradient(180deg, rgba(30, 128, 255, .08), rgba(30, 128, 255, .015) 48%, rgba(30, 128, 255, 0)), var(--jj-surface);
+}
+.find-page.dark .horizontal-card { border-color: #36373b; }
+.find-page.dark .outline-action { background: transparent; }
+.find-page.dark .recommend-card { background-color: var(--jj-surface); }
+.find-page.dark .tint-0 { background-image: linear-gradient(115deg, rgba(30, 128, 255, .18), rgba(30, 128, 255, 0) 72%); }
+.find-page.dark .tint-1 { background-image: linear-gradient(115deg, rgba(54, 201, 155, .16), rgba(54, 201, 155, 0) 72%); }
+.find-page.dark .tint-2 { background-image: linear-gradient(115deg, rgba(255, 159, 26, .14), rgba(255, 159, 26, 0) 72%); }
+.find-page.dark .tint-3 { background-image: linear-gradient(115deg, rgba(132, 102, 255, .16), rgba(132, 102, 255, 0) 72%); }
+.find-page.dark .recommend-footer,
+.find-page.dark .topic-preview,
+.find-page.dark .pin-comment-box { background: var(--jj-fill); }
+.find-page.dark .rank-card-title { background: var(--jj-fill-2); }
