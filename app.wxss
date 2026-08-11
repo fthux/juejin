@@ -4,6 +4,11 @@ page {
   --jj-green: #00b578;
   --jj-red: #f53f3f;
   --jj-gold: #ff9f1a;
+  --jj-success-soft: #e8f8f2;
+  --jj-danger-soft: #fff0f0;
+  --jj-warning-soft: #fff7e8;
+  --jj-overlay: rgba(0, 0, 0, 0.48);
+  --jj-disabled-opacity: 0.46;
   --jj-text: #252933;
   --jj-text-2: #515767;
   --jj-text-3: #8a919f;
@@ -13,6 +18,23 @@ page {
   --jj-fill: #f2f3f5;
   --jj-fill-2: #f7f8fa;
   --jj-text-4: #c9cdd4;
+  --jj-font-caption: 24rpx;
+  --jj-font-body: 28rpx;
+  --jj-font-body-lg: 30rpx;
+  --jj-font-title: 32rpx;
+  --jj-line-caption: 1.5;
+  --jj-line-body: 1.6;
+  --jj-space-1: 8rpx;
+  --jj-space-2: 12rpx;
+  --jj-space-3: 16rpx;
+  --jj-space-4: 24rpx;
+  --jj-space-5: 32rpx;
+  --jj-radius-sm: 4rpx;
+  --jj-radius-md: 6rpx;
+  --jj-radius-lg: 8rpx;
+  --jj-touch-target: 88rpx;
+  --jj-tabbar-height: 104rpx;
+  --jj-safe-bottom: env(safe-area-inset-bottom);
   min-height: 100%;
   background: var(--jj-bg);
   color: var(--jj-text);
@@ -34,6 +56,10 @@ page {
     --jj-bg: #111214;
     --jj-fill: #25262a;
     --jj-fill-2: #202125;
+    --jj-success-soft: rgba(0, 181, 120, 0.16);
+    --jj-danger-soft: rgba(245, 63, 63, 0.16);
+    --jj-warning-soft: rgba(255, 159, 26, 0.16);
+    --jj-overlay: rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -136,7 +162,7 @@ image {
 .primary-button,
 .secondary-button,
 .text-button {
-  min-height: 72rpx;
+  min-height: var(--jj-touch-target);
   padding: 0 30rpx;
   border-radius: 6rpx;
   display: inline-flex;
@@ -145,6 +171,23 @@ image {
   box-sizing: border-box;
   font-size: 28rpx;
   line-height: 1;
+}
+
+.interactive-pressed {
+  opacity: 0.7;
+  transform: scale(0.985);
+}
+
+.is-disabled,
+button[disabled] {
+  opacity: var(--jj-disabled-opacity);
+  pointer-events: none;
+}
+
+.is-loading {
+  cursor: wait;
+  opacity: 0.72;
+  pointer-events: none;
 }
 
 .primary-button {
@@ -205,6 +248,7 @@ image {
 }
 
 .safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -230,5 +274,6 @@ image {
   padding: 28rpx;
   color: var(--jj-text-3);
   text-align: center;
-  font-size: 24rpx;
+  font-size: var(--jj-font-caption);
+  line-height: var(--jj-line-caption);
 }

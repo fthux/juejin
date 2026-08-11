@@ -1,10 +1,12 @@
-<view class="article-card {{compact ? 'compact' : ''}} {{home ? 'home-card' : ''}}" bindtap="open">
+<view class="article-card {{compact ? 'compact' : ''}} {{home ? 'home-card' : ''}}" hover-class="card-pressed" hover-stay-time="80" bindtap="open" aria-role="button" aria-label="阅读{{item.title}}">
   <block wx:if="{{home}}">
     <view class="article-main home-main">
       <view class="article-title two-lines">{{item.title}}</view>
       <view class="home-author-row">
-        <image class="home-author-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" catchtap="openAuthor"></image>
-        <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
+        <view class="home-author-action" hover-class="item-pressed" catchtap="openAuthor" aria-role="button" aria-label="查看{{item.author.user_name}}的主页">
+          <image class="home-author-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" aria-hidden="true"></image>
+          <text class="author">{{item.author.user_name}}</text>
+        </view>
       </view>
       <view class="home-summary-row">
         <view wx:if="{{item.brief_content}}" class="article-brief two-lines">{{item.brief_content}}</view>
@@ -14,7 +16,7 @@
         <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text class="stat-label">{{item.digg_label || item.digg_count || '点赞'}}</text></view>
         <view class="stat"><image class="stat-icon" src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text class="stat-label">{{item.comment_label || item.comment_count || '评论'}}</text></view>
         <text wx:if="{{item.tags.length}}" class="home-tag">{{item.tags[0]}}</text>
-        <view class="home-dislike" catchtap="dislike" aria-label="减少类似推荐"><text class="dislike-mark"></text></view>
+        <view class="home-dislike" hover-class="item-pressed" catchtap="dislike" aria-role="button" aria-label="减少类似推荐"><text class="dislike-mark"></text></view>
       </view>
     </view>
   </block>
@@ -22,7 +24,7 @@
     <view class="article-main">
     <view class="article-meta">
       <text wx:if="{{rank}}" class="rank rank-{{rank <= 3 ? rank : 4}}">{{rank}}</text>
-      <text class="author" catchtap="openAuthor">{{item.author.user_name}}</text>
+      <text class="author" hover-class="item-pressed" catchtap="openAuthor" aria-role="button" aria-label="查看{{item.author.user_name}}的主页">{{item.author.user_name}}</text>
       <text wx:if="{{item.ctime}}" class="dot">·</text>
       <text wx:if="{{item.ctime}}">{{item.ctime}}</text>
       <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>

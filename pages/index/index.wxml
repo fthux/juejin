@@ -3,11 +3,13 @@
   <view class="home-sticky">
     <status-bar navigation="{{true}}">
       <view class="home-head surface">
-        <view class="home-search" bindtap="openSearch">
-          <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit"></image>
-          <text>搜索稀土掘金</text>
+        <view class="home-search" hover-class="interactive-pressed" bindtap="openSearch" aria-role="button" aria-label="搜索稀土掘金">
+          <view class="home-search-field">
+            <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" aria-hidden="true"></image>
+            <text>搜索稀土掘金</text>
+          </view>
         </view>
-        <view class="calendar-entry" bindtap="openSign">
+        <view class="calendar-entry" hover-class="interactive-pressed" bindtap="openSign" aria-role="button" aria-label="签到">
           <view class="calendar-icon"><text>✓</text></view>
           <text>签到</text>
         </view>
@@ -17,10 +19,10 @@
     <view class="nav-bar surface">
       <scroll-view class="nav-scroll" scroll-x enable-flex show-scrollbar="{{false}}" scroll-into-view="nav-{{activeNav}}" scroll-with-animation>
         <view class="nav-row">
-          <view wx:for="{{navTabs}}" wx:key="id" id="nav-{{item.id}}" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectNav">{{item.name}}</view>
+          <view wx:for="{{navTabs}}" wx:key="id" id="nav-{{item.id}}" class="nav-item {{activeNav === item.id ? 'active' : ''}}" data-id="{{item.id}}" hover-class="interactive-pressed" bindtap="selectNav" aria-role="tab" aria-label="{{item.name}}">{{item.name}}</view>
         </view>
       </scroll-view>
-      <view class="nav-menu" bindtap="openCategoryMenu" aria-label="全部频道">
+      <view class="nav-menu" hover-class="interactive-pressed" bindtap="openCategoryMenu" aria-role="button" aria-label="全部频道">
         <view class="menu-lines"><text></text><text></text><text></text></view>
       </view>
     </view>
@@ -28,12 +30,12 @@
 
   <scroll-view wx:if="{{activeNav === 'hot'}}" class="filter-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
     <view class="filter-row">
-      <view wx:for="{{hotCategories}}" wx:key="id" class="filter-chip {{hotCategoryId === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectFilter">{{item.name}}</view>
+      <view wx:for="{{hotCategories}}" wx:key="id" class="filter-chip {{hotCategoryId === item.id ? 'active' : ''}} {{loading ? 'is-disabled is-loading' : ''}}" data-id="{{item.id}}" hover-class="interactive-pressed" bindtap="selectFilter" aria-role="button" aria-label="按{{item.name}}筛选" aria-disabled="{{loading}}">{{item.name}}</view>
     </view>
   </scroll-view>
   <scroll-view wx:elif="{{filters.length}}" class="filter-scroll surface" scroll-x enable-flex show-scrollbar="{{false}}">
     <view class="filter-row">
-      <view wx:for="{{filters}}" wx:key="name" class="filter-chip {{activeFilter === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="selectFilter">{{item.name}}</view>
+      <view wx:for="{{filters}}" wx:key="name" class="filter-chip {{activeFilter === item.id ? 'active' : ''}} {{loading ? 'is-disabled is-loading' : ''}}" data-id="{{item.id}}" hover-class="interactive-pressed" bindtap="selectFilter" aria-role="button" aria-label="按{{item.name}}筛选" aria-disabled="{{loading}}">{{item.name}}</view>
     </view>
   </scroll-view>
 
@@ -41,7 +43,7 @@
     <image src="/assets/app/common/business_common_v3_ic_standard_empty.png" mode="aspectFit"></image>
     <view class="following-title">小程序版不提供关注动态同步</view>
     <view class="following-caption">关注内容请在稀土掘金官方 App 或网站登录后查看</view>
-    <button class="primary-button account-button" bindtap="openAccountInfo">查看账号说明</button>
+    <button class="primary-button account-button" hover-class="interactive-pressed" bindtap="openAccountInfo">查看账号说明</button>
   </view>
 
   <block wx:elif="{{activeNav === 'hot'}}">
@@ -49,11 +51,11 @@
       <view class="rank-page-head">
         <view class="rank-page-title">热门文章榜</view>
         <view class="rank-links">
-          <view data-type="collect" bindtap="openRank">收藏榜 <text>›</text></view>
-          <view data-type="author" bindtap="openRank">作者榜 <text>›</text></view>
+          <view data-type="collect" hover-class="interactive-pressed" bindtap="openRank" aria-role="button" aria-label="查看收藏榜">收藏榜 <text>›</text></view>
+          <view data-type="author" hover-class="interactive-pressed" bindtap="openRank" aria-role="button" aria-label="查看作者榜">作者榜 <text>›</text></view>
         </view>
       </view>
-      <view wx:for="{{hotList}}" wx:key="article_id" class="ranking-row" data-id="{{item.article_id}}" bindtap="openArticle">
+      <view wx:for="{{hotList}}" wx:key="article_id" class="ranking-row" data-id="{{item.article_id}}" hover-class="interactive-pressed" bindtap="openArticle" aria-role="button" aria-label="阅读{{item.title}}">
         <view class="ranking-number rank-{{index + 1}}">{{index + 1}}</view>
         <view class="ranking-copy">
           <view class="ranking-title">{{item.title}}</view>
@@ -64,12 +66,12 @@
         </view>
       </view>
     </view>
-    <empty-state wx:if="{{!loading && !hotList.length}}" text="暂时没有热门文章"></empty-state>
+    <empty-state wx:if="{{!loading && !loadError && !hotList.length}}" text="暂时没有热门文章"></empty-state>
   </block>
 
   <block wx:elif="{{activeNav === 'headline'}}">
     <view class="headline-list">
-      <view wx:for="{{headlineList}}" wx:key="content_id" class="headline-row surface" data-index="{{index}}" bindtap="openHeadline">
+      <view wx:for="{{headlineList}}" wx:key="content_id" class="headline-row surface" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openHeadline" aria-role="button" aria-label="阅读{{item.title}}">
         <view class="headline-copy">
           <view class="headline-title two-lines">{{item.title}}</view>
           <view class="headline-meta">
@@ -81,11 +83,11 @@
         <image wx:if="{{item.thumbnail}}" class="headline-image" src="{{item.thumbnail}}" mode="aspectFill"></image>
       </view>
     </view>
-    <empty-state wx:if="{{!loading && !headlineList.length}}" text="暂时没有头条精选"></empty-state>
+    <empty-state wx:if="{{!loading && !loadError && !headlineList.length}}" text="暂时没有头条精选"></empty-state>
   </block>
 
   <block wx:else>
-    <view wx:if="{{activeNav === 'recommend'}}" class="account-card surface" bindtap="openAccountInfo">
+    <view wx:if="{{activeNav === 'recommend'}}" class="account-card surface" hover-class="interactive-pressed" bindtap="openAccountInfo" aria-role="button" aria-label="查看账号功能说明">
       <view>
         <view class="account-card-title">账号功能说明</view>
         <view class="account-card-caption">小程序不接入账号系统，收藏与阅读记录请使用官方平台</view>
@@ -98,7 +100,7 @@
         <swiper-item>
           <view class="hot-page">
             <view class="hot-heading"><view class="hot-title">热榜</view><view class="hot-type">文章</view></view>
-            <view wx:for="{{hotRankArticles}}" wx:key="article_id" class="hot-row" data-id="{{item.article_id}}" bindtap="openArticle">
+            <view wx:for="{{hotRankArticles}}" wx:key="article_id" class="hot-row" data-id="{{item.article_id}}" hover-class="interactive-pressed" bindtap="openArticle" aria-role="button" aria-label="阅读{{item.title}}">
               <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
               <view class="hot-name ellipsis">{{item.title}}</view>
               <view class="hot-value">{{item.hot_rank}} 热度</view>
@@ -108,7 +110,7 @@
         <swiper-item>
           <view class="hot-page">
             <view class="hot-heading"><view class="hot-title">热榜</view><view class="hot-type">作者</view></view>
-            <view wx:for="{{hotRankAuthors}}" wx:key="user_id" class="hot-author-row" data-id="{{item.user_id}}" bindtap="openAuthor">
+            <view wx:for="{{hotRankAuthors}}" wx:key="user_id" class="hot-author-row" data-id="{{item.user_id}}" hover-class="interactive-pressed" bindtap="openAuthor" aria-role="button" aria-label="查看{{item.user_name}}的主页">
               <view class="hot-rank rank-{{index + 1}}">{{index + 1}}</view>
               <image src="{{item.avatar_large}}" mode="aspectFill"></image>
               <view class="hot-name ellipsis">{{item.user_name}}</view>
@@ -123,10 +125,13 @@
     <view class="article-list">
       <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" compact="{{true}}" home="{{true}}" bind:open="openArticle" bind:author="openAuthor" bind:dislike="dislikeArticle"></article-card>
     </view>
-    <empty-state wx:if="{{!loading && !list.length}}" text="暂时没有找到文章"></empty-state>
+    <empty-state wx:if="{{!loading && !loadError && !list.length}}" text="暂时没有找到文章"></empty-state>
   </block>
 
-  <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
-  <view wx:elif="{{activeNav !== 'following' && activeNav !== 'hot' && ((activeNav === 'headline' && headlineList.length) || (activeNav !== 'headline' && list.length)) && !hasMore}}" class="loading-line">没有更多了</view>
-  <view wx:if="{{fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
+  <empty-state wx:if="{{loading && !hotList.length && !headlineList.length && !list.length}}" type="loading" text="正在加载内容" skeleton-rows="{{4}}"></empty-state>
+  <empty-state wx:elif="{{loadError && !hotList.length && !headlineList.length && !list.length}}" type="error" text="内容加载失败" description="请检查网络后重试" action-text="重新加载" bind:action="retryLoad"></empty-state>
+  <empty-state wx:elif="{{loading}}" type="loading" compact="{{true}}" text="正在加载更多内容" skeleton-rows="{{1}}"></empty-state>
+  <empty-state wx:elif="{{!fromCache && activeNav !== 'following' && activeNav !== 'hot' && ((activeNav === 'headline' && headlineList.length) || (activeNav !== 'headline' && list.length)) && !hasMore}}" type="end" compact="{{true}}" text="已加载全部内容"></empty-state>
+  <empty-state wx:if="{{loadError && (hotList.length || headlineList.length || list.length) && !loading}}" type="error" compact="{{true}}" text="部分内容加载失败" action-text="重试" bind:action="retryLoad"></empty-state>
+  <empty-state wx:elif="{{fromCache && !loading}}" type="cached" compact="{{true}}" text="当前展示本地缓存内容" action-text="刷新" bind:action="retryLoad"></empty-state>
 </view>

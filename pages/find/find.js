@@ -36,6 +36,8 @@ Page(theme.withTheme({
     rankLoading: false,
     loading: true,
     loadError: false,
+    initialLoaded: false,
+    fromCache: false,
     darkMode: false,
     channelEntries: [
       { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', darkIcon: '/assets/app/find/dark/find_page_ic_interview_kit.svg', url: '/features/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
@@ -71,7 +73,7 @@ Page(theme.withTheme({
 
   loadAll() {
     const firstCategory = this.data.rankCategories[0] || { id: '' }
-    this.setData({ loading: true, loadError: false, headlineCursor: '', headlineHasMore: true })
+    this.setData({ loading: true, loadError: false, fromCache: false, headlineCursor: '', headlineHasMore: true })
     Promise.all([
       api.daily(),
       api.selectedPins('0'),
@@ -107,10 +109,12 @@ Page(theme.withTheme({
         headlineCursor: String(responses[8].result.cursor || ''),
         headlineHasMore: Boolean(responses[8].result.has_more),
         loading: false,
-        loadError: responses.some((response) => response.fromCache)
+        loadError: false,
+        initialLoaded: true,
+        fromCache: responses.some((response) => response.fromCache)
       })
       this.loadTopicPreviews()
-    }).catch(() => this.setData({ loading: false, loadError: true })).finally(() => {
+    }).catch(() => this.setData({ loading: false, loadError: true, fromCache: false })).finally(() => {
       wx.stopPullDownRefresh()
     })
   },
@@ -143,12 +147,14 @@ Page(theme.withTheme({
         headlineCursor: String(result.cursor || this.data.headlineCursor),
         headlineHasMore: Boolean(result.has_more) && additions.length > 0,
         headlineLoading: false,
-        loadError: this.data.loadError || Boolean(fromCache)
+        fromCache: this.data.fromCache || Boolean(fromCache)
       })
     }).catch(() => this.setData({ headlineLoading: false, headlineHasMore: false }))
   },
 
   openSearch() { wx.navigateTo({ url: '/features/search/search' }) },
+
+  retryLoad() { this.loadAll() },
 
   openFeature(event) {
     const item = event.currentTarget.dataset
@@ -253,6 +259,7 @@ Page(theme.withTheme({
   },
 
   selectRankCategory(event) {
+    if (this.data.rankLoading) return
     const index = Number(event.currentTarget.dataset.index)
     if (!Number.isInteger(index) || !this.data.rankCategories[index]) return
     this.setData({ activeRankIndex: index, activeRankCategory: this.data.rankCategories[index].id })

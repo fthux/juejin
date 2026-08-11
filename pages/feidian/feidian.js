@@ -13,7 +13,8 @@ Page(theme.withTheme({
     cursor: '0',
     loading: false,
     hasMore: true,
-    fromCache: false
+    fromCache: false,
+    loadError: false
   },
 
   onLoad() {
@@ -54,6 +55,7 @@ Page(theme.withTheme({
   },
 
   selectSort(event) {
+    if (this.data.loading) return
     const sort = event.currentTarget.dataset.id
     if (sort === this.data.sort) return
     this.setData({ sort })
@@ -94,7 +96,7 @@ Page(theme.withTheme({
     if (this.data.loading && !reload) return
     const cursor = reload ? '0' : this.data.cursor
     const requestId = ++this.feedRequestId
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false })
     api.pins(cursor, { sort: this.data.sort }).then(({ result, fromCache }) => {
       if (requestId !== this.feedRequestId) return
       const rows = (result.data || []).map(utils.normalizePin).filter((item) => item.msg_id)
@@ -103,8 +105,11 @@ Page(theme.withTheme({
         cursor: result.cursor || '0',
         hasMore: Boolean(result.has_more) && rows.length > 0,
         fromCache: Boolean(fromCache),
+        loadError: false,
         loading: false
       })
+    }).catch(() => {
+      if (requestId === this.feedRequestId) this.setData({ loadError: true })
     }).finally(() => {
       if (requestId === this.feedRequestId) this.setData({ loading: false })
       wx.stopPullDownRefresh()
@@ -135,6 +140,15 @@ Page(theme.withTheme({
 
   openTopicSquare() {
     wx.navigateTo({ url: '/features/topic/topic' })
+  },
+
+  openSelectedPins() {
+    wx.navigateTo({ url: '/features/selectedPins/selectedPins' })
+  },
+
+  retryLoad() {
+    this.loadHeaderData()
+    this.loadFeed(true)
   },
 
   requireAccount() {

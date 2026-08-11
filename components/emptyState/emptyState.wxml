@@ -1,4 +1,21 @@
-<view class="empty-view">
-  <image class="empty-image" src="{{type === 'network' ? '/assets/app/common/business_common_v3_ic_standard_net_error.png' : '/assets/app/common/business_common_v3_ic_standard_empty.png'}}" mode="aspectFit"></image>
-  <text>{{text}}</text>
+<view wx:if="{{type === 'loading'}}" class="state-skeleton {{compact ? 'compact' : ''}}" aria-label="{{text || '正在加载'}}">
+  <view wx:for="{{skeletonRows}}" wx:key="index" class="skeleton-card">
+    <view class="skeleton-head"><view class="skeleton-avatar"></view><view class="skeleton-heading"><view></view><view></view></view></view>
+    <view class="skeleton-line skeleton-line-wide"></view>
+    <view class="skeleton-line"></view>
+    <view class="skeleton-line skeleton-line-short"></view>
+  </view>
+</view>
+
+<view wx:elif="{{type === 'cached' || type === 'end'}}" class="state-notice state-{{type}} {{compact ? 'compact' : ''}}" aria-label="{{text}}">
+  <view class="state-dot" aria-hidden="true"></view>
+  <text>{{text || (type === 'cached' ? '当前展示缓存内容' : '已加载全部内容')}}</text>
+  <button wx:if="{{actionText}}" class="state-inline-action {{actionLoading ? 'is-loading' : ''}}" disabled="{{actionDisabled || actionLoading}}" loading="{{actionLoading}}" hover-class="state-button-pressed" bindtap="action" aria-label="{{actionText}}">{{actionLoading ? '处理中' : actionText}}</button>
+</view>
+
+<view wx:else class="empty-view state-{{type}} {{compact ? 'compact' : ''}}" aria-label="{{text || (type === 'error' || type === 'network' ? '加载失败' : '暂无内容')}}">
+  <image class="empty-image" src="{{type === 'error' || type === 'network' ? '/assets/app/common/business_common_v3_ic_standard_net_error.png' : '/assets/app/common/business_common_v3_ic_standard_empty.png'}}" mode="aspectFit" aria-hidden="true"></image>
+  <view class="state-title">{{text || (type === 'error' || type === 'network' ? '加载失败' : '暂无内容')}}</view>
+  <view wx:if="{{description}}" class="state-description">{{description}}</view>
+  <button wx:if="{{actionText}}" class="state-action {{actionLoading ? 'is-loading' : ''}}" disabled="{{actionDisabled || actionLoading}}" loading="{{actionLoading}}" hover-class="state-button-pressed" bindtap="action" aria-label="{{actionText}}">{{actionLoading ? '处理中' : actionText}}</button>
 </view>

@@ -97,58 +97,6 @@
         "type": "folder"
       },
       {
-        "value": "pages/dynamic",
-        "type": "folder"
-      },
-      {
-        "value": "pages/entry",
-        "type": "folder"
-      },
-      {
-        "value": "pages/favorate",
-        "type": "folder"
-      },
-      {
-        "value": "pages/infoCenter",
-        "type": "folder"
-      },
-      {
-        "value": "pages/manageTag",
-        "type": "folder"
-      },
-      {
-        "value": "pages/miniqrcode",
-        "type": "folder"
-      },
-      {
-        "value": "pages/myPins",
-        "type": "folder"
-      },
-      {
-        "value": "pages/originalPost",
-        "type": "folder"
-      },
-      {
-        "value": "pages/probation",
-        "type": "folder"
-      },
-      {
-        "value": "pages/purchasedXiaoce",
-        "type": "folder"
-      },
-      {
-        "value": "pages/sharePost",
-        "type": "folder"
-      },
-      {
-        "value": "pages/subscribedTag",
-        "type": "folder"
-      },
-      {
-        "value": "pages/xiaocedetail",
-        "type": "folder"
-      },
-      {
         "value": "scripts",
         "type": "folder"
       },

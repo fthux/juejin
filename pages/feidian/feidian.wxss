@@ -71,7 +71,7 @@
 .joined-topics {
   padding-right: 24rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .topic-scroll,
@@ -130,7 +130,7 @@
   width: 100%;
   margin-top: 10rpx;
   color: var(--jj-text-2);
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
   text-align: center;
 }
 
@@ -152,7 +152,7 @@
 }
 
 .sort-row {
-  height: 82rpx;
+  height: var(--jj-touch-target);
   padding: 0 28rpx;
   display: flex;
   align-items: center;
@@ -162,7 +162,7 @@
 
 .sort-label {
   color: var(--jj-text-3);
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .sort-switch {
@@ -173,13 +173,13 @@
 }
 
 .sort-switch view {
-  height: 46rpx;
+  height: 64rpx;
   padding: 0 18rpx;
   display: flex;
   align-items: center;
   border-radius: 25rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .sort-switch view.active {
@@ -202,12 +202,12 @@
 .selected-more {
   padding-right: 24rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .selected-pin {
   width: 310rpx;
-  height: 104rpx;
+  height: 128rpx;
   margin-left: 18rpx;
   padding: 16rpx;
   display: inline-flex;
@@ -225,7 +225,7 @@
 
 .selected-pin-title {
   color: var(--jj-blue);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .selected-pin-title text {
@@ -240,12 +240,12 @@
 .selected-actions {
   margin-top: 12rpx;
   color: var(--jj-text-3);
-  font-size: 18rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .cache-note {
   color: var(--jj-text-3);
-  font-size: 20rpx;
+  font-size: var(--jj-font-caption);
   text-align: center;
 }
 
@@ -273,7 +273,7 @@
 
 .following-button {
   width: 220rpx;
-  height: 68rpx;
+  height: var(--jj-touch-target);
   margin-top: 36rpx;
   display: flex;
   align-items: center;

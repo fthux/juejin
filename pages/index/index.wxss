@@ -22,41 +22,48 @@
 
 .home-search {
   min-width: 0;
+  height: var(--jj-touch-target);
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.home-search-field {
+  width: 100%;
   height: 66rpx;
   padding: 0 18rpx;
-  flex: 1;
   display: flex;
   align-items: center;
   border-radius: 6rpx;
   box-sizing: border-box;
   color: var(--jj-text-3);
   background: var(--jj-fill);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
-.home-search image {
+.home-search-field image {
   width: 30rpx;
   height: 30rpx;
   margin-right: 12rpx;
   flex: 0 0 auto;
 }
 
-.home-search text {
+.home-search-field text {
   height: 30rpx;
   display: block;
   line-height: 30rpx;
 }
 
 .calendar-entry {
-  width: 68rpx;
-  height: 70rpx;
+  width: var(--jj-touch-target);
+  height: var(--jj-touch-target);
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--jj-blue);
-  font-size: 17rpx;
+  font-size: var(--jj-font-caption);
   line-height: 1;
 }
 
@@ -90,7 +97,7 @@
 
 .nav-bar {
   width: 100%;
-  height: 78rpx;
+  height: var(--jj-touch-target);
   display: flex;
   border-bottom: 1rpx solid var(--jj-line);
   box-sizing: border-box;
@@ -98,13 +105,13 @@
 
 .nav-scroll {
   min-width: 0;
-  height: 78rpx;
+  height: var(--jj-touch-target);
   flex: 1;
   white-space: nowrap;
 }
 
 .nav-row {
-  height: 78rpx;
+  height: var(--jj-touch-target);
   padding-left: 10rpx;
   display: inline-flex;
   align-items: stretch;
@@ -112,7 +119,7 @@
 
 .nav-item {
   position: relative;
-  height: 78rpx;
+  height: var(--jj-touch-target);
   min-width: 86rpx;
   padding: 0 17rpx;
   display: flex;
@@ -141,8 +148,8 @@
 }
 
 .nav-menu {
-  width: 78rpx;
-  height: 78rpx;
+  width: var(--jj-touch-target);
+  height: var(--jj-touch-target);
   flex: 0 0 auto;
   display: flex;
   align-items: center;
@@ -183,7 +190,7 @@
 }
 
 .filter-chip {
-  height: 48rpx;
+  height: 64rpx;
   padding: 0 22rpx;
   display: flex;
   align-items: center;
@@ -191,7 +198,7 @@
   border-radius: 24rpx;
   color: var(--jj-text-3);
   background: var(--jj-fill);
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .filter-chip.active {
@@ -225,7 +232,7 @@
   max-width: 540rpx;
   margin-top: 14rpx;
   color: var(--jj-text-3);
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
   line-height: 1.6;
 }
 
@@ -254,7 +261,7 @@
 .account-card-caption {
   margin-top: 8rpx;
   color: var(--jj-text-3);
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
   line-height: 1.4;
 }
 
@@ -320,7 +327,7 @@
 .hot-name {
   min-width: 0;
   flex: 1;
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .hot-author-row image {
@@ -335,7 +342,7 @@
   margin-left: 16rpx;
   flex: 0 0 auto;
   color: var(--jj-text-3);
-  font-size: 19rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .hot-dots {
@@ -379,14 +386,14 @@
 }
 
 .rank-links view {
-  height: 52rpx;
+  height: 64rpx;
   padding: 0 16rpx;
   display: flex;
   align-items: center;
   border-radius: 6rpx;
   color: var(--jj-blue);
   background: var(--jj-blue-soft);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .rank-links text {
@@ -441,7 +448,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--jj-text-3);
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .ranking-heat {
@@ -478,7 +485,7 @@
 .headline-meta {
   margin-top: 22rpx;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .headline-image {
@@ -492,6 +499,6 @@
 .cache-note {
   padding: 20rpx;
   color: var(--jj-text-3);
-  font-size: 20rpx;
+  font-size: var(--jj-font-caption);
   text-align: center;
 }

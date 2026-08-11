@@ -4,6 +4,16 @@
   border-bottom: 16rpx solid var(--jj-bg);
 }
 
+.card-pressed {
+  opacity: 0.72;
+  background: var(--jj-fill-2);
+}
+
+.item-pressed,
+.action-pressed {
+  opacity: 0.58;
+}
+
 .pin-card.without-actions {
   padding-bottom: 38rpx;
 }
@@ -13,9 +23,20 @@
   align-items: center;
 }
 
+.avatar-action {
+  width: var(--jj-touch-target);
+  height: var(--jj-touch-target);
+  margin: -8rpx 0;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .avatar {
   width: 72rpx;
   height: 72rpx;
+  flex: 0 0 auto;
   border-radius: 50%;
   background: var(--jj-fill);
 }
@@ -38,7 +59,7 @@
   display: flex;
   align-items: center;
   color: var(--jj-text-3);
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .caption-role {
@@ -50,21 +71,31 @@
   white-space: nowrap;
 }
 
+.more-action {
+  width: var(--jj-touch-target);
+  height: var(--jj-touch-target);
+  margin: -8rpx -28rpx -8rpx 0;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .more {
-  width: 23rpx;
-  height: 23rpx;
-  padding: 8rpx;
+  width: 32rpx;
+  height: 32rpx;
 }
 
 .card-follow {
-  height: 50rpx;
-  padding: 0 18rpx;
+  min-width: 112rpx;
+  height: 64rpx;
+  padding: 0 20rpx;
   display: flex;
   align-items: center;
   border: 1rpx solid var(--jj-blue);
   border-radius: 4rpx;
   color: var(--jj-blue);
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .card-follow.followed {
@@ -91,9 +122,14 @@
   gap: 8rpx;
 }
 
+.pin-picture-action,
 .pin-picture {
   width: 100%;
   height: 210rpx;
+}
+
+.pin-picture-action {
+  overflow: hidden;
   border-radius: 4rpx;
   background: var(--jj-fill);
 }
@@ -127,19 +163,23 @@
 
 .link-title {
   color: var(--jj-text-2);
-  font-size: 23rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .link-host {
   margin-top: 8rpx;
   color: var(--jj-text-3);
-  font-size: 20rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .topic {
   width: fit-content;
+  min-height: 64rpx;
   margin-top: 18rpx;
-  padding: 6rpx 12rpx;
+  padding: 0 14rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
   border-radius: 20rpx;
   color: #1e80ff;
   background: var(--jj-blue-soft);
@@ -167,7 +207,7 @@
 
 .hot-comment-digg {
   color: var(--jj-text-3);
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .hot-comment-content {
@@ -184,7 +224,7 @@
   align-items: center;
   justify-content: flex-end;
   color: var(--jj-text-3);
-  font-size: 22rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .pin-digg-avatars {
@@ -269,16 +309,16 @@
 }
 
 .compact .caption {
-  font-size: 21rpx;
+  font-size: var(--jj-font-caption);
 }
 
 .compact .pin-content {
   margin: 16rpx 0;
-  font-size: 27rpx;
+  font-size: var(--jj-font-body);
   line-height: 1.58;
 }
 
 .compact .pin-actions,
 .compact .pin-action {
-  height: 72rpx;
+  height: var(--jj-touch-target);
 }

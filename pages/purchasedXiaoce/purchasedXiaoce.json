@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "已购小册",
-  "usingComponents": {
-    "xiaoceItem": "/components/xiaoceItem/xiaoceItem",
-    "empty": "/components/empty/empty"
-  }
-}

@@ -312,6 +312,14 @@ const rankRulesSource = read('features/rankRules/rankRules.js')
 const rankRulesTemplate = read('features/rankRules/rankRules.wxml')
 const rankRulesConfig = JSON.parse(read('features/rankRules/rankRules.json'))
 const utilsSource = read('utils/utils.js')
+const appStyles = read('app.wxss')
+const emptyStateSource = read('components/emptyState/emptyState.js')
+const emptyStateTemplate = read('components/emptyState/emptyState.wxml')
+const emptyStateStyles = read('components/emptyState/emptyState.wxss')
+const indexSource = read('pages/index/index.js')
+const indexTemplate = read('pages/index/index.wxml')
+const feidianSource = read('pages/feidian/feidian.js')
+const feidianTemplate = read('pages/feidian/feidian.wxml')
 if (!/commentSort:\s*['"]hot['"]/.test(pinDetailSource)) fail('沸点评论列表默认排序必须为最热')
 if (!pinDetailTemplate.includes('loadCommentReplies')) fail('沸点评论列表缺少回复加载入口')
 if (!pinDetailTemplate.includes('ic_pins_hot_comment.png')) fail('沸点热评缺少 App 热评图标')
@@ -319,8 +327,8 @@ if (pinDetailConfig.navigationStyle === 'custom') fail('沸点详情必须使用
 if (!pinCardTemplate.includes('ic_pins_share.png') || !pinCardTemplate.includes('ic_pins_comment.png')) fail('沸点卡片必须使用 App 的分享和评论图标')
 if (!pinCardTemplate.includes('class="publish-time"')) fail('沸点卡片缺少发布时间')
 if (!pinCardTemplate.includes('catchtap="openTheme"')) fail('沸点正文活动标签缺少独立点击处理')
-if (!pinCardTemplate.includes('data-index="{{index}}" catchtap="openTheme"')) fail('沸点活动标签必须通过片段索引保留长整型 ID 精度')
-if (!pinCardTemplate.includes('class="topic" catchtap="openTopic"')) fail('沸点底部圈子标签缺少独立点击处理')
+if (!/<text\b(?=[^>]*\bclass="pin-theme-link")(?=[^>]*\bdata-index="\{\{index\}\}")(?=[^>]*\bcatchtap="openTheme")[^>]*>/.test(pinCardTemplate)) fail('沸点活动标签必须通过片段索引保留长整型 ID 精度')
+if (!/<view\b(?=[^>]*\bclass="topic")(?=[^>]*\bcatchtap="openTopic")[^>]*>/.test(pinCardTemplate)) fail('沸点底部圈子标签缺少独立点击处理')
 if (!findTemplate.includes('catchtap="openSelectedTheme"')) fail('发现页精选沸点活动标签缺少独立点击处理')
 if (/url\(\s*['"]?\/assets\//.test(findStyles)) fail('发现页 WXSS 不得直接引用本地图片')
 if (!findTemplate.includes('class="find-top-bg"')) fail('发现页顶部缺少 image 背景')
@@ -329,7 +337,7 @@ if (!findTemplate.includes('class="find-sticky"') || !findTemplate.includes('tra
 if (!findTemplate.includes('class="page find-page {{themeName}}"') || !findStyles.includes('.find-page.dark .search-bar') || !findStyles.includes('.find-page.dark .daily-card') || !findStyles.includes('.find-page.dark .recommend-card')) fail('发现页顶部、每日掘金和推荐卡片必须跟随应用主题')
 if (/<swiper[^>]*class="quick-swiper"|<swiper-item><view class="quick-grid"><\/view><\/swiper-item>/.test(findTemplate)) fail('发现页功能入口不得包含空白轮播页')
 if (!findTemplate.includes('class="banner-art"') || !/\.banner-art\s*\{[^}]*width:\s*198rpx;[^}]*height:\s*198rpx/s.test(findStyles)) fail('发现页活动 Banner 必须按正方形比例展示封面')
-if (!findTemplate.includes('class="banner-brief two-lines"') || !/\.banner-brief\s*\{[^}]*max-height:\s*66rpx/s.test(findStyles)) fail('发现页顶部轮播简介必须限制为最多两行')
+if (!findTemplate.includes('class="banner-brief two-lines"') || !/\.banner-brief\s*\{[^}]*max-height:\s*72rpx/s.test(findStyles)) fail('发现页顶部轮播简介必须限制为最多两行')
 if (!pageSet.has('features/daily/daily') || !findSource.includes("'/features/daily/daily'")) fail('每日掘金往日精彩缺少独立页面')
 if (!pageSet.has('features/selectedPins/selectedPins') || !findSource.includes("'/features/selectedPins/selectedPins'")) fail('精选沸点缺少独立页面')
 if (!findTemplate.includes('class="selected-content two-lines"') || !findTemplate.includes('等人赞过') || !findTemplate.includes('class="pin-comment-box"')) fail('发现页精选沸点卡片缺少两行摘要、点赞人或评论框')
@@ -340,7 +348,7 @@ if (!findTemplate.includes('item.digg_label') || !findTemplate.includes('find_pa
 if (!findTemplate.includes('掘友{{item.follower_count}} · 沸点{{item.msg_count}}')) fail('推荐圈子不得在 K+ 格式后重复追加加号')
 if (!/\.horizontal-card\s*\{[^}]*flex:\s*0\s+0\s+650rpx/s.test(findStyles)) fail('发现页横向卡片必须禁止 flex 收缩')
 if (!/\.topic-card\s*\{[^}]*width:\s*674rpx;[^}]*height:\s*292rpx;[^}]*padding:\s*30rpx;[^}]*flex-basis:\s*674rpx/s.test(findStyles) || !/\.topic-head\s*\{[^}]*height:\s*72rpx;[^}]*flex:\s*0\s+0\s+auto/s.test(findStyles) || !/\.topic-preview\s*\{[^}]*height:\s*134rpx;[^}]*overflow:\s*hidden/s.test(findStyles)) fail('推荐圈子卡片必须匹配 APP 的固定宽度、头部和两行预览区域')
-if (!/\.topic-preview-row\s*\{[^}]*height:\s*57rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.topic-preview-row text\s*\{[^}]*height:\s*34rpx;[^}]*white-space:\s*nowrap/s.test(findStyles)) fail('推荐圈子沸点预览必须保持两行头像文本对齐')
+if (!/\.topic-preview-row\s*\{[^}]*height:\s*57rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.topic-preview-row text\s*\{[^}]*height:\s*36rpx;[^}]*white-space:\s*nowrap/s.test(findStyles)) fail('推荐圈子沸点预览必须保持两行头像文本对齐')
 if (!/function normalizeCollectionSet[\s\S]*?articles:\s*\(item\.articles \|\| item\.article_list \|\| \[\]\)\.slice\(0, 3\)\.map\(normalizeArticle\)/.test(utilsSource)) fail('推荐收藏集卡片预览必须限制为三篇文章')
 if (!/\.recommend-head\s*\{[^}]*height:\s*118rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.recommend-preview\s*\{[^}]*height:\s*282rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.preview-row\s*\{[^}]*height:\s*94rpx;[^}]*overflow:\s*hidden/s.test(findStyles)) fail('推荐专栏、收藏集和作者榜卡片必须使用稳定的三行预览布局')
 if (!/moduleType:\s*this\.data\.sort === ['"]latest['"] \? 0 : 1/.test(collectionSquareSource)) fail('收藏集最新和最热必须使用服务端排序模块')
@@ -367,5 +375,19 @@ if ((rankRulesSource.match(/rank_rules_\d{2}\.png/g) || []).length !== 6 || !ran
 if (!/\.pin-content\s*\{[^}]*white-space:\s*pre-wrap/s.test(pinCardStyles)) fail('沸点正文必须保留接口换行')
 if (!pinCardSource.includes("wx.setStorageSync('jj:user-current', author)")) fail('沸点头像跳转前必须缓存当前作者资料')
 if (profileSource.includes('|| mock.authors[0]')) fail('用户主页不得回退到固定的官方账号')
+
+const legacyPages = ['dynamic', 'entry', 'favorate', 'infoCenter', 'manageTag', 'miniqrcode', 'myPins', 'originalPost', 'probation', 'purchasedXiaoce', 'sharePost', 'subscribedTag', 'xiaocedetail']
+for (const page of legacyPages) {
+  if (collectFiles(`pages/${page}`).length) fail(`未注册旧页面仍保留文件: pages/${page}`)
+}
+
+if (!['--jj-font-caption: 24rpx', '--jj-font-body: 28rpx', '--jj-touch-target: 88rpx', '--jj-safe-bottom: env(safe-area-inset-bottom)'].every((token) => appStyles.includes(token))) fail('全局视觉规范缺少字号、触控高度或安全区令牌')
+if (!emptyStateSource.includes("value: 'empty'") || !['loading', 'error', 'cached', 'end'].every((type) => emptyStateTemplate.includes(`type === '${type}'`))) fail('统一页面状态必须覆盖 loading、empty、error、cached 和 end')
+if (!emptyStateTemplate.includes('actionLoading') || !emptyStateTemplate.includes('actionDisabled') || !emptyStateStyles.includes('.state-skeleton')) fail('统一页面状态缺少操作反馈或骨架屏')
+for (const [name, template, source] of [['首页', indexTemplate, indexSource], ['发现页', findTemplate, findSource], ['沸点页', feidianTemplate, feidianSource]]) {
+  if (!template.includes('type="loading"') || !template.includes('skeleton-rows=')) fail(`${name}缺少骨架屏`)
+  if (!template.includes('type="error"') || !template.includes('bind:action="retryLoad"') || !source.includes('retryLoad()')) fail(`${name}缺少错误重试状态`)
+}
+if (!appStyles.includes('.interactive-pressed') || !appStyles.includes('.is-disabled') || !appStyles.includes('.is-loading')) fail('全局交互反馈缺少按压、禁用或加载状态')
 
 console.log(`Validated ${allPages.length} pages, ${componentRoots.length} components, main package ${Math.ceil(mainPackageBytes / 1024)}KB, feature package ${Math.ceil(featurePackageBytes / 1024)}KB, navigation, dependencies, local assets and API boundaries.`)

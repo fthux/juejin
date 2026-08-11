@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "分享的文章",
-  "usingComponents": {
-    "postItemTwo": "/components/postItemTwo/postItemTwo",
-    "empty": "/components/empty/empty"
-  }
-}

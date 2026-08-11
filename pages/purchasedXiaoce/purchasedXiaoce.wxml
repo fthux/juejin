@@ -1,4 +1,0 @@
-<empty wx:if='{{!list.length}}' img='/img/placeholder_no_xiaoce.png' tip='暂无已购小册'></empty>
-<view class='lists' wx:if='{{list.length}}'>
-  <xiaoceItem list='{{xiaoceList}}'></xiaoceItem>
-</view>

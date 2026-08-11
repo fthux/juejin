@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "原创文章",
-  "usingComponents": {
-    "postItemTwo": "/components/postItemTwo/postItemTwo"
-  }
-}

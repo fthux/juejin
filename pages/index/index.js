@@ -24,7 +24,8 @@ Page(theme.withTheme({
     cursor: '0',
     loading: false,
     hasMore: true,
-    fromCache: false
+    fromCache: false,
+    loadError: false
   },
 
   onLoad() {
@@ -68,22 +69,24 @@ Page(theme.withTheme({
       cursor: '0',
       hasMore: id !== 'following' && id !== 'hot',
       loading: false,
-      fromCache: false
+      fromCache: false,
+      loadError: false
     })
     if (id === 'recommend') this.loadRecommendationRanks()
     this.loadCurrent(true)
   },
 
   selectFilter(event) {
+    if (this.data.loading) return
     const id = event.currentTarget.dataset.id || ''
     if (this.data.activeNav === 'hot') {
       if (id === this.data.hotCategoryId) return
-      this.setData({ hotCategoryId: id, hotList: [] })
+      this.setData({ hotCategoryId: id, hotList: [], loadError: false })
       this.loadHotRanking()
       return
     }
     if (id === this.data.activeFilter) return
-    this.setData({ activeFilter: id, list: [], cursor: '0', hasMore: true })
+    this.setData({ activeFilter: id, list: [], cursor: '0', hasMore: true, loadError: false })
     this.loadArticleFeed(true)
   },
 
@@ -123,14 +126,17 @@ Page(theme.withTheme({
     if (this.data.loading) return
     const categoryId = this.data.hotCategoryId
     const requestId = ++this.feedRequestId
-    this.setData({ loading: true, hasMore: false })
+    this.setData({ loading: true, hasMore: false, loadError: false })
     api.hotArticles({ categoryId, count: 40 }).then(({ result, fromCache }) => {
       if (requestId !== this.feedRequestId || this.data.activeNav !== 'hot') return
       this.setData({
         hotList: (result.data || []).map(utils.normalizeHotRank),
         fromCache: Boolean(fromCache),
+        loadError: false,
         loading: false
       })
+    }).catch(() => {
+      if (requestId === this.feedRequestId) this.setData({ loadError: true })
     }).finally(() => {
       if (requestId === this.feedRequestId) this.setData({ loading: false })
       wx.stopPullDownRefresh()
@@ -141,7 +147,7 @@ Page(theme.withTheme({
     if (this.data.loading) return
     const cursor = reload ? '' : this.data.cursor
     const requestId = ++this.feedRequestId
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false })
     api.headlineFeed(cursor).then(({ result, fromCache }) => {
       if (requestId !== this.feedRequestId || this.data.activeNav !== 'headline') return
       const rows = (result.data || []).map(utils.normalizeHeadline)
@@ -150,8 +156,11 @@ Page(theme.withTheme({
         cursor: result.cursor || '',
         hasMore: Boolean(result.has_more) && rows.length > 0,
         fromCache: Boolean(fromCache),
+        loadError: false,
         loading: false
       })
+    }).catch(() => {
+      if (requestId === this.feedRequestId) this.setData({ loadError: true })
     }).finally(() => {
       if (requestId === this.feedRequestId) this.setData({ loading: false })
       wx.stopPullDownRefresh()
@@ -165,7 +174,7 @@ Page(theme.withTheme({
     if (!channel || activeNav === 'following' || activeNav === 'hot' || activeNav === 'headline') return
     const cursor = reload ? '0' : this.data.cursor
     const requestId = ++this.feedRequestId
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false })
 
     let task = api.homeFeed(cursor, { sortType: 200 })
     if (channel.categoryId) {
@@ -182,8 +191,11 @@ Page(theme.withTheme({
         cursor: result.cursor || '0',
         hasMore: Boolean(result.has_more) && rows.length > 0,
         fromCache: Boolean(fromCache),
+        loadError: false,
         loading: false
       })
+    }).catch(() => {
+      if (requestId === this.feedRequestId) this.setData({ loadError: true })
     }).finally(() => {
       if (requestId === this.feedRequestId) this.setData({ loading: false })
       wx.stopPullDownRefresh()
@@ -204,6 +216,10 @@ Page(theme.withTheme({
 
   openCategoryMenu() {
     wx.navigateTo({ url: '/features/homeChannels/homeChannels' })
+  },
+
+  retryLoad() {
+    this.loadCurrent(true)
   },
 
   openRank(event) {

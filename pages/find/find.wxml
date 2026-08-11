@@ -4,9 +4,9 @@
     <image class="find-sticky-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.png' : '/assets/app/find/find_page_bg_top.png'}}" mode="aspectFill"></image>
     <view class="find-sticky-content">
       <status-bar navigation="{{true}}" transparent="{{true}}">
-        <view class="find-search-head">
-          <view class="search-bar" bindtap="openSearch">
-            <image src="{{darkMode ? '/assets/app/find/dark/find_page_ic_search.svg' : '/assets/app/find/find_page_ic_search.svg'}}" mode="aspectFit"></image>
+        <view class="find-search-head" hover-class="interactive-pressed" bindtap="openSearch" aria-role="button" aria-label="搜索稀土掘金">
+          <view class="search-bar">
+            <image src="{{darkMode ? '/assets/app/find/dark/find_page_ic_search.svg' : '/assets/app/find/find_page_ic_search.svg'}}" mode="aspectFit" aria-hidden="true"></image>
             <text>探索稀土掘金</text>
           </view>
         </view>
@@ -14,16 +14,21 @@
     </view>
   </view>
 
+  <empty-state wx:if="{{loading && !initialLoaded}}" type="loading" text="正在加载发现内容" skeleton-rows="{{4}}"></empty-state>
+  <empty-state wx:elif="{{loadError && !initialLoaded}}" type="error" text="发现内容加载失败" description="请检查网络后重试" action-text="重新加载" bind:action="retryLoad"></empty-state>
+
+  <block wx:else>
+
   <view class="find-top">
     <image class="find-top-bg" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_top.png' : '/assets/app/find/find_page_bg_top.png'}}" mode="aspectFill"></image>
     <view class="find-top-content">
       <view class="channel-grid">
-        <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" data-anchor="{{item.anchor}}" bindtap="openFeature">
+        <view wx:for="{{channelEntries}}" wx:key="title" class="channel-item" data-url="{{item.url}}" data-anchor="{{item.anchor}}" hover-class="interactive-pressed" bindtap="openFeature" aria-role="button" aria-label="打开{{item.title}}">
           <image src="{{darkMode ? item.darkIcon : item.icon}}" mode="aspectFit"></image><text>{{item.title}}</text>
         </view>
       </view>
       <view class="quick-grid">
-        <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" bindtap="openFeature">
+        <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" hover-class="interactive-pressed" bindtap="openFeature" aria-role="button" aria-label="打开{{item.name}}">
           <image src="{{item.icon}}" mode="aspectFit"></image><text>{{item.name}}</text>
         </view>
       </view>
@@ -31,17 +36,17 @@
   </view>
 
   <swiper wx:if="{{themes.length}}" class="find-banner" indicator-dots circular autoplay interval="5000">
-    <swiper-item wx:for="{{themes}}" wx:key="theme_id" data-index="{{index}}" bindtap="openTheme">
+    <swiper-item wx:for="{{themes}}" wx:key="theme_id" data-index="{{index}}" bindtap="openTheme" aria-role="button" aria-label="打开活动{{item.name}}">
       <view class="banner-copy"><view class="ellipsis">{{item.name}}</view><text class="banner-brief two-lines" user-select="{{true}}">{{item.brief}}</text></view>
       <image class="banner-art" src="{{item.cover || '/assets/app/find/find_page_ic_default_banner.png'}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="theme" data-index="{{index}}" binderror="onRemoteImageError"></image>
     </swiper-item>
   </swiper>
   <view wx:else class="find-banner default-banner"><image class="default-banner-image" src="/assets/app/find/find_page_ic_default_banner.png" mode="aspectFill"></image></view>
 
-  <view class="daily-card" bindtap="openDaily">
+  <view class="daily-card" hover-class="interactive-pressed" bindtap="openDaily" aria-role="button" aria-label="阅读每日掘金">
     <view class="daily-heading">
       <image src="{{darkMode ? '/assets/app/find/dark/find_page_ic_title_juejin_daily.svg' : '/assets/app/find/find_page_ic_title_juejin_daily.svg'}}" mode="aspectFit"></image>
-      <view catchtap="openDailyHistory">往日精彩 <text>›</text></view>
+      <view hover-class="interactive-pressed" catchtap="openDailyHistory" aria-role="button" aria-label="查看往日每日掘金">往日精彩 <text>›</text></view>
     </view>
     <view wx:if="{{dailyArticle}}" class="daily-content">
       <view class="calendar-wrap"><image class="calendar" src="{{darkMode ? '/assets/app/find/dark/find_page_bg_calendar.png' : '/assets/app/find/find_page_bg_calendar.png'}}" mode="aspectFit"></image><text class="calendar-day">{{dailyDay}}</text><text class="calendar-month">{{dailyMonth}}</text></view>
@@ -50,17 +55,17 @@
   </view>
 
   <view class="discover-section">
-    <view class="discover-heading"><text>精选沸点</text><view bindtap="openSelectedPins">查看更多 ›</view></view>
+    <view class="discover-heading"><text>精选沸点</text><view hover-class="interactive-pressed" bindtap="openSelectedPins" aria-role="button" aria-label="查看更多精选沸点">查看更多 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
-      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin horizontal-card" data-index="{{index}}" bindtap="openPin">
+      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin horizontal-card" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openPin" aria-role="button" aria-label="查看{{item.author.user_name}}的沸点">
         <view class="selected-pin-head">
           <image class="selected-avatar" src="{{item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="pin-avatar" data-index="{{index}}" binderror="onRemoteImageError"></image>
           <view class="selected-identity"><view class="selected-name ellipsis">{{item.author.user_name}}</view><view class="selected-caption ellipsis">{{item.author.job_title || item.ctime}}</view></view>
-          <view class="outline-action" catchtap="openAccountInfo">关注</view>
+          <view class="outline-action" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="关注{{item.author.user_name}}">关注</view>
         </view>
         <view class="selected-content two-lines">
           <block wx:for="{{item.content_segments}}" wx:for-item="segment" wx:for-index="segmentIndex" wx:key="key">
-            <text wx:if="{{segment.type === 'theme'}}" class="selected-theme-link" user-select="{{true}}" data-pin-index="{{index}}" data-segment-index="{{segmentIndex}}" catchtap="openSelectedTheme">#{{segment.text}}#</text>
+            <text wx:if="{{segment.type === 'theme'}}" class="selected-theme-link" user-select="{{true}}" data-pin-index="{{index}}" data-segment-index="{{segmentIndex}}" catchtap="openSelectedTheme" aria-role="button" aria-label="打开活动{{segment.text}}">#{{segment.text}}#</text>
             <text wx:else user-select="{{true}}">{{segment.text}}</text>
           </block>
         </view>
@@ -68,20 +73,20 @@
           <view class="liked-avatars"><image wx:for="{{item.digg_users}}" wx:for-item="user" wx:key="user_id" src="{{user.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view>
           <text>等人赞过</text>
         </view>
-        <view class="pin-comment-box" catchtap="openAccountInfo"><image src="/assets/app/common/default_avatar.png" mode="aspectFill"></image><text>评论沸点...</text></view>
+        <view class="pin-comment-box" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="评论沸点"><image src="/assets/app/common/default_avatar.png" mode="aspectFill"></image><text>评论沸点...</text></view>
       </view>
     </scroll-view>
     <empty-state wx:if="{{!loading && !selectedPins.length}}" text="暂时没有精选沸点"></empty-state>
   </view>
 
   <view class="discover-section">
-    <view class="discover-heading"><text>推荐圈子</text><view bindtap="openCircleSquare">圈子广场 ›</view></view>
+    <view class="discover-heading"><text>推荐圈子</text><view hover-class="interactive-pressed" bindtap="openCircleSquare" aria-role="button" aria-label="打开圈子广场">圈子广场 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
-      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-card horizontal-card" data-index="{{index}}" bindtap="openTopic">
+      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-card horizontal-card" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openTopic" aria-role="button" aria-label="打开{{item.title}}圈子">
         <view class="topic-head">
           <view class="topic-icon"><image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="topic" data-index="{{index}}" binderror="onRemoteImageError"></image><text wx:else>{{item.iconText}}</text></view>
           <view class="topic-copy"><view class="topic-name ellipsis">{{item.title}}</view><view class="topic-stats">掘友{{item.follower_count}} · 沸点{{item.msg_count}}</view></view>
-          <view class="outline-action" catchtap="openAccountInfo">加入</view>
+          <view class="outline-action" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="加入{{item.title}}圈子">加入</view>
         </view>
         <view class="topic-preview">
           <view wx:if="{{!item.shorts.length}}" class="topic-description two-lines">{{item.description || '发现圈子里的最新讨论'}}</view>
@@ -92,13 +97,13 @@
   </view>
 
   <view class="discover-section">
-    <view class="discover-heading"><text>推荐专栏</text><view bindtap="openColumnList">查看更多 ›</view></view>
+    <view class="discover-heading"><text>推荐专栏</text><view hover-class="interactive-pressed" bindtap="openColumnList" aria-role="button" aria-label="查看更多专栏">查看更多 ›</view></view>
     <scroll-view wx:if="{{columns.length}}" class="horizontal-scroll" scroll-x enable-flex>
-      <view wx:for="{{columns}}" wx:key="column_id" class="recommend-card horizontal-card tint-{{index % 4}}" data-index="{{index}}" bindtap="openColumn">
+      <view wx:for="{{columns}}" wx:key="column_id" class="recommend-card horizontal-card tint-{{index % 4}}" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openColumn" aria-role="button" aria-label="打开专栏{{item.title}}">
         <view wx:if="{{item.tag}}" class="recommend-ribbon">{{item.tag}}</view>
-        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.title}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.owner_label || item.creator.user_name + '的专栏'}}</view></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
+        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.title}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.owner_label || item.creator.user_name + '的专栏'}}</view></view><view class="outline-action" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="订阅{{item.title}}专栏">订阅</view></view>
         <view class="recommend-preview">
-          <view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="column" data-card-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openCardArticle"><view class="ellipsis">{{article.title}}</view><text>点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view>
+          <view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="column" data-card-index="{{index}}" data-article-index="{{articleIndex}}" hover-class="interactive-pressed" catchtap="openCardArticle" aria-role="button" aria-label="阅读{{article.title}}"><view class="ellipsis">{{article.title}}</view><text>点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view>
         </view>
         <view class="recommend-footer">查看专栏 · {{item.article_count}}篇文章</view>
       </view>
@@ -106,13 +111,13 @@
   </view>
 
   <view class="discover-section">
-    <view class="discover-heading"><text>推荐收藏集</text><view bindtap="openCollectionList">查看更多 ›</view></view>
+    <view class="discover-heading"><text>推荐收藏集</text><view hover-class="interactive-pressed" bindtap="openCollectionList" aria-role="button" aria-label="查看更多收藏集">查看更多 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
-      <view wx:for="{{collectionSets}}" wx:key="collection_id" class="recommend-card horizontal-card tint-{{(index + 1) % 4}}" data-index="{{index}}" bindtap="openCollection">
+      <view wx:for="{{collectionSets}}" wx:key="collection_id" class="recommend-card horizontal-card tint-{{(index + 1) % 4}}" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openCollection" aria-role="button" aria-label="打开收藏集{{item.name}}">
         <view wx:if="{{item.badge}}" class="recommend-ribbon">{{item.badge}}</view>
-        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.name}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.creator.user_name}} 收藏</view></view><view class="outline-action" catchtap="openAccountInfo">订阅</view></view>
+        <view class="recommend-head"><view><view class="recommend-title ellipsis">{{item.name}}</view><view class="recommend-stats">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="recommend-owner ellipsis">{{item.creator.user_name}} 收藏</view></view><view class="outline-action" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="订阅{{item.name}}收藏集">订阅</view></view>
         <view class="recommend-preview">
-          <view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="collection" data-card-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openCardArticle"><view class="ellipsis">{{article.title}}</view><text>{{article.author.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view>
+          <view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="collection" data-card-index="{{index}}" data-article-index="{{articleIndex}}" hover-class="interactive-pressed" catchtap="openCardArticle" aria-role="button" aria-label="阅读{{article.title}}"><view class="ellipsis">{{article.title}}</view><text>{{article.author.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view>
         </view>
         <view class="recommend-footer">查看收藏集 · {{item.article_count}}篇文章</view>
       </view>
@@ -120,27 +125,27 @@
   </view>
 
   <view class="discover-section">
-    <view class="discover-heading"><text>作者榜</text><view data-type="author" bindtap="openRank">查看更多 ›</view></view>
+    <view class="discover-heading"><text>作者榜</text><view data-type="author" hover-class="interactive-pressed" bindtap="openRank" aria-role="button" aria-label="查看更多作者">查看更多 ›</view></view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>
-      <view wx:for="{{authors}}" wx:key="user_id" class="author-card horizontal-card" data-id="{{item.user_id}}" bindtap="openAuthor">
+      <view wx:for="{{authors}}" wx:key="user_id" class="author-card horizontal-card" data-id="{{item.user_id}}" hover-class="interactive-pressed" bindtap="openAuthor" aria-role="button" aria-label="查看{{item.user_name}}的主页">
         <image wx:if="{{index === 0}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_1.png" mode="aspectFill"></image>
         <image wx:elif="{{index === 1}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_2.png" mode="aspectFill"></image>
         <image wx:elif="{{index === 2}}" class="author-rank-bg" src="/assets/app/find/find_page_bg_rank_3.png" mode="aspectFill"></image>
-        <view class="author-head"><image class="author-avatar" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="author" data-index="{{index}}" binderror="onRemoteImageError"></image><view class="author-copy"><view class="author-name ellipsis">{{item.user_name}} <text wx:if="{{item.level}}">LV.{{item.level}}</text></view><view class="author-stats">获赞 {{item.got_digg_count}} · 阅读 {{item.got_view_count}}</view></view><view class="outline-action" catchtap="openAccountInfo">关注</view></view>
-        <view class="recommend-preview author-preview"><view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="author" data-card-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openCardArticle"><view class="ellipsis">{{article.title}}</view><text>{{item.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view>
+        <view class="author-head"><image class="author-avatar" src="{{item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="author" data-index="{{index}}" binderror="onRemoteImageError"></image><view class="author-copy"><view class="author-name ellipsis">{{item.user_name}} <text wx:if="{{item.level}}">LV.{{item.level}}</text></view><view class="author-stats">获赞 {{item.got_digg_count}} · 阅读 {{item.got_view_count}}</view></view><view class="outline-action" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="关注{{item.user_name}}">关注</view></view>
+        <view class="recommend-preview author-preview"><view wx:for="{{item.articles}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="preview-row" data-section="author" data-card-index="{{index}}" data-article-index="{{articleIndex}}" hover-class="interactive-pressed" catchtap="openCardArticle" aria-role="button" aria-label="阅读{{article.title}}"><view class="ellipsis">{{article.title}}</view><text>{{item.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view>
         <view class="recommend-footer">查看更多文章</view>
       </view>
     </scroll-view>
   </view>
 
   <view class="discover-section article-rank-section">
-    <view class="discover-heading"><text>文章榜</text><view data-type="article" bindtap="openRank">查看更多 ›</view></view>
-    <scroll-view class="rank-chips" scroll-x enable-flex scroll-into-view="rank-chip-{{activeRankIndex}}"><view wx:for="{{rankCategories}}" wx:key="id" id="rank-chip-{{index}}" class="rank-chip {{activeRankIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectRankCategory">{{item.name}}</view></scroll-view>
+    <view class="discover-heading"><text>文章榜</text><view data-type="article" hover-class="interactive-pressed" bindtap="openRank" aria-role="button" aria-label="查看更多文章榜单">查看更多 ›</view></view>
+    <scroll-view class="rank-chips" scroll-x enable-flex scroll-into-view="rank-chip-{{activeRankIndex}}"><view wx:for="{{rankCategories}}" wx:key="id" id="rank-chip-{{index}}" class="rank-chip {{activeRankIndex === index ? 'active' : ''}} {{rankLoading ? 'is-disabled is-loading' : ''}}" data-index="{{index}}" hover-class="interactive-pressed" bindtap="selectRankCategory" aria-role="button" aria-label="查看{{item.name}}排行榜" aria-disabled="{{rankLoading}}">{{item.name}}</view></scroll-view>
     <swiper class="rank-swiper" current="{{activeRankIndex}}" bindchange="changeRankCategory">
       <swiper-item wx:for="{{rankCategories}}" wx:key="id">
-        <view class="rank-card" data-index="{{index}}" bindtap="openRankCategory">
+        <view class="rank-card" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openRankCategory" aria-role="button" aria-label="打开{{item.name}}排行榜">
           <view class="rank-card-title">{{item.name}}排行榜 <text>›</text></view>
-          <view wx:for="{{rankLists[index]}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="rank-row" data-page-index="{{index}}" data-article-index="{{articleIndex}}" catchtap="openRankArticle"><view class="rank-copy"><view class="rank-title ellipsis">{{article.title}}</view><view class="card-meta">{{article.author.user_name}} · 评论 {{article.comment_count}} · 点赞 {{article.digg_count}}</view></view></view>
+          <view wx:for="{{rankLists[index]}}" wx:for-item="article" wx:for-index="articleIndex" wx:key="article_id" class="rank-row" data-page-index="{{index}}" data-article-index="{{articleIndex}}" hover-class="interactive-pressed" catchtap="openRankArticle" aria-role="button" aria-label="阅读{{article.title}}"><view class="rank-copy"><view class="rank-title ellipsis">{{article.title}}</view><view class="card-meta">{{article.author.user_name}} · 评论 {{article.comment_count}} · 点赞 {{article.digg_count}}</view></view></view>
           <view wx:if="{{rankLoading && activeRankIndex === index}}" class="loading-line">正在加载榜单...</view>
         </view>
       </swiper-item>
@@ -149,14 +154,16 @@
 
   <view id="industry-section" class="discover-section industry-section">
     <view class="discover-heading"><text>行业速递</text></view>
-    <view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" bindtap="openHeadline">
+    <view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openHeadline" aria-role="button" aria-label="阅读{{item.title}}">
       <view class="headline-copy"><view class="headline-title two-lines">{{item.title}}</view><view class="headline-meta"><image src="{{item.avatar}}" mode="aspectFill"></image><text>{{item.source}}</text><text class="meta-divider"></text><text>{{item.publish_time}}</text></view><view class="headline-brief two-lines">{{item.brief}}</view><view class="headline-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view></view>
       <image wx:if="{{item.thumbnail}}" class="headline-image" src="{{item.thumbnail}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="headline" data-index="{{index}}" binderror="onRemoteImageError"></image>
     </view>
-    <view wx:if="{{headlineLoading}}" class="loading-line">正在加载更多文章...</view>
-    <view wx:if="{{!headlineHasMore && headlines.length}}" class="list-end">已加载全部行业资讯</view>
+    <empty-state wx:if="{{headlineLoading}}" type="loading" compact="{{true}}" text="正在加载更多文章" skeleton-rows="{{1}}"></empty-state>
+    <empty-state wx:if="{{!headlineHasMore && headlines.length}}" type="end" compact="{{true}}" text="已加载全部行业资讯"></empty-state>
   </view>
 
-  <view wx:if="{{loading}}" class="loading-line">正在加载发现内容...</view>
-  <view wx:if="{{loadError && !loading}}" class="cache-note">部分内容暂时不可用</view>
+  <empty-state wx:if="{{loading}}" type="loading" compact="{{true}}" text="正在刷新发现内容" skeleton-rows="{{1}}"></empty-state>
+  <empty-state wx:elif="{{loadError}}" type="error" compact="{{true}}" text="部分内容暂时不可用" action-text="重试" bind:action="retryLoad"></empty-state>
+  <empty-state wx:elif="{{fromCache}}" type="cached" compact="{{true}}" text="部分内容来自本地缓存" action-text="刷新" bind:action="retryLoad"></empty-state>
+  </block>
 </view>

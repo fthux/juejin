@@ -3,8 +3,8 @@
   <view class="pin-sticky">
     <status-bar navigation="{{true}}">
       <view class="pin-navigation">
-        <view class="top-tab {{topTab === 'discover' ? 'active' : ''}}" data-id="discover" bindtap="switchTopTab">发现</view>
-        <view class="top-tab {{topTab === 'following' ? 'active' : ''}}" data-id="following" bindtap="switchTopTab">关注</view>
+        <view class="top-tab {{topTab === 'discover' ? 'active' : ''}}" data-id="discover" hover-class="interactive-pressed" bindtap="switchTopTab" aria-role="tab" aria-label="发现沸点">发现</view>
+        <view class="top-tab {{topTab === 'following' ? 'active' : ''}}" data-id="following" hover-class="interactive-pressed" bindtap="switchTopTab" aria-role="tab" aria-label="关注沸点">关注</view>
       </view>
     </status-bar>
   </view>
@@ -12,14 +12,14 @@
   <view wx:if="{{topTab === 'discover'}}" class="topic-section surface">
     <view class="topic-heading">
       <view class="block-title">推荐圈子</view>
-      <view class="joined-topics" bindtap="openTopicSquare">我加入的圈子</view>
+      <view class="joined-topics" hover-class="interactive-pressed" bindtap="openTopicSquare" aria-role="button" aria-label="查看我加入的圈子">我加入的圈子</view>
     </view>
     <scroll-view class="topic-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
-      <view class="topic-item" bindtap="openTopicSquare">
+      <view class="topic-item" hover-class="interactive-pressed" bindtap="openTopicSquare" aria-role="button" aria-label="发现更多圈子">
         <view class="topic-icon discover-more">◉</view>
         <view class="topic-name ellipsis">发现更多</view>
       </view>
-      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-index="{{index}}" bindtap="openTopic">
+      <view wx:for="{{topics}}" wx:key="topic_id" class="topic-item" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openTopic" aria-role="button" aria-label="打开{{item.title}}圈子">
         <view class="topic-icon">
           <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onTopicIconError"></image>
           <text wx:else>{{item.iconText}}</text>
@@ -33,15 +33,15 @@
   <view wx:if="{{topTab === 'discover'}}" class="sort-row surface">
     <view class="sort-label">排序</view>
     <view class="sort-switch">
-      <view class="{{sort === 'latest' ? 'active' : ''}}" data-id="latest" bindtap="selectSort">最新</view>
-      <view class="{{sort === 'hot' ? 'active' : ''}}" data-id="hot" bindtap="selectSort">热门</view>
+      <view class="{{sort === 'latest' ? 'active' : ''}} {{loading ? 'is-disabled is-loading' : ''}}" data-id="latest" hover-class="interactive-pressed" bindtap="selectSort" aria-role="button" aria-label="按最新排序" aria-disabled="{{loading}}">最新</view>
+      <view class="{{sort === 'hot' ? 'active' : ''}} {{loading ? 'is-disabled is-loading' : ''}}" data-id="hot" hover-class="interactive-pressed" bindtap="selectSort" aria-role="button" aria-label="按热门排序" aria-disabled="{{loading}}">热门</view>
     </view>
   </view>
 
   <view wx:if="{{topTab === 'following'}}" class="following-login surface">
     <image class="following-illustration" src="/assets/app/common/ic_yoyo_empty.png" mode="aspectFit"></image>
     <view class="following-title">立刻登录，围观掘友精彩沸点吧</view>
-    <view class="following-button" bindtap="requireAccount">登录</view>
+    <view class="following-button" hover-class="interactive-pressed" bindtap="requireAccount" aria-role="button" aria-label="查看账号说明">登录</view>
   </view>
 
   <view wx:if="{{topTab === 'discover'}}" class="pin-list">
@@ -52,7 +52,7 @@
           <view class="block-title">精选沸点</view>
         </view>
         <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
-          <view wx:for="{{selectedPins}}" wx:for-item="selected" wx:key="msg_id" class="selected-pin" data-id="{{selected.msg_id}}" bindtap="openDetail">
+          <view wx:for="{{selectedPins}}" wx:for-item="selected" wx:key="msg_id" class="selected-pin" data-id="{{selected.msg_id}}" hover-class="interactive-pressed" bindtap="openDetail" aria-role="button" aria-label="查看{{selected.author.user_name}}的精选沸点">
             <view class="selected-pin-title ellipsis"><text>荐</text> #{{selected.topic || '精选沸点'}}</view>
             <view class="selected-actions ellipsis">{{selected.author.user_name}} · {{selected.digg_count}}人点赞 · {{selected.comment_count}}人评论</view>
           </view>
@@ -60,23 +60,26 @@
       </view>
     </block>
   </view>
-  <empty-state wx:if="{{topTab === 'discover' && !loading && !list.length}}" text="暂无沸点"></empty-state>
+  <empty-state wx:if="{{topTab === 'discover' && loading && !list.length}}" type="loading" text="正在加载沸点" skeleton-rows="{{4}}"></empty-state>
+  <empty-state wx:elif="{{topTab === 'discover' && loadError && !list.length}}" type="error" text="沸点加载失败" description="请检查网络后重试" action-text="重新加载" bind:action="retryLoad"></empty-state>
+  <empty-state wx:elif="{{topTab === 'discover' && !loading && !list.length}}" text="暂无沸点"></empty-state>
 
   <view wx:if="{{topTab === 'discover' && list.length < 2 && selectedPins.length}}" id="selected-section" class="selected-section surface">
     <view class="selected-head">
       <view class="block-title">精选沸点</view>
-      <view class="selected-more">查看更多 <text>›</text></view>
+      <view class="selected-more" hover-class="interactive-pressed" bindtap="openSelectedPins" aria-role="button" aria-label="查看更多精选沸点">查看更多 <text>›</text></view>
     </view>
     <scroll-view class="selected-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
-      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" bindtap="openDetail">
+      <view wx:for="{{selectedPins}}" wx:key="msg_id" class="selected-pin" data-id="{{item.msg_id}}" hover-class="interactive-pressed" bindtap="openDetail" aria-role="button" aria-label="查看{{item.author.user_name}}的精选沸点">
         <view class="selected-pin-title ellipsis"><text>荐</text> #{{item.topic || '精选沸点'}}</view>
         <view class="selected-actions ellipsis">{{item.author.user_name}} · {{item.digg_count}}人点赞 · {{item.comment_count}}人评论</view>
       </view>
     </scroll-view>
   </view>
 
-  <view wx:if="{{topTab === 'discover' && loading}}" class="loading-line">正在加载...</view>
-  <view wx:elif="{{topTab === 'discover' && list.length && !hasMore}}" class="loading-line">没有更多了</view>
-  <view wx:if="{{topTab === 'discover' && fromCache && !loading}}" class="cache-note">当前展示本地缓存内容</view>
-  <view wx:if="{{topTab === 'discover'}}" class="publish-fab" bindtap="openPublish"><text>✎</text></view>
+  <empty-state wx:if="{{topTab === 'discover' && loading && list.length}}" type="loading" compact="{{true}}" text="正在加载更多沸点" skeleton-rows="{{1}}"></empty-state>
+  <empty-state wx:elif="{{topTab === 'discover' && !fromCache && list.length && !hasMore}}" type="end" compact="{{true}}" text="已加载全部沸点"></empty-state>
+  <empty-state wx:if="{{topTab === 'discover' && loadError && list.length && !loading}}" type="error" compact="{{true}}" text="部分沸点加载失败" action-text="重试" bind:action="retryLoad"></empty-state>
+  <empty-state wx:elif="{{topTab === 'discover' && fromCache && !loading}}" type="cached" compact="{{true}}" text="当前展示本地缓存内容" action-text="刷新" bind:action="retryLoad"></empty-state>
+  <view wx:if="{{topTab === 'discover'}}" class="publish-fab" hover-class="interactive-pressed" bindtap="openPublish" aria-role="button" aria-label="发布沸点"><text>✎</text></view>
 </view>

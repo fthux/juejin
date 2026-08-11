@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "关注标签",
-  "usingComponents": {
-    "tagItem": "/components/tagItem/tagItem"
-  }
-}

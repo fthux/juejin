@@ -1,4 +1,0 @@
-<empty wx:if='{{!list.length}}'></empty>
-<view class='container' wx:if='{{list.length}}'>
-  <postItemTwo wx:for='{{list}}' avatar='{{item.author_user_info.avatar_large}}' userName='{{item.author_user_info.user_name}}' tags='{{item.tags}}' title='{{item.article_info.title}}' briefContent='{{item.article_info.brief_content}}' likeCount='{{item.digg_count}}' commentCount='{{item.comment_count}}' wx:for='{{list}}' wx:key='index'></postItemTwo>
-</view>

@@ -1,4 +1,0 @@
-<empty wx:if='{{!list.length}}'></empty>
-<view class='container' wx:if='{{list.length}}'>
-  <feidianItem item='{{item}}' wx:for='{{list}}' wx:key='index'></feidianItem>
-</view>
