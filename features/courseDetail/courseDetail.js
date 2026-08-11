@@ -78,31 +78,17 @@ Page(theme.withTheme({
     introduction: '',
     recommendations: [],
     activeTab: 'intro',
-    navTotalHeight: 64,
-    navCollapsed: false,
     loading: true,
     loadError: false
   },
 
   onLoad(query) {
     this.bookletId = query.id || ''
-    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
-    const statusHeight = Number(info.statusBarHeight) || 20
-    const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
-    const navigationHeight = menu && Number(menu.height) > 0
-      ? Number(menu.height) + (Number(menu.top) - statusHeight) * 2
-      : 44
-    this.setData({ navTotalHeight: statusHeight + navigationHeight })
     if (!this.bookletId) {
       this.setData({ loading: false, loadError: true })
       return
     }
     this.loadDetail()
-  },
-
-  onPageScroll(event) {
-    const navCollapsed = Number(event.scrollTop) > 150
-    if (navCollapsed !== this.data.navCollapsed) this.setData({ navCollapsed })
   },
 
   loadDetail() {
@@ -170,12 +156,6 @@ Page(theme.withTheme({
   openRecommendation(event) {
     const id = String(event.detail && event.detail.item && event.detail.item.id || '')
     if (id) wx.redirectTo({ url: `/features/courseDetail/courseDetail?id=${id}` })
-  },
-
-  goBack() {
-    const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : []
-    if (pages.length > 1) wx.navigateBack()
-    else wx.switchTab({ url: '/pages/xiaoce/xiaoce' })
   },
 
   buyCourse() {

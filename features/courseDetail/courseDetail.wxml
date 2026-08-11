@@ -1,24 +1,10 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page course-detail-page">
-  <view wx:if="{{navCollapsed}}" class="collapsed-navigation">
-    <status-bar navigation="{{true}}">
-      <view class="collapsed-navigation-row">
-        <view class="nav-back dark" bindtap="goBack"></view>
-        <view class="collapsed-title">课程详情</view>
-      </view>
-    </status-bar>
-  </view>
-
   <view wx:if="{{loading}}" class="loading-line loading-page">正在加载小册...</view>
   <empty-state wx:elif="{{loadError}}" text="小册详情加载失败"></empty-state>
 
   <block wx:if="{{course}}">
     <view class="course-hero">
-      <status-bar navigation="{{true}}" transparent="{{true}}">
-        <view class="hero-navigation-row">
-          <view class="nav-back" bindtap="goBack"></view>
-        </view>
-      </status-bar>
       <view class="hero-copy">
         <view class="hero-title">{{course.title}}</view>
         <view class="hero-summary">{{course.summary}}</view>
@@ -42,7 +28,7 @@
       </view>
     </view>
 
-    <view class="detail-tabs" style="top: {{navTotalHeight}}px;">
+    <view class="detail-tabs">
       <view class="detail-tab {{activeTab === 'intro' ? 'active' : ''}}" data-id="intro" bindtap="switchTab">介绍</view>
       <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">目录</view>
       <view class="detail-tab {{activeTab === 'recommendations' ? 'active' : ''}}" data-id="recommendations" bindtap="switchTab">相关推荐</view>
@@ -73,7 +59,7 @@
 
     <view class="course-bottom safe-bottom">
       <view class="trial-action" bindtap="startTrial">
-        <view class="book-icon"><view></view></view>
+        <image class="trial-icon" src="{{themeName === 'dark' ? '/assets/app/course/byte/ic_course_free_try_dark.png' : '/assets/app/course/byte/ic_course_free_try.png'}}" mode="aspectFit"></image>
         <text>免费试学</text>
       </view>
       <view class="purchase-action" bindtap="buyCourse">

@@ -265,6 +265,13 @@ const postSource = read('features/post/post.js')
 const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
 
+const courseDetailTemplate = read('features/courseDetail/courseDetail.wxml')
+const courseDetailStyle = read('features/courseDetail/courseDetail.wxss')
+const courseDetailConfig = JSON.parse(read('features/courseDetail/courseDetail.json'))
+if (courseDetailConfig.navigationStyle === 'custom' || courseDetailTemplate.includes('<status-bar')) fail('小册详情必须使用小程序系统导航栏')
+if (!/\.detail-tabs\s*\{[^}]*position:\s*sticky;[^}]*top:\s*0;/.test(courseDetailStyle)) fail('小册详情页签栏缺少顶部吸附')
+if (!courseDetailTemplate.includes('ic_course_free_try.png') || !/\.trial-icon\s*\{[^}]*width:\s*34rpx;[^}]*height:\s*36rpx;/.test(courseDetailStyle)) fail('小册详情免费试学图标异常')
+
 const byteCourseDetailSource = read('features/byteCourseDetail/byteCourseDetail.js')
 const byteCourseDetailTemplate = read('features/byteCourseDetail/byteCourseDetail.wxml')
 const byteCourseDetailStyle = read('features/byteCourseDetail/byteCourseDetail.wxss')

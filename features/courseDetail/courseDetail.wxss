@@ -9,43 +9,8 @@
 }
 
 .course-hero {
-  min-height: 426rpx;
   color: #ffffff;
   background: #426896;
-}
-
-.hero-navigation-row,
-.collapsed-navigation-row {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 0 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-.nav-back {
-  position: relative;
-  width: 52rpx;
-  height: 52rpx;
-}
-
-.nav-back::before {
-  content: "";
-  position: absolute;
-  left: 15rpx;
-  top: 12rpx;
-  width: 24rpx;
-  height: 24rpx;
-  border-left: 4rpx solid #ffffff;
-  border-bottom: 4rpx solid #ffffff;
-  transform: rotate(45deg);
-}
-
-.nav-back.dark::before {
-  border-color: var(--jj-text);
 }
 
 .hero-copy {
@@ -93,26 +58,6 @@
   line-height: 30rpx;
 }
 
-.collapsed-navigation {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  z-index: 50;
-  background: var(--jj-surface);
-  border-bottom: 1rpx solid var(--jj-line);
-}
-
-.collapsed-title {
-  position: absolute;
-  left: 110rpx;
-  right: 110rpx;
-  color: var(--jj-text);
-  font-size: 32rpx;
-  font-weight: 500;
-  text-align: center;
-}
-
 .course-stats {
   min-height: 122rpx;
   margin: 32rpx 30rpx 20rpx;
@@ -147,6 +92,7 @@
 
 .detail-tabs {
   position: sticky;
+  top: 0;
   z-index: 30;
   height: 92rpx;
   display: grid;
@@ -342,38 +288,11 @@
   font-size: 21rpx;
 }
 
-.book-icon {
-  position: relative;
-  width: 35rpx;
-  height: 29rpx;
+.trial-icon {
+  width: 34rpx;
+  height: 36rpx;
   margin-bottom: 7rpx;
-  border: 3rpx solid var(--jj-text-2);
-  border-top: 0;
-  border-radius: 0 0 4rpx 4rpx;
-  transform: perspective(20rpx) rotateX(-4deg);
-}
-
-.book-icon::before,
-.book-icon::after {
-  content: "";
-  position: absolute;
-  top: -4rpx;
-  width: 17rpx;
-  height: 27rpx;
-  border: 3rpx solid var(--jj-text-2);
-  border-top: 0;
-  box-sizing: border-box;
-  background: var(--jj-surface);
-}
-
-.book-icon::before {
-  left: -3rpx;
-  transform: skewY(12deg);
-}
-
-.book-icon::after {
-  right: -3rpx;
-  transform: skewY(-12deg);
+  flex: 0 0 auto;
 }
 
 .purchase-action {
