@@ -262,7 +262,32 @@ if (!normalizedComment.reply_has_more) fail('评论回复数量不完整时应�
 if (!normalizedComment.is_hot) fail('评论归一化丢失热评标识')
 
 const postSource = read('features/post/post.js')
+const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
+
+const byteCourseDetailSource = read('features/byteCourseDetail/byteCourseDetail.js')
+const byteCourseDetailTemplate = read('features/byteCourseDetail/byteCourseDetail.wxml')
+const byteCourseDetailStyle = read('features/byteCourseDetail/byteCourseDetail.wxss')
+const byteCourseDetailConfig = JSON.parse(read('features/byteCourseDetail/byteCourseDetail.json'))
+const xiaoceSource = read('pages/xiaoce/xiaoce.js')
+if (!pageSet.has('features/byteCourseDetail/byteCourseDetail') || !xiaoceSource.includes("course.courseType === 'byte'")) fail('字节内部课缺少独立详情页路由')
+if (!apiSource.includes('/booklet_api/v1/bytecourse/get') || !apiSource.includes('/booklet_api/v1/bytecourse/chapter_list') || !apiSource.includes('/booklet_api/v1/bytecourse/hot_list')) fail('字节内部课缺少 APK 对应的详情、目录或推荐接口')
+if (!/byteCourseComments[\s\S]*?item_type:\s*60/.test(apiSource)) fail('字节内部课评论接口必须使用 item_type 60')
+if (!byteCourseDetailTemplate.includes("activeTab === 'intro'") || !byteCourseDetailTemplate.includes("activeTab === 'contents'") || !byteCourseDetailTemplate.includes("activeTab === 'comments'")) fail('字节内部课详情缺少介绍、目录或评论页签')
+if (!byteCourseDetailTemplate.includes('data-index="{{index}}"') || !byteCourseDetailSource.includes('this.data.chapters[Number(event.currentTarget.dataset.index)]')) fail('字节内部课章节必须通过索引保留长整型 ID 精度')
+if (!byteCourseDetailSource.includes('info.safeArea') || !byteCourseDetailTemplate.includes('style="{{safeAreaStyle}}"') || !byteCourseDetailStyle.includes('constant(safe-area-inset-bottom)') || !byteCourseDetailStyle.includes('env(safe-area-inset-bottom)')) fail('字节内部课底栏缺少运行时或 CSS 安全区适配')
+if (byteCourseDetailConfig.navigationStyle === 'custom' || byteCourseDetailTemplate.includes('<status-bar')) fail('字节内部课详情必须使用小程序系统导航栏')
+if ((byteCourseDetailSource.match(/ensureAccountPermission\(\)/g) || []).length < 3 || !byteCourseDetailSource.includes('session.requireLogin()')) fail('字节内部课试学和会员入口缺少账号权限校验')
+if (!byteCourseDetailTemplate.includes('ic_course_free_try.png') || byteCourseDetailStyle.includes('.book-icon')) fail('字节内部课免费试学未使用 APK 原始图标')
+const normalizedByteCourse = utils.normalizeByteCourse({
+  content: {
+    item_id: '7142808926348640263',
+    name: '后端 -  算法、安全、性能优化',
+    extra: { course_package: { chapter_count: 7, duration: 12953106 } }
+  }
+})
+if (normalizedByteCourse.id !== '7142808926348640263' || normalizedByteCourse.title !== '后端 - 算法、安全、性能优化') fail('字节内部课归一化破坏课程 ID 或标题')
+if (normalizedByteCourse.videoCount !== 7 || normalizedByteCourse.duration !== '3小时36分钟') fail('字节内部课归一化未保留视频数或时长')
 
 const pinDetailSource = read('features/feidianDetail/feidianDetail.js')
 const pinDetailTemplate = read('features/feidianDetail/feidianDetail.wxml')
@@ -287,7 +312,6 @@ const rankRulesSource = read('features/rankRules/rankRules.js')
 const rankRulesTemplate = read('features/rankRules/rankRules.wxml')
 const rankRulesConfig = JSON.parse(read('features/rankRules/rankRules.json'))
 const utilsSource = read('utils/utils.js')
-const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(pinDetailSource)) fail('沸点评论列表默认排序必须为最热')
 if (!pinDetailTemplate.includes('loadCommentReplies')) fail('沸点评论列表缺少回复加载入口')
 if (!pinDetailTemplate.includes('ic_pins_hot_comment.png')) fail('沸点热评缺少 App 热评图标')

@@ -175,6 +175,54 @@ const byteCourses = [
   }
 ]
 
+const byteCourseDetails = {
+  '7142808926348640263': {
+    detail: {
+      content: {
+        item_id: '7142808926348640263',
+        item_type: 60,
+        name: '后端 - 算法、安全、性能优化',
+        abstract: '从零开始动手打造 Go 1.19 排序算法、网站常见安全漏洞及深入浅出零拷贝与应用',
+        cover_image: { url: '/assets/app/course/byte/backend-performance.jpg' },
+        content: `## 课程介绍
+本合辑由**字节跳动技术团队**一线讲师团倾力出品，系后端入门必修课系列之作。
+
+- 从零开始动手打造 Go 1.19 排序算法
+- 网站常见安全漏洞
+- 深入浅出零拷贝与应用
+
+## 适宜人群
+- 掌握一定的计算机基础，知悉基本的代码操作
+- 初阶后端工程师，期待获得系统学习方案
+- 有其他方向相关研发经验，后续希望涉足后端研发的人群
+
+## 学习说明
+- 后端入门必修课为会员专享，开通会员即可解锁全部章节；
+- 本合辑为视频学习形式，共计 7 节课程，目前已全部更新完成；
+- 课程讲解过程中有诸多实战，观看前请仔细阅读课程简介并提前配置环境；
+- 字节内部课课程版权归字节跳动所有，未经授权不得转载或复制发布；
+- 在课程学习过程中，如有任何问题，请邮件联系 bytetech@bytedance.com。`,
+        extra: {
+          course_package: {
+            producer: '聂俊豪、王星星',
+            duration: 12953106,
+            chapter_count: 7
+          }
+        }
+      }
+    },
+    chapters: [
+      { content: { item_id: '7142808162054176804', item_type: 62, name: '详解经典排序算法', resource: { main: { video: { key: 'v02c65g10000ccg5o8jc77u2qkmubdv0', duration: 1332097 } } }, extra: { course_package: { producer: '张云浩' } } } },
+      { content: { item_id: '7142807975344734239', item_type: 62, name: '从零开始打造 pdqsort', resource: { main: { video: { key: 'v02c65g10000ccg5pa3c77u89r0ktmrg', duration: 1792090 } } }, extra: { course_package: { producer: '张云浩' } } } },
+      { content: { item_id: '7263832736035995708', item_type: 62, name: '网站常见安全漏洞-网站基本组成及漏洞定义', resource: { main: { video: { key: 'v02c65g10000cja984bc77ubuil2bvlg', duration: 565266 } } }, extra: { course_package: { producer: '杨月' } } } },
+      { content: { item_id: '7265594758444597285', item_type: 62, name: '网站常见安全漏洞-服务端漏洞介绍', resource: { main: { video: { key: 'v0dc65g10000cja9atbc77u8uc5inf80', duration: 2461121 } } }, extra: { course_package: { producer: '杨月' } } } },
+      { content: { item_id: '7265596339466010682', item_type: 62, name: '网站常见安全漏洞-客户端漏洞介绍', resource: { main: { video: { key: 'v03c65g10000cja9br3c77uebdkdjk9g', duration: 2732366 } } }, extra: { course_package: { producer: '杨月' } } } },
+      { content: { item_id: '7265596919060103229', item_type: 62, name: '网站常见安全漏洞-总结及强调网络安全法', resource: { main: { video: { key: 'v03c65g10000cja9gh3c77udhfl8nb3g', duration: 268166 } } }, extra: { course_package: { producer: '杨月' } } } },
+      { content: { item_id: '7265600288134791224', item_type: 62, name: '深入浅出零拷贝及应用', resource: { main: { video: { key: 'v02c65g10000cjiv1ujc77u3bvo8fpvg', duration: 3802000 } } }, extra: { course_package: { producer: '俞之璇' } } } }
+    ]
+  }
+}
+
 const topics = [
   { topic_id: 'topic-1', title: '上班摸鱼', description: '聊聊开发者工作日常', follower_count: 82400, icon: '摸' },
   { topic_id: 'topic-2', title: '技术交流', description: '分享今天解决的技术问题', follower_count: 76200, icon: '技' },
@@ -207,6 +255,7 @@ module.exports = {
   pins,
   courses,
   byteCourses,
+  byteCourseDetails,
   topics,
   daily,
   search

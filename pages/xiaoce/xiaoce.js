@@ -136,7 +136,9 @@ Page(theme.withTheme({
   },
 
   openCourse(event) {
-    wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${event.detail.item.id}` })
+    const course = event.detail.item || {}
+    const page = course.courseType === 'byte' ? 'byteCourseDetail' : 'courseDetail'
+    wx.navigateTo({ url: `/features/${page}/${page}?id=${course.id}` })
   },
 
   openVip() {

@@ -254,6 +254,43 @@ function courseSection(sectionId) {
   return request('/booklet_api/v1/section/get', { section_id: sectionId })
 }
 
+function byteCourseDetail(itemId) {
+  const local = mock.byteCourseDetails[String(itemId)]
+  const fallback = local && local.detail || mock.byteCourses.find((item) => (
+    String(item.content && item.content.item_id) === String(itemId)
+  )) || null
+  return withFallback(request('/booklet_api/v1/bytecourse/get', {
+    item_id: itemId,
+    item_type: 60
+  }, { method: 'GET' }), () => ({ data: fallback }))
+}
+
+function byteCourseChapters(itemId) {
+  const local = mock.byteCourseDetails[String(itemId)]
+  return withFallback(request('/booklet_api/v1/bytecourse/chapter_list', {
+    item_id: itemId,
+    item_type: 60
+  }, { method: 'GET' }), () => ({ data: local ? local.chapters : [] }))
+}
+
+function byteCourseRecommendations(itemId) {
+  return withFallback(request('/booklet_api/v1/bytecourse/hot_list', {
+    item_id: itemId
+  }, { method: 'GET' }), () => ({
+    data: mock.byteCourses.filter((item) => String(item.content && item.content.item_id) !== String(itemId))
+  }))
+}
+
+function byteCourseComments(itemId, cursor) {
+  return withFallback(request('/interact_api/v1/comment/list', {
+    item_id: itemId,
+    item_type: 60,
+    cursor: cursor || '0',
+    limit: 20,
+    client_type: 2608
+  }), { data: [], cursor: '0', count: 0, has_more: false })
+}
+
 function courseShelf(cursor) {
   return withFallback(request('/booklet_api/v1/booklet/bookletshelflist', {
     cursor: cursor || '0',
@@ -474,6 +511,10 @@ module.exports = {
   popularizeCourses,
   courseDetail,
   courseSection,
+  byteCourseDetail,
+  byteCourseChapters,
+  byteCourseRecommendations,
+  byteCourseComments,
   courseShelf,
   articleDetail,
   articleRecommendations,

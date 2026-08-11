@@ -1,0 +1,77 @@
+<page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
+<view class="page byte-detail-page {{hasRuntimeSafeArea ? 'runtime-safe-area' : ''}}" style="{{safeAreaStyle}}">
+  <view wx:if="{{loading}}" class="loading-line detail-loading">正在加载课程...</view>
+  <empty-state wx:elif="{{loadError}}" text="课程详情加载失败" type="network"></empty-state>
+
+  <block wx:if="{{course}}">
+    <image class="course-cover" src="{{coverFailed ? '/assets/app/course/byte/default.png' : course.cover}}" mode="widthFix" referrer-policy="no-referrer" binderror="onCoverError"></image>
+
+    <view class="course-overview">
+      <view class="course-title"><text class="vip-free">VIP免费</text><text>{{course.title}}</text></view>
+      <view class="course-summary ellipsis">{{course.summary}}</view>
+      <view class="course-author-row">
+        <image src="/assets/app/course/byte/ic_bytetech.png" mode="aspectFit"></image>
+        <text>ByteTech</text>
+        <view class="author-divider"></view>
+        <text class="producer ellipsis">出品人：{{course.producer}}</text>
+      </view>
+      <view class="course-info-row">
+        <image src="/assets/app/course/byte/ic_video_collection.svg" mode="aspectFit"></image>
+        <text>合辑：{{course.videoCount}}个视频 · {{course.duration}}</text>
+      </view>
+    </view>
+
+    <view class="detail-tabs">
+      <view class="detail-tab {{activeTab === 'intro' ? 'active' : ''}}" data-id="intro" bindtap="switchTab">介绍</view>
+      <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">目录</view>
+      <view class="detail-tab {{activeTab === 'comments' ? 'active' : ''}}" data-id="comments" bindtap="switchTab">评论</view>
+    </view>
+
+    <view wx:if="{{activeTab === 'intro'}}" class="tab-panel intro-panel">
+      <rich-text class="intro-content" nodes="{{introduction}}" user-select></rich-text>
+      <view wx:if="{{recommendations.length}}" class="recommendation-section">
+        <view class="recommendation-title">好课推荐</view>
+        <byte-course-card wx:for="{{recommendations}}" wx:key="id" item="{{item}}" bind:open="openRecommendation"></byte-course-card>
+      </view>
+    </view>
+
+    <view wx:elif="{{activeTab === 'contents'}}" class="tab-panel chapter-panel">
+      <view wx:for="{{chapters}}" wx:key="id" class="chapter-row" data-index="{{index}}" bindtap="openChapter">
+        <view class="chapter-number">{{item.number}}</view>
+        <view class="chapter-copy">
+          <view class="chapter-title">{{item.title}}</view>
+          <view class="chapter-meta">讲师：{{item.producer}}{{item.duration ? ' · ' + item.duration : ''}}</view>
+        </view>
+        <view class="trial-control">
+          <view class="play-circle"><view></view></view>
+          <text>试学3分钟</text>
+        </view>
+      </view>
+      <view wx:if="{{!chapters.length}}" class="panel-empty">暂无课程目录</view>
+    </view>
+
+    <view wx:else class="tab-panel comment-panel">
+      <view wx:for="{{comments}}" wx:key="id" class="comment-row">
+        <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="comment-copy">
+          <view class="comment-user ellipsis">{{item.user}}</view>
+          <view class="comment-content">{{item.content}}</view>
+          <view class="comment-meta">{{item.time}}{{item.digg_count_value ? ' · ' + item.digg_count + ' 赞' : ''}}</view>
+        </view>
+      </view>
+      <view wx:if="{{commentsLoading}}" class="panel-empty">正在加载评论...</view>
+      <view wx:elif="{{!comments.length}}" class="comment-empty">暂无评论</view>
+    </view>
+
+    <view class="course-bottom">
+      <view class="trial-action" bindtap="startTrial">
+        <image class="trial-icon" src="{{themeName === 'dark' ? '/assets/app/course/byte/ic_course_free_try_dark.png' : '/assets/app/course/byte/ic_course_free_try.png'}}" mode="aspectFit"></image>
+        <text>免费试学</text>
+      </view>
+      <view class="vip-action" bindtap="openVip">
+        <view class="vip-main">开通会员免费学</view>
+        <view class="vip-caption">首发5折 仅0.5元/天</view>
+      </view>
+    </view>
+  </block>
+</view>
