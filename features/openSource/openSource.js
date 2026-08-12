@@ -77,12 +77,5 @@ Page(theme.withTheme({
         wx.showToast({ title: '复制失败，请稍后重试', icon: 'none' })
       }
     })
-  },
-
-  onShareAppMessage() {
-    return {
-      title: 'fthux 的开源作品',
-      path: '/features/openSource/openSource'
-    }
   }
 }))

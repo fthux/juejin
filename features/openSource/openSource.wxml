@@ -40,7 +40,7 @@
     </view>
     <button class="support-share" open-type="share" hover-class="interactive-pressed" aria-label="分享 fthux 的开源作品">
       <image src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image>
-      <text>分享开源项目</text>
+      <text>分享给好友</text>
     </button>
   </view>
 </view>

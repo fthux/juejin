@@ -19,6 +19,8 @@ const collectFiles = (directory) => {
 
 const app = JSON.parse(read('app.json'))
 const project = JSON.parse(read('project.config.json'))
+const themeSource = read('utils/theme.js')
+const openSourceSource = read('features/openSource/openSource.js')
 const subPackagePages = (app.subPackages || []).flatMap((pack) =>
   pack.pages.map((page) => `${pack.root.replace(/\/$/, '')}/${page}`)
 )
@@ -35,6 +37,9 @@ if (allPages.length !== pageSet.size) fail('app.json 中存在重复页面')
 if (!(app.subPackages || []).some((pack) => pack.root === 'features')) fail('功能页面必须放入 features 分包')
 if (app.lazyCodeLoading !== 'requiredComponents') fail('组件按需注入未启用')
 if (!app.darkmode || app.themeLocation !== 'theme.json') fail('小程序必须启用系统深浅色主题配置')
+if (!themeSource.includes('const onShareAppMessage = options.onShareAppMessage') || !themeSource.includes('Object.assign({}, DEFAULT_SHARE, pageShare || {})') || !themeSource.includes("desc: '") || !themeSource.includes("imageUrl: '/assets/app/common/share-cover.jpg'")) fail('统一主题封装缺少右上角菜单默认分享')
+if (!exists('assets/app/common/share-cover.jpg')) fail('缺少通用分享封面')
+if (openSourceSource.includes('onShareAppMessage')) fail('开源作品页必须使用全局通用分享文案')
 
 const ignoredFolders = new Set((project.packOptions && project.packOptions.ignore || [])
   .filter((item) => item.type === 'folder')

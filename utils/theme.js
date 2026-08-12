@@ -1,5 +1,11 @@
 const STORAGE_KEY = 'jj:dark-mode-v2'
 const LEGACY_STORAGE_KEY = 'jj:dark-mode'
+const DEFAULT_SHARE = {
+  title: '读文章、逛沸点、看小册｜稀土掘金学习版',
+  desc: '发现值得读的技术内容，随时浏览文章、沸点和小册。',
+  path: '/pages/index/index',
+  imageUrl: '/assets/app/common/share-cover.jpg'
+}
 
 const TOKENS = {
   light: {
@@ -162,6 +168,11 @@ function initialize(app, systemInfo) {
 function withTheme(options, settings) {
   const config = Object.assign({}, options)
   config.data = Object.assign({}, options.data, createThemeData(getResolvedTheme(), options.data))
+  const onShareAppMessage = options.onShareAppMessage
+  config.onShareAppMessage = function themedShareAppMessage() {
+    const pageShare = onShareAppMessage ? onShareAppMessage.apply(this, arguments) : null
+    return Object.assign({}, DEFAULT_SHARE, pageShare || {})
+  }
   const onLoad = options.onLoad
   const onShow = options.onShow
   config.onLoad = function themedOnLoad(query) {
