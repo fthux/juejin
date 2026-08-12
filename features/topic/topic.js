@@ -214,7 +214,7 @@ Page(theme.withTheme({
     const requestId = ++this.pinRequestId
     this.setData({ loading: true })
     return api.topicPins(this.data.topicId, cursor, {
-      sortType: this.data.sort === 'hot' ? 500 : 200
+      sortType: this.data.sort === 'hot' ? 200 : 500
     }).then(({ result }) => {
       if (requestId !== this.pinRequestId) return
       const rawRows = result.data || []
@@ -270,17 +270,5 @@ Page(theme.withTheme({
 
   toggleLike() {
     session.requireLogin()
-  },
-
-  pinMore(event) {
-    const pin = event.detail && event.detail.item
-    if (!pin) return
-    wx.showActionSheet({
-      itemList: ['减少此类沸点', '举报内容'],
-      success: ({ tapIndex }) => {
-        if (tapIndex === 0) this.setData({ pins: this.data.pins.filter((item) => item.msg_id !== pin.msg_id) })
-        else wx.navigateTo({ url: '/features/feedback/feedback' })
-      }
-    })
   }
 }))

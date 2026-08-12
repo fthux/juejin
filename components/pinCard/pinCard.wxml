@@ -11,19 +11,31 @@
       </view>
     </view>
     <view wx:if="{{showFollow}}" class="card-follow {{followed ? 'followed' : ''}}" hover-class="item-pressed" catchtap="follow" aria-role="button" aria-label="{{followed ? '取消关注' : '关注'}}{{item.author.user_name}}">{{followed ? '已关注' : '关注'}}</view>
-    <view wx:else class="more-action" hover-class="item-pressed" catchtap="more" aria-role="button" aria-label="更多操作">
+    <view wx:elif="{{showMore}}" class="more-action" hover-class="item-pressed" catchtap="more" aria-role="button" aria-label="更多操作">
       <image class="more" src="/assets/app/pins/ic_pin_more.png" mode="aspectFit" aria-hidden="true"></image>
     </view>
   </view>
-  <view class="pin-content">
-    <block wx:if="{{item.content_segments.length}}">
-      <block wx:for="{{item.content_segments}}" wx:key="key">
-        <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-index="{{index}}" hover-class="item-pressed" catchtap="openTheme" aria-role="button" aria-label="打开活动{{item.text}}">#{{item.text}}#</text>
-        <text wx:else>{{item.text}}</text>
+  <view class="pin-content-wrap">
+    <view class="pin-content pin-content-visible {{contentExpanded ? 'expanded' : 'collapsed'}}">
+      <block wx:if="{{item.content_segments.length}}">
+        <block wx:for="{{item.content_segments}}" wx:key="key">
+          <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-index="{{index}}" hover-class="item-pressed" catchtap="openTheme" aria-role="button" aria-label="打开活动{{item.text}}">#{{item.text}}#</text>
+          <text wx:else>{{item.text}}</text>
+        </block>
       </block>
-    </block>
-    <text wx:else>{{item.content}}</text>
+      <text wx:else>{{item.content}}</text>
+    </view>
+    <view class="pin-content pin-content-measure" aria-hidden="true">
+      <block wx:if="{{item.content_segments.length}}">
+        <block wx:for="{{item.content_segments}}" wx:key="key">
+          <text wx:if="{{item.type === 'theme'}}">#{{item.text}}#</text>
+          <text wx:else>{{item.text}}</text>
+        </block>
+      </block>
+      <text wx:else>{{item.content}}</text>
+    </view>
   </view>
+  <view wx:if="{{contentCanToggle}}" class="content-toggle" hover-class="item-pressed" catchtap="toggleContent" aria-role="button" aria-label="{{contentExpanded ? '收起沸点正文' : '展开沸点正文'}}">{{contentExpanded ? '收起' : '展开'}}</view>
   <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
     <view wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture-action" data-src="{{item}}" hover-class="item-pressed" catchtap="previewImage" aria-role="button" aria-label="预览图片">
       <image class="pin-picture" src="{{item}}" mode="aspectFill" aria-hidden="true"></image>
@@ -36,19 +48,21 @@
       <view class="link-host ellipsis">{{item.link}}</view>
     </view>
   </view>
-  <view wx:if="{{item.topic && item.topic_id}}" class="topic" hover-class="item-pressed" catchtap="openTopic" aria-role="button" aria-label="打开{{item.topic}}圈子"># {{item.topic}} ></view>
+  <view wx:if="{{(item.topic && item.topic_id) || (item.digg_count_value > 0 && item.digg_users.length)}}" class="pin-meta-row">
+    <view wx:if="{{item.topic && item.topic_id}}" class="topic" hover-class="item-pressed" catchtap="openTopic" aria-role="button" aria-label="打开{{item.topic}}圈子"># {{item.topic}} ></view>
+    <view wx:if="{{item.digg_count_value > 0 && item.digg_users.length}}" class="pin-digg-users">
+      <view class="pin-digg-avatars">
+        <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+      </view>
+      <text>{{item.digg_users.length <= 10 ? "赞过" : "等人赞过"}}</text>
+    </view>
+  </view>
   <view wx:if="{{item.hot_comment}}" class="hot-comment">
     <view class="hot-comment-head">
       <image class="hot-comment-label" src="/assets/app/pins/ic_pins_hot_comment.png" mode="aspectFit"></image>
       <text wx:if="{{item.hot_comment.digg_count_value > 0}}" class="hot-comment-digg">{{item.hot_comment.digg_count}}人赞</text>
     </view>
     <view class="hot-comment-content">{{item.hot_comment.content}}</view>
-  </view>
-  <view wx:if="{{item.digg_count_value > 0 && item.digg_users.length}}" class="pin-digg-users">
-    <view class="pin-digg-avatars">
-      <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
-    </view>
-    <text>{{item.digg_users.length <= 10 ? "赞过" :"等人赞过"}}</text>
   </view>
   <view wx:if="{{showActions}}" class="pin-actions">
     <button class="pin-action" open-type="share" data-item="{{item}}" hover-class="action-pressed" catchtap="noop" aria-label="分享沸点"><image class="pin-action-icon" src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image><text>分享</text></button>

@@ -1,5 +1,8 @@
 <view class="course-card" bindtap="open">
-  <image class="course-cover" src="{{coverFailed ? '/assets/app/common/default_booklet_cover_image.png' : (item.cover || '/assets/app/common/default_booklet_cover_image.png')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
+  <view class="course-cover-wrap">
+    <image class="course-cover" src="{{coverFailed ? '/assets/app/common/default_booklet_cover_image.png' : (item.cover || '/assets/app/common/default_booklet_cover_image.png')}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onCoverError"></image>
+    <text wx:if="{{item.vip}}" class="course-vip-label">VIP</text>
+  </view>
   <view class="course-body">
     <view class="course-title two-lines"><text wx:if="{{item.isNew}}" class="new-label">新品</text>{{item.title}}</view>
     <view class="course-author ellipsis">{{item.author}} <text wx:if="{{item.authorLevel}}" class="author-level">LV.{{item.authorLevel}}</text></view>

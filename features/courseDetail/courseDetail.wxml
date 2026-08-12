@@ -28,9 +28,14 @@
       </view>
     </view>
 
-    <view class="detail-tabs">
+    <view id="detail-tabs" class="detail-tabs">
       <view class="detail-tab {{activeTab === 'intro' ? 'active' : ''}}" data-id="intro" bindtap="switchTab">介绍</view>
-      <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">目录</view>
+      <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">
+        <view class="detail-tab-label">
+          <text>目录</text>
+          <text wx:if="{{hasTrial}}" class="tab-trial-label">试学</text>
+        </view>
+      </view>
       <view class="detail-tab {{activeTab === 'recommendations' ? 'active' : ''}}" data-id="recommendations" bindtap="switchTab">相关推荐</view>
     </view>
 

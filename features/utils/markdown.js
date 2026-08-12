@@ -40,4 +40,59 @@ function normalizeImageSources(source) {
   })
 }
 
-module.exports = { toHtml, normalizeImageSources }
+function decodeHeadingText(source) {
+  const namedEntities = { amp: '&', apos: "'", gt: '>', lt: '<', nbsp: ' ', quot: '"' }
+  return String(source || '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&(#(?:x[0-9a-f]+|\d+)|amp|apos|gt|lt|nbsp|quot);/gi, (match, entity) => {
+      if (entity[0] !== '#') return namedEntities[entity.toLowerCase()] || match
+      const hexadecimal = entity[1].toLowerCase() === 'x'
+      const codePoint = Number.parseInt(entity.slice(hexadecimal ? 2 : 1), hexadecimal ? 16 : 10)
+      try {
+        return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : match
+      } catch (error) {
+        return match
+      }
+    })
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function sectionArticleContent(source, catalogLimit = 6) {
+  const html = String(source || '')
+  const headings = []
+  const headingPattern = /<h([1-3])\b[^>]*>([\s\S]*?)<\/h\1>/gi
+  let match
+
+  while (headings.length < catalogLimit && (match = headingPattern.exec(html))) {
+    const title = decodeHeadingText(match[2])
+    if (!title) continue
+    headings.push({ id: `article-heading-${headings.length}`, title, offset: match.index })
+  }
+
+  if (!headings.length) {
+    return {
+      catalog: [],
+      sections: html ? [{ id: 'article-content-start', content: html }] : []
+    }
+  }
+
+  const sections = []
+  if (headings[0].offset > 0) {
+    sections.push({ id: 'article-content-start', content: html.slice(0, headings[0].offset) })
+  }
+  headings.forEach((heading, index) => {
+    const next = headings[index + 1]
+    sections.push({
+      id: heading.id,
+      content: html.slice(heading.offset, next ? next.offset : html.length)
+    })
+  })
+
+  return {
+    catalog: headings.map(({ id, title }) => ({ id, title })),
+    sections
+  }
+}
+
+module.exports = { toHtml, normalizeImageSources, sectionArticleContent }

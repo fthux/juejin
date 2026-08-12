@@ -8,12 +8,36 @@
   border-bottom: 1rpx solid var(--jj-line);
 }
 
-.course-cover {
+.course-cover-wrap {
+  position: relative;
   width: 124rpx;
   height: 174rpx;
   flex: 0 0 auto;
   border-radius: 6rpx;
+  overflow: hidden;
   background: var(--jj-fill);
+}
+
+.course-cover {
+  width: 100%;
+  height: 100%;
+}
+
+.course-vip-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 52rpx;
+  height: 30rpx;
+  padding: 0 7rpx;
+  box-sizing: border-box;
+  border-bottom-right-radius: 7rpx;
+  color: #6b3f00;
+  background: #f8d88a;
+  font-size: 18rpx;
+  font-weight: 700;
+  line-height: 30rpx;
+  text-align: center;
 }
 
 .course-body {

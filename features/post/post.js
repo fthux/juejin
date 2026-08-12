@@ -12,21 +12,12 @@ function sortComments(comments, sort) {
   return rows.sort((left, right) => right.ctime_value - left.ctime_value)
 }
 
-function buildCatalog(source) {
-  const headings = []
-  const markdownHeadings = String(source || '').matchAll(/^#{1,3}\s+(.+)$/gm)
-  for (const match of markdownHeadings) {
-    const title = match[1].replace(/[*_`~\[\]]/g, '').trim()
-    if (title) headings.push(title)
-  }
-  return headings.slice(0, 6)
-}
-
 Page(theme.withTheme({
   data: {
     articleId: '',
     article: null,
     content: '',
+    contentSections: [],
     related: [],
     featured: [],
     comments: [],
@@ -76,6 +67,7 @@ Page(theme.withTheme({
       const content = markdownContent
         ? markdown.toHtml(markdownContent)
         : markdown.normalizeImageSources(htmlContent || '')
+      const articleContent = markdown.sectionArticleContent(content)
       article.tags = article.all_tags
       article.themes = (detail.theme_list || []).map((theme) => theme.name || theme.theme_name || '').filter(Boolean)
       session.addHistory(article)
@@ -83,11 +75,12 @@ Page(theme.withTheme({
       this.setData({
         article,
         content,
+        contentSections: articleContent.sections,
         related: [],
         featured: [],
         comments: [],
         commentTotal: article.comment_count,
-        catalog: buildCatalog(markdownContent || ''),
+        catalog: articleContent.catalog,
         isLiked: session.getList('likes').indexOf(article.article_id) !== -1,
         isCollected: session.getList('collections').indexOf(article.article_id) !== -1,
         isFollowed: session.getList('follows').indexOf(article.author.user_id) !== -1,
@@ -102,6 +95,7 @@ Page(theme.withTheme({
       this.setData({
         article,
         content: '',
+        contentSections: [],
         related: [],
         loadError: true,
         loading: false
@@ -224,7 +218,13 @@ Page(theme.withTheme({
       utils.toast('这篇文章暂无目录')
       return
     }
-    wx.showActionSheet({ itemList: this.data.catalog })
+    wx.showActionSheet({
+      itemList: this.data.catalog.map((item) => item.title),
+      success: ({ tapIndex }) => {
+        const item = this.data.catalog[tapIndex]
+        if (item) wx.pageScrollTo({ selector: `#${item.id}`, duration: 250 })
+      }
+    })
   },
 
   addComment() {

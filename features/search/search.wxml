@@ -1,45 +1,113 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page search-page">
-  <view class="search-head surface">
-    <view class="search-input">
-      <text class="search-icon">⌕</text>
-      <input value="{{keyword}}" placeholder="搜索稀土掘金" confirm-type="search" focus bindinput="onInput" bindconfirm="submit"></input>
-      <text wx:if="{{keyword}}" class="clear" bindtap="clearKeyword">×</text>
-    </view>
-    <view class="search-submit" bindtap="submit">搜索</view>
+  <view class="search-sticky surface">
+    <status-bar navigation="{{true}}">
+      <view class="search-head">
+        <view class="back-button" hover-class="interactive-pressed" bindtap="goBack" aria-role="button" aria-label="返回"><text></text></view>
+        <view class="search-input">
+          <image src="/assets/app/find/find_page_ic_search.svg" mode="aspectFit" aria-hidden="true"></image>
+          <input value="{{keyword}}" placeholder="{{placeholder}}" confirm-type="search" focus cursor-spacing="20" bindinput="onInput" bindconfirm="submit" aria-label="搜索关键词"></input>
+          <view wx:if="{{keyword}}" class="clear-button" hover-class="interactive-pressed" bindtap="clearKeyword" aria-role="button" aria-label="清空关键词"><text></text></view>
+        </view>
+        <view class="search-submit {{keyword ? '' : 'disabled'}}" hover-class="interactive-pressed" bindtap="submit" aria-role="button" aria-label="搜索">搜索</view>
+      </view>
+    </status-bar>
+
+    <block wx:if="{{searched}}">
+      <view class="search-tabs" aria-role="tablist">
+        <view wx:for="{{types}}" wx:key="id" class="search-tab {{type === item.id ? 'active' : ''}}" data-id="{{item.id}}" hover-class="interactive-pressed" bindtap="switchType" aria-role="tab" aria-label="{{item.name}}">{{item.name}}</view>
+      </view>
+      <view wx:if="{{type === 'all' || type === 'article'}}" class="filter-bar">
+        <view class="filter-button {{sortType ? 'selected' : ''}}" data-filter="sort" hover-class="interactive-pressed" bindtap="toggleFilter" aria-role="button" aria-label="{{sortLabel}}">
+          <text>{{sortLabel}}</text><text class="filter-arrow {{openFilter === 'sort' ? 'open' : ''}}"></text>
+        </view>
+        <view class="filter-button {{searchType ? 'selected' : ''}}" data-filter="time" hover-class="interactive-pressed" bindtap="toggleFilter" aria-role="button" aria-label="{{timeLabel}}">
+          <text>{{timeLabel}}</text><text class="filter-arrow {{openFilter === 'time' ? 'open' : ''}}"></text>
+        </view>
+      </view>
+    </block>
   </view>
 
   <view wx:if="{{!searched}}" class="history surface">
     <view class="history-head">
       <text>搜索历史</text>
-      <text class="muted" bindtap="clearHistory">清空</text>
+      <view wx:if="{{histories.length}}" class="history-clear" hover-class="interactive-pressed" bindtap="clearHistory" aria-role="button" aria-label="清空搜索历史"><text></text></view>
     </view>
-    <view class="history-list">
-      <view wx:for="{{histories}}" wx:key="*this" class="chip" data-keyword="{{item}}" bindtap="useHistory">{{item}}</view>
+    <view wx:if="{{histories.length}}" class="history-list">
+      <view wx:for="{{histories}}" wx:key="*this" class="history-chip" data-index="{{index}}" hover-class="interactive-pressed" bindtap="useHistory">{{item}}</view>
     </view>
+    <view wx:else class="history-empty">暂无搜索历史</view>
   </view>
 
-  <view wx:else>
-    <view class="tabs">
-      <view wx:for="{{types}}" wx:key="id" class="tab {{type === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="switchType">{{item.name}}</view>
-    </view>
-    <view wx:if="{{type === 'article'}}">
-      <article-card wx:for="{{results}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
-    </view>
-    <view wx:elif="{{type === 'course'}}" class="surface">
-      <course-card wx:for="{{results}}" wx:key="id" item="{{item}}" bind:open="openCourse"></course-card>
-    </view>
-    <view wx:else class="user-list surface">
-      <view wx:for="{{results}}" wx:key="user_id" class="user-row" data-id="{{item.user_id}}" bindtap="openUser">
-        <image class="avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
-        <view class="user-copy">
-          <view class="user-name">{{item.user_name}}</view>
-          <view class="user-caption ellipsis">{{item.job_title}}<text wx:if="{{item.company}}"> @ {{item.company}}</text> · {{item.follower_count}} 关注者</view>
+  <view wx:else class="result-list">
+    <block wx:for="{{results}}" wx:key="key">
+      <view wx:if="{{item.kind === 'article'}}" class="search-article surface" data-index="{{index}}" hover-class="result-pressed" bindtap="openResult" aria-role="button" aria-label="阅读{{item.item.title}}">
+        <view class="search-article-title two-lines"><text wx:for="{{item.item.title_segments}}" wx:for-item="segment" wx:key="key" class="{{segment.hit ? 'keyword-hit' : ''}}">{{segment.text}}</text></view>
+        <view class="search-author-row">
+          <view class="author-action" data-index="{{index}}" hover-class="interactive-pressed" catchtap="openAuthor" aria-role="button" aria-label="查看{{item.item.author.user_name}}的主页">
+            <image src="{{item.item.author.avatar_large}}" mode="aspectFill"></image><text>{{item.item.author.user_name}}</text>
+          </view>
+          <text wx:if="{{item.item.ctime}}" class="author-divider">|</text><text wx:if="{{item.item.ctime}}">{{item.item.ctime}}</text>
         </view>
-        <view class="secondary-button">关注</view>
+        <view class="search-summary-row">
+          <view class="search-article-brief two-lines"><text wx:for="{{item.item.brief_segments}}" wx:for-item="segment" wx:key="key" class="{{segment.hit ? 'keyword-hit' : ''}}">{{segment.text}}</text></view>
+          <image wx:if="{{item.item.cover_image}}" class="search-cover" src="{{item.item.cover_image}}" mode="aspectFill"></image>
+        </view>
+        <view class="search-article-footer">
+          <view class="search-stat"><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.item.digg_label}}</text></view>
+          <view class="search-stat"><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.item.comment_label}}</text></view>
+          <text wx:if="{{item.item.tags.length}}" class="search-tag">{{item.item.tags[0]}}</text>
+        </view>
       </view>
-    </view>
-    <empty-state wx:if="{{!loading && !results.length}}" text="没有找到相关内容"></empty-state>
-    <view wx:if="{{loading}}" class="loading-line">正在搜索...</view>
+
+      <view wx:elif="{{item.kind === 'course'}}" class="search-course surface" data-index="{{index}}" hover-class="result-pressed" bindtap="openResult">
+        <image class="course-cover" src="{{item.item.cover}}" mode="aspectFill"></image>
+        <view class="course-copy">
+          <view class="course-title two-lines">{{item.item.title}}</view>
+          <view class="course-summary two-lines">{{item.item.summary}}</view>
+          <view class="course-meta">{{item.item.author}} · {{item.item.section_count}} 小节 · {{item.item.buy_count}} 人已购买</view>
+          <view class="course-price"><text>¥</text>{{item.item.price}}</view>
+        </view>
+      </view>
+
+      <view wx:elif="{{item.kind === 'tag'}}" class="tag-row surface" data-index="{{index}}" hover-class="result-pressed" bindtap="openResult">
+        <image wx:if="{{item.item.icon}}" class="tag-icon" src="{{item.item.icon}}" mode="aspectFill"></image>
+        <view wx:else class="tag-icon tag-fallback">#</view>
+        <view class="tag-copy">
+          <view class="tag-name"><text wx:for="{{item.item.name_segments}}" wx:for-item="segment" wx:key="key" class="{{segment.hit ? 'keyword-hit' : ''}}">{{segment.text}}</text></view>
+          <view class="tag-caption">{{item.item.follower_count}} 人关注 · {{item.item.article_count}} 篇文章</view>
+        </view>
+        <view class="follow-button {{item.item.followed ? 'followed' : ''}}" data-index="{{index}}" hover-class="interactive-pressed" catchtap="toggleFollow">{{item.item.followed ? '已关注' : '关注'}}</view>
+      </view>
+
+      <view wx:else class="user-row surface" data-index="{{index}}" hover-class="result-pressed" bindtap="openResult">
+        <image class="user-avatar" src="{{item.item.avatar_large}}" mode="aspectFill"></image>
+        <view class="user-copy">
+          <view class="user-name"><text wx:for="{{item.item.name_segments}}" wx:for-item="segment" wx:key="key" class="{{segment.hit ? 'keyword-hit' : ''}}">{{segment.text}}</text></view>
+          <view class="user-caption ellipsis"><text wx:if="{{item.item.job_title}}">{{item.item.job_title}}</text><text wx:if="{{item.item.company}}"> @ {{item.item.company}}</text><text wx:if="{{item.item.job_title || item.item.company}}"> · </text>{{item.item.follower_count}} 关注者</view>
+        </view>
+        <view class="follow-button {{item.item.followed ? 'followed' : ''}}" data-index="{{index}}" hover-class="interactive-pressed" catchtap="toggleFollow">{{item.item.followed ? '已关注' : '关注'}}</view>
+      </view>
+    </block>
+
+    <empty-state wx:if="{{loading && !results.length}}" type="loading" text="正在搜索" skeleton-rows="4"></empty-state>
+    <empty-state wx:elif="{{loadError && !results.length}}" type="error" text="搜索失败" description="请检查网络后重试" action-text="重新搜索" bind:action="retryLoad"></empty-state>
+    <empty-state wx:elif="{{!loading && !loadError && !results.length}}" text="没有找到相关内容" description="换个关键词或筛选条件试试"></empty-state>
+    <empty-state wx:elif="{{loading}}" type="loading" compact="{{true}}" text="正在加载更多结果" skeleton-rows="1"></empty-state>
+    <empty-state wx:elif="{{loadError}}" type="error" compact="{{true}}" text="更多结果加载失败" action-text="重试" bind:action="retryLoad"></empty-state>
+    <empty-state wx:elif="{{fromCache}}" type="cached" compact="{{true}}" text="当前展示本地缓存结果" action-text="刷新" bind:action="retryLoad"></empty-state>
+    <empty-state wx:elif="{{results.length && !hasMore}}" type="end" compact="{{true}}" text="已加载全部结果"></empty-state>
   </view>
+
+  <block wx:if="{{openFilter}}">
+    <view class="filter-mask" bindtap="closeFilter"></view>
+    <view class="filter-menu surface {{openFilter === 'time' ? 'align-right' : ''}}">
+      <block wx:if="{{openFilter === 'sort'}}">
+        <view wx:for="{{sortOptions}}" wx:key="id" class="filter-option {{sortType === item.id ? 'active' : ''}}" data-index="{{index}}" hover-class="interactive-pressed" bindtap="selectSort">{{item.name}}<text wx:if="{{sortType === item.id}}">✓</text></view>
+      </block>
+      <block wx:else>
+        <view wx:for="{{timeOptions}}" wx:key="id" class="filter-option {{searchType === item.id ? 'active' : ''}}" data-index="{{index}}" hover-class="interactive-pressed" bindtap="selectTime">{{item.name}}<text wx:if="{{searchType === item.id}}">✓</text></view>
+      </block>
+    </view>
+  </block>
 </view>

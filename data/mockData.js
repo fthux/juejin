@@ -238,11 +238,35 @@ const daily = {
 }
 
 function search(keyword, type) {
-  const query = keyword.toLowerCase()
-  if (type === 'user') {
-    return authors.filter((item) => `${item.user_name}${item.job_title}${item.company}`.toLowerCase().indexOf(query) !== -1)
-  }
-  return articles.filter((item) => `${item.title}${item.brief_content}${item.tags.map((tag) => tag.tag_name).join('')}`.toLowerCase().indexOf(query) !== -1)
+  const query = String(keyword || '').toLowerCase()
+  const articleResults = articles.filter((item) => `${item.title}${item.brief_content}${item.tags.map((tag) => tag.tag_name).join('')}`.toLowerCase().indexOf(query) !== -1)
+  const courseResults = courses.filter((item) => {
+    const info = item.base_info || item
+    const user = item.user_info || {}
+    return `${info.title || ''}${info.summary || ''}${user.user_name || ''}`.toLowerCase().indexOf(query) !== -1
+  })
+  const userResults = authors.filter((item) => `${item.user_name}${item.job_title}${item.company}`.toLowerCase().indexOf(query) !== -1)
+  const tagMap = {}
+  articles.forEach((article) => {
+    article.tags.forEach((tag) => {
+      const name = tag.tag_name || ''
+      if (name.toLowerCase().indexOf(query) !== -1) {
+        tagMap[name] = {
+          tag_id: tag.tag_id || name,
+          tag_name: name,
+          concern_user_count: 0,
+          post_article_count: articles.filter((item) => item.tags.some((entry) => entry.tag_name === name)).length
+        }
+      }
+    })
+  })
+  const tagResults = Object.keys(tagMap).map((name) => tagMap[name])
+
+  if (type === 'article') return articleResults
+  if (type === 'course') return courseResults
+  if (type === 'tag') return tagResults
+  if (type === 'user') return userResults
+  return articleResults.concat(courseResults, tagResults, userResults)
 }
 
 module.exports = {

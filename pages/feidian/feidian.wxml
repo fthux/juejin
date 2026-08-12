@@ -81,5 +81,5 @@
   <empty-state wx:elif="{{topTab === 'discover' && !fromCache && list.length && !hasMore}}" type="end" compact="{{true}}" text="已加载全部沸点"></empty-state>
   <empty-state wx:if="{{topTab === 'discover' && loadError && list.length && !loading}}" type="error" compact="{{true}}" text="部分沸点加载失败" action-text="重试" bind:action="retryLoad"></empty-state>
   <empty-state wx:elif="{{topTab === 'discover' && fromCache && !loading}}" type="cached" compact="{{true}}" text="当前展示本地缓存内容" action-text="刷新" bind:action="retryLoad"></empty-state>
-  <view wx:if="{{topTab === 'discover'}}" class="publish-fab" hover-class="interactive-pressed" bindtap="openPublish" aria-role="button" aria-label="发布沸点"><text>✎</text></view>
+  <view wx:if="{{topTab === 'discover'}}" class="publish-fab" hover-class="interactive-pressed" bindtap="openPublish" aria-role="button" aria-label="发布沸点"><image src="/assets/app/pins/ic_pins_publish.png" mode="aspectFit" aria-hidden="true"></image></view>
 </view>

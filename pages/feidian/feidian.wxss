@@ -152,7 +152,7 @@
 }
 
 .sort-row {
-  height: var(--jj-touch-target);
+  height: 76rpx;
   padding: 0 28rpx;
   display: flex;
   align-items: center;
@@ -166,14 +166,14 @@
 }
 
 .sort-switch {
-  padding: 4rpx;
+  padding: 2rpx;
   display: flex;
   border-radius: 30rpx;
   background: var(--jj-fill);
 }
 
 .sort-switch view {
-  height: 64rpx;
+  height: 48rpx;
   padding: 0 18rpx;
   display: flex;
   align-items: center;
@@ -301,7 +301,7 @@
   font-size: 42rpx;
 }
 
-.publish-fab text {
-  display: block;
-  transform: translateY(-2rpx);
+.publish-fab image {
+  width: 42rpx;
+  height: 42rpx;
 }

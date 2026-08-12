@@ -77,6 +77,7 @@ Page(theme.withTheme({
     chapters: [],
     introduction: '',
     recommendations: [],
+    hasTrial: false,
     activeTab: 'intro',
     loading: true,
     loadError: false
@@ -84,6 +85,9 @@ Page(theme.withTheme({
 
   onLoad(query) {
     this.bookletId = query.id || ''
+    this.currentScrollTop = 0
+    this.tabScrollTops = {}
+    this.tabsScrollTop = 0
     if (!this.bookletId) {
       this.setData({ loading: false, loadError: true })
       return
@@ -109,6 +113,7 @@ Page(theme.withTheme({
         content: section.local_content || ''
       }))
       if (!course.id) throw new Error('课程详情不存在')
+      const hasTrial = !course.owned && course.priceValue > 0 && chapters.some((chapter) => chapter.isFree)
       course.durationText = formatCourseDuration(course.read_time)
       const history = (wx.getStorageSync('jj:course-history') || []).filter((item) => String(item.id) !== String(course.id))
       history.unshift(Object.assign({}, course, { viewedAt: Date.now() }))
@@ -117,15 +122,16 @@ Page(theme.withTheme({
       this.setData({
         course,
         chapters,
+        hasTrial,
         introduction: markdown.normalizeImageSources((detail.introduction && detail.introduction.content) || course.summary),
         loading: false
-      })
+      }, () => this.measureTabsScrollTop())
       this.loadRecommendations()
     }).catch(() => this.setData({ loading: false, loadError: true }))
   },
 
   loadRecommendations() {
-    api.courseRecommendations('0', 20).then(({ result }) => {
+    api.courseRecommendations(this.bookletId).then(({ result }) => {
       const recommendations = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
       this.setData({ recommendations })
     }).catch(() => this.setData({ recommendations: [] }))
@@ -141,7 +147,35 @@ Page(theme.withTheme({
   },
 
   switchTab(event) {
-    this.setData({ activeTab: event.currentTarget.dataset.id })
+    const activeTab = event.currentTarget.dataset.id
+    if (activeTab === this.data.activeTab) return
+    const currentScrollTop = Number(this.currentScrollTop) || 0
+    const targetScrollTop = this.tabScrollTops && this.tabScrollTops[activeTab]
+    this.tabScrollTops = this.tabScrollTops || {}
+    this.tabScrollTops[this.data.activeTab] = currentScrollTop
+    this.setData({ activeTab }, () => {
+      const scrollTop = Number.isFinite(targetScrollTop)
+        ? targetScrollTop
+        : Math.min(currentScrollTop, this.tabsScrollTop)
+      wx.pageScrollTo({ scrollTop, duration: 0 })
+    })
+  },
+
+  measureTabsScrollTop() {
+    wx.nextTick(() => {
+      const query = wx.createSelectorQuery()
+      query.select('#detail-tabs').boundingClientRect()
+      query.selectViewport().scrollOffset()
+      query.exec((result) => {
+        const rect = result && result[0]
+        const viewport = result && result[1]
+        if (rect && viewport) this.tabsScrollTop = viewport.scrollTop + rect.top
+      })
+    })
+  },
+
+  onPageScroll(event) {
+    this.currentScrollTop = event.scrollTop
   },
 
   startTrial() {

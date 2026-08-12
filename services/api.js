@@ -222,16 +222,24 @@ function courses(cursor, options) {
     cursor: cursor || '0',
     limit: 20,
     category_id: config.categoryId || '0',
-    sort: config.sort === 'latest' ? 1 : (config.sort === 'hot' ? 2 : 0)
+    sort: config.sort === 'hot' ? 7 : 1,
+    is_vip: config.onlyVip ? 1 : 0
   }
-  return withFallback(request('/booklet_api/v1/booklet/listbycategory', data), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+  return withFallback(request('/booklet_api/v1/booklet/listbycategory', data), () => ({
+    data: mock.courses.filter((item) => !config.onlyVip || Boolean((item.base_info || item).can_vip_borrow)),
+    cursor: 'mock-end',
+    has_more: false
+  }))
 }
 
-function courseRecommendations(cursor, limit) {
-  return withFallback(request('/booklet_api/v1/booklet/recommend', {
-    cursor: cursor || '0',
-    limit: limit || 20
-  }), () => ({ data: mock.courses, cursor: 'mock-end', has_more: false }))
+function courseRecommendations(bookletId, cursor) {
+  const data = { booklet_id: String(bookletId || '') }
+  if (cursor && cursor !== '0') data.cursor = cursor
+  return withFallback(request('/booklet_api/v1/booklet/recommend', data), () => ({
+    data: mock.courses.filter((item) => String(item.booklet_id || '') !== String(bookletId || '')),
+    cursor: 'mock-end',
+    has_more: false
+  }))
 }
 
 function popularizeCourses(cursor, options) {
@@ -474,17 +482,25 @@ function searchTopics(keyword, cursor) {
   }))
 }
 
-function search(keyword, type) {
+function search(keyword, type, cursor, options) {
   const query = String(keyword || '').trim()
-  const kind = type || 'article'
-  if (!query) return Promise.resolve({ result: { data: [] }, fromCache: true })
+  const kind = type || 'all'
+  const config = options || {}
+  const idTypes = { all: 0, article: 2, course: 12, tag: 9, user: 1 }
+  if (!query) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
   return withFallback(request('/search_api/v1/search', {
-    query,
-    id_type: kind === 'user' ? 1 : 2,
-    cursor: '0',
+    key_word: query,
+    id_type: idTypes[kind] === undefined ? 0 : idTypes[kind],
+    cursor: cursor || '0',
     limit: 20,
-    search_type: 0
-  }), () => ({ data: mock.search(query, kind) }))
+    version: 1,
+    search_type: Number(config.searchType) || 0,
+    sort_type: Number(config.sortType) || 0
+  }), () => ({
+    data: mock.search(query, kind),
+    cursor: 'mock-end',
+    has_more: false
+  }))
 }
 
 module.exports = {

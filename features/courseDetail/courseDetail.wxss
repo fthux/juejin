@@ -115,6 +115,30 @@
   font-weight: 600;
 }
 
+.detail-tab-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tab-trial-label {
+  position: absolute;
+  left: 100%;
+  top: -8rpx;
+  width: 48rpx;
+  height: 24rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff7426;
+  background: #fff2e8;
+  font-size: 16rpx;
+  font-weight: 700;
+  line-height: 24rpx;
+  white-space: nowrap;
+}
+
 .detail-tab.active::after {
   content: "";
   position: absolute;
@@ -338,5 +362,10 @@
 
   .trial-label {
     background: rgba(245, 155, 69, 0.14);
+  }
+
+  .tab-trial-label {
+    color: #ff8541;
+    background: rgba(255, 133, 65, 0.16);
   }
 }

@@ -103,6 +103,10 @@
   color: var(--jj-text-3);
 }
 
+.pin-content-wrap {
+  position: relative;
+}
+
 .pin-content {
   margin: 20rpx 0 16rpx;
   color: var(--jj-text);
@@ -110,6 +114,33 @@
   line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-all;
+}
+
+.pin-content.collapsed {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.pin-content-measure {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.content-toggle {
+  width: fit-content;
+  margin: -8rpx 0 14rpx;
+  padding: 6rpx 0;
+  color: var(--jj-blue);
+  font-size: var(--jj-font-caption);
+  line-height: 1.4;
 }
 
 .pin-theme-link {
@@ -172,18 +203,30 @@
   font-size: var(--jj-font-caption);
 }
 
+.pin-meta-row {
+  min-width: 0;
+  margin-top: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
 .topic {
   width: fit-content;
-  min-height: 64rpx;
-  margin-top: 18rpx;
+  min-width: 0;
+  min-height: 48rpx;
   padding: 0 14rpx;
   display: flex;
   align-items: center;
+  overflow: hidden;
   box-sizing: border-box;
   border-radius: 20rpx;
   color: #1e80ff;
   background: var(--jj-blue-soft);
   font-size: 25rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hot-comment {
@@ -218,13 +261,15 @@
 }
 
 .pin-digg-users {
-  min-height: 64rpx;
-  padding-top: 16rpx;
+  min-width: 0;
+  min-height: 48rpx;
+  margin-left: auto;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   color: var(--jj-text-3);
   font-size: var(--jj-font-caption);
+  white-space: nowrap;
 }
 
 .pin-digg-avatars {
@@ -233,8 +278,8 @@
 }
 
 .pin-digg-avatar {
-  width: 42rpx;
-  height: 42rpx;
+  width: 38rpx;
+  height: 38rpx;
   margin-left: -10rpx;
   border: 3rpx solid var(--jj-surface);
   border-radius: 50%;

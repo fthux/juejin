@@ -27,11 +27,15 @@
           <image src="{{darkMode ? item.darkIcon : item.icon}}" mode="aspectFit"></image><text>{{item.title}}</text>
         </view>
       </view>
-      <view class="quick-grid">
-        <view wx:for="{{quickEntries}}" wx:key="name" class="quick-item" data-url="{{item.url}}" hover-class="interactive-pressed" bindtap="openFeature" aria-role="button" aria-label="打开{{item.name}}">
-          <image src="{{item.icon}}" mode="aspectFit"></image><text>{{item.name}}</text>
-        </view>
-      </view>
+      <swiper class="quick-swiper" indicator-dots="{{true}}" indicator-color="rgba(134, 144, 156, .28)" indicator-active-color="#1e80ff">
+        <swiper-item wx:for="{{quickEntryPages}}" wx:for-item="entryPage" wx:key="key">
+          <view class="quick-grid">
+            <view wx:for="{{entryPage.entries}}" wx:for-item="entry" wx:key="name" class="quick-item" data-url="{{entry.url}}" hover-class="interactive-pressed" bindtap="openFeature" aria-role="button" aria-label="打开{{entry.name}}">
+              <image src="{{entry.icon}}" mode="aspectFit"></image><text>{{entry.name}}</text>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
     </view>
   </view>
 

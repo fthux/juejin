@@ -45,12 +45,21 @@ Page(theme.withTheme({
       { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/features/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
       { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', darkIcon: '/assets/app/find/dark/find_page_ic_undergraduate_reading.svg', url: '/features/discoverChannel/discoverChannel?type=student&title=高校精选' }
     ],
-    quickEntries: [
-      { name: '技术团队', icon: '/assets/app/find/find_page_ic_tech_team.svg', url: '/features/discoverChannel/discoverChannel?type=team&title=技术团队' },
-      { name: '圈子广场', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/features/topic/topic' },
-      { name: '话题广场', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/features/theme/theme' },
-      { name: '活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '/features/discoverChannel/discoverChannel?type=activity&title=活动' },
-      { name: '竞赛', icon: '/assets/app/find/find_page_ic_game.svg', url: '/features/discoverChannel/discoverChannel?type=game&title=竞赛' }
+    quickEntryPages: [
+      { key: 'community', entries: [
+        { name: '技术团队', icon: '/assets/app/find/find_page_ic_tech_team.svg', url: '/features/discoverChannel/discoverChannel?type=team&title=技术团队' },
+        { name: '圈子广场', icon: '/assets/app/find/find_page_ic_circle_square.svg', url: '/features/topic/topic' },
+        { name: '话题广场', icon: '/assets/app/find/find_page_ic_topic_square.svg', url: '/features/theme/theme' },
+        { name: '活动', icon: '/assets/app/find/find_page_ic_activity.svg', url: '/features/discoverChannel/discoverChannel?type=activity&title=活动' },
+        { name: '竞赛', icon: '/assets/app/find/find_page_ic_game.svg', url: '/features/discoverChannel/discoverChannel?type=game&title=竞赛' }
+      ] },
+      { key: 'content', entries: [
+        { name: '专栏', icon: '/assets/app/find/find_page_ic_column.svg', url: '/features/column/column' },
+        { name: '收藏集', icon: '/assets/app/find/find_page_ic_collection.svg', url: '/features/collectionSquare/collectionSquare' },
+        { name: '直播', icon: '/assets/app/find/find_page_ic_live.svg', url: '/features/discoverChannel/discoverChannel?type=live&title=直播' },
+        { name: '文章榜', icon: '/assets/app/find/find_page_ic_rank_article.svg', url: '/features/rank/rank?type=article' },
+        { name: '作者榜', icon: '/assets/app/find/find_page_ic_rank_author.svg', url: '/features/rank/rank?type=author' }
+      ] }
     ]
   },
 

@@ -1,8 +1,16 @@
 Component({
+  data: {
+    contentExpanded: false,
+    contentCanToggle: false
+  },
+
   properties: {
     item: {
       type: Object,
-      value: {}
+      value: {},
+      observer() {
+        this.resetContentState()
+      }
     },
     compact: {
       type: Boolean,
@@ -16,13 +24,46 @@ Component({
       type: Boolean,
       value: true
     },
+    showMore: {
+      type: Boolean,
+      value: true
+    },
     followed: {
       type: Boolean,
       value: false
     }
   },
 
+  lifetimes: {
+    ready() {
+      this.resetContentState()
+    },
+    detached() {
+      this.contentMeasureId = (this.contentMeasureId || 0) + 1
+    }
+  },
+
   methods: {
+    resetContentState() {
+      const measureId = (this.contentMeasureId || 0) + 1
+      this.contentMeasureId = measureId
+      this.setData({ contentExpanded: false, contentCanToggle: false }, () => {
+        this.createSelectorQuery()
+          .select('.pin-content-visible').boundingClientRect()
+          .select('.pin-content-measure').boundingClientRect()
+          .exec((rects) => {
+            if (measureId !== this.contentMeasureId) return
+            const visible = rects && rects[0]
+            const measured = rects && rects[1]
+            const contentCanToggle = Boolean(visible && measured && measured.height > visible.height + 1)
+            if (contentCanToggle !== this.data.contentCanToggle) this.setData({ contentCanToggle })
+          })
+      })
+    },
+    toggleContent() {
+      if (!this.data.contentCanToggle) return
+      this.setData({ contentExpanded: !this.data.contentExpanded })
+    },
     open() {
       this.triggerEvent('open', { item: this.data.item })
     },

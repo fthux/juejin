@@ -80,7 +80,7 @@ Page(theme.withTheme({
 
   toggleVip() {
     this.setData({ onlyVip: !this.data.onlyVip })
-    this.applyFilter()
+    this.load(true)
   },
 
   selectSort(event) {
@@ -99,12 +99,16 @@ Page(theme.withTheme({
   load(reload) {
     if (this.data.loading && !reload) return
     const cursor = reload ? '0' : this.data.cursor
+    const requestId = (this.courseRequestId || 0) + 1
+    this.courseRequestId = requestId
     this.setData({ loading: true, loadError: false })
     api.courses(cursor, {
       categoryId: this.data.activeCategory,
       sort: this.data.activeSort,
-      courseType: this.data.activeCourseType
+      courseType: this.data.activeCourseType,
+      onlyVip: this.data.activeCourseType === 'booklet' && this.data.onlyVip
     }).then(({ result, fromCache }) => {
+      if (requestId !== this.courseRequestId) return
       const normalize = this.data.activeCourseType === 'byte' ? utils.normalizeByteCourse : utils.normalizeCourse
       const rows = (Array.isArray(result.data) ? result.data : []).map(normalize).filter((item) => item.id)
       const allCourses = reload ? rows : this.data.allCourses.concat(rows)
@@ -119,15 +123,15 @@ Page(theme.withTheme({
       })
       this.applyFilter()
     }).catch(() => {
-      this.setData({ loadError: true, loading: false, hasMore: false })
+      if (requestId === this.courseRequestId) this.setData({ loadError: true, loading: false, hasMore: false })
     }).finally(() => {
-      this.setData({ loading: false })
+      if (requestId === this.courseRequestId) this.setData({ loading: false })
       wx.stopPullDownRefresh()
     })
   },
 
   applyFilter() {
-    const list = this.data.allCourses.filter((item) => !this.data.onlyVip || item.vip)
+    const list = this.data.allCourses.slice()
     if (this.data.activeSort === 'price') {
       const direction = this.data.priceDirection === 'desc' ? -1 : 1
       list.sort((a, b) => (a.priceValue - b.priceValue) * direction)

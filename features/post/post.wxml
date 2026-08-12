@@ -19,7 +19,11 @@
     </view>
 
     <view class="article-content">
-      <rich-text wx:if="{{content}}" nodes="{{content}}" user-select></rich-text>
+      <block wx:if="{{content}}" wx:for="{{contentSections}}" wx:key="id">
+        <view id="{{item.id}}" class="article-content-section">
+          <rich-text nodes="{{item.content}}" user-select></rich-text>
+        </view>
+      </block>
       <view wx:if="{{loadError}}" class="content-error">
         <view>正文加载失败，请检查网络后重试</view>
         <view class="text-button" bindtap="retry">重新加载</view>

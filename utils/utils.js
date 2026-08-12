@@ -76,10 +76,11 @@ function toast(title) {
 }
 
 function normalizeArticle(raw) {
-  const item = raw && raw.item_info ? raw.item_info : (raw || {})
+  const result = raw && raw.result_model ? raw.result_model : (raw || {})
+  const item = result && result.item_info ? result.item_info : result
   const info = item.article_info || item
-  const author = item.author_user_info || raw.author_user_info || item.author || raw.author || {}
-  const tags = item.tags || raw.tags || []
+  const author = item.author_user_info || result.author_user_info || item.author || result.author || {}
+  const tags = item.tags || result.tags || []
   const authorGrowth = author.user_growth_info || {}
   const ctime = Number(info.ctime || item.ctime) || 0
   const mtime = Number(info.mtime || item.mtime || info.rtime || item.rtime) || ctime
