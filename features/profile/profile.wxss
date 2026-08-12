@@ -8,7 +8,9 @@
 .profile-name { max-width: 260rpx; font-size: 36rpx; font-weight: 700; }
 .level-badge, .jy-badge { height: 30rpx; padding: 0 8rpx; border-radius: 4rpx; display: inline-flex; align-items: center; color: #fff; background: #557ff0; font-size: 18rpx; font-style: italic; font-weight: 700; }
 .jy-badge { background: #7c55d9; }
-.profile-description { padding: 24rpx 32rpx 0; color: var(--jj-text-2); font-size: 26rpx; }
+.profile-honor { height: 40rpx; padding: 16rpx 32rpx 0; display: flex; align-items: center; color: var(--jj-blue); font-size: 26rpx; }
+.profile-honor-icon { width: 40rpx; height: 40rpx; margin-right: 12rpx; flex: 0 0 auto; }
+.profile-description { padding: 16rpx 32rpx 0; color: var(--jj-text-2); font-size: 26rpx; }
 .profile-link { padding: 12rpx 32rpx 0; color: var(--jj-text-3); font-size: 25rpx; }
 .profile-stats { padding: 26rpx 32rpx 30rpx; display: flex; align-items: center; gap: 70rpx; }
 .profile-stats > view { display: flex; flex-direction: column; gap: 6rpx; color: var(--jj-text-3); font-size: 21rpx; }
@@ -16,13 +18,13 @@
 .profile-actions { display: flex; gap: 12rpx; }
 .profile-actions .primary-button, .profile-actions .secondary-button { min-height: 60rpx; padding: 0 22rpx; font-size: 24rpx; }
 .outline-button { min-width: 120rpx; height: 58rpx; margin-bottom: 8rpx; border: 2rpx solid var(--jj-blue); border-radius: 6rpx; display: flex; align-items: center; justify-content: center; color: var(--jj-blue); font-size: 24rpx; }
-.badge-strip { min-height: 84rpx; margin-top: 16rpx; padding: 0 30rpx; display: flex; align-items: center; justify-content: space-between; }
+.badge-strip { height: 88rpx; margin-top: 16rpx; padding: 0 28rpx; display: flex; align-items: center; box-sizing: border-box; }
 .badge-copy, .badge-preview { display: flex; align-items: center; }
-.badge-copy { gap: 14rpx; }
-.badge-medal { color: var(--jj-gold); font-size: 40rpx; }
-.badge-preview { gap: 8rpx; }
-.badge-preview > text:not(.badge-arrow) { width: 48rpx; height: 48rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; background: #6952c8; font-size: 14rpx; }
-.badge-arrow { margin-left: 6rpx; color: var(--jj-text-3); font-size: 38rpx; }
+.badge-copy { min-width: 0; gap: 16rpx; font-size: 28rpx; }
+.badge-entry-icon { width: 40rpx; height: 40rpx; flex: 0 0 auto; }
+.badge-preview { min-width: 0; margin-left: auto; gap: 8rpx; }
+.badge-icon { width: 56rpx; height: 56rpx; flex: 0 0 auto; }
+.badge-arrow { width: 32rpx; height: 32rpx; margin-left: 4rpx; display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 36rpx; line-height: 32rpx; }
 .profile-tabs { height: 88rpx; margin-top: 16rpx; padding-left: 12rpx; display: flex; align-items: stretch; border-bottom: 1rpx solid var(--jj-line); }
 .profile-tab { position: relative; min-width: 103rpx; display: flex; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 27rpx; }
 .profile-tab.active { color: var(--jj-blue); }

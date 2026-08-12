@@ -21,6 +21,9 @@ Page(theme.withTheme({
     followed: false,
     isCurrentUser: false,
     badgeCount: 0,
+    badges: [],
+    showBadges: true,
+    isFavorableAuthor: false,
     power: 0,
     articleCursor: '0',
     articleHasMore: true,
@@ -52,6 +55,7 @@ Page(theme.withTheme({
     }).map(utils.normalizePin)
     const dynamics = articles.map((item) => Object.assign({ kind: 'article' }, item))
       .concat(pins.map((item) => Object.assign({ kind: 'pin' }, item)))
+    const badgeInfo = utils.normalizeUserBadges(user)
 
     this.setData({
       user,
@@ -60,10 +64,14 @@ Page(theme.withTheme({
       dynamics,
       followed: session.getList('follows').indexOf(user.user_id) !== -1,
       isCurrentUser,
-      badgeCount: Number(user.badge_count) || 5,
+      badgeCount: badgeInfo.obtainCount,
+      badges: badgeInfo.obtainBadges.slice(0, 3),
+      showBadges: badgeInfo.showBadge !== false,
+      isFavorableAuthor: Number(user.favorable_author) === 1,
       power: Number(user.power || user.jpower || user.got_digg_count) || 0
     })
     wx.setNavigationBarTitle({ title: user.user_name })
+    this.loadUserProfile()
     if (!isCurrentUser) this.loadArticles(true)
   },
 
@@ -82,12 +90,40 @@ Page(theme.withTheme({
     if (!this.data.isCurrentUser && activeTab === 'article' && !this.data.articles.length) this.loadArticles(true)
   },
 
+  loadUserProfile() {
+    if (!this.data.user || !this.data.user.user_id) return
+    const requestedUserId = String(this.data.user.user_id)
+    api.userProfile(requestedUserId).then(({ result }) => {
+      const remoteUser = result.data
+      if (!remoteUser || requestedUserId !== String(this.data.user.user_id)) return
+      const user = Object.assign({}, this.data.user, remoteUser, { user_id: requestedUserId })
+      const badgeInfo = utils.normalizeUserBadges(user)
+      this.setData({
+        user,
+        badgeCount: badgeInfo.obtainCount,
+        badges: badgeInfo.obtainBadges.slice(0, 3),
+        showBadges: badgeInfo.showBadge !== false,
+        isFavorableAuthor: Number(user.favorable_author) === 1,
+        power: Number(user.power || user.jpower || user.got_digg_count) || 0
+      })
+      wx.setNavigationBarTitle({ title: user.user_name })
+    }).catch(() => {})
+  },
+
   loadArticles(reload) {
     if (!this.data.user || this.data.articleLoading || (!reload && !this.data.articleHasMore)) return
     const cursor = reload ? '0' : this.data.articleCursor
     this.setData({ articleLoading: true })
     api.userArticles(this.data.user.user_id, cursor, 2).then(({ result, fromCache }) => {
       const rows = (result.data || []).map(utils.normalizeArticle).filter((item) => item.article_id)
+      const profileAuthor = rows.map((item) => item.author).find((author) => (
+        String(author.user_id) === String(this.data.user.user_id)
+      ))
+      const user = profileAuthor ? Object.assign({}, this.data.user, profileAuthor, {
+        badges: profileAuthor.badges || this.data.user.badges,
+        favorable_author: profileAuthor.favorable_author !== undefined ? profileAuthor.favorable_author : this.data.user.favorable_author
+      }) : this.data.user
+      const badgeInfo = utils.normalizeUserBadges(user)
       const seed = reload && rows.length ? [] : this.data.articles
       const known = new Set(seed.map((item) => String(item.article_id)))
       const additions = rows.filter((item) => !known.has(String(item.article_id)))
@@ -95,6 +131,12 @@ Page(theme.withTheme({
       const articleDynamics = articles.map((item) => Object.assign({ kind: 'article' }, item))
       const pinDynamics = this.data.pins.map((item) => Object.assign({ kind: 'pin' }, item))
       this.setData({
+        user,
+        badgeCount: badgeInfo.obtainCount,
+        badges: badgeInfo.obtainBadges.slice(0, 3),
+        showBadges: badgeInfo.showBadge !== false,
+        isFavorableAuthor: Number(user.favorable_author) === 1,
+        power: Number(user.power || user.jpower || user.got_digg_count) || 0,
         articles,
         dynamics: articleDynamics.concat(pinDynamics),
         articleCursor: String(result.cursor || cursor),
@@ -122,6 +164,12 @@ Page(theme.withTheme({
 
   openBadges() {
     wx.showToast({ title: `已获得 ${this.data.badgeCount} 枚徽章`, icon: 'none' })
+  },
+
+  onBadgeImageError(event) {
+    const index = Number(event.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.badges[index]) return
+    this.setData({ [`badges[${index}].hidden`]: true })
   },
 
   openArticle(event) {

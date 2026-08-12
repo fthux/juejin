@@ -9,11 +9,26 @@
 }
 
 .course-hero {
+  position: relative;
+  min-height: 318rpx;
+  overflow: hidden;
   color: #ffffff;
   background: #426896;
 }
 
+.hero-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .hero-copy {
+  position: relative;
+  z-index: 1;
   padding: 34rpx 30rpx 56rpx;
 }
 
@@ -21,6 +36,20 @@
   font-size: 38rpx;
   font-weight: 500;
   line-height: 1.42;
+}
+
+.hero-vip {
+  display: inline-block;
+  margin-right: 12rpx;
+  padding: 1rpx 9rpx;
+  border: 1rpx solid #fff1cd;
+  border-radius: 4rpx;
+  color: #806126;
+  background: linear-gradient(135deg, #fde8c3, #edd3a7);
+  font-size: 25rpx;
+  font-weight: 500;
+  line-height: 1.45;
+  vertical-align: 4rpx;
 }
 
 .hero-summary {
@@ -36,6 +65,10 @@
   align-items: center;
   gap: 14rpx;
   font-size: 25rpx;
+}
+
+.hero-author-pressed {
+  opacity: 0.72;
 }
 
 .hero-author image {
@@ -99,6 +132,10 @@
   grid-template-columns: repeat(3, 1fr);
   background: var(--jj-surface);
   border-bottom: 1rpx solid var(--jj-line);
+}
+
+.detail-tabs.four-tabs {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .detail-tab {
@@ -173,6 +210,13 @@
 .intro-content image {
   max-width: 100%;
   height: auto;
+}
+
+.intro-image {
+  width: 100%;
+  margin: 14rpx 0 24rpx;
+  display: block;
+  background: var(--jj-fill);
 }
 
 .contents-heading {
@@ -285,6 +329,72 @@
 
 .recommendation-panel course-card:last-child .course-card {
   border-bottom: 0;
+}
+
+.comment-row { margin: 0 30rpx; padding: 26rpx 0 24rpx; display: flex; border-bottom: 1rpx solid var(--jj-line); }
+
+.comment-avatar {
+  width: 58rpx;
+  height: 58rpx;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--jj-fill);
+}
+
+.comment-body { min-width: 0; margin-left: 18rpx; flex: 1; }
+
+.comment-user-row { display: flex; align-items: center; }
+
+.comment-user {
+  max-width: 330rpx;
+  color: var(--jj-text-3);
+  font-size: 24rpx;
+}
+
+.comment-author-mark {
+  margin-left: 8rpx;
+  padding: 1rpx 6rpx;
+  border-radius: 3rpx;
+  color: var(--jj-blue);
+  background: var(--jj-blue-soft);
+  font-size: 18rpx;
+}
+
+.comment-content { margin-top: 10rpx; color: var(--jj-text); font-size: 27rpx; line-height: 1.58; word-break: break-word; }
+
+.comment-replies { margin-top: 14rpx; padding: 14rpx 18rpx; background: var(--jj-fill); }
+
+.reply-row + .reply-row { margin-top: 14rpx; }
+
+.reply-copy { color: var(--jj-text-2); font-size: 24rpx; line-height: 1.55; word-break: break-word; }
+
+.reply-user { color: var(--jj-blue); }
+
+.reply-time { margin-top: 4rpx; color: var(--jj-text-3); font-size: 19rpx; }
+
+.comment-footer {
+  min-height: 38rpx;
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--jj-text-3);
+  font-size: 21rpx;
+}
+
+.comment-actions, .like-action { display: flex; align-items: center; }
+
+.comment-actions { gap: 28rpx; }
+
+.like-action { min-width: 42rpx; gap: 6rpx; }
+
+.like-action image { width: 29rpx; height: 29rpx; }
+
+.comments-state {
+  padding: 36rpx 0;
+  color: var(--jj-text-3);
+  text-align: center;
+  font-size: 24rpx;
 }
 
 .course-bottom {

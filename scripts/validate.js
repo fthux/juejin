@@ -265,6 +265,25 @@ if (normalizedComment.replies[0].id !== 'reply-1') fail('评论回复应优先�
 if (normalizedComment.replies[0].reply_user !== '被回复者') fail('评论回复缺少被回复用户')
 if (!normalizedComment.reply_has_more) fail('评论回复数量不完整时应显示查看更多入口')
 if (!normalizedComment.is_hot) fail('评论归一化丢失热评标识')
+const normalizedBadges = utils.normalizeUserBadges({
+  badges: {
+    obtain_badges: [{ badge_id: '1', badge_name: '年度创作者', image_url: 'https://p3.example.com/badge.webp#preview' }],
+    obtain_count: 3,
+    show_badge: true
+  }
+})
+if (!normalizedBadges.showBadge || normalizedBadges.obtainCount !== 3) fail('用户徽章数量或展示状态归一化错误')
+if (normalizedBadges.obtainBadges[0].image_url !== 'https://p3.example.com/badge.webp') fail('用户徽章图片地址归一化错误')
+if (utils.normalizeUserBadges({}).showBadge !== null) fail('缺少徽章资料时不应被误判为明确隐藏')
+if (!utils.normalizeUserBadges({ badges: { obtain_count: 0, show_badge: true } }).showBadge) fail('服务端允许展示时零枚徽章也应保留入口')
+const normalizedArticleAuthor = utils.normalizeArticle({
+  article_info: { article_id: 'profile-stats' },
+  author_user_info: { user_id: 'user-1', followee_count: 18, follower_count: 12752, power: 67137 }
+}).author
+if (normalizedArticleAuthor.followee_count !== 18 || normalizedArticleAuthor.follower_count !== 12752 || normalizedArticleAuthor.power !== 67137) fail('文章作者归一化丢失用户主页统计')
+const courseIntroductionBlocks = utils.splitRichTextImages(markdown.normalizeImageSources('<h2>作者简介</h2><p><img src="//p3-juejin.byteimg.com/example.jpg?x=1&amp;y=2" alt="作者简介.jpg" width="2100"></p><p>正文</p>'))
+if (courseIntroductionBlocks.length !== 3 || courseIntroductionBlocks[1].type !== 'image') fail('小册介绍中的独立图片未拆分为原生图片节点')
+if (courseIntroductionBlocks[1].src !== 'https://p3-juejin.byteimg.com/example.jpg?x=1&y=2') fail('小册介绍图片地址未规范为可加载的 HTTPS 地址')
 
 const postSource = read('features/post/post.js')
 const apiSource = read('services/api.js')
@@ -280,6 +299,10 @@ if (!courseDetailTemplate.includes('ic_course_free_try.png') || !/\.trial-icon\s
 if (!courseDetailTemplate.includes('wx:if="{{hasTrial}}"') || !courseDetailSource.includes('chapters.some((chapter) => chapter.isFree)')) fail('有免费章节的付费小册目录页签缺少试学标签')
 if (!courseDetailSource.includes('tabScrollTops') || !courseDetailSource.includes('measureTabsScrollTop()') || !courseDetailTemplate.includes('id="detail-tabs"')) fail('小册详情各页签未独立维护滚动位置')
 if (!/courseRecommendations\(this\.bookletId\)/.test(courseDetailSource) || !/courseRecommendations\(bookletId, cursor\)[\s\S]*booklet_id:\s*String\(bookletId/.test(apiSource)) fail('小册详情推荐必须按 App 逻辑携带当前 booklet_id')
+if (!courseDetailTemplate.includes('course.backgroundImage') || !courseDetailTemplate.includes('referrer-policy="no-referrer"') || !courseDetailTemplate.includes('class="hero-vip"') || !/backgroundImage:\s*normalizeImageUrl\(info\.background_img/.test(read('utils/utils.js'))) fail('小册详情 Banner 缺少动态背景图、VIP 标识或防盗链处理')
+if (!courseDetailSource.includes('utils.splitRichTextImages') || !courseDetailTemplate.includes('class="intro-image"') || !courseDetailTemplate.includes('onIntroductionImageError')) fail('小册介绍图片未使用可处理防盗链失败的原生图片节点')
+if (!/courseComments\(bookletId, cursor\)[\s\S]*item_type:\s*12[\s\S]*sort:\s*0/.test(apiSource) || !courseDetailTemplate.includes('wx:if="{{hasComments}}"') || !courseDetailTemplate.includes("activeTab === 'comments'")) fail('有评论的小册缺少 APK 对应的评论接口或评论页签')
+if (!/authorId:\s*String\(user\.user_id/.test(read('utils/utils.js')) || !courseDetailTemplate.includes('bindtap="openAuthor"') || !courseDetailSource.includes('profile/profile?id=${course.authorId}')) fail('小册 Banner 作者区域缺少用户详情跳转或精确作者 ID')
 
 const byteCourseDetailSource = read('features/byteCourseDetail/byteCourseDetail.js')
 const byteCourseDetailTemplate = read('features/byteCourseDetail/byteCourseDetail.wxml')
@@ -317,6 +340,8 @@ const findSource = read('pages/find/find.js')
 const collectionSquareSource = read('features/collectionSquare/collectionSquare.js')
 const collectionSquareTemplate = read('features/collectionSquare/collectionSquare.wxml')
 const profileSource = read('features/profile/profile.js')
+const profileTemplate = read('features/profile/profile.wxml')
+const profileStyles = read('features/profile/profile.wxss')
 const dailySource = read('features/daily/daily.js')
 const dailyTemplate = read('features/daily/daily.wxml')
 const columnSource = read('features/column/column.js')
@@ -384,6 +409,14 @@ if (columnSource.includes('showMore()') || columnTemplate.includes('nav-more') |
 if (!columnSource.includes("label: '默认排序'") || !columnSource.includes("label: '最新发布'") || !columnSource.includes("label: '最早发布'") || !columnSource.includes("{ default: 2, latest: 0, earliest: 1 }") || !columnSource.includes('sortArticlesByTime')) fail('专栏详情缺少默认、最新和最早三种排序')
 if (!/column\/articles_cursor[\s\S]*\bsort:\s*Number\.isFinite/.test(apiSource)) fail('专栏文章接口必须使用 APP 的 sort 参数')
 if (!profileSource.includes('api.userArticles') || !profileSource.includes('onReachBottom()') || !profileSource.includes('articleCursor')) fail('作者主页文章列表缺少真实上拉分页')
+if (!/userProfile\(userId\)[\s\S]*need_badge:\s*1[\s\S]*skipDefaultQuery:\s*true/.test(apiSource) || !profileSource.includes('api.userProfile')) fail('用户主页未按 App 参数请求徽章资料或隔离不兼容的默认查询参数')
+if (!profileTemplate.includes('wx:if="{{showBadges}}"') || !/showBadges:\s*true/.test(profileSource) || !profileTemplate.includes('item.image_url') || !profileTemplate.includes('baged_entry_icon.png')) fail('用户主页徽章入口缺少默认可见状态、真实徽章图片或真机兼容的 App 入口图标')
+if (/2021|2023|2024|class="badge-medal"/.test(profileTemplate) || /\.badge-icon\s*\{[^}]*border-radius:\s*50%/s.test(profileStyles)) fail('用户主页仍使用年份圆形模拟徽章')
+if (!exists('assets/app/user/baged_entry_icon.png')) fail('用户主页缺少从 App 提取并转换的 PNG 徽章入口图标')
+if (!profileSource.includes('profileAuthor') || !profileSource.includes('profileAuthor.badges || this.data.user.badges')) fail('用户主页未使用文章作者资料回填统计或异步合并时丢失徽章')
+if (!utilsSource.includes('favorable_author: author.favorable_author')) fail('作者资料归一化丢失 App 优秀创作者字段')
+if (!profileSource.includes('isFavorableAuthor: Number(user.favorable_author) === 1') || !profileTemplate.includes('优秀创作者')) fail('用户主页缺少 App 的优秀创作者标识')
+if (!exists('assets/app/user/ic_good_author.png')) fail('用户主页缺少从 App 提取并转换的优秀创作者图标')
 if (!rankSource.includes('timeRanges:') || !rankSource.includes('selectCategory(') || !rankTemplate.includes('class="category-tabs"') || !rankTemplate.includes('class="period-tabs"')) fail('文章榜缺少分类和时间范围筛选')
 if (!findTemplate.includes('bindtap="openRankCategory"') || !findSource.includes('categoryId=${encodeURIComponent(String(category.id))}') || !rankSource.includes('query.categoryId')) fail('发现页文章榜卡片必须按分类进入文章榜')
 if (!rankTemplate.includes('item.digg_label') || !rankTemplate.includes('find_page_ic_comment.svg') || !rankTemplate.includes('data-index="{{index}}" bindtap="openArticle"')) fail('文章榜必须使用标准文章卡片并通过索引打开文章')
@@ -396,6 +429,7 @@ if ((rankRulesSource.match(/rank_rules_\d{2}\.png/g) || []).length !== 6 || !ran
 if (!/\.pin-content\s*\{[^}]*white-space:\s*pre-wrap/s.test(pinCardStyles)) fail('沸点正文必须保留接口换行')
 if (!/\.pin-content\.collapsed\s*\{[^}]*-webkit-line-clamp:\s*3/s.test(pinCardStyles) || !pinCardTemplate.includes('catchtap="toggleContent"') || !pinCardSource.includes('contentCanToggle')) fail('沸点正文必须支持三行截断和展开收起')
 if (!pinDetailTemplate.includes('content-collapsible="{{false}}"') || !pinCardSource.includes('contentCollapsible') || !pinCardTemplate.includes('contentCollapsible && contentCanToggle')) fail('沸点详情正文必须默认完整展示且不显示展开收起')
+if (!/\.card-follow\s*\{[^}]*justify-content:\s*center;[^}]*box-sizing:\s*border-box/s.test(pinCardStyles)) fail('沸点详情关注按钮文字必须水平居中')
 if (!pinCardTemplate.includes('class="pin-meta-row"') || !/\.pin-meta-row\s*\{[^}]*display:\s*flex/s.test(pinCardStyles)) fail('沸点圈子标签和点赞用户必须保持同一行')
 if (!/sortType:\s*this\.data\.sort === ['"]hot['"] \? 200 : 500/.test(topicSource)) fail('圈子详情热门和最新排序参数映射错误')
 if (!topicTemplate.includes('show-more="{{false}}"') || topicTemplate.includes('bind:more="pinMore"') || /\bpinMore\s*\(/.test(topicSource)) fail('圈子详情沸点卡片必须移除三点菜单及相关逻辑')

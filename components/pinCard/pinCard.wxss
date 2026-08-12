@@ -92,10 +92,13 @@
   padding: 0 20rpx;
   display: flex;
   align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border: 1rpx solid var(--jj-blue);
   border-radius: 4rpx;
   color: var(--jj-blue);
   font-size: var(--jj-font-caption);
+  text-align: center;
 }
 
 .card-follow.followed {

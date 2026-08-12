@@ -5,10 +5,11 @@
 
   <block wx:if="{{course}}">
     <view class="course-hero">
+      <image wx:if="{{course.backgroundImage && !heroImageFailed}}" class="hero-background" src="{{course.backgroundImage}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onHeroImageError"></image>
       <view class="hero-copy">
-        <view class="hero-title">{{course.title}}</view>
+        <view class="hero-title"><text wx:if="{{course.vip}}" class="hero-vip">VIP</text><text>{{course.title}}</text></view>
         <view class="hero-summary">{{course.summary}}</view>
-        <view class="hero-author">
+        <view class="hero-author" hover-class="hero-author-pressed" bindtap="openAuthor" aria-role="button" aria-label="查看{{course.author}}的主页">
           <image src="{{course.authorAvatar}}" mode="aspectFill"></image>
           <text>{{course.author}}</text>
           <text wx:if="{{course.authorLevel}}" class="author-level">LV.{{course.authorLevel}}</text>
@@ -28,7 +29,7 @@
       </view>
     </view>
 
-    <view id="detail-tabs" class="detail-tabs">
+    <view id="detail-tabs" class="detail-tabs {{hasComments ? 'four-tabs' : ''}}">
       <view class="detail-tab {{activeTab === 'intro' ? 'active' : ''}}" data-id="intro" bindtap="switchTab">介绍</view>
       <view class="detail-tab {{activeTab === 'contents' ? 'active' : ''}}" data-id="contents" bindtap="switchTab">
         <view class="detail-tab-label">
@@ -36,11 +37,15 @@
           <text wx:if="{{hasTrial}}" class="tab-trial-label">试学</text>
         </view>
       </view>
+      <view wx:if="{{hasComments}}" class="detail-tab {{activeTab === 'comments' ? 'active' : ''}}" data-id="comments" bindtap="switchTab">评论</view>
       <view class="detail-tab {{activeTab === 'recommendations' ? 'active' : ''}}" data-id="recommendations" bindtap="switchTab">相关推荐</view>
     </view>
 
     <view wx:if="{{activeTab === 'intro'}}" class="tab-panel intro-panel">
-      <rich-text class="intro-content" nodes="{{introduction}}" user-select></rich-text>
+      <block wx:for="{{introductionBlocks}}" wx:key="index">
+        <rich-text wx:if="{{item.type === 'html'}}" class="intro-content" nodes="{{item.content}}" user-select></rich-text>
+        <image wx:elif="{{!item.failed}}" class="intro-image" src="{{item.src}}" mode="widthFix" referrer-policy="no-referrer" data-index="{{index}}" binderror="onIntroductionImageError"></image>
+      </block>
     </view>
 
     <view wx:elif="{{activeTab === 'contents'}}" class="tab-panel contents-panel">
@@ -55,6 +60,27 @@
         <view wx:elif="{{!item.unlocked}}" class="lock-icon"><view></view></view>
         <view wx:else class="read-label">阅读</view>
       </view>
+    </view>
+
+    <view wx:elif="{{activeTab === 'comments'}}" class="tab-panel comment-panel">
+      <view wx:for="{{comments}}" wx:key="id" class="comment-row">
+        <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill" referrer-policy="no-referrer"></image>
+        <view class="comment-body">
+          <view class="comment-user-row">
+            <text class="comment-user ellipsis">{{item.user}}</text>
+            <text wx:if="{{item.is_author}}" class="comment-author-mark">作者</text>
+          </view>
+          <view class="comment-content">{{item.content}}</view>
+          <view wx:if="{{item.replies.length}}" class="comment-replies">
+            <view wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id" class="reply-row">
+              <view class="reply-copy"><text class="reply-user">{{reply.user}}</text><text wx:if="{{reply.is_author}}" class="comment-author-mark">作者</text><text wx:if="{{reply.reply_user}}"> 回复 {{reply.reply_user}}</text><text>：{{reply.content}}</text></view>
+              <view class="reply-time">{{reply.time}}{{reply.digg_count_value ? ' · ' + reply.digg_count + ' 赞' : ''}}</view>
+            </view>
+          </view>
+          <view class="comment-footer"><text>{{item.time}}</text><view class="comment-actions"><text>···</text><view class="like-action"><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text wx:if="{{item.digg_count_value}}">{{item.digg_count}}</text></view></view></view>
+        </view>
+      </view>
+      <view wx:if="{{commentsLoading}}" class="comments-state">正在加载评论...</view>
     </view>
 
     <view wx:else class="tab-panel recommendation-panel">

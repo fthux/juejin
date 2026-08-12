@@ -17,6 +17,10 @@
         <view class="primary-button" bindtap="toggleFollow">{{followed ? '已关注' : '关注'}}</view>
       </view>
     </view>
+    <view wx:if="{{isFavorableAuthor}}" class="profile-honor">
+      <image class="profile-honor-icon" src="/assets/app/user/ic_good_author.png" mode="aspectFit"></image>
+      <text>优秀创作者</text>
+    </view>
     <view class="profile-description">{{user.description || user.job_title || '暂无个人介绍'}}</view>
     <view wx:if="{{user.blog_address}}" class="profile-link ellipsis">{{user.blog_address}}</view>
     <view class="profile-stats">
@@ -26,9 +30,14 @@
     </view>
   </view>
 
-  <view class="badge-strip surface" bindtap="openBadges">
-    <view class="badge-copy"><text class="badge-medal">●</text><text>获得的徽章 {{badgeCount}}</text></view>
-    <view class="badge-preview"><text>2021</text><text>2023</text><text>2024</text><text class="badge-arrow">›</text></view>
+  <view wx:if="{{showBadges}}" class="badge-strip surface" bindtap="openBadges">
+    <view class="badge-copy"><image class="badge-entry-icon" src="/assets/app/user/baged_entry_icon.png" mode="aspectFit"></image><text>获得的徽章<text wx:if="{{badgeCount}}"> {{badgeCount}}</text></text></view>
+    <view class="badge-preview">
+      <block wx:for="{{badges}}" wx:key="badge_id">
+        <image wx:if="{{!item.hidden}}" class="badge-icon" src="{{item.image_url}}" mode="aspectFit" referrer-policy="no-referrer" data-index="{{index}}" binderror="onBadgeImageError"></image>
+      </block>
+      <text class="badge-arrow">›</text>
+    </view>
   </view>
 
   <view class="profile-tabs surface">

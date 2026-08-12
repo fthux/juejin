@@ -7,7 +7,8 @@ const DEFAULT_QUERY = 'aid=2608&spider=0'
 function request(path, data, options) {
   const config = options || {}
   const divider = path.indexOf('?') === -1 ? '?' : '&'
-  const url = `${BASE_URL}${path}${divider}${DEFAULT_QUERY}&uuid=${utils.getUuid()}`
+  const query = config.skipDefaultQuery ? `uuid=${utils.getUuid()}` : `${DEFAULT_QUERY}&uuid=${utils.getUuid()}`
+  const url = `${BASE_URL}${path}${divider}${query}`
 
   return new Promise((resolve, reject) => {
     wx.request({
@@ -262,6 +263,17 @@ function courseSection(sectionId) {
   return request('/booklet_api/v1/section/get', { section_id: sectionId })
 }
 
+function courseComments(bookletId, cursor) {
+  return withFallback(request('/interact_api/v1/comment/list', {
+    item_id: bookletId,
+    item_type: 12,
+    sort: 0,
+    cursor: cursor || '0',
+    limit: 20,
+    client_type: 2608
+  }), { data: [], cursor: '0', count: 0, has_more: false })
+}
+
 function byteCourseDetail(itemId) {
   const local = mock.byteCourseDetails[String(itemId)]
   const fallback = local && local.detail || mock.byteCourses.find((item) => (
@@ -398,6 +410,14 @@ function userArticles(userId, cursor, sortType) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
+function userProfile(userId) {
+  if (!userId) return Promise.resolve({ result: { data: null }, fromCache: true })
+  return withFallback(request('/user_api/v1/user/get', {
+    user_id: String(userId),
+    need_badge: 1
+  }, { method: 'GET', skipDefaultQuery: true }), { data: null })
+}
+
 function recommendationRanks() {
   return withFallback(request('/content_api/v1/requests', {
     requests: [
@@ -527,6 +547,7 @@ module.exports = {
   popularizeCourses,
   courseDetail,
   courseSection,
+  courseComments,
   byteCourseDetail,
   byteCourseChapters,
   byteCourseRecommendations,
@@ -543,6 +564,7 @@ module.exports = {
   pinCommentReplies,
   daily,
   userArticles,
+  userProfile,
   recommendationRanks,
   hotArticles,
   hotAuthors,

@@ -65,6 +65,57 @@ function normalizeImageUrl(value, size) {
   return url
 }
 
+function splitRichTextImages(source) {
+  const html = String(source || '')
+  const blocks = []
+  const pattern = /<p\b[^>]*>\s*(<img\b[^>]*>)\s*<\/p>|(<img\b[^>]*>)/gi
+  const decode = (value) => String(value || '').replace(/&(?:amp|#0*38|#x0*26);/gi, '&')
+    .replace(/&(?:quot|#0*34|#x0*22);/gi, '"').replace(/&(?:apos|#0*39|#x0*27);/gi, "'")
+  const attribute = (tag, name) => {
+    const match = String(tag || '').match(new RegExp(`\\b${name}\\s*=\\s*(?:(["'])([\\s\\S]*?)\\1|([^\\s>]+))`, 'i'))
+    return match ? decode(match[2] || match[3] || '') : ''
+  }
+  let offset = 0
+  let match
+  while ((match = pattern.exec(html))) {
+    const before = html.slice(0, match.index).toLowerCase()
+    if (match[2] && before.lastIndexOf('<p') > before.lastIndexOf('</p>')) continue
+    const content = html.slice(offset, match.index)
+    if (content.trim()) blocks.push({ type: 'html', content })
+    const tag = match[1] || match[2]
+    let src = attribute(tag, 'src').trim()
+    if (src.indexOf('//') === 0) src = `https:${src}`
+    else if (src.indexOf('http://') === 0) src = `https://${src.slice(7)}`
+    if (src) blocks.push({ type: 'image', src, alt: attribute(tag, 'alt'), failed: false })
+    offset = match.index + match[0].length
+  }
+  const tail = html.slice(offset)
+  if (tail.trim()) blocks.push({ type: 'html', content: tail })
+  return blocks
+}
+
+function normalizeUserBadges(raw) {
+  const user = raw || {}
+  const rawInfo = user.badges || user.badge_info || null
+  const info = rawInfo || {}
+  const hasBadgeInfo = Boolean(rawInfo || user.obtain_badges || user.badge_list || user.badge_count !== undefined)
+  const rawObtainBadges = info.obtain_badges || info.obtainBadges || user.obtain_badges || user.badge_list || []
+  const obtainBadges = (Array.isArray(rawObtainBadges) ? rawObtainBadges : []).map((badge, index) => ({
+    badge_id: String(badge.badge_id || badge.badgeId || `badge-${index}`),
+    badge_name: badge.badge_name || badge.badgeName || '',
+    image_url: normalizeImageUrl(badge.image_url || badge.imageUrl || '')
+  })).filter((badge) => badge.image_url)
+  const obtainCount = Math.max(Number(info.obtain_count || info.obtainCount || user.badge_count) || 0, obtainBadges.length)
+  const showBadge = info.show_badge !== undefined ? info.show_badge : info.showBadge
+
+  return {
+    obtainBadges,
+    obtainCount,
+    showBadge: hasBadgeInfo ? (showBadge === undefined ? obtainCount > 0 : Boolean(showBadge)) : null,
+    linkUrl: info.link_url || info.linkUrl || ''
+  }
+}
+
 function navigate(event) {
   const url = event.currentTarget.dataset.url
   if (!url) return
@@ -112,7 +163,13 @@ function normalizeArticle(raw) {
       avatar_large: author.avatar_large || '/assets/app/common/default_avatar.png',
       job_title: author.job_title || '',
       company: author.company || '',
-      level: Number(author.level || authorGrowth.jpower_level) || 0
+      level: Number(author.level || authorGrowth.jpower_level) || 0,
+      followee_count: Number(author.followee_count) || 0,
+      follower_count: Number(author.follower_count) || 0,
+      got_digg_count: Number(author.got_digg_count) || 0,
+      power: Number(author.power || authorGrowth.jpower) || 0,
+      favorable_author: author.favorable_author,
+      badges: author.badges || null
     },
     tags: tags.slice(0, 2).map((tag) => tag.tag_name || tag.name || tag),
     all_tags: tags.map((tag) => tag.tag_name || tag.name || tag).filter(Boolean)
@@ -363,6 +420,7 @@ function normalizeRecommendedAuthor(raw) {
   const articleAuthor = item.articles && item.articles.length
     ? ((item.articles[0].author_user_info) || {})
     : {}
+  const badges = normalizeUserBadges(item.badges ? item : articleAuthor)
   return {
     user_id: String(item.user_id || articleAuthor.user_id || ''),
     user_name: item.user_name || articleAuthor.user_name || '掘金用户',
@@ -370,12 +428,21 @@ function normalizeRecommendedAuthor(raw) {
     job_title: item.job_title || articleAuthor.job_title || '',
     company: item.company || articleAuthor.company || '',
     description: item.author_desc || item.description || articleAuthor.description || '',
+    followee_count: Number(item.followee_count || articleAuthor.followee_count) || 0,
     follower_count: formatCount(item.follower_count || articleAuthor.follower_count),
     got_digg_count: formatCount(item.got_digg_count || articleAuthor.got_digg_count),
     got_view_count: formatCount(item.got_view_count || articleAuthor.got_view_count),
+    power: Number(item.power || (item.user_growth_info && item.user_growth_info.jpower) || articleAuthor.power || (articleAuthor.user_growth_info && articleAuthor.user_growth_info.jpower)) || 0,
     level: Number(item.level || (item.user_growth_info && item.user_growth_info.jpower_level) || articleAuthor.level) || 0,
+    favorable_author: item.favorable_author !== undefined ? item.favorable_author : articleAuthor.favorable_author,
     article_count: Number(item.post_article_count || articleAuthor.post_article_count) || 0,
     is_followed: Boolean(item.isfollowed),
+    badges: {
+      obtain_badges: badges.obtainBadges,
+      obtain_count: badges.obtainCount,
+      show_badge: badges.showBadge,
+      link_url: badges.linkUrl
+    },
     articles: (item.articles || []).slice(0, 3).map(normalizeArticle)
   }
 }
@@ -546,6 +613,7 @@ function normalizeCourse(raw) {
     title: info.title || '掘金小册',
     summary: info.summary || info.introduction || '',
     cover: normalizeCourseCover(info.cover_img),
+    backgroundImage: normalizeImageUrl(info.background_img || ''),
     category_id: info.category_id || '',
     priceValue: salePrice,
     price: formatPrice(salePrice),
@@ -556,6 +624,7 @@ function normalizeCourse(raw) {
     buy_count_value: Number(info.buy_count) || 0,
     read_time: Number(info.read_time) || 0,
     statusText: Number(info.is_finished) === 1 ? '已完结' : `已更新${updatedCount}小节`,
+    authorId: String(user.user_id || info.user_id || info.author_id || ''),
     author: user.user_name || info.author_name || '稀土掘金',
     authorAvatar: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80),
     authorLevel: Number(user.level || (user.user_growth_info && user.user_growth_info.jpower_level)) || 0,
@@ -639,6 +708,8 @@ module.exports = {
   dateKey,
   getUuid,
   normalizeImageUrl,
+  splitRichTextImages,
+  normalizeUserBadges,
   navigate,
   toast,
   normalizeArticle,

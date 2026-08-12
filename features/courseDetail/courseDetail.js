@@ -75,10 +75,16 @@ Page(theme.withTheme({
   data: {
     course: null,
     chapters: [],
-    introduction: '',
+    introductionBlocks: [],
     recommendations: [],
+    comments: [],
+    commentTotal: 0,
+    hasComments: false,
+    commentsLoading: false,
+    commentsHasMore: false,
     hasTrial: false,
     activeTab: 'intro',
+    heroImageFailed: false,
     loading: true,
     loadError: false
   },
@@ -88,6 +94,7 @@ Page(theme.withTheme({
     this.currentScrollTop = 0
     this.tabScrollTops = {}
     this.tabsScrollTop = 0
+    this.commentCursor = '0'
     if (!this.bookletId) {
       this.setData({ loading: false, loadError: true })
       return
@@ -123,10 +130,12 @@ Page(theme.withTheme({
         course,
         chapters,
         hasTrial,
-        introduction: markdown.normalizeImageSources((detail.introduction && detail.introduction.content) || course.summary),
+        introductionBlocks: utils.splitRichTextImages(markdown.normalizeImageSources((detail.introduction && detail.introduction.content) || course.summary)),
+        heroImageFailed: false,
         loading: false
       }, () => this.measureTabsScrollTop())
       this.loadRecommendations()
+      this.loadComments(true)
     }).catch(() => this.setData({ loading: false, loadError: true }))
   },
 
@@ -135,6 +144,29 @@ Page(theme.withTheme({
       const recommendations = (result.data || []).map(utils.normalizeCourse).filter((item) => item.id)
       this.setData({ recommendations })
     }).catch(() => this.setData({ recommendations: [] }))
+  },
+
+  loadComments(reload) {
+    if (this.data.commentsLoading) return
+    const cursor = reload ? '0' : this.commentCursor
+    this.setData({ commentsLoading: true })
+    api.courseComments(this.bookletId, cursor).then(({ result }) => {
+      const rows = (result.data || []).map(utils.normalizeComment).filter((item) => item.id)
+      const comments = reload ? rows : this.data.comments.concat(rows)
+      const commentTotal = Number(result.count) || comments.length
+      this.commentCursor = result.cursor || '0'
+      this.setData({
+        comments,
+        commentTotal,
+        hasComments: commentTotal > 0 || comments.length > 0,
+        commentsHasMore: Boolean(result.has_more) && rows.length > 0,
+        commentsLoading: false
+      })
+    }).catch(() => this.setData({ commentsLoading: false, commentsHasMore: false }))
+  },
+
+  onReachBottom() {
+    if (this.data.activeTab === 'comments' && this.data.commentsHasMore) this.loadComments(false)
   },
 
   openChapter(event) {
@@ -174,6 +206,16 @@ Page(theme.withTheme({
     })
   },
 
+  onHeroImageError() {
+    if (!this.data.heroImageFailed) this.setData({ heroImageFailed: true })
+  },
+
+  onIntroductionImageError(event) {
+    const index = Number(event.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.introductionBlocks[index]) return
+    this.setData({ [`introductionBlocks[${index}].failed`]: true })
+  },
+
   onPageScroll(event) {
     this.currentScrollTop = event.scrollTop
   },
@@ -190,6 +232,18 @@ Page(theme.withTheme({
   openRecommendation(event) {
     const id = String(event.detail && event.detail.item && event.detail.item.id || '')
     if (id) wx.redirectTo({ url: `/features/courseDetail/courseDetail?id=${id}` })
+  },
+
+  openAuthor() {
+    const course = this.data.course
+    if (!course || !course.authorId) return
+    wx.setStorageSync('jj:user-current', {
+      user_id: course.authorId,
+      user_name: course.author,
+      avatar_large: course.authorAvatar,
+      level: course.authorLevel
+    })
+    wx.navigateTo({ url: `/features/profile/profile?id=${course.authorId}` })
   },
 
   buyCourse() {
