@@ -55,7 +55,7 @@
     <image class="topic-bg" src="/features/assets/app/user/user_profile_header.png" mode="aspectFill"></image>
     <view class="topic-shade"></view>
     <status-bar transparent="{{true}}"></status-bar>
-    <view class="topic-nav"><text bindtap="back">‹</text><text>•••</text></view>
+    <view class="topic-nav"><text class="topic-back" bindtap="back">‹</text></view>
     <view class="topic-summary">
       <view class="topic-icon">
         <image wx:if="{{current.iconUrl}}" src="{{current.iconUrl}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onDetailIconError"></image>

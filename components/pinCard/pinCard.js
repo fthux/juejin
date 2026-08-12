@@ -28,6 +28,13 @@ Component({
       type: Boolean,
       value: true
     },
+    contentCollapsible: {
+      type: Boolean,
+      value: true,
+      observer() {
+        this.resetContentState()
+      }
+    },
     followed: {
       type: Boolean,
       value: false
@@ -47,6 +54,10 @@ Component({
     resetContentState() {
       const measureId = (this.contentMeasureId || 0) + 1
       this.contentMeasureId = measureId
+      if (!this.data.contentCollapsible) {
+        this.setData({ contentExpanded: true, contentCanToggle: false })
+        return
+      }
       this.setData({ contentExpanded: false, contentCanToggle: false }, () => {
         this.createSelectorQuery()
           .select('.pin-content-visible').boundingClientRect()
@@ -61,7 +72,7 @@ Component({
       })
     },
     toggleContent() {
-      if (!this.data.contentCanToggle) return
+      if (!this.data.contentCollapsible || !this.data.contentCanToggle) return
       this.setData({ contentExpanded: !this.data.contentExpanded })
     },
     open() {

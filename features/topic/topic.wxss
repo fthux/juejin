@@ -229,8 +229,8 @@
 .topic-bg { opacity: .38; }
 .topic-shade { background: rgba(17, 20, 25, .48); }
 .topic-nav, .topic-summary, .topic-description, .topic-detail { position: relative; z-index: 1; }
-.topic-nav { height: 90rpx; display: flex; align-items: center; justify-content: space-between; }
-.topic-nav text:first-child { font-size: 62rpx; font-weight: 200; line-height: 1; }
+.topic-nav { height: 90rpx; display: flex; align-items: center; }
+.topic-back { font-size: 62rpx; font-weight: 200; line-height: 1; }
 .topic-summary { margin-top: 22rpx; display: flex; align-items: center; }
 .topic-icon { width: 112rpx; height: 112rpx; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6rpx; background: #ffd400; font-size: 44rpx; }
 .topic-icon image { width: 100%; height: 100%; }
@@ -238,7 +238,7 @@
 .topic-name { font-size: 34rpx; font-weight: 600; }
 .topic-count { margin-top: 12rpx; font-size: 25rpx; }
 .join-button { min-width: 120rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; border-radius: 34rpx; background: var(--jj-blue); }
-.topic-description { margin-top: 28rpx; font-size: 27rpx; }
+.topic-description { margin-top: 28rpx; font-size: 27rpx; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
 .topic-detail { margin-top: 24rpx; font-size: 25rpx; }
 .sort-row { height: 92rpx; padding: 0 30rpx; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; color: var(--jj-text-3); }
 .sort-switch { padding: 4rpx; display: flex; border-radius: 32rpx; background: var(--jj-fill); }

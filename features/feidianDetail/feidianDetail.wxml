@@ -1,6 +1,6 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page pin-detail-page">
-  <pin-card wx:if="{{item}}" item="{{item}}" show-follow="{{true}}" show-actions="{{false}}" bind:follow="requireAccount" bind:author="openAuthor"></pin-card>
+  <pin-card wx:if="{{item}}" item="{{item}}" show-follow="{{true}}" show-actions="{{false}}" content-collapsible="{{false}}" bind:follow="requireAccount" bind:author="openAuthor"></pin-card>
 
   <view wx:if="{{recommendations.length}}" class="recommend-section surface">
     <view class="recommend-title">相关推荐</view>

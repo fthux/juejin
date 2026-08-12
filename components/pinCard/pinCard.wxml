@@ -16,7 +16,7 @@
     </view>
   </view>
   <view class="pin-content-wrap">
-    <view class="pin-content pin-content-visible {{contentExpanded ? 'expanded' : 'collapsed'}}">
+    <view class="pin-content pin-content-visible {{contentCollapsible && !contentExpanded ? 'collapsed' : 'expanded'}}">
       <block wx:if="{{item.content_segments.length}}">
         <block wx:for="{{item.content_segments}}" wx:key="key">
           <text wx:if="{{item.type === 'theme'}}" class="pin-theme-link" data-index="{{index}}" hover-class="item-pressed" catchtap="openTheme" aria-role="button" aria-label="打开活动{{item.text}}">#{{item.text}}#</text>
@@ -25,7 +25,7 @@
       </block>
       <text wx:else>{{item.content}}</text>
     </view>
-    <view class="pin-content pin-content-measure" aria-hidden="true">
+    <view wx:if="{{contentCollapsible}}" class="pin-content pin-content-measure" aria-hidden="true">
       <block wx:if="{{item.content_segments.length}}">
         <block wx:for="{{item.content_segments}}" wx:key="key">
           <text wx:if="{{item.type === 'theme'}}">#{{item.text}}#</text>
@@ -35,7 +35,7 @@
       <text wx:else>{{item.content}}</text>
     </view>
   </view>
-  <view wx:if="{{contentCanToggle}}" class="content-toggle" hover-class="item-pressed" catchtap="toggleContent" aria-role="button" aria-label="{{contentExpanded ? '收起沸点正文' : '展开沸点正文'}}">{{contentExpanded ? '收起' : '展开'}}</view>
+  <view wx:if="{{contentCollapsible && contentCanToggle}}" class="content-toggle" hover-class="item-pressed" catchtap="toggleContent" aria-role="button" aria-label="{{contentExpanded ? '收起沸点正文' : '展开沸点正文'}}">{{contentExpanded ? '收起' : '展开'}}</view>
   <view wx:if="{{item.pic_list.length}}" class="pin-pictures">
     <view wx:for="{{item.pic_list}}" wx:key="*this" class="pin-picture-action" data-src="{{item}}" hover-class="item-pressed" catchtap="previewImage" aria-role="button" aria-label="预览图片">
       <image class="pin-picture" src="{{item}}" mode="aspectFill" aria-hidden="true"></image>
