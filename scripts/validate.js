@@ -96,6 +96,7 @@ const privatePages = [
   'features/creatorFans/creatorFans',
   'features/drafts/drafts',
   'features/dislike/dislike',
+  'features/feedback/feedback',
   'features/level/level',
   'features/notes/notes',
   'features/notifications/notifications',

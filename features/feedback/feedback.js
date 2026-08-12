@@ -1,4 +1,5 @@
 const theme = require("../../utils/theme.js")
+const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
 Page(theme.withTheme({
@@ -7,6 +8,10 @@ Page(theme.withTheme({
     activeType: '功能问题',
     content: '',
     contact: ''
+  },
+
+  onLoad() {
+    this.authorized = session.requirePage('/features/feedback/feedback')
   },
 
   selectType(event) {

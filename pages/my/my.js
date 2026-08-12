@@ -44,7 +44,7 @@ Page(theme.withTheme({
       { name: '阅读记录', icon: '/assets/app/user/ic_user_history.png', url: '/features/readHistory/readHistory', auth: true },
       { name: '标签管理', icon: '/assets/app/user/ic_user_tag.png', url: '/features/tags/tags', auth: true },
       { name: '我的报名', icon: '/assets/app/user/ic_user_apply.png', url: '/features/registrations/registrations', auth: true },
-      { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.png', url: '/features/feedback/feedback' }
+      { name: '意见反馈', icon: '/assets/app/user/ic_user_suggest.png', url: '/features/feedback/feedback', auth: true }
     ]
   },
 

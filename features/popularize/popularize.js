@@ -107,12 +107,6 @@ Page(theme.withTheme({
     this.shareCourse = this.data.courses[Number(event.currentTarget.dataset.index)] || null
   },
 
-  goBack() {
-    const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : []
-    if (pages.length > 1) wx.navigateBack()
-    else wx.switchTab({ url: '/pages/my/my' })
-  },
-
   onShareAppMessage(options) {
     const index = Number(options && options.target && options.target.dataset.index)
     const course = this.data.courses[index] || this.shareCourse

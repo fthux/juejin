@@ -1,15 +1,8 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page popularize-page">
-  <status-bar navigation="{{true}}">
-    <view class="popularize-nav">
-      <view class="nav-back" bindtap="goBack"><view class="back-icon"></view></view>
-      <view class="nav-title">推广中心</view>
-      <view class="nav-help" bindtap="openRules">规则&amp;帮助</view>
-    </view>
-  </status-bar>
-
   <view class="popularize-content">
     <view class="withdraw-card">
+      <view class="nav-help" bindtap="openRules"><text decode="{{true}}">规则&amp;帮助</text></view>
       <view class="withdraw-label" bindtap="showBalanceHelp">可提现金额 <text class="help-dot">?</text></view>
       <view class="withdraw-value"><text>¥</text> {{balance}}</view>
       <button class="withdraw-button" bindtap="handleBalanceAction">{{session ? '提现' : '登录'}}</button>
