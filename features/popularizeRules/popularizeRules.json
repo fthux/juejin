@@ -1,3 +1,7 @@
 {
-  "navigationStyle": "custom"
+  "navigationBarTitleText": "课程分销「规则&帮助」",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#ffffff",
+  "enablePullDownRefresh": false
 }

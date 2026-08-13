@@ -3,58 +3,6 @@
   color: var(--jj-text);
 }
 
-.rules-nav {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1rpx solid var(--jj-line);
-  box-sizing: border-box;
-}
-
-.nav-back,
-.nav-more {
-  width: 88rpx;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-icon {
-  width: 24rpx;
-  height: 24rpx;
-  border-left: 4rpx solid var(--jj-text);
-  border-bottom: 4rpx solid var(--jj-text);
-  transform: rotate(45deg);
-}
-
-.nav-title {
-  position: absolute;
-  left: 50%;
-  max-width: 70%;
-  overflow: hidden;
-  color: var(--jj-text);
-  font-size: 31rpx;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transform: translateX(-50%);
-}
-
-.nav-more {
-  gap: 7rpx;
-}
-
-.nav-more text {
-  width: 7rpx;
-  height: 7rpx;
-  border-radius: 50%;
-  background: var(--jj-text);
-}
-
 .rules-content {
   padding: 70rpx 50rpx calc(80rpx + env(safe-area-inset-bottom));
 }

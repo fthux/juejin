@@ -1,15 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page rules-page">
-  <status-bar navigation="{{true}}">
-    <view class="rules-nav">
-      <view class="nav-back" bindtap="goBack"><view class="back-icon"></view></view>
-      <view class="nav-title">课程分销「规则&amp;帮助」</view>
-      <view class="nav-more" bindtap="showMore"><text></text><text></text><text></text></view>
-    </view>
-  </status-bar>
-
   <view class="rules-content">
-    <view class="rules-heading">课程推广规则&amp;帮助</view>
+    <view class="rules-heading"><text decode="{{true}}">课程推广规则&amp;帮助</text></view>
 
     <view class="rule-block first">
       <view class="question">问题一：如何找到并推广课程？</view>
