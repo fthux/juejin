@@ -267,6 +267,12 @@ const normalizedTopicPin = utils.normalizePin({
   topic: { topic_id: '7273343075660300349', title: '大模型生态圈' }
 })
 if (normalizedTopicPin.topic !== '大模型生态圈' || normalizedTopicPin.topic_id !== '7273343075660300349') fail('普通圈子标签缺少名称或 ID')
+const normalizedInvalidAvatarPin = utils.normalizePin({
+  msg_Info: { msg_id: 'avatar-pin', content: '头像兜底' },
+  author_user_info: { avatar_large: 'https://p6-passport.byteacctimg.com/img/user-avatar/067fce088dc703b8e725a40529132e81~300x300.image' },
+  digg_user: [{ user_id: 'user-1', avatar_large: 'https://p26-passport.byteacctimg.com/img/user-avatar/33151d2393f536b069dc15c718e6c582~300x300.image' }]
+})
+if (normalizedInvalidAvatarPin.author.avatar_large !== '/assets/app/common/default_avatar.png' || normalizedInvalidAvatarPin.digg_users[0].avatar_large !== '/assets/app/common/default_avatar.png') fail('沸点已失效头像地址未替换为本地默认头像')
 const normalizedComment = utils.normalizeComment({
   comment_id: 'comment-1',
   comment_info: { comment_content: '一级评论', reply_count: 2 },
@@ -300,8 +306,6 @@ const normalizedArticleAuthor = utils.normalizeArticle({
   author_user_info: { user_id: 'user-1', followee_count: 18, follower_count: 12752, power: 67137 }
 }).author
 if (normalizedArticleAuthor.followee_count !== 18 || normalizedArticleAuthor.follower_count !== 12752 || normalizedArticleAuthor.power !== 67137) fail('文章作者归一化丢失用户主页统计')
-const normalizedArticleContent = utils.normalizeArticle({ item_info: { article_id: 'cached-content', mark_content: '## 缓存正文' } })
-if (normalizedArticleContent.mark_content !== '## 缓存正文') fail('文章归一化丢失详情页缓存正文')
 const courseIntroductionBlocks = utils.splitRichTextImages(markdown.normalizeImageSources('<h2>作者简介</h2><p><img src="//p3-juejin.byteimg.com/example.jpg?x=1&amp;y=2" alt="作者简介.jpg" width="2100"></p><p>正文</p>'))
 if (courseIntroductionBlocks.length !== 3 || courseIntroductionBlocks[1].type !== 'image') fail('小册介绍中的独立图片未拆分为原生图片节点')
 if (courseIntroductionBlocks[1].src !== 'https://p3-juejin.byteimg.com/example.jpg?x=1&y=2') fail('小册介绍图片地址未规范为可加载的 HTTPS 地址')
@@ -312,8 +316,13 @@ const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
 if (!postSource.includes('wx.previewImage({ current, urls })') || !postTemplate.includes('bindtap="previewContentImage"')) fail('文章详情正文图片缺少单击预览')
 if (!postSource.includes('contentImageUrls') || !postTemplate.includes('data-src="{{block.src}}"')) fail('文章详情图片预览缺少当前图片或同文图片列表')
-if (!postSource.includes('if (fromCache)') || !postSource.includes('markdown.toHtml(article.brief_content)')) fail('文章详情接口失败时未降级显示缓存正文或摘要')
+if (!postSource.includes('if (fromCache)') || !postSource.includes('markdown.toHtml(article.brief_content)')) fail('文章详情接口失败时未降级显示本地正文或摘要')
 if (!apiSource.includes('response.statusCode === 444') || !apiSource.includes('BLOCKED_REQUEST_COOLDOWN')) fail('接口 444 后未暂停重复的远程请求')
+
+const sessionSource = read('services/session.js')
+const articleCardSource = read('components/articleCard/articleCard.js')
+if (/articleCache|cacheArticle|getCachedArticle|jj:article-cache/.test(sessionSource + postSource + articleCardSource + read('features/search/search.js'))) fail('本地文章缓存功能未完全移除')
+if (!read('app.js').includes("wx.removeStorageSync('jj:article-cache')")) fail('升级后未清理旧的本地文章缓存')
 
 const postEmptyStateTemplate = read('components/emptyState/emptyState.wxml')
 const postEmptyStateStyle = read('components/emptyState/emptyState.wxss')
@@ -397,11 +406,19 @@ const feidianTemplate = read('pages/feidian/feidian.wxml')
 const topicSource = read('features/topic/topic.js')
 const topicTemplate = read('features/topic/topic.wxml')
 const courseCardTemplate = read('components/courseCard/courseCard.wxml')
+if (!indexSource.includes('requestFreshArticlePages(channel, activeNav, activeFilter') || !/if \(!config\.reload\) data\.cursor = cursor \|\| '0'/.test(apiSource)) fail('首页刷新必须按 APP 逻辑重新请求首屏且不携带旧游标')
+if (!indexSource.includes('normalizeArticleCards(result.data, this.displayedArticleIds)') || !indexSource.includes('this.displayedArticleIds') || !indexSource.includes('this.data.list.concat(rows)')) fail('首页触底分页缺少 APP 式页内及已展示文章 ID 去重')
+if (!indexTemplate.includes('wx:key="feed_key"')) fail('首页文章列表缺少稳定内容 ID 渲染键')
+if (!/loadArticleFeed\(reload\)[\s\S]*?if \(this\.data\.loading && !reload\) return/.test(indexSource)) fail('首页下拉刷新不得被上一次加载直接拦截')
+if (!appSource.includes('foregroundSequence += 1') || !indexSource.includes('foregroundSequence === this.lastForegroundSequence')) fail('首页缺少小程序前台恢复刷新逻辑')
+if (!indexSource.includes('MAX_REFRESH_PAGES') || !indexSource.includes('selectReplacementRows(scannedRows')) fail('首页匿名推荐重复时缺少有界的真实 API 续页替换策略')
+if (!/return remoteResult\(request\('\/recommend_api\/v1\/article\/recommend_(?:all|cate|cate_tag)_feed'/.test(apiSource)) fail('首页文章接口失败时不得静默回退静态 Mock')
 if (!/commentSort:\s*['"]hot['"]/.test(pinDetailSource)) fail('沸点评论列表默认排序必须为最热')
 if (!pinDetailTemplate.includes('loadCommentReplies')) fail('沸点评论列表缺少回复加载入口')
 if (!pinDetailTemplate.includes('ic_pins_hot_comment.png')) fail('沸点热评缺少 App 热评图标')
 if (pinDetailConfig.navigationStyle === 'custom') fail('沸点详情必须使用系统导航栏')
 if (!pinCardTemplate.includes('ic_pins_share.png') || !pinCardTemplate.includes('ic_pins_comment.png')) fail('沸点卡片必须使用 App 的分享和评论图标')
+if (!pinCardTemplate.includes('binderror="onAuthorAvatarError"') || !pinCardTemplate.includes('binderror="onDiggAvatarError"') || !pinCardSource.includes('failedDiggAvatars')) fail('沸点头像加载失败时缺少本地兜底')
 if (!feidianTemplate.includes('ic_pins_publish.png') || feidianTemplate.includes('>✎</text>')) fail('沸点悬浮发布按钮必须使用 App 的铅笔图标')
 if (!pinCardTemplate.includes('class="publish-time"')) fail('沸点卡片缺少发布时间')
 if (!pinCardTemplate.includes('catchtap="openTheme"')) fail('沸点正文活动标签缺少独立点击处理')
@@ -490,5 +507,12 @@ for (const [name, template, source] of [['首页', indexTemplate, indexSource], 
   if (!template.includes('type="error"') || !template.includes('bind:action="retryLoad"') || !source.includes('retryLoad()')) fail(`${name}缺少错误重试状态`)
 }
 if (!appStyles.includes('.interactive-pressed') || !appStyles.includes('.is-disabled') || !appStyles.includes('.is-loading')) fail('全局交互反馈缺少按压、禁用或加载状态')
+
+try {
+  execFileSync(process.execPath, ['scripts/verify-home-feed.js'], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] })
+} catch (error) {
+  const details = String(error.stderr || error.stdout || error.message).trim()
+  fail(`首页刷新行为校验失败${details ? `\n${details}` : ''}`)
+}
 
 console.log(`Validated ${allPages.length} pages, ${componentRoots.length} components, main package ${Math.ceil(mainPackageBytes / 1024)}KB, feature package ${Math.ceil(featurePackageBytes / 1024)}KB, navigation, dependencies, local assets and API boundaries.`)

@@ -58,16 +58,15 @@ Page(theme.withTheme({
       : api.articleDetail(this.data.articleId)
     task.then(({ result, fromCache }) => {
       const detail = result && result.data ? result.data : {}
-      const cached = session.getCachedArticle(this.data.articleId)
-      const raw = Object.assign({}, detail.article_info || cached || detail, {
+      const raw = Object.assign({}, detail.article_info || detail, {
         author_user_info: detail.author_user_info || (detail.article_info && detail.article_info.author_user_info),
         tags: detail.tags || (detail.article_info && detail.article_info.tags)
       })
       const article = utils.normalizeArticle(raw)
       if (!article.article_id || article.article_id !== this.data.articleId) throw new Error('文章详情不存在')
       const info = detail.article_info || {}
-      const markdownContent = detail.mark_content || info.mark_content || (local && (local.mark_content || local.content)) || (cached && cached.mark_content)
-      const htmlContent = detail.app_html_content || info.app_html_content || detail.web_html_content || info.web_html_content || detail.article_content || detail.content || (cached && (cached.app_html_content || cached.web_html_content))
+      const markdownContent = detail.mark_content || info.mark_content || (local && (local.mark_content || local.content))
+      const htmlContent = detail.app_html_content || info.app_html_content || detail.web_html_content || info.web_html_content || detail.article_content || detail.content
       const contentLimited = !markdownContent && !htmlContent && Boolean(article.brief_content)
       const content = markdownContent
         ? markdown.toHtml(markdownContent)
@@ -85,7 +84,6 @@ Page(theme.withTheme({
       article.tags = article.all_tags
       article.themes = (detail.theme_list || []).map((theme) => theme.name || theme.theme_name || '').filter(Boolean)
       session.addHistory(article)
-      session.cacheArticle(article)
       this.setData({
         article,
         content,
@@ -110,10 +108,8 @@ Page(theme.withTheme({
         this.loadSupplementary(detail, article)
       }
     }).catch(() => {
-      const cached = session.getCachedArticle(this.data.articleId)
-      const article = cached ? utils.normalizeArticle(cached) : null
       this.setData({
-        article,
+        article: null,
         content: '',
         contentSections: [],
         contentImageUrls: [],
@@ -122,7 +118,7 @@ Page(theme.withTheme({
         loadError: true,
         loading: false
       })
-      wx.setNavigationBarTitle({ title: article ? article.title : '文章详情' })
+      wx.setNavigationBarTitle({ title: '文章详情' })
     }).finally(() => this.setData({ loading: false }))
   },
 

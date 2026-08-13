@@ -123,7 +123,7 @@
     </view>
 
     <view class="article-list">
-      <article-card wx:for="{{list}}" wx:key="article_id" item="{{item}}" compact="{{true}}" home="{{true}}" bind:open="openArticle" bind:author="openAuthor" bind:dislike="dislikeArticle"></article-card>
+      <article-card wx:for="{{list}}" wx:key="feed_key" item="{{item}}" compact="{{true}}" home="{{true}}" bind:open="openArticle" bind:author="openAuthor" bind:dislike="dislikeArticle"></article-card>
     </view>
     <empty-state wx:if="{{!loading && !loadError && !list.length}}" text="暂时没有找到文章"></empty-state>
   </block>

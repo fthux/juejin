@@ -1,5 +1,3 @@
-const session = require('../../services/session.js')
-
 Component({
   properties: {
     item: {
@@ -22,10 +20,10 @@ Component({
 
   methods: {
     open() {
-      session.cacheArticle(this.data.item)
       this.triggerEvent('open', { item: this.data.item })
     },
     openAuthor() {
+      wx.setStorageSync('jj:user-current', this.data.item.author)
       this.triggerEvent('author', { author: this.data.item.author })
     },
     dislike() {

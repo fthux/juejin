@@ -1,7 +1,7 @@
 <view class="pin-card {{compact ? 'compact' : ''}} {{showActions ? '' : 'without-actions'}}" hover-class="card-pressed" hover-stay-time="80" bindtap="open" aria-role="button" aria-label="查看{{item.author.user_name}}发布的沸点">
   <view class="pin-head">
     <view class="avatar-action" hover-class="item-pressed" catchtap="openAuthor" aria-role="button" aria-label="查看{{item.author.user_name}}的主页">
-      <image class="avatar" src="{{item.author.avatar_large}}" mode="aspectFill" aria-hidden="true"></image>
+      <image class="avatar" src="{{authorAvatarFailed ? '/assets/app/common/default_avatar.png' : item.author.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" binderror="onAuthorAvatarError" aria-hidden="true"></image>
     </view>
     <view class="identity">
       <view class="name ellipsis">{{item.author.user_name}}</view>
@@ -52,7 +52,7 @@
     <view wx:if="{{item.topic && item.topic_id}}" class="topic" hover-class="item-pressed" catchtap="openTopic" aria-role="button" aria-label="打开{{item.topic}}圈子"># {{item.topic}} ></view>
     <view wx:if="{{item.digg_count_value > 0 && item.digg_users.length}}" class="pin-digg-users">
       <view class="pin-digg-avatars">
-        <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{item.avatar_large}}" mode="aspectFill"></image>
+        <image wx:for="{{item.digg_users}}" wx:key="user_id" class="pin-digg-avatar" src="{{failedDiggAvatars[index] ? '/assets/app/common/default_avatar.png' : item.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onDiggAvatarError"></image>
       </view>
       <text>{{item.digg_users.length <= 10 ? "赞过" : "等人赞过"}}</text>
     </view>

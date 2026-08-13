@@ -43,7 +43,7 @@ Page(theme.withTheme({
       return
     }
     const ids = session.getList(this.data.activeTab === 'like' ? 'likes' : 'collections')
-    const all = session.getList('articles').concat(session.getCachedArticles(), mock.articles)
+    const all = session.getList('articles').concat(mock.articles)
     const byId = {}
     all.forEach((item) => { byId[item.article_id] = item })
     this.setData({ articles: ids.map((id) => byId[id]).filter(Boolean).map(utils.normalizeArticle), books: [] })

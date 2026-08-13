@@ -10,8 +10,7 @@ const KEYS = {
   notifications: 'jj:notifications',
   registrations: 'jj:registrations',
   comments: 'jj:comments',
-  signDays: 'jj:sign-days',
-  articleCache: 'jj:article-cache'
+  signDays: 'jj:sign-days'
 }
 
 function ensureLocalData() {
@@ -53,25 +52,6 @@ function addHistory(article) {
   setList('history', list.slice(0, 100))
 }
 
-function cacheArticle(article) {
-  if (!article || !article.article_id) return
-  const cache = wx.getStorageSync(KEYS.articleCache) || {}
-  cache[article.article_id] = article
-  const ids = Object.keys(cache)
-  if (ids.length > 100) delete cache[ids[0]]
-  wx.setStorageSync(KEYS.articleCache, cache)
-}
-
-function getCachedArticle(articleId) {
-  const cache = wx.getStorageSync(KEYS.articleCache) || {}
-  return cache[articleId] || null
-}
-
-function getCachedArticles() {
-  const cache = wx.getStorageSync(KEYS.articleCache) || {}
-  return Object.keys(cache).map((id) => cache[id])
-}
-
 function accountOnlyError() {
   throw new Error('小程序版不提供账号登录，请使用稀土掘金官方 App 或网站')
 }
@@ -89,7 +69,6 @@ function getComments(kind, targetId) {
 }
 
 function clearCache() {
-  wx.removeStorageSync(KEYS.articleCache)
   wx.removeStorageSync('jj:course-cache')
   wx.removeStorageSync('jj:course-history')
 }
@@ -104,9 +83,6 @@ module.exports = {
   setList,
   toggle,
   addHistory,
-  cacheArticle,
-  getCachedArticle,
-  getCachedArticles,
   saveDraft,
   publishPin,
   publishArticle,

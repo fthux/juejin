@@ -83,6 +83,17 @@ function normalizeImageUrl(value, size) {
   return url
 }
 
+const DEFAULT_AVATAR = '/assets/app/common/default_avatar.png'
+const INVALID_PIN_AVATAR_IDS = [
+  '067fce088dc703b8e725a40529132e81',
+  '33151d2393f536b069dc15c718e6c582'
+]
+
+function normalizePinAvatar(value, size) {
+  const url = normalizeImageUrl(value || DEFAULT_AVATAR, size)
+  return INVALID_PIN_AVATAR_IDS.some((id) => url.indexOf(id) !== -1) ? DEFAULT_AVATAR : (url || DEFAULT_AVATAR)
+}
+
 function splitRichTextImages(source) {
   const html = String(source || '')
   const blocks = []
@@ -175,9 +186,6 @@ function normalizeArticle(raw) {
     publish_date: formatDateTime(ctime, false),
     update_time: formatDateTime(mtime, true),
     read_time: info.read_time || item.read_time || (estimatedMinutes ? `${estimatedMinutes}分钟` : ''),
-    mark_content: info.mark_content || item.mark_content || result.mark_content || '',
-    app_html_content: info.app_html_content || item.app_html_content || result.app_html_content || '',
-    web_html_content: info.web_html_content || item.web_html_content || result.web_html_content || '',
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',
@@ -352,14 +360,14 @@ function normalizePin(raw) {
     digg_users: Array.isArray(diggUsers) ? diggUsers.slice(0, 3).map((user) => ({
       user_id: String(user.user_id || ''),
       user_name: user.user_name || '掘友',
-      avatar_large: normalizeImageUrl(user.avatar_large || '/assets/app/common/default_avatar.png', 80)
+      avatar_large: normalizePinAvatar(user.avatar_large, 80)
     })) : [],
     is_digg: Boolean(item.user_interact && item.user_interact.is_digg),
     is_followed: Boolean(item.user_interact && item.user_interact.is_follow),
     author: {
       user_id: author.user_id || '',
       user_name: author.user_name || '掘友',
-      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.png',
+      avatar_large: normalizePinAvatar(author.avatar_large, 160),
       job_title: author.job_title || '',
       company: author.company || ''
     }

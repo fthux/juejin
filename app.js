@@ -21,6 +21,7 @@ App({
     const systemInfo = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {}
     wx.removeStorageSync('jj:session')
     wx.removeStorageSync('jj:passport-cookies')
+    wx.removeStorageSync('jj:article-cache')
 
     this.globalData.systemInfo = systemInfo
     theme.initialize(this, systemInfo)
@@ -28,6 +29,7 @@ App({
   },
 
   onShow(options) {
+    this.globalData.foregroundSequence += 1
     this.captureEntry(options)
   },
 
@@ -93,6 +95,7 @@ App({
     theme: 'light',
     disclaimerAcknowledged: false,
     disclaimerRedirecting: false,
-    pendingEntry: null
+    pendingEntry: null,
+    foregroundSequence: 0
   }
 })

@@ -1,7 +1,9 @@
 Component({
   data: {
     contentExpanded: false,
-    contentCanToggle: false
+    contentCanToggle: false,
+    authorAvatarFailed: false,
+    failedDiggAvatars: {}
   },
 
   properties: {
@@ -9,6 +11,7 @@ Component({
       type: Object,
       value: {},
       observer() {
+        this.setData({ authorAvatarFailed: false, failedDiggAvatars: {} })
         this.resetContentState()
       }
     },
@@ -74,6 +77,14 @@ Component({
     toggleContent() {
       if (!this.data.contentCollapsible || !this.data.contentCanToggle) return
       this.setData({ contentExpanded: !this.data.contentExpanded })
+    },
+    onAuthorAvatarError() {
+      if (!this.data.authorAvatarFailed) this.setData({ authorAvatarFailed: true })
+    },
+    onDiggAvatarError(event) {
+      const index = Number(event.currentTarget.dataset.index)
+      if (!Number.isInteger(index) || this.data.failedDiggAvatars[index]) return
+      this.setData({ [`failedDiggAvatars.${index}`]: true })
     },
     open() {
       this.triggerEvent('open', { item: this.data.item })

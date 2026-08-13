@@ -45,38 +45,39 @@ function withFallback(task, fallback) {
   }))
 }
 
+function remoteResult(task) {
+  return task.then((result) => ({ result, fromCache: false }))
+}
+
 function homeFeed(cursor, options) {
   const config = options || {}
-  return withFallback(request('/recommend_api/v1/article/recommend_all_feed', {
-    id_type: 2,
-    client_type: 2608,
-    sort_type: config.sortType || 200,
-    cate_id: config.cateId || '',
-    cursor: cursor || '0',
-    limit: 20
-  }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
+  const data = {
+    sort_type: config.sortType || 200
+  }
+  if (!config.reload) data.cursor = cursor || '0'
+  return remoteResult(request('/recommend_api/v1/article/recommend_all_feed', data))
 }
 
-function categoryFeed(cateId, cursor) {
-  return withFallback(request('/recommend_api/v1/article/recommend_cate_feed', {
-    id_type: 2,
+function categoryFeed(cateId, cursor, options) {
+  const config = options || {}
+  const data = {
     sort_type: 200,
-    cate_id: cateId || '',
-    cursor: cursor || '0',
-    limit: 20
-  }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
+    cate_id: cateId || ''
+  }
+  if (!config.reload) data.cursor = cursor || '0'
+  return remoteResult(request('/recommend_api/v1/article/recommend_cate_feed', data))
 }
 
-function categoryTagFeed(cateId, tagId, cursor) {
-  if (!tagId) return categoryFeed(cateId, cursor)
-  return withFallback(request('/recommend_api/v1/article/recommend_cate_tag_feed', {
-    id_type: 2,
+function categoryTagFeed(cateId, tagId, cursor, options) {
+  const config = options || {}
+  if (!tagId) return categoryFeed(cateId, cursor, config)
+  const data = {
     sort_type: 200,
     cate_id: cateId || '',
-    tag_id: tagId,
-    cursor: cursor || '0',
-    limit: 20
-  }), () => ({ data: mock.articles.map((item) => ({ item_info: item })), cursor: 'mock-end', has_more: false }))
+    tag_id: tagId
+  }
+  if (!config.reload) data.cursor = cursor || '0'
+  return remoteResult(request('/recommend_api/v1/article/recommend_cate_tag_feed', data))
 }
 
 function pins(cursor, options) {

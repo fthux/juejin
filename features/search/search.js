@@ -283,7 +283,6 @@ Page(theme.withTheme({
     const row = this.data.results[Number(event.currentTarget.dataset.index)]
     if (!row) return
     if (row.kind === 'article' && row.item.article_id) {
-      session.cacheArticle(row.item)
       wx.navigateTo({ url: `/features/post/post?id=${row.item.article_id}` })
     } else if (row.kind === 'course' && row.item.id) {
       wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${row.item.id}` })
