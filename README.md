@@ -5,7 +5,7 @@
 
 <div align="center">
 
-<img src="materials/miniqrcode.jpg" alt="稀土掘金" width="120" />
+<img src="materials/miniqrcode.jpg" alt="稀土掘金" width="140" />
 
 # 稀土掘金非官方小程序
 
@@ -20,7 +20,6 @@
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/fthux/juejin)
 
 <img src="materials/banner_juejin.png" alt="稀土掘金" />
 
