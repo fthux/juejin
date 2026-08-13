@@ -7,27 +7,29 @@ const DEFAULT_QUERY = 'aid=2608&spider=0'
 function request(path, data, options) {
   const config = options || {}
   const divider = path.indexOf('?') === -1 ? '?' : '&'
-  const query = config.skipDefaultQuery ? `uuid=${utils.getUuid()}` : `${DEFAULT_QUERY}&uuid=${utils.getUuid()}`
-  const url = `${BASE_URL}${path}${divider}${query}`
+  return utils.getUuid().then((uuid) => {
+    const query = config.skipDefaultQuery ? `uuid=${uuid}` : `${DEFAULT_QUERY}&uuid=${uuid}`
+    const url = `${BASE_URL}${path}${divider}${query}`
 
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url,
-      method: config.method || 'POST',
-      data: data || {},
-      header: config.header || { 'content-type': 'application/json' },
-      timeout: config.timeout || 12000,
-      success(response) {
-        const body = response.data || {}
-        if (response.statusCode >= 200 && response.statusCode < 300 && body.err_no === 0) {
-          resolve(body)
-          return
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url,
+        method: config.method || 'POST',
+        data: data || {},
+        header: config.header || { 'content-type': 'application/json' },
+        timeout: config.timeout || 12000,
+        success(response) {
+          const body = response.data || {}
+          if (response.statusCode >= 200 && response.statusCode < 300 && body.err_no === 0) {
+            resolve(body)
+            return
+          }
+          reject(new Error(body.err_msg || `请求失败 (${response.statusCode})`))
+        },
+        fail(error) {
+          reject(new Error(error.errMsg || '网络连接失败'))
         }
-        reject(new Error(body.err_msg || `请求失败 (${response.statusCode})`))
-      },
-      fail(error) {
-        reject(new Error(error.errMsg || '网络连接失败'))
-      }
+      })
     })
   })
 }

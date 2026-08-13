@@ -120,7 +120,7 @@ const articleSeeds = [
   ['art-8', '产品工程师如何做好技术方案', '从目标、约束和验证方式出发，把技术方案写成团队可以执行的共同语言。', 243, 38, 12100, ['职场', '方法论'], 0]
 ]
 
-const articles = articleSeeds.map((seed) => ({
+const articles = articleSeeds.map((seed, index) => ({
   article_id: seed[0],
   title: seed[1],
   brief_content: seed[2],
@@ -128,7 +128,7 @@ const articles = articleSeeds.map((seed) => ({
   comment_count: seed[4],
   view_count: seed[5],
   collect_count: Math.round(seed[3] * 0.62),
-  ctime: Math.floor(Date.now() / 1000) - Math.floor(Math.random() * 500000),
+  ctime: Math.floor(Date.now() / 1000) - (index + 1) * 60000,
   author_user_info: authors[seed[7]],
   tags: seed[6].map((name) => ({ tag_name: name })),
   cover_image: ''

@@ -1262,7 +1262,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
   function replaceLink(wm, link) {
     var lnkTxt = link;
     if (/^www\./i.test(link)) {
-      link = link.replace(/^www\./i, 'http://www.');
+      link = link.replace(/^www\./i, 'https://www.');
     }
     return '<a href="' + link + '">' + lnkTxt + '</a>';
   }
@@ -1591,27 +1591,14 @@ showdown.subParser('encodeEmailAddress', function (addr) {
     },
     function (ch) {
       return '&#x' + ch.charCodeAt(0).toString(16) + ';';
-    },
-    function (ch) {
-      return ch;
     }
   ];
 
   addr = 'mailto:' + addr;
 
-  addr = addr.replace(/./g, function (ch) {
-    if (ch === '@') {
-      // this *must* be encoded. I insist.
-      ch = encode[Math.floor(Math.random() * 2)](ch);
-    } else if (ch !== ':') {
-      // leave ':' alone (to spot mailto: later)
-      var r = Math.random();
-      // roughly 10% raw, 45% hex, 45% dec
-      ch = (
-        r > 0.9 ? encode[2](ch) : r > 0.45 ? encode[1](ch) : encode[0](ch)
-      );
-    }
-    return ch;
+  addr = addr.replace(/./g, function (ch, index) {
+    // Leave ':' alone to spot mailto: later; encode all other characters deterministically.
+    return ch === ':' ? ch : encode[index % 2](ch);
   });
 
   addr = '<a href="' + addr + '">' + addr + '</a>';
@@ -1629,7 +1616,7 @@ showdown.subParser('escapeSpecialCharsWithinTagAttributes', function (text) {
 
   // Build a regex to find HTML tags and comments.  See Friedl's
   // "Mastering Regular Expressions", 2nd Ed., pp. 200-201.
-  var regex = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--.*?--\s*)+>)/gi;
+  var regex = /(<!--[\s\S]*?--\s*>|<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>)/gi;
 
   text = text.replace(regex, function (wholeMatch) {
     var tag = wholeMatch.replace(/(.)<\/?code>(?=.)/g, '$1`');

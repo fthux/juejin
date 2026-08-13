@@ -48,13 +48,31 @@ function formatDateTime(value, includeTime) {
   return includeTime ? `${datePart} ${pad(date.getHours())}:${pad(date.getMinutes())}` : datePart
 }
 
+let pendingUuid
+
 function getUuid() {
-  let uuid = wx.getStorageSync('jj:uuid')
-  if (!uuid) {
-    uuid = `${Date.now()}${Math.random().toString(16).slice(2)}`
-    wx.setStorageSync('jj:uuid', uuid)
-  }
-  return uuid
+  const storedUuid = wx.getStorageSync('jj:uuid')
+  if (storedUuid) return Promise.resolve(String(storedUuid))
+  if (pendingUuid) return pendingUuid
+
+  pendingUuid = new Promise((resolve, reject) => {
+    wx.getRandomValues({
+      length: 16,
+      success(result) {
+        const uuid = Array.from(new Uint8Array(result.randomValues), (byte) => byte.toString(16).padStart(2, '0')).join('')
+        wx.setStorageSync('jj:uuid', uuid)
+        resolve(uuid)
+      },
+      fail(error) {
+        reject(new Error(error.errMsg || '无法生成设备标识'))
+      }
+    })
+  }).catch((error) => {
+    pendingUuid = null
+    throw error
+  })
+
+  return pendingUuid
 }
 
 function normalizeImageUrl(value, size) {

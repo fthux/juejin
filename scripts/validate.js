@@ -1,11 +1,24 @@
 const fs = require('fs')
 const path = require('path')
+const { execFileSync } = require('child_process')
 
 const root = path.resolve(__dirname, '..')
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
 const exists = (file) => fs.existsSync(path.join(root, file))
 const fail = (message) => {
   throw new Error(message)
+}
+const checkedJavaScript = new Set()
+const checkJavaScript = (file) => {
+  if (checkedJavaScript.has(file)) return
+  const absolute = path.join(root, file)
+  try {
+    execFileSync(process.execPath, ['--check', absolute], { stdio: ['ignore', 'pipe', 'pipe'] })
+  } catch (error) {
+    const details = String(error.stderr || error.message).trim()
+    fail(`JavaScript 语法错误: ${file}${details ? `\n${details}` : ''}`)
+  }
+  checkedJavaScript.add(file)
 }
 const collectFiles = (directory) => {
   const absolute = path.join(root, directory)
@@ -54,7 +67,7 @@ for (const base of roots) {
     const file = `${base}.${extension}`
     if (!exists(file)) fail(`缺少文件: ${file}`)
     if (extension === 'json') JSON.parse(read(file))
-    if (extension === 'js') new Function(read(file))
+    if (extension === 'js') checkJavaScript(file)
   }
 
   const source = read(`${base}.js`)
@@ -75,7 +88,7 @@ const unsupportedApis = /wx\.(?:requestPayment|requestSubscribeMessage|login|get
 
 for (const file of runtimeFiles) {
   const source = read(file)
-  new Function(source)
+  checkJavaScript(file)
   if (source.includes('juejin.im')) fail(`注册代码仍包含旧域名: ${file}`)
   if (/requestPayment|pay_api|payRequest/i.test(source)) fail(`注册代码包含支付调用: ${file}`)
   if (unsupportedApis.test(source)) fail(`注册代码包含需求范围外的小程序能力: ${file}`)
