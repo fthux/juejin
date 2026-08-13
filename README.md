@@ -1,13 +1,30 @@
-# 稀土掘金非官方微信小程序
-
 > [!IMPORTANT]
 > 本项目是对稀土掘金 App 界面与部分功能的非官方微信小程序复刻，用于个人学习、技术研究和非商业公开展示。
 >
 > 本项目未获得稀土掘金官方授权、合作或认可，不是官方产品。本项目不得用于商业用途；以非商业形式发布不代表获得稀土掘金授权、合作或认可。
 
-本项目以稀土掘金 Android 6.7.6 为产品和视觉基准，通过原生微信小程序技术复刻部分页面、视觉效果与交互流程，用于学习微信小程序页面开发、组件设计、数据展示和交互实现。
+<div align="center">
+
+<img src="materials/miniqrcode.jpg" alt="稀土掘金" width="120" />
+
+# 稀土掘金非官方小程序
+
+本项目以稀土掘金 Android 版本为产品和视觉基准，通过原生微信小程序技术复刻部分页面、视觉效果与交互流程，用于学习微信小程序页面开发、组件设计、数据展示和交互实现。
 
 本项目不是稀土掘金官方微信小程序。官方产品和服务请访问[稀土掘金官方网站](https://juejin.cn/)。
+
+[![GitHub top language](https://img.shields.io/github/languages/top/fthux/juejin?logo=github)](https://github.com/fthux/juejin/commits/master/)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
+
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fthux_juejin&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fthux_juejin)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/fthux/juejin)
+
+<img src="materials/banner_juejin.png" alt="稀土掘金" />
+
+</div>
 
 ## 使用限制
 
