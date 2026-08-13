@@ -2,6 +2,7 @@
 <view class="page popularize-page">
   <view class="popularize-content">
     <view class="withdraw-card">
+      <image class="withdraw-background" src="/features/assets/app/popularize/ic_popularize_bg.png" mode="aspectFill"></image>
       <view class="nav-help" bindtap="openRules"><text decode="{{true}}">规则&amp;帮助</text></view>
       <view class="withdraw-label" bindtap="showBalanceHelp">可提现金额 <text class="help-dot">?</text></view>
       <view class="withdraw-value"><text>¥</text> {{balance}}</view>
@@ -17,7 +18,7 @@
 
     <view class="course-list">
       <view wx:for="{{courses}}" wx:key="id" class="course-row" data-index="{{index}}" bindtap="openCourse">
-        <image class="course-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"></image>
+        <image class="course-cover" src="{{item.coverFailed ? '/assets/app/common/default_booklet_cover_image.png' : item.cover}}" mode="aspectFill" lazy-load="{{true}}" referrer-policy="no-referrer" data-index="{{index}}" binderror="onCoverError"></image>
         <view class="course-info">
           <view class="course-title two-lines">{{item.title}}</view>
           <view class="course-author ellipsis">{{item.author}}</view>

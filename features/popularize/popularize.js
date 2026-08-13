@@ -79,6 +79,12 @@ Page(theme.withTheme({
     if (course) wx.navigateTo({ url: `/features/courseDetail/courseDetail?id=${course.id}` })
   },
 
+  onCoverError(event) {
+    const index = Number(event.currentTarget.dataset.index)
+    const course = this.data.courses[index]
+    if (course && !course.coverFailed) this.setData({ [`courses[${index}].coverFailed`]: true })
+  },
+
   openRules() {
     wx.navigateTo({ url: '/features/popularizeRules/popularizeRules' })
   },
