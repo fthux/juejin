@@ -14,6 +14,16 @@ const byteCourseCategories = [
   { id: '6809637776263217160', name: '代码人生' }
 ]
 
+function mergeUniqueCourses(previous, additions) {
+  const seen = new Set()
+  return (previous || []).concat(additions || []).filter((item) => {
+    const id = String(item && item.id || '')
+    if (!id || seen.has(id)) return false
+    seen.add(id)
+    return true
+  })
+}
+
 Page(theme.withTheme({
   data: {
     courseTypes: [
@@ -88,7 +98,7 @@ Page(theme.withTheme({
     if (id === 'price') {
       const direction = this.data.activeSort !== 'price' || this.data.priceDirection === 'desc' ? 'asc' : 'desc'
       this.setData({ activeSort: id, priceDirection: direction })
-      this.applyFilter()
+      this.load(true)
       return
     }
     if (id === this.data.activeSort) return
@@ -105,19 +115,23 @@ Page(theme.withTheme({
     api.courses(cursor, {
       categoryId: this.data.activeCategory,
       sort: this.data.activeSort,
+      priceDirection: this.data.priceDirection,
       courseType: this.data.activeCourseType,
       onlyVip: this.data.activeCourseType === 'booklet' && this.data.onlyVip
     }).then(({ result, fromCache }) => {
       if (requestId !== this.courseRequestId) return
       const normalize = this.data.activeCourseType === 'byte' ? utils.normalizeByteCourse : utils.normalizeCourse
       const rows = (Array.isArray(result.data) ? result.data : []).map(normalize).filter((item) => item.id)
-      const allCourses = reload ? rows : this.data.allCourses.concat(rows)
+      const previous = reload ? [] : mergeUniqueCourses([], this.data.allCourses)
+      const allCourses = mergeUniqueCourses(previous, rows)
+      const addedCount = allCourses.length - previous.length
+      const nextCursor = String(result.cursor || '0')
       const cacheKey = this.data.activeCourseType === 'byte' ? 'jj:byte-course-cache' : 'jj:course-cache'
       wx.setStorageSync(cacheKey, allCourses)
       this.setData({
         allCourses,
-        cursor: result.cursor || '0',
-        hasMore: Boolean(result.has_more) && rows.length > 0,
+        cursor: nextCursor,
+        hasMore: Boolean(result.has_more) && addedCount > 0 && nextCursor !== String(cursor),
         loadError: Boolean(fromCache && !rows.length),
         loading: false
       })

@@ -1,4 +1,4 @@
-.pin-detail-page { padding-bottom: 112rpx; background: var(--jj-bg); }
+.pin-detail-page { padding-bottom: calc(112rpx + constant(safe-area-inset-bottom)); padding-bottom: calc(112rpx + env(safe-area-inset-bottom)); background: var(--jj-bg); }
 
 .recommend-section { margin-top: 14rpx; padding: 26rpx 0 24rpx; }
 .recommend-title { padding: 0 28rpx; color: var(--jj-text); font-size: 28rpx; font-weight: 600; }
@@ -44,6 +44,7 @@
 .comment-empty { padding: 70rpx 20rpx; color: var(--jj-text-3); text-align: center; font-size: 24rpx; }
 
 .comment-bar { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; min-height: 100rpx; padding: 14rpx 22rpx; display: flex; align-items: center; gap: 22rpx; box-sizing: border-box; background: var(--jj-surface); border-top: 1rpx solid var(--jj-line); }
+.comment-bar.safe-bottom { padding-bottom: calc(14rpx + env(safe-area-inset-bottom)); }
 .comment-input { height: 62rpx; padding: 0 22rpx; display: flex; align-items: center; flex: 1; border-radius: 31rpx; color: var(--jj-text-3); background: var(--jj-fill); font-size: 23rpx; }
 .bottom-action { min-width: 54rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 18rpx; }
 .like-icon, .comment-icon { color: var(--jj-text-2); font-size: 34rpx; line-height: 1; }

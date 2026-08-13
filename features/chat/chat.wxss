@@ -1,6 +1,7 @@
 .chat-page {
   height: 100vh;
-  padding-bottom: 108rpx;
+  padding-bottom: calc(108rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(108rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
 }
 
@@ -56,6 +57,7 @@
   background: var(--jj-surface);
   border-top: 1rpx solid var(--jj-line);
 }
+.chat-input.safe-bottom { padding-bottom: calc(14rpx + env(safe-area-inset-bottom)); }
 
 .chat-input input {
   height: 68rpx;

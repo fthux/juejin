@@ -1,9 +1,9 @@
 .pin-page {
-  padding-bottom: 26rpx;
+  padding-bottom: calc(var(--jj-tabbar-height, 104rpx) + 26rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(var(--jj-tabbar-height, 104rpx) + 26rpx + env(safe-area-inset-bottom));
 }
 
 .pin-page.following-mode {
-  padding-bottom: 0;
   background: var(--jj-surface);
 }
 
@@ -288,7 +288,8 @@
   position: fixed;
   z-index: 8;
   right: 34rpx;
-  bottom: 148rpx;
+  bottom: calc(var(--jj-tabbar-height, 104rpx) + 44rpx + constant(safe-area-inset-bottom));
+  bottom: calc(var(--jj-tabbar-height, 104rpx) + 44rpx + env(safe-area-inset-bottom));
   width: 88rpx;
   height: 88rpx;
   border-radius: 50%;

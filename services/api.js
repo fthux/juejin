@@ -226,11 +226,17 @@ function courses(cursor, options) {
     }))
   }
 
+  const sortMap = {
+    all: 10,
+    latest: 1,
+    hot: 7,
+    price: config.priceDirection === 'desc' ? 9 : 8
+  }
   const data = {
     cursor: cursor || '0',
     limit: 20,
     category_id: config.categoryId || '0',
-    sort: config.sort === 'hot' ? 7 : 1,
+    sort: sortMap[config.sort] || sortMap.all,
     is_vip: config.onlyVip ? 1 : 0
   }
   return withFallback(request('/booklet_api/v1/booklet/listbycategory', data), () => ({

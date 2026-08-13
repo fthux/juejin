@@ -1,4 +1,9 @@
-.find-page { min-height: 100vh; padding-bottom: 30rpx; background: var(--jj-surface); }
+.find-page {
+  min-height: 100vh;
+  padding-bottom: calc(var(--jj-tabbar-height) + 30rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(var(--jj-tabbar-height) + 30rpx + env(safe-area-inset-bottom));
+  background: var(--jj-surface);
+}
 .find-sticky { position: sticky; top: 0; z-index: 20; width: 100%; overflow: hidden; background: #eef8fc; }
 .find-sticky-bg, .find-top-bg { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
 .find-sticky-content, .find-top-content { position: relative; z-index: 1; }

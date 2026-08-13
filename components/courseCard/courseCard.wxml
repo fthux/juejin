@@ -10,9 +10,12 @@
     <view class="course-footer">
       <text wx:if="{{item.owned}}" class="owned">已购</text>
       <view wx:else class="price-row">
-        <text class="price"><text class="price-symbol">¥</text>{{item.price}}</text>
-        <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
-        <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
+        <text wx:if="{{item.priceValue === 0}}" class="free-price">免费</text>
+        <block wx:else>
+          <text class="price"><text class="price-symbol">¥</text>{{item.price}}</text>
+          <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
+          <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
+        </block>
       </view>
     </view>
   </view>

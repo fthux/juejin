@@ -98,6 +98,13 @@
   gap: 10rpx;
 }
 
+.free-price {
+  color: var(--jj-blue);
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 44rpx;
+}
+
 .price {
   color: #f53f3f;
   font-size: 30rpx;

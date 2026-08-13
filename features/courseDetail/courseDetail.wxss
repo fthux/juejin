@@ -412,6 +412,7 @@
   background: var(--jj-surface);
   border-top: 1rpx solid var(--jj-line);
 }
+.course-bottom.safe-bottom { padding-bottom: calc(12rpx + env(safe-area-inset-bottom)); }
 
 .trial-action {
   display: flex;
