@@ -18,6 +18,8 @@ Page(theme.withTheme({
     article: null,
     content: '',
     contentSections: [],
+    contentImageUrls: [],
+    contentLimited: false,
     related: [],
     featured: [],
     comments: [],
@@ -51,8 +53,10 @@ Page(theme.withTheme({
   loadDetail() {
     this.setData({ loading: true, loadError: false })
     const local = session.getList('articles').find((item) => item.article_id === this.data.articleId)
-    const task = local ? Promise.resolve({ result: { data: Object.assign({}, local, { article_info: local }) } }) : api.articleDetail(this.data.articleId)
-    task.then(({ result }) => {
+    const task = local
+      ? Promise.resolve({ result: { data: Object.assign({}, local, { article_info: local }) }, fromCache: true })
+      : api.articleDetail(this.data.articleId)
+    task.then(({ result, fromCache }) => {
       const detail = result && result.data ? result.data : {}
       const cached = session.getCachedArticle(this.data.articleId)
       const raw = Object.assign({}, detail.article_info || cached || detail, {
@@ -62,12 +66,22 @@ Page(theme.withTheme({
       const article = utils.normalizeArticle(raw)
       if (!article.article_id || article.article_id !== this.data.articleId) throw new Error('文章详情不存在')
       const info = detail.article_info || {}
-      const markdownContent = detail.mark_content || info.mark_content || (local && local.content)
-      const htmlContent = detail.app_html_content || info.app_html_content || detail.web_html_content || info.web_html_content || detail.article_content || detail.content
+      const markdownContent = detail.mark_content || info.mark_content || (local && (local.mark_content || local.content)) || (cached && cached.mark_content)
+      const htmlContent = detail.app_html_content || info.app_html_content || detail.web_html_content || info.web_html_content || detail.article_content || detail.content || (cached && (cached.app_html_content || cached.web_html_content))
+      const contentLimited = !markdownContent && !htmlContent && Boolean(article.brief_content)
       const content = markdownContent
         ? markdown.toHtml(markdownContent)
-        : markdown.normalizeImageSources(htmlContent || '')
+        : htmlContent
+          ? markdown.normalizeImageSources(htmlContent)
+          : markdown.toHtml(article.brief_content)
       const articleContent = markdown.sectionArticleContent(content)
+      const contentSections = articleContent.sections.map((section) => ({
+        id: section.id,
+        blocks: utils.splitRichTextImages(section.content)
+      }))
+      const contentImageUrls = contentSections.reduce((urls, section) => urls.concat(
+        section.blocks.filter((block) => block.type === 'image').map((block) => block.src)
+      ), [])
       article.tags = article.all_tags
       article.themes = (detail.theme_list || []).map((theme) => theme.name || theme.theme_name || '').filter(Boolean)
       session.addHistory(article)
@@ -75,7 +89,9 @@ Page(theme.withTheme({
       this.setData({
         article,
         content,
-        contentSections: articleContent.sections,
+        contentSections,
+        contentImageUrls,
+        contentLimited,
         related: [],
         featured: [],
         comments: [],
@@ -88,7 +104,11 @@ Page(theme.withTheme({
         loading: false
       })
       wx.setNavigationBarTitle({ title: article.title || '文章详情' })
-      this.loadSupplementary(detail, article)
+      if (fromCache) {
+        this.setData({ commentsLoading: false, commentsHasMore: false })
+      } else {
+        this.loadSupplementary(detail, article)
+      }
     }).catch(() => {
       const cached = session.getCachedArticle(this.data.articleId)
       const article = cached ? utils.normalizeArticle(cached) : null
@@ -96,6 +116,8 @@ Page(theme.withTheme({
         article,
         content: '',
         contentSections: [],
+        contentImageUrls: [],
+        contentLimited: false,
         related: [],
         loadError: true,
         loading: false
@@ -106,6 +128,13 @@ Page(theme.withTheme({
 
   retry() {
     this.loadDetail()
+  },
+
+  previewContentImage(event) {
+    const current = event.currentTarget.dataset.src
+    if (!current) return
+    const urls = this.data.contentImageUrls.length ? this.data.contentImageUrls : [current]
+    wx.previewImage({ current, urls })
   },
 
   loadSupplementary(detail, article) {

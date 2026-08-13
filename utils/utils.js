@@ -175,6 +175,9 @@ function normalizeArticle(raw) {
     publish_date: formatDateTime(ctime, false),
     update_time: formatDateTime(mtime, true),
     read_time: info.read_time || item.read_time || (estimatedMinutes ? `${estimatedMinutes}分钟` : ''),
+    mark_content: info.mark_content || item.mark_content || result.mark_content || '',
+    app_html_content: info.app_html_content || item.app_html_content || result.app_html_content || '',
+    web_html_content: info.web_html_content || item.web_html_content || result.web_html_content || '',
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',

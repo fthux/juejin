@@ -131,7 +131,18 @@ const articles = articleSeeds.map((seed, index) => ({
   ctime: Math.floor(Date.now() / 1000) - (index + 1) * 60000,
   author_user_info: authors[seed[7]],
   tags: seed[6].map((name) => ({ tag_name: name })),
-  cover_image: ''
+  cover_image: '',
+  mark_content: `## 内容概览
+
+${seed[2]}
+
+## 核心要点
+
+本文围绕“${seed[1]}”展开，从实际开发场景梳理关键问题、常见误区与可执行的解决思路。
+
+## 实践建议
+
+先明确目标和约束，再用可观测的数据验证方案效果。实施过程中保留回退路径，并根据真实反馈持续调整。`
 }))
 
 const pins = [

@@ -130,7 +130,7 @@
 }
 
 .skeleton-avatar,
-.skeleton-heading view,
+.skeleton-heading-line,
 .skeleton-line {
   background: linear-gradient(90deg, var(--jj-fill) 25%, var(--jj-fill-2) 50%, var(--jj-fill) 75%);
   background-size: 300% 100%;
@@ -149,13 +149,13 @@
   flex: 1;
 }
 
-.skeleton-heading view {
+.skeleton-heading-line {
   width: 36%;
   height: 20rpx;
   border-radius: var(--jj-radius-sm);
 }
 
-.skeleton-heading view + view {
+.skeleton-heading-line-short {
   width: 24%;
   height: 16rpx;
   margin-top: 12rpx;

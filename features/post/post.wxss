@@ -163,6 +163,22 @@
   height: auto;
 }
 
+.article-content-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.content-limited {
+  margin-bottom: 28rpx;
+  padding: 18rpx 22rpx;
+  color: var(--jj-text-3);
+  background: var(--jj-fill-2);
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
 .content-error {
   padding: 72rpx 24rpx;
   color: var(--jj-text-3);

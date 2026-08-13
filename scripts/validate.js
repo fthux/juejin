@@ -300,13 +300,24 @@ const normalizedArticleAuthor = utils.normalizeArticle({
   author_user_info: { user_id: 'user-1', followee_count: 18, follower_count: 12752, power: 67137 }
 }).author
 if (normalizedArticleAuthor.followee_count !== 18 || normalizedArticleAuthor.follower_count !== 12752 || normalizedArticleAuthor.power !== 67137) fail('文章作者归一化丢失用户主页统计')
+const normalizedArticleContent = utils.normalizeArticle({ item_info: { article_id: 'cached-content', mark_content: '## 缓存正文' } })
+if (normalizedArticleContent.mark_content !== '## 缓存正文') fail('文章归一化丢失详情页缓存正文')
 const courseIntroductionBlocks = utils.splitRichTextImages(markdown.normalizeImageSources('<h2>作者简介</h2><p><img src="//p3-juejin.byteimg.com/example.jpg?x=1&amp;y=2" alt="作者简介.jpg" width="2100"></p><p>正文</p>'))
 if (courseIntroductionBlocks.length !== 3 || courseIntroductionBlocks[1].type !== 'image') fail('小册介绍中的独立图片未拆分为原生图片节点')
 if (courseIntroductionBlocks[1].src !== 'https://p3-juejin.byteimg.com/example.jpg?x=1&y=2') fail('小册介绍图片地址未规范为可加载的 HTTPS 地址')
 
 const postSource = read('features/post/post.js')
+const postTemplate = read('features/post/post.wxml')
 const apiSource = read('services/api.js')
 if (!/commentSort:\s*['"]hot['"]/.test(postSource)) fail('文章评论列表默认排序必须为最热')
+if (!postSource.includes('wx.previewImage({ current, urls })') || !postTemplate.includes('bindtap="previewContentImage"')) fail('文章详情正文图片缺少单击预览')
+if (!postSource.includes('contentImageUrls') || !postTemplate.includes('data-src="{{block.src}}"')) fail('文章详情图片预览缺少当前图片或同文图片列表')
+if (!postSource.includes('if (fromCache)') || !postSource.includes('markdown.toHtml(article.brief_content)')) fail('文章详情接口失败时未降级显示缓存正文或摘要')
+if (!apiSource.includes('response.statusCode === 444') || !apiSource.includes('BLOCKED_REQUEST_COOLDOWN')) fail('接口 444 后未暂停重复的远程请求')
+
+const postEmptyStateTemplate = read('components/emptyState/emptyState.wxml')
+const postEmptyStateStyle = read('components/emptyState/emptyState.wxss')
+if (/\.skeleton-heading\s+view/.test(postEmptyStateStyle) || !postEmptyStateTemplate.includes('skeleton-heading-line')) fail('空状态骨架屏仍使用组件 WXSS 不支持的标签选择器')
 
 const courseDetailTemplate = read('features/courseDetail/courseDetail.wxml')
 const courseDetailStyle = read('features/courseDetail/courseDetail.wxss')

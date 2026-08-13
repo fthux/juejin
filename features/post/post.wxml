@@ -19,9 +19,13 @@
     </view>
 
     <view class="article-content">
+      <view wx:if="{{contentLimited}}" class="content-limited">完整正文暂时不可用，当前显示文章摘要</view>
       <block wx:if="{{content}}" wx:for="{{contentSections}}" wx:key="id">
         <view id="{{item.id}}" class="article-content-section">
-          <rich-text nodes="{{item.content}}" user-select></rich-text>
+          <block wx:for="{{item.blocks}}" wx:for-item="block" wx:key="index">
+            <rich-text wx:if="{{block.type === 'html'}}" nodes="{{block.content}}" user-select></rich-text>
+            <image wx:else class="article-content-image" src="{{block.src}}" mode="widthFix" referrer-policy="no-referrer" data-src="{{block.src}}" bindtap="previewContentImage" aria-role="button" aria-label="预览文章图片"></image>
+          </block>
         </view>
       </block>
       <view wx:if="{{loadError}}" class="content-error">

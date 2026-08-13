@@ -3,9 +3,12 @@ const mock = require('../data/mockData.js')
 
 const BASE_URL = 'https://api.juejin.cn'
 const DEFAULT_QUERY = 'aid=2608&spider=0'
+const BLOCKED_REQUEST_COOLDOWN = 60 * 1000
+let blockedUntil = 0
 
 function request(path, data, options) {
   const config = options || {}
+  if (Date.now() < blockedUntil) return Promise.reject(new Error('远程接口暂时不可用'))
   const divider = path.indexOf('?') === -1 ? '?' : '&'
   return utils.getUuid().then((uuid) => {
     const query = config.skipDefaultQuery ? `uuid=${uuid}` : `${DEFAULT_QUERY}&uuid=${uuid}`
@@ -24,6 +27,7 @@ function request(path, data, options) {
             resolve(body)
             return
           }
+          if (response.statusCode === 444) blockedUntil = Date.now() + BLOCKED_REQUEST_COOLDOWN
           reject(new Error(body.err_msg || `请求失败 (${response.statusCode})`))
         },
         fail(error) {
@@ -321,6 +325,13 @@ function courseShelf(cursor) {
 }
 
 function articleDetail(articleId) {
+  const local = mock.articles.find((item) => String(item.article_id) === String(articleId))
+  if (local) {
+    return Promise.resolve({
+      result: { data: { article_info: local, mark_content: local.mark_content } },
+      fromCache: true
+    })
+  }
   return withFallback(request('/content_api/v1/article/detail', {
     article_id: articleId,
     client_type: 2608

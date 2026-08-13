@@ -1,6 +1,6 @@
 <view wx:if="{{type === 'loading'}}" class="state-skeleton {{compact ? 'compact' : ''}}" aria-label="{{text || '正在加载'}}">
   <view wx:for="{{skeletonRows}}" wx:key="index" class="skeleton-card">
-    <view class="skeleton-head"><view class="skeleton-avatar"></view><view class="skeleton-heading"><view></view><view></view></view></view>
+    <view class="skeleton-head"><view class="skeleton-avatar"></view><view class="skeleton-heading"><view class="skeleton-heading-line"></view><view class="skeleton-heading-line skeleton-heading-line-short"></view></view></view>
     <view class="skeleton-line skeleton-line-wide"></view>
     <view class="skeleton-line"></view>
     <view class="skeleton-line skeleton-line-short"></view>
