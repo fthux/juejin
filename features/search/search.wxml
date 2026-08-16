@@ -66,7 +66,7 @@
           <view class="course-title two-lines">{{item.item.title}}</view>
           <view class="course-summary two-lines">{{item.item.summary}}</view>
           <view class="course-meta">{{item.item.author}} · {{item.item.section_count}} 小节 · {{item.item.buy_count}} 人已购买</view>
-          <view class="course-price"><text>¥</text>{{item.item.price}}</view>
+          <view wx:if="{{0}}" class="course-price"><text>¥</text>{{item.item.price}}</view>
         </view>
       </view>
 

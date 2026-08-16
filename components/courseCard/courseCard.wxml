@@ -12,9 +12,11 @@
       <view wx:else class="price-row">
         <text wx:if="{{item.priceValue === 0}}" class="free-price">免费</text>
         <block wx:else>
-          <text class="price"><text class="price-symbol">¥</text>{{item.price}}</text>
-          <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
-          <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
+          <block wx:if="{{0}}">
+            <text class="price"><text class="price-symbol">¥</text>{{item.price}}</text>
+            <text wx:if="{{item.originalPrice}}" class="original-price">¥{{item.originalPrice}}</text>
+            <text wx:if="{{item.discountLabel}}" class="discount-label">{{item.discountLabel}}</text>
+          </block>
         </block>
       </view>
     </view>

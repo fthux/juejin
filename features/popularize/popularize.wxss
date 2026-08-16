@@ -173,16 +173,14 @@
 
 .course-price {
   min-width: 0;
-  display: flex;
+  display: none;
   align-items: baseline;
   white-space: nowrap;
 }
-
 .current-price {
   color: var(--jj-blue);
   font-size: 27rpx;
 }
-
 .old-price {
   margin-left: 12rpx;
   color: var(--jj-text-4);
