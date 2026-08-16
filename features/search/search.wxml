@@ -51,7 +51,7 @@
         </view>
         <view class="search-summary-row">
           <view class="search-article-brief two-lines"><text wx:for="{{item.item.brief_segments}}" wx:for-item="segment" wx:key="key" class="{{segment.hit ? 'keyword-hit' : ''}}">{{segment.text}}</text></view>
-          <image wx:if="{{item.item.cover_image}}" class="search-cover" src="{{item.item.cover_image}}" mode="aspectFill"></image>
+          <image wx:if="{{item.item.cover_image}}" class="search-cover" src="{{item.item.cover_image}}" mode="aspectFill" referrer-policy="no-referrer"></image>
         </view>
         <view class="search-article-footer">
           <view class="search-stat"><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.item.digg_label}}</text></view>

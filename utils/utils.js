@@ -172,7 +172,7 @@ function normalizeArticle(raw) {
     article_id: info.article_id || item.article_id || item.item_id || '',
     title: info.title || item.title || '无标题文章',
     brief_content: info.brief_content || item.brief || '',
-    cover_image: info.cover_image || item.cover || '',
+    cover_image: normalizeImageUrl(info.cover_image || item.cover || ''),
     ctime: formatTime(info.ctime || item.ctime),
     ctime_value: ctime,
     digg_count: formatCount(diggCount),
@@ -189,7 +189,7 @@ function normalizeArticle(raw) {
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',
-      avatar_large: author.avatar_large || '/assets/app/common/default_avatar.png',
+      avatar_large: normalizeImageUrl(author.avatar_large || '/assets/app/common/default_avatar.png'),
       job_title: author.job_title || '',
       company: author.company || '',
       level: Number(author.level || authorGrowth.jpower_level) || 0,

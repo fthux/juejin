@@ -2,7 +2,6 @@ const theme = require('../../utils/theme.js')
 const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
-
 const SEARCH_TYPES = [
   { id: 'all', name: '综合', placeholder: '搜索文章/课程/标签/用户' },
   { id: 'article', name: '文章', placeholder: '搜索文章' },
@@ -10,24 +9,20 @@ const SEARCH_TYPES = [
   { id: 'tag', name: '标签', placeholder: '搜索标签' },
   { id: 'user', name: '用户', placeholder: '搜索用户' }
 ]
-
 const SORT_OPTIONS = [
   { id: 0, name: '综合排序' },
   { id: 1, name: '最新优先' },
   { id: 2, name: '最热优先' }
 ]
-
 const TIME_OPTIONS = [
   { id: 0, name: '时间不限' },
   { id: 1, name: '最新一天' },
   { id: 2, name: '最近一周' },
   { id: 3, name: '最近三月' }
 ]
-
 function typeConfig(type) {
   return SEARCH_TYPES.find((item) => item.id === type) || SEARCH_TYPES[0]
 }
-
 function highlight(text, keyword) {
   const value = String(text || '')
   const query = String(keyword || '').toLowerCase()
@@ -45,11 +40,9 @@ function highlight(text, keyword) {
   if (offset < value.length) segments.push({ key: `plain-${offset}`, text: value.slice(offset), hit: false })
   return segments.length ? segments : [{ key: `plain-${value}`, text: value, hit: false }]
 }
-
 function unwrap(raw) {
   return raw && raw.result_model ? raw.result_model : (raw || {})
 }
-
 function resultKind(raw, fallbackType) {
   const type = Number(raw && raw.result_type)
   if (type === 1) return 'user'
@@ -63,7 +56,6 @@ function resultKind(raw, fallbackType) {
   if (model.user_id || model.user_name) return 'user'
   return fallbackType === 'all' ? '' : fallbackType
 }
-
 function normalizeTag(raw) {
   const model = unwrap(raw)
   const tag = model.tag || model
@@ -76,7 +68,6 @@ function normalizeTag(raw) {
     followed: Boolean((model.user_interact && model.user_interact.is_follow) || tag.is_followed)
   }
 }
-
 function normalizeUser(raw) {
   const item = unwrap(raw)
   return {
@@ -90,7 +81,6 @@ function normalizeUser(raw) {
     followed: Boolean(item.isfollowed || item.is_followed)
   }
 }
-
 function normalizeResult(raw, fallbackType, keyword, index) {
   const kind = resultKind(raw, fallbackType)
   const model = unwrap(raw)
@@ -112,7 +102,6 @@ function normalizeResult(raw, fallbackType, keyword, index) {
   const id = item.article_id || item.id || item.tag_id || item.user_id || index
   return { key: `${kind}-${id}-${index}`, kind, item }
 }
-
 Page(theme.withTheme({
   data: {
     keyword: '',
@@ -136,7 +125,6 @@ Page(theme.withTheme({
     timeOptions: TIME_OPTIONS,
     openFilter: ''
   },
-
   onLoad(query) {
     this.searchRequestId = 0
     const requestedType = SEARCH_TYPES.some((item) => item.id === query.type) ? query.type : 'all'
@@ -149,19 +137,15 @@ Page(theme.withTheme({
     })
     if (keyword.trim()) this.submit()
   },
-
   onUnload() {
     this.searchRequestId += 1
   },
-
   onReachBottom() {
     if (this.data.searched && this.data.hasMore && !this.data.loading) this.loadResults(false)
   },
-
   goBack() {
     wx.navigateBack()
   },
-
   onInput(event) {
     const keyword = event.detail.value
     if (!keyword) {
@@ -171,7 +155,6 @@ Page(theme.withTheme({
     }
     this.setData({ keyword })
   },
-
   clearKeyword() {
     this.searchRequestId += 1
     this.setData({
@@ -186,26 +169,22 @@ Page(theme.withTheme({
       openFilter: ''
     })
   },
-
   switchType(event) {
     const type = event.currentTarget.dataset.id
     if (type === this.data.type) return
     this.setData({ type, placeholder: typeConfig(type).placeholder, openFilter: '' })
     if (this.data.searched) this.loadResults(true)
   },
-
   useHistory(event) {
     const keyword = this.data.histories[Number(event.currentTarget.dataset.index)]
     if (!keyword) return
     this.setData({ keyword })
     this.submit()
   },
-
   clearHistory() {
     wx.removeStorageSync('jj:search-history')
     this.setData({ histories: [] })
   },
-
   submit() {
     const keyword = this.data.keyword.trim()
     if (!keyword) return
@@ -214,16 +193,13 @@ Page(theme.withTheme({
     this.setData({ keyword, submittedKeyword: keyword, histories, searched: true, openFilter: '' })
     this.loadResults(true)
   },
-
   toggleFilter(event) {
     const filter = event.currentTarget.dataset.filter
     this.setData({ openFilter: this.data.openFilter === filter ? '' : filter })
   },
-
   closeFilter() {
     this.setData({ openFilter: '' })
   },
-
   selectSort(event) {
     const option = SORT_OPTIONS[Number(event.currentTarget.dataset.index)]
     if (!option) return
@@ -231,7 +207,6 @@ Page(theme.withTheme({
     this.setData({ sortType: option.id, sortLabel: option.name, openFilter: '' })
     if (changed) this.loadResults(true)
   },
-
   selectTime(event) {
     const option = TIME_OPTIONS[Number(event.currentTarget.dataset.index)]
     if (!option) return
@@ -239,7 +214,6 @@ Page(theme.withTheme({
     this.setData({ searchType: option.id, timeLabel: option.name, openFilter: '' })
     if (changed) this.loadResults(true)
   },
-
   loadResults(reload) {
     if (this.data.loading && !reload) return
     const keyword = this.data.submittedKeyword || this.data.keyword.trim()
@@ -254,7 +228,6 @@ Page(theme.withTheme({
       cursor: reload ? '0' : this.data.cursor,
       hasMore: reload ? false : this.data.hasMore
     })
-
     api.search(keyword, type, cursor, {
       searchType: this.data.searchType,
       sortType: this.data.sortType
@@ -274,11 +247,9 @@ Page(theme.withTheme({
       if (requestId === this.searchRequestId) this.setData({ loading: false, loadError: true, hasMore: false })
     })
   },
-
   retryLoad() {
     this.loadResults(this.data.fromCache || !this.data.results.length)
   },
-
   openResult(event) {
     const row = this.data.results[Number(event.currentTarget.dataset.index)]
     if (!row) return
@@ -294,7 +265,6 @@ Page(theme.withTheme({
       this.submit()
     }
   },
-
   openAuthor(event) {
     const row = this.data.results[Number(event.currentTarget.dataset.index)]
     const author = row && row.item && row.item.author
