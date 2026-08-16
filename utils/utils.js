@@ -75,15 +75,33 @@ function getUuid() {
   return pendingUuid
 }
 
-function normalizeImageUrl(value, size) {
-  let url = String(value || '').split('#')[0]
-  if (size && /~tplv-k3u1fbpfcp-jj:0:0:0:0/.test(url)) {
-    url = url.replace('~tplv-k3u1fbpfcp-jj:0:0:0:0', `~tplv-k3u1fbpfcp-jj:${size}:${size}:0:0`)
+function normalizeImageUrl(value, width, height) {
+  const source = value && typeof value === 'object'
+    ? (value.url || value.uri || value.image_url || value.src || '')
+    : value
+  let url = String(source || '').split('#')[0]
+  const resizeWidth = Number(width) || 0
+  const resizeHeight = Number(height) || resizeWidth
+  if (!url || !resizeWidth || !resizeHeight) return url
+
+  // The Android App runs common byteimg thumbnails through ImageUtil before
+  // loading them. Keep the same tplv crop parameters for wx.image requests.
+  const commonTemplate = /(\~?)tplv-(k3u1fbpfcp|t2oaga2asx)-[^.?/]+\.[a-z0-9]+/i
+  const hostMatch = url.match(/^(?:https?:)?\/\/([^/]+)/i)
+  const isJuejinImageHost = hostMatch && /^(?:p\d{1,2}-(?:juejin|jj))\.byteimg\.com$/i.test(hostMatch[1])
+  if (isJuejinImageHost && commonTemplate.test(url)) {
+    url = url.replace(commonTemplate, (match, tilde, template) => {
+      const marker = template.toLowerCase() === 't2oaga2asx' ? 'tplv-t2oaga2asx-jj-mark' : 'tplv-k3u1fbpfcp-jj-mark'
+      return `${tilde}${marker}:0:0:${resizeWidth}:${resizeHeight}:q100.awebp`
+    })
   }
+  url = url.replace(/~tplv-(k3u1fbpfcp|t2oaga2asx)-jj:0:0:0:0/i, (match, template) =>
+    `~tplv-${template}-jj:${resizeWidth}:${resizeHeight}:0:0`)
   return url
 }
 
 const DEFAULT_AVATAR = '/assets/app/common/default_avatar.png'
+const DEFAULT_HEADLINE_THUMBNAIL = '/assets/app/find/find_page_ic_default_banner.png'
 const INVALID_AVATAR_HOST = /^(?:https?:)?\/\/[^/]*passport\.byteacctimg\.com\/img\/user-avatar\//i
 const INVALID_PIN_AVATAR_IDS = [
   '067fce088dc703b8e725a40529132e81',
@@ -260,13 +278,14 @@ function normalizeHeadline(raw) {
   const item = raw || {}
   const info = item.content_info || item
   const author = item.author_user_info || item.author || {}
+  const thumbnail = info.thumbnail || info.cover_image || item.cover_image || ''
   const diggCount = Number((item.content_counter && (item.content_counter.digg || item.content_counter.like)) || info.digg_count || item.digg_count) || 0
   const commentCount = Number((item.content_counter && (item.content_counter.comment || item.content_counter.comment_count)) || info.comment_count || item.comment_count) || 0
   return {
     content_id: info.content_id || item.content_id || info.article_id || item.article_id || '',
     title: info.title || item.title || '无标题资讯',
     brief: info.brief || info.brief_content || item.brief_content || '',
-    thumbnail: info.thumbnail || info.cover_image || item.cover_image || '',
+    thumbnail: normalizeImageUrl(thumbnail, 96, 72) || DEFAULT_HEADLINE_THUMBNAIL,
     url: info.content || info.link_url || item.link_url || '',
     source: author.user_name || author.name || item.author_name || '头条精选',
     avatar: normalizeAvatar(author.avatar_large || author.avatar, 80),
@@ -430,6 +449,8 @@ function normalizeCollectionSet(raw) {
     collection_id: String(info.collection_id || info.collection_set_id || ''),
     name: info.collection_name || info.name || '优质收藏集',
     description: info.description || '',
+    cover: normalizeImageUrl(info.cover || info.cover_image || info.collection_cover || '', 1080),
+    create_time: formatDateTime(info.ctime || info.create_time, false),
     badge: String(item.description || '').trim(),
     update_time: Number(info.update_time || info.mtime) || 0,
     article_count: Number(info.post_article_count || info.article_count) || 0,

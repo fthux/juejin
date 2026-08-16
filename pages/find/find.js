@@ -41,8 +41,8 @@ Page(theme.withTheme({
     darkMode: false,
     channelEntries: [
       { title: '职场锦囊', icon: '/assets/app/find/find_page_ic_interview_kit.svg', darkIcon: '/assets/app/find/dark/find_page_ic_interview_kit.svg', url: '/features/discoverChannel/discoverChannel?type=interview&title=职场锦囊' },
-      { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', darkIcon: '/assets/app/find/dark/find_page_ic_industry_express.svg', anchor: 'industry' },
-      { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/features/discoverChannel/discoverChannel?type=weekly&title=掘金一周' },
+      { title: '行业速递', icon: '/assets/app/find/find_page_ic_industry_express.svg', darkIcon: '/assets/app/find/dark/find_page_ic_industry_express.svg', url: '/pages/industryExpress/industryExpress?title=行业速递' },
+      { title: '掘金一周', icon: '/assets/app/find/find_page_ic_juejin_weekly.svg', darkIcon: '/assets/app/find/dark/find_page_ic_juejin_weekly.svg', url: '/pages/weekly/weekly?title=掘金一周' },
       { title: '高校精选', icon: '/assets/app/find/find_page_ic_undergraduate_reading.svg', darkIcon: '/assets/app/find/dark/find_page_ic_undergraduate_reading.svg', url: '/features/discoverChannel/discoverChannel?type=student&title=高校精选' }
     ],
     quickEntryPages: [
@@ -220,7 +220,7 @@ Page(theme.withTheme({
       topic: ['topics', 'iconUrl', ''],
       column: ['columns', 'cover', ''],
       author: ['authors', 'avatar_large', '/assets/app/common/default_avatar.png'],
-      headline: ['headlines', 'thumbnail', '']
+      headline: ['headlines', 'thumbnail', '/assets/app/find/find_page_ic_default_banner.png']
     }
     const fallback = fallbackByKind[kind]
     if (!Number.isInteger(index) || !fallback || !this.data[fallback[0]][index]) return

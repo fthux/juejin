@@ -170,13 +170,19 @@ function recommendedColumns(cursor, limit) {
   }), { data: [], cursor: '0', has_more: false })
 }
 
-function columnArticles(columnId, cursor, sortType) {
+function columnDetail(columnId) {
+  if (!columnId) return Promise.resolve({ result: { data: null }, fromCache: true })
+  const path = `/content_api/v1/column/detail?column_id=${encodeURIComponent(String(columnId))}`
+  return withFallback(request(path, null, { method: 'GET' }), { data: null })
+}
+
+function columnArticles(columnId, cursor, sortType, limit) {
   if (!columnId) return Promise.resolve({ result: { data: [], cursor: '0', has_more: false }, fromCache: true })
   const normalizedSort = Number(sortType)
   return withFallback(request('/content_api/v1/column/articles_cursor', {
     column_id: String(columnId),
     cursor: cursor || '0',
-    limit: 10,
+    limit: Number(limit) || 10,
     sort: Number.isFinite(normalizedSort) ? normalizedSort : 2
   }), () => ({ data: mock.articles, cursor: 'mock-end', has_more: false }))
 }
@@ -478,7 +484,11 @@ function headlineFeed(cursor) {
     page_size: 10,
     category_id: '',
     cursor: cursor || ''
-  }), () => ({ data: mock.articles, cursor: 'mock-end', has_more: false }))
+  }), () => ({ data: mock.industryHeadlines || mock.articles, cursor: 'mock-end', has_more: false }))
+}
+
+function industryExpress(cursor) {
+  return headlineFeed(cursor)
 }
 
 function followers(userId, cursor) {
@@ -558,6 +568,7 @@ module.exports = {
   collectionSetDetail,
   recommendedAuthors,
   recommendedColumns,
+  columnDetail,
   columnArticles,
   liveTypes,
   liveActivities,
@@ -589,6 +600,7 @@ module.exports = {
   hotArticles,
   hotAuthors,
   headlineFeed,
+  industryExpress,
   followers,
   topics,
   topicsByCategory,

@@ -152,6 +152,73 @@ const pins = [
   { msg_id: 'pin-4', msg_Info: { content: '今天的 AI 论文阅读清单已完成。保持输入，也别忘了动手做实验。', pic_list: [], ctime: Math.floor(Date.now() / 1000) - 86400 }, author_user_info: authors[3], digg_count: 97, comment_count: 11 }
 ]
 
+const industryHeadlines = [
+  {
+    content_id: 'headline-1',
+    title: '免费的人脸识别来了！支持本地部署，不用上传照片',
+    brief: '做人脸识别，很多开发者第一反应都是调用云 API。但这样不仅要按次数付费，用户数据也需要离开本地。',
+    thumbnail: '/assets/app/find/find_page_ic_default_banner.png',
+    author_user_info: { user_name: '硬核老王', avatar_large: '/assets/app/common/default_avatar.png' },
+    content_counter: { digg: 5, comment: 0 },
+    publish_time_string: '1月前'
+  },
+  {
+    content_id: 'headline-2',
+    title: '一键安装各种开源工具！把 GitHub 变应用商店',
+    brief: '作为全球最大的开源宝库，GitHub 藏着上亿个免费好用的工具，但原生界面完全偏向开发者。',
+    thumbnail: '/assets/app/find/find_page_ic_default_banner.png',
+    author_user_info: { user_name: '下1个好软件', avatar_large: '/assets/app/common/default_avatar.png' },
+    content_counter: { digg: 3, comment: 0 },
+    publish_time_string: '2月前'
+  },
+  {
+    content_id: 'headline-3',
+    title: 'MCP协议大改版：AI编程的“HTTP时刻”来了',
+    brief: '7月28日，Anthropic 发布了 MCP 协议第五版 MCP 2026-07-28。同一天，GitHub 也公布了新的工具链。',
+    thumbnail: '/assets/app/find/find_page_ic_default_banner.png',
+    author_user_info: { user_name: '从程序员到架构师', avatar_large: '/assets/app/common/default_avatar.png' },
+    content_counter: { digg: 0, comment: 0 },
+    publish_time_string: '2星期前'
+  },
+  {
+    content_id: 'headline-4',
+    title: 'IDEA 2026.2发布：Codex等终于能直接调试Java项目了，AI时代来了',
+    brief: 'IDEA 2026.2 正式版来了：Agent 开始接管调试器，IntelliJ IDEA 2026.2 已经正式发布。',
+    thumbnail: '/assets/app/find/find_page_ic_default_banner.png',
+    author_user_info: { user_name: '思年华AI智能体', avatar_large: '/assets/app/common/default_avatar.png' },
+    content_counter: { digg: 0, comment: 0 },
+    publish_time_string: '1月前'
+  },
+  {
+    content_id: 'headline-5',
+    title: 'AI + 硬件开发：开源 IDE，支持 100 多种开发板，快速开发硬件项目',
+    brief: 'aily Blockly 是 aily Project 旗下的图形化硬件开发环境，基于 Electron + Angular 搭建。',
+    thumbnail: '/assets/app/find/find_page_ic_default_banner.png',
+    author_user_info: { user_name: '人工智能研究所', avatar_large: '/assets/app/common/default_avatar.png' },
+    content_counter: { digg: 0, comment: 0 },
+    publish_time_string: '1月前'
+  }
+]
+
+const weeklyCollection = {
+  collection_set: {
+    collection_id: 'weekly-local',
+    collection_name: '一周「金」选',
+    description: '掘金一周重大企划，每周挑选社区内优质技术好文呈现。',
+    cover: 'https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9839bf0097934308a5fd4bcec7aafb92~tplv-k3u1fbpfcp-watermark.image?',
+    ctime: '2022-01-12',
+    post_article_count: 131,
+    concern_user_count: 678
+  },
+  creator: { user_id: 'juejin-weekly', user_name: '掘金一周', avatar_large: '/assets/app/common/ic_juejin_logo.png', level: 5 },
+  recent_users: authors.slice(0, 4).map((author) => ({ user_id: author.user_id, avatar_large: author.avatar_large })),
+  articles: [
+    Object.assign({}, articles[0], { title: '裁员了，公司很爽快，赔偿一分没少｜沸点周刊 7.8', brief_content: '本周话题推荐，一周「金」选内容评审们会在过去的一周内对社区沸点进行挖掘和筛选。' }),
+    Object.assign({}, articles[1], { title: '对车完全小白，不知买油买电还是买混动，求建议｜沸点周刊 7.2', brief_content: '本周话题推荐，一周「金」选内容评审们会在过去的一周内对社区沸点进行挖掘和筛选。' }),
+    Object.assign({}, articles[2], { title: '问卷调查：如果现在收到裁员通知，你手里的现金流能支撑多久？｜沸点周刊 6.4', brief_content: '本周话题推荐，一周「金」选内容评审们会在过去的一周内对社区沸点进行挖掘和筛选。' })
+  ]
+}
+
 const courses = [
   { booklet_id: 'course-1', base_info: { title: '深入浅出 TypeScript', summary: '从类型系统到工程实践', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 2990, category_id: categories[2].id, section_count: 36, is_finished: true, is_distribution: 1, commission: 598 }, event_discount: { discount_rate: 6 }, user_info: authors[1] },
   { booklet_id: 'course-2', base_info: { title: '高并发系统设计 40 问', summary: '建立可靠的服务端架构知识体系', cover_img: '/assets/app/common/default_booklet_cover_image.png', price: 3990, category_id: categories[1].id, section_count: 40, is_finished: true, is_distribution: 1, commission: 798 }, event_discount: { discount_rate: 6 }, user_info: authors[2] },
@@ -288,6 +355,8 @@ module.exports = {
   authors,
   articles,
   pins,
+  industryHeadlines,
+  weeklyCollection,
   courses,
   byteCourses,
   byteCourseDetails,

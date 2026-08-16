@@ -3,12 +3,12 @@ const api = require('../../services/api.js')
 const session = require('../../services/session.js')
 const utils = require('../../utils/utils.js')
 
+
 const keywords = {
   guide: '掘金 使用指南',
   activity: '',
   game: '游戏开发',
   daily: '掘金一刻',
-  weekly: '掘金一周',
   pin: '精选沸点',
   team: '技术团队'
 }
@@ -19,6 +19,9 @@ Page(theme.withTheme({
     mode: 'article',
     articles: [],
     headlines: [],
+    headlineCursor: '',
+    headlineHasMore: true,
+    headlineLoading: false,
     collections: [],
     liveTypes: [{ type: 0, name: '全部' }],
     liveStatuses: [
@@ -46,9 +49,19 @@ Page(theme.withTheme({
       title = '发现'
     }
     this.type = query.type || 'news'
+    if (this.type === 'industry') {
+      wx.redirectTo({ url: `/pages/industryExpress/industryExpress?title=${encodeURIComponent(title)}` })
+      return
+    }
+    if (this.type === 'weekly') {
+      wx.redirectTo({ url: `/pages/weekly/weekly?title=${encodeURIComponent(title)}` })
+      return
+    }
     const mode = this.type === 'live'
       ? 'live'
-      : (this.type === 'news' ? 'headline' : (this.type === 'interview' || this.type === 'student' ? 'collection' : 'article'))
+      : (this.type === 'news'
+        ? 'headline'
+        : (this.type === 'interview' || this.type === 'student' ? 'collection' : 'article'))
     this.setData({ title, mode })
     wx.setNavigationBarTitle({ title })
     this.load(true)
@@ -60,13 +73,14 @@ Page(theme.withTheme({
 
   onReachBottom() {
     if (this.data.mode === 'live' && this.data.liveHasMore) this.loadLive(false)
+    if (this.data.mode === 'headline' && this.data.headlineHasMore) this.loadHeadlines(false)
   },
 
   load(reload) {
     if (this.data.mode === 'live') return this.loadLive(reload)
     this.setData({ loading: true })
     let task
-    if (this.data.mode === 'headline') task = api.headlineFeed('')
+    if (this.data.mode === 'headline') return this.loadHeadlines(reload)
     else if (this.data.mode === 'collection') {
       task = api.recommendedCollectionSets('0', 20, { moduleType: this.type === 'interview' ? 2 : 3 })
     }
@@ -84,6 +98,26 @@ Page(theme.withTheme({
         loading: false
       })
     }).catch(() => this.setData({ articles: [], headlines: [], collections: [], fromCache: true, loading: false })).finally(() => wx.stopPullDownRefresh())
+  },
+
+  loadHeadlines(reload) {
+    if (this.data.headlineLoading && !reload) return Promise.resolve()
+    const cursor = reload ? '' : this.data.headlineCursor
+    this.setData({ headlineLoading: true, loading: reload })
+    return api.industryExpress(cursor).then(({ result, fromCache }) => {
+      const rows = (result.data || []).map(utils.normalizeHeadline).filter((item) => item.content_id)
+      const previous = reload ? [] : this.data.headlines
+      const known = new Set(previous.map((item) => String(item.content_id)))
+      const additions = rows.filter((item) => !known.has(String(item.content_id)))
+      this.setData({
+        headlines: previous.concat(additions),
+        headlineCursor: String(result.cursor || cursor),
+        headlineHasMore: Boolean(result.has_more) && additions.length > 0,
+        headlineLoading: false,
+        loading: false,
+        fromCache: Boolean(fromCache)
+      })
+    }).catch(() => this.setData({ headlineLoading: false, headlineHasMore: false, loading: false, fromCache: true })).finally(() => wx.stopPullDownRefresh())
   },
 
   loadLive(reload) {
@@ -149,6 +183,8 @@ Page(theme.withTheme({
     wx.setStorageSync('jj:headline-current', item)
     wx.navigateTo({ url: '/features/headlineDetail/headlineDetail' })
   },
+
+  goBack() { wx.navigateBack() },
 
   openCollection(event) {
     const item = this.data.collections[Number(event.currentTarget.dataset.index)]

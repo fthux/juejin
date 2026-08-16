@@ -77,7 +77,7 @@
           <view class="liked-avatars"><image wx:for="{{item.digg_users}}" wx:for-item="user" wx:key="user_id" src="{{user.avatar_large}}" mode="aspectFill" referrer-policy="no-referrer"></image></view>
           <text>等人赞过</text>
         </view>
-        <view class="pin-comment-box" hover-class="interactive-pressed" catchtap="openAccountInfo" aria-role="button" aria-label="评论沸点"><image src="/assets/app/common/default_avatar.png" mode="aspectFill"></image><text>评论沸点...</text></view>
+        <view class="pin-comment-box" aria-hidden="true"><image src="/assets/app/common/default_avatar.png" mode="aspectFill"></image><text>评论沸点...</text></view>
       </view>
     </scroll-view>
     <empty-state wx:if="{{!loading && !selectedPins.length}}" text="暂时没有精选沸点"></empty-state>

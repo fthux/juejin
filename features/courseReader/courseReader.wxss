@@ -129,6 +129,10 @@
   font-size: 18rpx;
 }
 
+.toolbar-item-hidden {
+  visibility: hidden;
+}
+
 .toolbar-item.disabled {
   color: var(--jj-text-4);
   pointer-events: none;

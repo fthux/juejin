@@ -62,7 +62,6 @@ function publishArticle() { return accountOnlyError() }
 function saveNote() { return accountOnlyError() }
 function signIn() { return accountOnlyError() }
 function toggleRegistration() { return accountOnlyError() }
-function addComment() { return accountOnlyError() }
 
 function getComments(kind, targetId) {
   return getList('comments').filter((item) => item.kind === kind && item.targetId === String(targetId))
@@ -90,6 +89,5 @@ module.exports = {
   signIn,
   toggleRegistration,
   getComments,
-  addComment,
   clearCache
 }

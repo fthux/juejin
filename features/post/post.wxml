@@ -104,7 +104,7 @@
           <text>{{item.time}}</text>
           <view class="comment-actions">
             <text class="more-action">···</text>
-            <view class="comment-action" bindtap="addComment">
+            <view class="comment-action" aria-hidden="true">
               <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
               <text wx:if="{{item.reply_count}}">{{item.reply_count}}</text>
             </view>
@@ -123,7 +123,7 @@
   <view wx:if="{{loading}}" class="loading-line">正在加载文章...</view>
 
   <view wx:if="{{article}}" class="action-bar">
-    <view class="comment-entry" bindtap="addComment">
+    <view class="comment-entry comment-entry-hidden" aria-hidden="true">
       <text class="comment-pencil">✎</text>
       <text class="comment-placeholder ellipsis">绑定手机后发表评论</text>
     </view>

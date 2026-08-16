@@ -1,6 +1,7 @@
 <page-meta page-style="{{themePageStyle}}" background-color="{{themeBackgroundColor}}" background-text-style="{{themeBackgroundTextStyle}}"></page-meta>
 <view class="page channel-page">
   <block wx:if="{{mode === 'live'}}">
+    <status-bar navigation="{{true}}"><view class="channel-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="nav-placeholder"></view></view></status-bar>
     <scroll-view class="live-type-tabs surface" scroll-x enable-flex><view wx:for="{{liveTypes}}" wx:key="type" class="live-type {{activeLiveType === item.type ? 'active' : ''}}" data-id="{{item.type}}" bindtap="selectLiveType">{{item.name}}</view></scroll-view>
     <scroll-view class="live-status-tabs surface" scroll-x enable-flex><view wx:for="{{liveStatuses}}" wx:key="status" class="live-status {{activeLiveStatus === item.status ? 'active' : ''}}" data-id="{{item.status}}" bindtap="selectLiveStatus">{{item.name}}</view></scroll-view>
     <view class="live-grid surface"><view wx:for="{{liveList}}" wx:key="activity_id" class="live-card" data-index="{{index}}" bindtap="openLive"><view class="live-cover"><image src="{{item.cover_img}}" mode="aspectFill"></image><text>{{item.status_text}}</text></view><view class="live-title three-lines">{{item.name}}</view><view class="live-time">{{item.live_time}}</view></view></view>
@@ -8,16 +9,24 @@
   </block>
 
   <block wx:elif="{{mode === 'headline'}}">
-    <view class="headline-list surface"><view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" bindtap="openHeadline"><view class="headline-copy"><view class="headline-title two-lines">{{item.title}}</view><view class="headline-meta">{{item.source}} · {{item.publish_time}}</view><view class="headline-brief three-lines">{{item.brief}}</view><view class="headline-actions">♡ 点赞　▢ 评论</view></view><image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill"></image></view></view>
+    <status-bar navigation="{{true}}"><view class="channel-nav"><view class="nav-back" bindtap="goBack" aria-role="button" aria-label="返回">‹</view><text>{{title}}</text><view class="nav-placeholder"></view></view></status-bar>
+    <view class="industry-list surface">
+      <view wx:for="{{headlines}}" wx:key="content_id" class="industry-row" data-index="{{index}}" bindtap="openHeadline" aria-role="button" aria-label="阅读{{item.title}}">
+        <view class="industry-copy"><view class="industry-title two-lines">{{item.title}}</view><view class="industry-meta"><image src="{{item.avatar || '/assets/app/common/default_avatar.png'}}" mode="aspectFill"></image><text>{{item.source}}</text><text class="industry-divider"></text><text>{{item.publish_time}}</text></view><view class="industry-brief three-lines">{{item.brief}}</view><view class="industry-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view></view>
+        <image class="industry-thumb" wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill" referrer-policy="no-referrer"></image><view wx:else class="industry-thumb placeholder"></view>
+      </view>
+    </view>
     <empty-state wx:if="{{!loading && !headlines.length}}" text="暂时没有行业资讯"></empty-state>
   </block>
 
   <block wx:elif="{{mode === 'collection'}}">
+    <status-bar navigation="{{true}}"><view class="channel-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="nav-placeholder"></view></view></status-bar>
     <view class="channel-collection-list surface"><view wx:for="{{collections}}" wx:key="collection_id" class="channel-collection"><view class="collection-head"><view><view class="collection-title two-lines">{{item.name}}</view><view class="collection-meta">{{item.follower_count}} 订阅 · {{item.article_count}} 文章</view><view class="collection-meta">{{item.creator.user_name}} 收藏</view></view><view class="subscribe" catchtap="subscribe">订阅</view></view><view class="collection-articles"><view wx:for="{{item.articles}}" wx:for-item="article" wx:key="article_id" class="collection-article" data-id="{{article.article_id}}" bindtap="openCollectionArticle"><view class="two-lines">{{article.title}}</view><text>{{article.author.user_name}} · 点赞 {{article.digg_count}} · 评论 {{article.comment_count}}</text></view></view><view class="collection-more" data-index="{{index}}" bindtap="openCollection">查看收藏集 · {{item.article_count}}篇文章</view></view></view>
     <empty-state wx:if="{{!loading && !collections.length}}" text="暂时没有推荐收藏集"></empty-state>
   </block>
 
   <block wx:else>
+    <status-bar navigation="{{true}}"><view class="channel-nav"><view class="nav-back" bindtap="goBack">‹</view><text>{{title}}</text><view class="nav-placeholder"></view></view></status-bar>
     <view class="channel-head"><view class="channel-page-title">{{title}}</view><view class="channel-page-caption">发现社区里的优质内容</view></view>
     <view class="surface"><article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card></view>
     <empty-state wx:if="{{!loading && !articles.length}}" text="这里还没有可展示的内容"></empty-state>

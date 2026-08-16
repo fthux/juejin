@@ -5,6 +5,8 @@
     "pages/index/index",
     "pages/feidian/feidian",
     "pages/find/find",
+    "pages/industryExpress/industryExpress",
+    "pages/weekly/weekly",
     "pages/xiaoce/xiaoce",
     "pages/my/my"
   ],

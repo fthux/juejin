@@ -55,7 +55,7 @@
 .liked-by { height: 54rpx; display: flex; align-items: center; justify-content: flex-end; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
 .liked-avatars { display: flex; margin-right: 8rpx; }
 .liked-avatars image { width: 38rpx; height: 38rpx; margin-left: -9rpx; border: 2rpx solid var(--jj-surface); border-radius: 50%; }
-.pin-comment-box { height: 64rpx; margin-top: 4rpx; padding: 0 16rpx; display: flex; align-items: center; border-radius: 32rpx; color: var(--jj-text-3); background: var(--jj-fill); font-size: var(--jj-font-caption); }
+.pin-comment-box { height: 64rpx; margin-top: 4rpx; padding: 0 16rpx; display: flex; align-items: center; border-radius: 32rpx; color: var(--jj-text-3); background: var(--jj-fill); font-size: var(--jj-font-caption); visibility: hidden; }
 .pin-comment-box image { width: 42rpx; height: 42rpx; margin-right: 12rpx; border-radius: 50%; opacity: .6; }
 .topic-card { width: 674rpx; height: 292rpx; margin-left: 30rpx; padding: 30rpx; flex-basis: 674rpx; }
 .topic-card:last-child { margin-right: 30rpx; }

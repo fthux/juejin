@@ -36,7 +36,7 @@
           <text>{{comment.time}}</text>
           <view class="comment-actions">
             <text class="more-action">···</text>
-            <view class="comment-action" bindtap="requireAccount">
+            <view class="comment-action" aria-hidden="true">
               <image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image>
               <text wx:if="{{comment.reply_count}}">{{comment.reply_count}}</text>
             </view>
@@ -80,8 +80,8 @@
 
   <view wx:if="{{loading}}" class="loading-line">正在加载...</view>
   <view class="comment-bar safe-bottom">
-    <view class="comment-input" bindtap="requireAccount">绑定手机后发表评论</view>
+    <view class="comment-input comment-input-hidden" aria-hidden="true">绑定手机后发表评论</view>
     <view class="bottom-action" bindtap="requireAccount"><text class="like-icon">♡</text><text>{{item ? item.digg_count : 0}}</text></view>
-    <view class="bottom-action" bindtap="requireAccount"><text class="comment-icon">▢</text><text>{{item ? item.comment_count : 0}}</text></view>
+    <view class="bottom-action" aria-hidden="true"><image class="comment-icon" src="/assets/app/pins/ic_pins_comment.png" mode="aspectFit"></image><text>{{item ? item.comment_count : 0}}</text></view>
   </view>
 </view>

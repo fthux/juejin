@@ -239,6 +239,59 @@ button[disabled] {
   white-space: nowrap;
 }
 
+.channel-nav, .weekly-nav { width: 100%; height: 100%; padding: 0 30rpx; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+.channel-nav { color: var(--jj-text); background: var(--jj-surface); }
+.channel-nav > text { font-size: 34rpx; font-weight: 600; }
+.nav-back { width: 70rpx; font-size: 64rpx; line-height: 1; }
+.nav-placeholder { width: 70rpx; }
+.nav-more { font-size: 32rpx; }
+.industry-list { padding: 0 30rpx; }
+.industry-row { min-height: 350rpx; padding: 30rpx 0; display: flex; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
+.industry-copy { min-width: 0; flex: 1; }
+.industry-title { color: var(--jj-text); font-size: 30rpx; font-weight: 600; line-height: 1.45; }
+.industry-meta { margin-top: 16rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 23rpx; }
+.industry-meta image { width: 38rpx; height: 38rpx; margin-right: 10rpx; border-radius: 50%; background: var(--jj-fill); }
+.industry-divider { width: 1rpx; height: 24rpx; margin: 0 14rpx; background: var(--jj-line); }
+.industry-brief { margin-top: 16rpx; color: var(--jj-text-2); font-size: 25rpx; line-height: 1.58; }
+.industry-actions, .weekly-actions { margin-top: 20rpx; display: flex; gap: 42rpx; color: var(--jj-text-3); font-size: 23rpx; }
+.industry-actions > view, .weekly-actions > view { display: flex; align-items: center; gap: 8rpx; }
+.industry-actions image, .weekly-actions image { width: 31rpx; height: 31rpx; }
+.industry-thumb { width: 192rpx; height: 144rpx; margin: 116rpx 0 0 20rpx; flex: 0 0 auto; border-radius: 8rpx; background: #2b2b2b; }
+.industry-thumb.placeholder { display: block; }
+.weekly-detail { min-height: 100vh; background: var(--jj-bg); }
+.weekly-hero { position: relative; height: 550rpx; overflow: hidden; background: #182038; }
+.weekly-cover { position: absolute; inset: 0; width: 100%; height: 100%; }
+.weekly-nav { position: relative; z-index: 1; color: #fff; }
+.weekly-info { position: relative; z-index: 2; margin-top: -1rpx; padding: 38rpx 42rpx 28rpx; background: var(--jj-surface); }
+.weekly-title { color: var(--jj-text); font-size: 38rpx; font-weight: 600; }
+.weekly-owner { min-height: 88rpx; margin-top: 22rpx; display: flex; align-items: center; }
+.weekly-owner > image { width: 76rpx; height: 76rpx; margin-right: 16rpx; border-radius: 50%; background: var(--jj-fill); }
+.weekly-owner-copy { min-width: 0; flex: 1; color: var(--jj-text); font-size: 30rpx; }
+.weekly-created { margin-top: 8rpx; color: var(--jj-text-3); font-size: 24rpx; }
+.weekly-level { margin-left: 8rpx; padding: 2rpx 8rpx; border-radius: 4rpx; color: #fff; background: #2d8cff; font-size: 18rpx; font-style: italic; }
+.weekly-subscribe { width: 160rpx; height: 72rpx; display: flex; align-items: center; justify-content: center; border-radius: 5rpx; color: #fff; background: #1e80ff; font-size: 28rpx; }
+.weekly-subscribe.followed { color: var(--jj-text-2); background: var(--jj-fill); }
+.weekly-description { margin-top: 18rpx; color: var(--jj-text); font-size: 27rpx; line-height: 1.5; }
+.weekly-stats { min-height: 56rpx; margin-top: 20rpx; display: flex; align-items: center; color: var(--jj-text-2); font-size: 26rpx; }
+.weekly-mini-avatar { width: 48rpx; height: 48rpx; margin-left: -10rpx; overflow: hidden; border: 2rpx solid var(--jj-surface); border-radius: 50%; background: var(--jj-fill); }
+.weekly-mini-avatar:first-child { margin-left: 0; }
+.weekly-mini-avatar image { width: 100%; height: 100%; }
+.weekly-stats > text { margin-left: 14rpx; }
+.weekly-articles { margin-top: 16rpx; }
+.weekly-articles-head { height: 102rpx; padding: 0 42rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 1rpx solid var(--jj-line); color: var(--jj-text); font-size: 31rpx; font-weight: 600; }
+.weekly-sort { color: var(--jj-blue); font-size: 27rpx; font-weight: 400; }
+.weekly-article { min-height: 320rpx; padding: 30rpx 42rpx; display: flex; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
+.weekly-article-copy { min-width: 0; flex: 1; }
+.weekly-article-title { color: var(--jj-text); font-size: 30rpx; font-weight: 600; line-height: 1.45; }
+.weekly-article-meta { margin-top: 16rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: 24rpx; }
+.weekly-article-meta image { width: 38rpx; height: 38rpx; margin-right: 10rpx; border-radius: 50%; background: var(--jj-fill); }
+.weekly-article-brief { margin-top: 15rpx; color: var(--jj-text-2); font-size: 25rpx; line-height: 1.58; }
+.weekly-article-thumb { width: 198rpx; height: 154rpx; margin: 116rpx 0 0 20rpx; flex: 0 0 auto; border-radius: 6rpx; background: var(--jj-fill); }
+.channel-page.dark .channel-nav { background: #17181a; }
+.channel-page.dark .industry-thumb.placeholder { background: #2b2b2b; }
+.channel-page.dark .weekly-info, .channel-page.dark .weekly-articles { background: #17181a; }
+.channel-page.dark .weekly-detail { background: #111214; }
+
 .two-lines {
   display: -webkit-box;
   overflow: hidden;

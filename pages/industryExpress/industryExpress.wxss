@@ -1,0 +1,3 @@
+.industry-express-page { min-height: 100vh; background: var(--jj-surface); }
+.industry-express-page .three-lines { display: -webkit-box; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.industry-express-page .cache-tip { padding: 22rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }

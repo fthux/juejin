@@ -96,10 +96,6 @@ Page(theme.withTheme({
     if (this.data.hasNext) this.openChapterAt(this.data.chapterIndex + 1)
   },
 
-  showComments() {
-    utils.toast('请在掘金 App 中参与章节讨论')
-  },
-
   buyCourse() {
     utils.toast('请在掘金 App 或官网购买')
   },

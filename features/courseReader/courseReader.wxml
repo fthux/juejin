@@ -57,7 +57,7 @@
       <view class="toolbar-list"><text></text><text></text><text></text></view>
       <text>章节</text>
     </view>
-    <view class="toolbar-item" bindtap="showComments">
+    <view class="toolbar-item toolbar-item-hidden" aria-hidden="true">
       <view class="toolbar-comment"></view>
       <text>评论</text>
     </view>

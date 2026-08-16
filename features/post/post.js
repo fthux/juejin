@@ -252,26 +252,6 @@ Page(theme.withTheme({
     })
   },
 
-  addComment() {
-    if (!session.requireLogin()) return
-    const that = this
-    wx.showModal({
-      title: '写评论',
-      editable: true,
-      placeholderText: '友善交流，分享你的观点',
-      success(result) {
-        if (!result.confirm || !result.content) return
-        try {
-          session.addComment('article', that.data.articleId, result.content)
-          that.setData({ comments: session.getComments('article', that.data.articleId) })
-          utils.toast('评论已提交')
-        } catch (error) {
-          utils.toast(error.message || '评论提交失败')
-        }
-      }
-    })
-  },
-
   onShareAppMessage() {
     const article = this.data.article || {}
     return { title: article.title || '稀土掘金文章', path: `/features/post/post?id=${this.data.articleId}` }

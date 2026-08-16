@@ -1,4 +1,5 @@
 {
+  "navigationStyle": "custom",
   "navigationBarTitleText": "发现",
   "enablePullDownRefresh": true
 }
