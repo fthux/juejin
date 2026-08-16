@@ -273,6 +273,10 @@ const normalizedInvalidAvatarPin = utils.normalizePin({
   digg_user: [{ user_id: 'user-1', avatar_large: 'https://p26-passport.byteacctimg.com/img/user-avatar/33151d2393f536b069dc15c718e6c582~300x300.image' }]
 })
 if (normalizedInvalidAvatarPin.author.avatar_large !== '/assets/app/common/default_avatar.png' || normalizedInvalidAvatarPin.digg_users[0].avatar_large !== '/assets/app/common/default_avatar.png') fail('沸点已失效头像地址未替换为本地默认头像')
+const invalidPassportAvatar = 'https://p26-passport.byteacctimg.com/img/user-avatar/d8bc7351ac3c93b11cd3146be24a0cba~300x300.image'
+if (utils.normalizeArticle({ article_info: { article_id: 'invalid-avatar-article' }, author_user_info: { avatar_large: invalidPassportAvatar } }).author.avatar_large !== '/assets/app/common/default_avatar.png') fail('文章作者失效头像地址未替换为本地默认头像')
+if (utils.normalizeHeadline({ content_id: 'invalid-avatar-headline', author_user_info: { avatar_large: invalidPassportAvatar } }).avatar !== '/assets/app/common/default_avatar.png') fail('头条作者失效头像地址未替换为本地默认头像')
+if (utils.normalizeHotRank({ content: { content_id: 'invalid-avatar-rank' }, author: { avatar: invalidPassportAvatar } }).author.avatar_large !== '/assets/app/common/default_avatar.png') fail('榜单作者失效头像地址未替换为本地默认头像')
 const normalizedComment = utils.normalizeComment({
   comment_id: 'comment-1',
   comment_info: { comment_content: '一级评论', reply_count: 2 },
@@ -335,6 +339,7 @@ const courseDetailConfig = JSON.parse(read('features/courseDetail/courseDetail.j
 if (courseDetailConfig.navigationStyle === 'custom' || courseDetailTemplate.includes('<status-bar')) fail('小册详情必须使用小程序系统导航栏')
 if (!/\.detail-tabs\s*\{[^}]*position:\s*sticky;[^}]*top:\s*0;/.test(courseDetailStyle)) fail('小册详情页签栏缺少顶部吸附')
 if (!courseDetailTemplate.includes('ic_course_free_try.png') || !/\.trial-icon\s*\{[^}]*width:\s*34rpx;[^}]*height:\s*36rpx;/.test(courseDetailStyle)) fail('小册详情免费试学图标异常')
+if (!courseDetailTemplate.includes('class="purchase-action"') || !courseDetailTemplate.includes("'¥' + course.price") || !/\.purchase-action\s*\{[^}]*display:\s*none;/s.test(courseDetailStyle)) fail('小册详情底部购买区必须隐藏并保留原价格代码')
 if (!courseDetailTemplate.includes('wx:if="{{hasTrial}}"') || !courseDetailSource.includes('chapters.some((chapter) => chapter.isFree)')) fail('有免费章节的付费小册目录页签缺少试学标签')
 if (!courseDetailSource.includes('tabScrollTops') || !courseDetailSource.includes('measureTabsScrollTop()') || !courseDetailTemplate.includes('id="detail-tabs"')) fail('小册详情各页签未独立维护滚动位置')
 if (!/courseRecommendations\(this\.bookletId\)/.test(courseDetailSource) || !/courseRecommendations\(bookletId, cursor\)[\s\S]*booklet_id:\s*String\(bookletId/.test(apiSource)) fail('小册详情推荐必须按 App 逻辑携带当前 booklet_id')
@@ -357,6 +362,7 @@ if (!byteCourseDetailSource.includes('info.safeArea') || !byteCourseDetailTempla
 if (byteCourseDetailConfig.navigationStyle === 'custom' || byteCourseDetailTemplate.includes('<status-bar')) fail('字节内部课详情必须使用小程序系统导航栏')
 if ((byteCourseDetailSource.match(/ensureAccountPermission\(\)/g) || []).length < 3 || !byteCourseDetailSource.includes('session.requireLogin()')) fail('字节内部课试学和会员入口缺少账号权限校验')
 if (!byteCourseDetailTemplate.includes('ic_course_free_try.png') || byteCourseDetailStyle.includes('.book-icon')) fail('字节内部课免费试学未使用 APK 原始图标')
+if (!byteCourseDetailTemplate.includes('class="vip-action"') || !byteCourseDetailTemplate.includes('仅0.5元/天') || !/\.vip-action\s*\{[^}]*display:\s*none;/s.test(byteCourseDetailStyle)) fail('VIP 课程底部会员购买区必须隐藏并保留原价格代码')
 const normalizedByteCourse = utils.normalizeByteCourse({
   content: {
     item_id: '7142808926348640263',
@@ -503,6 +509,7 @@ if (!courseCardTemplate.includes('<block wx:if="{{0}}">') || !courseCardTemplate
 if (!courseCardTemplate.includes('wx:if="{{item.priceValue === 0}}" class="free-price">免费</text>') || !/\.free-price\s*\{[^}]*color:\s*var\(--jj-blue\)/s.test(courseCardStyles)) fail('免费小册必须显示主题蓝色的免费文案')
 if (!searchTemplate.includes('wx:if="{{0}}" class="course-price"') || !searchTemplate.includes('<text>¥</text>{{item.item.price}}')) fail('搜索结果小册卡片价格必须保留代码并默认关闭显示')
 if (!popularizeTemplate.includes('class="course-price"') || !popularizeStyles.includes('.course-price') || !popularizeStyles.includes('display: none') || !popularizeTemplate.includes('wx:if="{{0}}">¥{{item.commission}}')) fail('推广课程卡片价格必须保留代码并默认关闭显示')
+if (!popularizeTemplate.includes('class="withdraw-card"') || !popularizeTemplate.includes('class="reward-button"') || !/\.withdraw-card\s*\{[^}]*display:\s*none;/s.test(popularizeStyles) || !/\.course-bottom\s*\{[^}]*display:\s*none;/s.test(popularizeStyles)) fail('推广中心顶部卡片和推广按钮必须隐藏并保留原代码')
 if (!pinCardSource.includes("wx.setStorageSync('jj:user-current', author)")) fail('沸点头像跳转前必须缓存当前作者资料')
 if (profileSource.includes('|| mock.authors[0]')) fail('用户主页不得回退到固定的官方账号')
 

@@ -406,7 +406,7 @@
   min-height: 112rpx;
   padding: 12rpx 28rpx;
   display: grid;
-  grid-template-columns: 106rpx 1fr;
+  grid-template-columns: 1fr;
   gap: 12rpx;
   box-sizing: border-box;
   background: var(--jj-surface);
@@ -434,7 +434,7 @@
   position: relative;
   min-height: 84rpx;
   border-radius: 7rpx;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
