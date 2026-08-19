@@ -127,7 +127,7 @@
   margin: 18rpx 28rpx;
   padding: 16rpx 24rpx;
   border-radius: 8rpx;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;

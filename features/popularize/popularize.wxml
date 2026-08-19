@@ -23,9 +23,9 @@
           <view class="course-title two-lines">{{item.title}}</view>
           <view class="course-author ellipsis">{{item.author}}</view>
           <view class="course-bottom">
-            <view class="course-price"><text class="current-price">¥{{item.price}}</text><text wx:if="{{item.originalPrice}}" class="old-price">¥{{item.originalPrice}}</text></view>
-            <button wx:if="{{session}}" class="reward-button" open-type="share" data-index="{{index}}" catchtap="prepareShare">推广赚<text wx:if="{{0}}">¥{{item.commission}}</text></button>
-            <button wx:else class="reward-button" catchtap="openLogin">推广赚<text wx:if="{{0}}">¥{{item.commission}}</text></button>
+            <view class="course-price"><text class="current-price">¥ {{item.price}}</text><text wx:if="{{item.originalPrice}}" class="old-price">¥ {{item.originalPrice}}</text></view>
+            <button wx:if="{{session}}" class="reward-button" open-type="share" data-index="{{index}}" catchtap="prepareShare">推广赚 ¥{{item.commission}}</button>
+            <button wx:else class="reward-button" catchtap="openLogin">推广赚 ¥{{item.commission}}</button>
           </view>
         </view>
       </view>

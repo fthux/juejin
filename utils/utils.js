@@ -102,19 +102,13 @@ function normalizeImageUrl(value, width, height) {
 
 const DEFAULT_AVATAR = '/assets/app/common/default_avatar.png'
 const DEFAULT_HEADLINE_THUMBNAIL = '/assets/app/find/find_page_ic_default_banner.png'
-const INVALID_AVATAR_HOST = /^(?:https?:)?\/\/[^/]*passport\.byteacctimg\.com\/img\/user-avatar\//i
 const INVALID_PIN_AVATAR_IDS = [
   '067fce088dc703b8e725a40529132e81',
   '33151d2393f536b069dc15c718e6c582'
 ]
 
-function normalizeAvatar(value, size) {
-  const url = normalizeImageUrl(value || DEFAULT_AVATAR, size)
-  return !url || INVALID_AVATAR_HOST.test(url) ? DEFAULT_AVATAR : url
-}
-
 function normalizePinAvatar(value, size) {
-  const url = normalizeAvatar(value, size)
+  const url = normalizeImageUrl(value || DEFAULT_AVATAR, size)
   return INVALID_PIN_AVATAR_IDS.some((id) => url.indexOf(id) !== -1) ? DEFAULT_AVATAR : (url || DEFAULT_AVATAR)
 }
 
@@ -213,7 +207,7 @@ function normalizeArticle(raw) {
     author: {
       user_id: author.user_id || item.user_id || '',
       user_name: author.user_name || item.author_name || '掘金用户',
-      avatar_large: normalizeAvatar(author.avatar_large),
+      avatar_large: normalizeImageUrl(author.avatar_large || DEFAULT_AVATAR),
       job_title: author.job_title || '',
       company: author.company || '',
       level: Number(author.level || authorGrowth.jpower_level) || 0,
@@ -250,7 +244,7 @@ function normalizeHotRank(raw) {
     author: {
       user_id: author.user_id || content.author_id || '',
       user_name: author.name || author.user_name || item.author_name || '掘金用户',
-      avatar_large: normalizeAvatar(author.avatar || author.avatar_large)
+      avatar_large: author.avatar || author.avatar_large || DEFAULT_AVATAR
     },
     hot_rank: String(Math.round(Number(counter.hot_rank) || Number(item.hot_rank) || Number(item.view_count) || 0)),
     collect_count: formatCount(counter.collect || item.collect_count),
@@ -265,7 +259,7 @@ function normalizeHotAuthor(raw) {
   return {
     user_id: author.user_id || '',
     user_name: author.name || author.user_name || '掘金用户',
-    avatar_large: normalizeAvatar(author.avatar || author.avatar_large),
+    avatar_large: author.avatar || author.avatar_large || DEFAULT_AVATAR,
     job_title: author.job_title || '',
     company: author.company || '',
     follower_count: formatCount(counter.follower || author.follower_count),
@@ -288,7 +282,7 @@ function normalizeHeadline(raw) {
     thumbnail: normalizeImageUrl(thumbnail, 96, 72) || DEFAULT_HEADLINE_THUMBNAIL,
     url: info.content || info.link_url || item.link_url || '',
     source: author.user_name || author.name || item.author_name || '头条精选',
-    avatar: normalizeAvatar(author.avatar_large || author.avatar, 80),
+    avatar: normalizeImageUrl(author.avatar_large || author.avatar || DEFAULT_AVATAR, 80),
     publish_time: info.publish_time_string || formatTime(info.publish_time || info.ctime || item.ctime),
     digg_count: formatCount(diggCount),
     comment_count: formatCount(commentCount),
@@ -436,7 +430,7 @@ function normalizeTheme(raw) {
     user_count: formatCount(theme.user_cnt),
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeAvatar(user.avatar_large, 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || DEFAULT_AVATAR, 80)
     }))
   }
 }
@@ -460,12 +454,12 @@ function normalizeCollectionSet(raw) {
     creator: {
       user_id: String(creator.user_id || info.creator_id || ''),
       user_name: creator.user_name || creator.name || '掘金用户',
-      avatar_large: normalizeAvatar(creator.avatar_large, 80),
+      avatar_large: normalizeImageUrl(creator.avatar_large || DEFAULT_AVATAR, 80),
       level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeAvatar(user.avatar_large, 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || DEFAULT_AVATAR, 80)
     })),
     articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }
@@ -480,7 +474,7 @@ function normalizeRecommendedAuthor(raw) {
   return {
     user_id: String(item.user_id || articleAuthor.user_id || ''),
     user_name: item.user_name || articleAuthor.user_name || '掘金用户',
-    avatar_large: normalizeAvatar(item.avatar_large || articleAuthor.avatar_large, 160),
+    avatar_large: normalizeImageUrl(item.avatar_large || articleAuthor.avatar_large || DEFAULT_AVATAR, 160),
     job_title: item.job_title || articleAuthor.job_title || '',
     company: item.company || articleAuthor.company || '',
     description: item.author_desc || item.description || articleAuthor.description || '',
@@ -523,7 +517,7 @@ function authorToColumn(author) {
     creator: {
       user_id: String(item.user_id || ''),
       user_name: item.user_name || '掘金用户',
-      avatar_large: normalizeAvatar(item.avatar_large),
+      avatar_large: item.avatar_large || DEFAULT_AVATAR,
       level: Number(item.level) || 0
     },
     articles: item.articles || []
@@ -549,12 +543,12 @@ function normalizeColumn(raw) {
     creator: {
       user_id: String(creator.user_id || info.user_id || ''),
       user_name: creatorName,
-      avatar_large: normalizeAvatar(creator.avatar_large, 80),
+      avatar_large: normalizeImageUrl(creator.avatar_large || DEFAULT_AVATAR, 80),
       level: Number(creator.level || (creator.user_growth_info && creator.user_growth_info.jpower_level)) || 0
     },
     recent_users: (item.recent_users || []).slice(0, 4).map((user) => ({
       user_id: String(user.user_id || ''),
-      avatar_large: normalizeAvatar(user.avatar_large, 80)
+      avatar_large: normalizeImageUrl(user.avatar_large || DEFAULT_AVATAR, 80)
     })),
     articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }

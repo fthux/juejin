@@ -6,3 +6,4 @@ artifacts/
 juejin-adb-screen.png
 research/
 scripts/capture-adb-*.sh
+node_modules/
