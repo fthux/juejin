@@ -46,7 +46,6 @@
 .comment-bar { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; min-height: 100rpx; padding: 14rpx 22rpx; display: flex; align-items: center; gap: 22rpx; box-sizing: border-box; background: var(--jj-surface); border-top: 1rpx solid var(--jj-line); }
 .comment-bar.safe-bottom { padding-bottom: calc(14rpx + env(safe-area-inset-bottom)); }
 .comment-input { height: 62rpx; padding: 0 22rpx; display: flex; align-items: center; flex: 1; border-radius: 31rpx; color: var(--jj-text-3); background: var(--jj-fill); font-size: 23rpx; }
-.comment-input-hidden { visibility: hidden; }
 .bottom-action { min-width: 54rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--jj-text-3); font-size: 18rpx; }
 .like-icon { color: var(--jj-text-2); font-size: 34rpx; line-height: 1; }
 .comment-icon { width: 34rpx; height: 34rpx; }

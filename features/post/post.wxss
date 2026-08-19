@@ -499,10 +499,6 @@
   font-size: 23rpx;
 }
 
-.comment-entry-hidden {
-  visibility: hidden;
-}
-
 .comment-pencil {
   margin-right: 12rpx;
   flex: 0 0 auto;
