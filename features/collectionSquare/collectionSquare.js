@@ -79,11 +79,7 @@ Page(theme.withTheme({
         this.setData({ loading: false, detailHasMore: false, fromCache: Boolean(fromCache) })
         return
       }
-      const normalized = utils.normalizeCollectionSet({
-        collection_set: payload.collection_info || (this.data.current && this.data.current),
-        creator: payload.user_info || (this.data.current && this.data.current.creator),
-        articles: payload.articles || []
-      })
+      const normalized = utils.normalizeCollectionSetDetail(payload)
       if (!normalized.collection_id) normalized.collection_id = this.targetId
       const previousArticles = reload ? [] : ((this.data.current && this.data.current.articles) || [])
       const known = new Set(previousArticles.map((item) => String(item.article_id)))

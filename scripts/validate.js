@@ -68,6 +68,7 @@ for (const base of roots) {
     if (!exists(file)) fail(`缺少文件: ${file}`)
     if (extension === 'json') JSON.parse(read(file))
     if (extension === 'js') checkJavaScript(file)
+    if (extension === 'wxss' && /url\(\s*['"]?\/(?:features\/)?assets\//.test(read(file))) fail(`${file} 不能通过 WXSS url() 引用本地资源，请改用 WXML image`)
   }
 
   const source = read(`${base}.js`)
@@ -452,11 +453,13 @@ if (!/\.horizontal-card\s*\{[^}]*flex:\s*0\s+0\s+650rpx/s.test(findStyles)) fail
 if (!/\.topic-card\s*\{[^}]*width:\s*674rpx;[^}]*height:\s*292rpx;[^}]*padding:\s*30rpx;[^}]*flex-basis:\s*674rpx/s.test(findStyles) || !/\.topic-head\s*\{[^}]*height:\s*72rpx;[^}]*flex:\s*0\s+0\s+auto/s.test(findStyles) || !/\.topic-preview\s*\{[^}]*height:\s*134rpx;[^}]*overflow:\s*hidden/s.test(findStyles)) fail('推荐圈子卡片必须匹配 APP 的固定宽度、头部和两行预览区域')
 if (!/\.topic-preview-row\s*\{[^}]*height:\s*57rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.topic-preview-row text\s*\{[^}]*height:\s*36rpx;[^}]*white-space:\s*nowrap/s.test(findStyles)) fail('推荐圈子沸点预览必须保持两行头像文本对齐')
 if (!/function normalizeCollectionSet[\s\S]*?articles:\s*\(item\.articles \|\| item\.article_list \|\| \[\]\)\.slice\(0, 3\)\.map\(normalizeArticle\)/.test(utilsSource)) fail('推荐收藏集卡片预览必须限制为三篇文章')
+if (!/function normalizeCollectionSetDetail[\s\S]*?\(item\.article_list \|\| item\.articles \|\| \[\]\)\.map\(normalizeArticle\)/.test(utilsSource)) fail('收藏集详情不得复用三篇文章的卡片预览限制')
 if (!/\.recommend-head\s*\{[^}]*height:\s*118rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.recommend-preview\s*\{[^}]*height:\s*282rpx;[^}]*overflow:\s*hidden/s.test(findStyles) || !/\.preview-row\s*\{[^}]*height:\s*94rpx;[^}]*overflow:\s*hidden/s.test(findStyles)) fail('推荐专栏、收藏集和作者榜卡片必须使用稳定的三行预览布局')
 if (!/moduleType:\s*this\.data\.sort === ['"]latest['"] \? 0 : 1/.test(collectionSquareSource)) fail('收藏集最新和最热必须使用服务端排序模块')
 if (!collectionSquareSource.includes('this.allSets.slice') || !collectionSquareTemplate.includes('class="collection-badge"')) fail('收藏集页缺少分批加载或精选标签')
-if (!collectionSquareSource.includes('onReachBottom()') || !collectionSquareSource.includes('detailCursor') || !collectionSquareSource.includes('previousArticles.concat(additions)')) fail('收藏集详情缺少去重上拉分页')
-if (collectionConfig.navigationStyle !== 'custom' || !collectionSquareTemplate.includes('collection_detail_bg.png') || !collectionSquareTemplate.includes('class="detail-sheet surface"')) fail('收藏集详情必须使用 APP 蓝色头部和圆角文章区')
+if (!collectionSquareSource.includes('onReachBottom()') || !collectionSquareSource.includes('detailCursor') || !collectionSquareSource.includes('previousArticles.concat(additions)') || !collectionSquareSource.includes('normalizeCollectionSetDetail(payload)')) fail('收藏集详情缺少全量归一化或去重上拉分页')
+if (!/collectionSetDetail\(collectionId, cursor\)[\s\S]*?\/interact_api\/v1\/collectionSet\/get[\s\S]*?tag_id:\s*collectionId[\s\S]*?method:\s*['"]GET['"]/.test(apiSource)) fail('收藏集详情必须使用 App 的 tag_id 游标接口')
+if (collectionConfig.navigationStyle !== 'custom' || !collectionSquareTemplate.includes('src="/assets/app/collection/collection_detail_bg.png"') || !collectionSquareTemplate.includes('class="detail-sheet surface"')) fail('收藏集详情必须使用 APP 蓝色图案头部和圆角文章区')
 if (!dailyTemplate.includes('daily_column_cover.jpg') || !dailyTemplate.includes('level-badge') || !dailyTemplate.includes('subscriber-avatars')) fail('每日掘金缺少 APP 头图、作者等级或订阅头像')
 if (!dailySource.includes('columnArticles(DAILY_COLUMN_ID') || !dailyTemplate.includes('item.digg_label') || !dailyTemplate.includes('item.comment_label')) fail('每日掘金必须使用专栏文章流和统一互动文案')
 if (!columnSource.includes('loadDetailArticles(false)') || !columnTemplate.includes('column_default_cover.png') || !columnTemplate.includes('class="article-actions"')) fail('专栏详情缺少 APP 头部、文章卡片或上拉分页')

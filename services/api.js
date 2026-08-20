@@ -148,11 +148,11 @@ function recommendedCollectionSets(cursor, limit, options) {
 }
 
 function collectionSetDetail(collectionId, cursor) {
-  return withFallback(request('/interact_api/v2/collectionset/detail', {
-    collection_id: collectionId,
+  return withFallback(request('/interact_api/v1/collectionSet/get', {
+    tag_id: collectionId,
     cursor: cursor || '0',
     limit: 20
-  }), { data: null, cursor: '0', has_more: false })
+  }, { method: 'GET' }), { data: null, cursor: '0', has_more: false })
 }
 
 function recommendedAuthors(cursor, limit) {

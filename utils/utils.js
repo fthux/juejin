@@ -438,19 +438,19 @@ function normalizeTheme(raw) {
 function normalizeCollectionSet(raw) {
   const item = raw || {}
   const info = item.collection_set || item.collection || item
-  const creator = item.creator || item.user_info || {}
+  const creator = item.creator || item.create_user || item.user_info || {}
   return {
-    collection_id: String(info.collection_id || info.collection_set_id || ''),
-    name: info.collection_name || info.name || '优质收藏集',
-    description: info.description || '',
-    cover: normalizeImageUrl(info.cover || info.cover_image || info.collection_cover || '', 1080),
+    collection_id: String(info.collection_id || info.collection_set_id || info.tag_id || ''),
+    name: info.collection_name || info.name || info.tag_name || '优质收藏集',
+    description: info.description || info.tag_alias || '',
+    cover: normalizeImageUrl(info.cover || info.cover_image || info.collection_cover || info.back_ground || '', 1080),
     create_time: formatDateTime(info.ctime || info.create_time, false),
     badge: String(item.description || '').trim(),
     update_time: Number(info.update_time || info.mtime) || 0,
     article_count: Number(info.post_article_count || info.article_count) || 0,
     follower_value: Number(info.concern_user_count || info.follow_count) || 0,
     follower_count: formatCount(info.concern_user_count || info.follow_count),
-    is_follow: Boolean(info.is_follow),
+    is_follow: Boolean(item.is_follow !== undefined ? item.is_follow : info.is_follow),
     creator: {
       user_id: String(creator.user_id || info.creator_id || ''),
       user_name: creator.user_name || creator.name || '掘金用户',
@@ -463,6 +463,18 @@ function normalizeCollectionSet(raw) {
     })),
     articles: (item.articles || item.article_list || []).slice(0, 3).map(normalizeArticle)
   }
+}
+
+function normalizeCollectionSetDetail(raw) {
+  const item = raw || {}
+  const normalized = normalizeCollectionSet({
+    collection_set: item.detail || item.collection_info || item.collection_set || item.collection || item,
+    creator: item.create_user || item.user_info || item.creator || {},
+    is_follow: item.is_follow,
+    articles: []
+  })
+  normalized.articles = (item.article_list || item.articles || []).map(normalizeArticle)
+  return normalized
 }
 
 function normalizeRecommendedAuthor(raw) {
@@ -770,6 +782,7 @@ module.exports = {
   normalizeTopic,
   normalizeTheme,
   normalizeCollectionSet,
+  normalizeCollectionSetDetail,
   normalizeRecommendedAuthor,
   authorToColumn,
   normalizeColumn,

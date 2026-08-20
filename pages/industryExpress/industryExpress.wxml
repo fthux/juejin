@@ -2,8 +2,12 @@
 <view class="page industry-express-page">
   <view class="industry-list surface">
     <view wx:for="{{headlines}}" wx:key="content_id" class="industry-row" data-index="{{index}}" bindtap="openHeadline" aria-role="button" aria-label="阅读{{item.title}}">
-      <view class="industry-copy"><view class="industry-title two-lines">{{item.title}}</view><view class="industry-meta"><image src="{{item.avatar || '/assets/app/common/default_avatar.png'}}" mode="aspectFill"></image><text>{{item.source}}</text><text class="industry-divider"></text><text>{{item.publish_time}}</text></view><view class="industry-brief three-lines">{{item.brief}}</view><view class="industry-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view></view>
-      <image class="industry-thumb" src="{{item.thumbnail || '/assets/app/find/find_page_ic_default_banner.png'}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onThumbnailError"></image>
+      <view class="industry-title two-lines">{{item.title}}</view>
+      <view class="industry-middle">
+        <view class="industry-copy"><view class="industry-meta"><image src="{{item.avatar || '/assets/app/common/default_avatar.png'}}" mode="aspectFill"></image><text class="industry-source ellipsis">{{item.source}}</text><text class="industry-divider"></text><text>{{item.publish_time}}</text></view><view class="industry-brief three-lines">{{item.brief}}</view></view>
+        <image class="industry-thumb" src="{{item.thumbnail || '/assets/app/find/find_page_ic_default_banner.png'}}" mode="aspectFill" referrer-policy="no-referrer" data-index="{{index}}" binderror="onThumbnailError"></image>
+      </view>
+      <view class="industry-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view>
     </view>
   </view>
   <empty-state wx:if="{{!loading && !headlines.length}}" text="暂时没有行业资讯"></empty-state>

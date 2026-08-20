@@ -1,3 +1,9 @@
 .industry-express-page { min-height: 100vh; background: var(--jj-surface); }
+.industry-express-page .industry-row { display: block; }
+.industry-express-page .industry-middle { min-width: 0; margin-top: 18rpx; display: flex; align-items: flex-start; }
+.industry-express-page .industry-meta { margin-top: 0; min-width: 0; }
+.industry-express-page .industry-source { max-width: 180rpx; }
+.industry-express-page .industry-thumb { margin: 0 0 0 20rpx; }
+.industry-express-page .industry-actions { width: 100%; }
 .industry-express-page .three-lines { display: -webkit-box; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 .industry-express-page .cache-tip { padding: 22rpx; color: var(--jj-text-3); font-size: 22rpx; text-align: center; }
