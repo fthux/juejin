@@ -46,13 +46,13 @@
   </view>
   <view wx:if="{{activeTab === 'dynamic'}}">
     <block wx:for="{{dynamics}}" wx:key="index">
-      <article-card wx:if="{{item.kind === 'article'}}" item="{{item}}" bind:open="openArticle"></article-card>
+      <article-card wx:if="{{item.kind === 'article'}}" item="{{item}}" stacked="{{true}}" bind:open="openArticle"></article-card>
       <pin-card wx:else item="{{item}}" bind:open="openPin"></pin-card>
     </block>
     <empty-state wx:if="{{!dynamics.length}}" text="还没有发布动态"></empty-state>
   </view>
   <view wx:elif="{{activeTab === 'article'}}">
-    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" bind:open="openArticle"></article-card>
+    <article-card wx:for="{{articles}}" wx:key="article_id" item="{{item}}" stacked="{{true}}" bind:open="openArticle"></article-card>
     <empty-state wx:if="{{!articles.length}}" text="还没有发布文章"></empty-state>
   </view>
   <view wx:elif="{{activeTab === 'pin'}}">

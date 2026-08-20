@@ -99,6 +99,46 @@
   background: var(--jj-fill);
 }
 
+.article-card.stacked-card {
+  min-height: 286rpx;
+  display: block;
+}
+
+.stacked-main {
+  width: 100%;
+}
+
+.stacked-card .article-title {
+  margin-top: 0;
+}
+
+.stacked-middle {
+  min-width: 0;
+  margin-top: 16rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
+}
+
+.stacked-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.stacked-card .article-meta {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.stacked-card .article-brief {
+  margin-top: 12rpx;
+}
+
+.stacked-card .article-stats {
+  width: 100%;
+}
+
 .rank {
   width: 36rpx;
   color: var(--jj-text-3);

@@ -15,6 +15,10 @@ Component({
     home: {
       type: Boolean,
       value: false
+    },
+    stacked: {
+      type: Boolean,
+      value: false
     }
   },
 
