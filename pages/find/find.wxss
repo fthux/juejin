@@ -109,14 +109,16 @@
 .card-meta { margin-top: 7rpx; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
 .industry-section { padding: 0 28rpx 24rpx; box-sizing: border-box; }
 .industry-section .discover-heading { padding: 0; }
-.headline-row { min-height: 270rpx; padding: 25rpx 0; display: flex; align-items: center; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
-.headline-copy { min-width: 0; flex: 1; }
+.headline-row { min-height: 270rpx; padding: 25rpx 0; border-bottom: 1rpx solid var(--jj-line); box-sizing: border-box; }
 .headline-title { font-size: 28rpx; font-weight: 600; line-height: 1.42; }
-.headline-meta { margin-top: 12rpx; display: flex; align-items: center; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
+.headline-middle { min-width: 0; margin-top: 14rpx; display: flex; align-items: flex-start; }
+.headline-copy { min-width: 0; flex: 1; }
+.headline-meta { min-width: 0; display: flex; align-items: center; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
 .headline-meta image { width: 32rpx; height: 32rpx; margin-right: 8rpx; border-radius: 50%; }
+.headline-source { max-width: 180rpx; }
 .meta-divider { width: 1rpx; height: 23rpx; margin: 0 12rpx; background: var(--jj-line); }
 .headline-brief { margin-top: 11rpx; color: var(--jj-text-2); font-size: var(--jj-font-caption); line-height: var(--jj-line-caption); }
-.headline-actions { margin-top: 15rpx; display: flex; gap: 42rpx; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
+.headline-actions { width: 100%; margin-top: 15rpx; display: flex; gap: 42rpx; color: var(--jj-text-3); font-size: var(--jj-font-caption); }
 .headline-actions > view { display: flex; align-items: center; gap: 7rpx; }
 .headline-actions image { width: 28rpx; height: 28rpx; }
 .headline-image { width: 164rpx; height: 128rpx; margin-left: 22rpx; flex: 0 0 auto; border-radius: 3rpx; background: var(--jj-fill); }

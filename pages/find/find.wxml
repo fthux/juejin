@@ -159,8 +159,12 @@
   <view id="industry-section" class="discover-section industry-section">
     <view class="discover-heading"><text>行业速递</text></view>
     <view wx:for="{{headlines}}" wx:key="content_id" class="headline-row" data-index="{{index}}" hover-class="interactive-pressed" bindtap="openHeadline" aria-role="button" aria-label="阅读{{item.title}}">
-      <view class="headline-copy"><view class="headline-title two-lines">{{item.title}}</view><view class="headline-meta"><image src="{{item.avatar}}" mode="aspectFill"></image><text>{{item.source}}</text><text class="meta-divider"></text><text>{{item.publish_time}}</text></view><view class="headline-brief two-lines">{{item.brief}}</view><view class="headline-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view></view>
-      <image wx:if="{{item.thumbnail}}" class="headline-image" src="{{item.thumbnail}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="headline" data-index="{{index}}" binderror="onRemoteImageError"></image>
+      <view class="headline-title two-lines">{{item.title}}</view>
+      <view class="headline-middle">
+        <view class="headline-copy"><view class="headline-meta"><image src="{{item.avatar}}" mode="aspectFill"></image><text class="headline-source ellipsis">{{item.source}}</text><text class="meta-divider"></text><text>{{item.publish_time}}</text></view><view class="headline-brief two-lines">{{item.brief}}</view></view>
+        <image wx:if="{{item.thumbnail}}" class="headline-image" src="{{item.thumbnail}}" mode="aspectFill" referrer-policy="no-referrer" data-kind="headline" data-index="{{index}}" binderror="onRemoteImageError"></image>
+      </view>
+      <view class="headline-actions"><view><image src="/assets/app/find/find_page_ic_undigg.svg" mode="aspectFit"></image><text>{{item.digg_label}}</text></view><view><image src="/assets/app/find/find_page_ic_comment.svg" mode="aspectFit"></image><text>{{item.comment_label}}</text></view></view>
     </view>
     <empty-state wx:if="{{headlineLoading}}" type="loading" compact="{{true}}" text="正在加载更多文章" skeleton-rows="{{1}}"></empty-state>
     <empty-state wx:if="{{!headlineHasMore && headlines.length}}" type="end" compact="{{true}}" text="已加载全部行业资讯"></empty-state>
