@@ -48,6 +48,13 @@
       <view class="link-host ellipsis">{{item.link}}</view>
     </view>
   </view>
+  <view wx:if="{{item.hot_comment}}" class="hot-comment">
+    <view class="hot-comment-head">
+      <image class="hot-comment-label" src="/assets/app/pins/ic_pins_hot_comment.png" mode="aspectFit"></image>
+      <text wx:if="{{item.hot_comment.digg_count_value > 0}}" class="hot-comment-digg">{{item.hot_comment.digg_count}}人赞</text>
+    </view>
+    <view class="hot-comment-content">{{item.hot_comment.content}}</view>
+  </view>
   <view wx:if="{{(item.topic && item.topic_id) || (item.digg_count_value > 0 && item.digg_users.length)}}" class="pin-meta-row">
     <view wx:if="{{item.topic && item.topic_id}}" class="topic" hover-class="item-pressed" catchtap="openTopic" aria-role="button" aria-label="打开{{item.topic}}圈子"># {{item.topic}} ></view>
     <view wx:if="{{item.digg_count_value > 0 && item.digg_users.length}}" class="pin-digg-users">
@@ -56,13 +63,6 @@
       </view>
       <text>{{item.digg_users.length <= 10 ? "赞过" : "等人赞过"}}</text>
     </view>
-  </view>
-  <view wx:if="{{item.hot_comment}}" class="hot-comment">
-    <view class="hot-comment-head">
-      <image class="hot-comment-label" src="/assets/app/pins/ic_pins_hot_comment.png" mode="aspectFit"></image>
-      <text wx:if="{{item.hot_comment.digg_count_value > 0}}" class="hot-comment-digg">{{item.hot_comment.digg_count}}人赞</text>
-    </view>
-    <view class="hot-comment-content">{{item.hot_comment.content}}</view>
   </view>
   <view wx:if="{{showActions}}" class="pin-actions">
     <button class="pin-action" open-type="share" data-item="{{item}}" hover-class="action-pressed" catchtap="noop" aria-label="分享沸点"><image class="pin-action-icon" src="/assets/app/pins/ic_pins_share.png" mode="aspectFit"></image><text>分享</text></button>
