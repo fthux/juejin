@@ -29,15 +29,15 @@
 
 ### 1. 原生小程序源码（推荐）
 
-拉取[项目源码](https://github.com/fthux/juejin)，使用微信开发者工具导入并预览，也可以通过真机运行开发版，体验原生微信小程序版本。
+拉取当前项目源码，使用微信开发者工具导入并预览，也可以通过真机运行开发版，体验原生微信小程序版本。
 
 ### 2. H5 版本（推荐）
 
-访问由小程序转换生成的 [H5 版本](https://juejin.fthux.com/)，无需安装或配置开发环境，可直接在浏览器中体验。
+访问由小程序转换生成的 <a href="https://juejin.fthux.com/" target="_blank" rel="noopener noreferrer">H5 版本</a>，无需安装或配置开发环境，可直接在浏览器中体验。
 
 ### 3. 小程序录屏
 
-不方便运行项目时，可以[观看小程序录屏](https://juejin.fthux.com/public/juejin-recoder.mp4)，快速了解主要页面和交互效果。
+不方便运行项目时，可以 <a href="https://juejin.fthux.com/public/juejin-recoder.mp4" target="_blank" rel="noopener noreferrer">观看小程序录屏</a>，快速了解主要页面和交互效果。
 
 ### 4. 线上小程序（历史版本）
 
