@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "web": {
+    "description": "掘金是面向全球中文开发者的技术内容分享与交流平台。我们通过技术文章、沸点、课程、直播等产品和服务，打造一个激发开发者创作灵感，激励开发者沉淀分享，陪伴开发者成长的综合类技术社区。",
+    "favicon": [
+      {
+        "rel": "apple-touch-icon",
+        "path": "web-assets/favicons/apple-touch-icon.png",
+        "sizes": "180x180"
+      },
+      {
+        "rel": "icon",
+        "path": "web-assets/favicons/favicon-32x32.png",
+        "sizes": "32x32"
+      },
+      {
+        "rel": "icon",
+        "path": "web-assets/favicons/favicon-16x16.png",
+        "sizes": "16x16"
+      },
+      {
+        "rel": "mask-icon",
+        "path": "web-assets/favicons/safari-pinned-tab.svg",
+        "color": "#1E80FF"
+      }
+    ],
+    "keywords": "掘金,稀土,Vue.js,前端面试题,Kotlin,ReactNative,Python, 掘金,掘金网,掘金社区,掘金开发者社区,掘金沸点,中文技术社区,前端开发社区,前端技术交流,前端框架教程,JavaScript 学习资源,CSS 技巧与最佳实践,HTML5 最新动态,前端工程师职业发展,开源前端项目,前端技术趋势"
+  },
+  "network": {
+    "requestProxy": [
+      {
+        "origin": "https://api.juejin.cn",
+        "endpoint": "https://juejin.fthux.com/api/transfer",
+        "pathPrefixes": [
+          "/recommend_api/",
+          "/content_api/",
+          "/booklet_api/",
+          "/interact_api/",
+          "/study_api/",
+          "/tag_api/",
+          "/user_api/",
+          "/search_api/"
+        ]
+      }
+    ]
+  }
+}
