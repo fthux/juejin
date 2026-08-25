@@ -30,7 +30,7 @@
     "requestProxy": [
       {
         "origin": "https://api.juejin.cn",
-        "endpoint": "https://juejin.fthux.com/api/transfer",
+        "endpoint": "https://juejinh5.fthux.com/api/transfer",
         "pathPrefixes": [
           "/recommend_api/",
           "/content_api/",
